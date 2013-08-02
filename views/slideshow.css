@@ -1,0 +1,46 @@
+.presentation {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0px;
+  top: 0px;
+  overflow: hidden;
+  background: #000;
+}
+
+.slide {
+  display: none; /* n'affiche pas le slide et n'occupe pas la place sur l'écran (contrairement à visibility) */
+  position: absolute; /* la position du bloc est calculée à partir de la position de l'élémént parent */
+  left: 5%; /* décalage à gauche par rapport à la position (absolute) */
+  top: 5%; /* décalage en haut par rapport à la position (absolute) */
+  overflow: hidden; /* Si le texte dépasse le cadre, il est caché (pour faire apparaitre les srollbar il faut overflow: scroll) */
+  width: 90%; /* 900px; /* largeur du bloc de texte*/
+  height: 90%; /*700px; /* hauteur du bloc de texte */
+  background-color: #fff; /* couleur de fond */
+  -webkit-transition: margin 0.5s ease-in-out;
+}
+
+.slide.previous {	
+  visibility: hidden;
+  display: block; /* doit être présent sinon display = none ce cache l'élément même si visibility = visible */
+  margin-left: -100%; /*-500px;*/
+}
+
+.slide.current {
+  visibility: visible;
+  display: block;
+  margin-left: 0px;
+}
+
+.slide.next {	
+  visibility: hidden;
+  display: block;
+  margin-left: 100%; /*500px;*/
+}
+
+section {
+  color: #ff00ff; /* text color */
+  /*margin: 100px 30px 0; /* 100 en haut, 30 sur les cotés, 0 en bas */
+  /*display: block; /* affiche le contenu de la section en bloques (les éléments les un derrière les autres */
+  overflow: hidden; /* devrait empécher l'affichage des scrollBar */
+}
