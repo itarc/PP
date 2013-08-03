@@ -174,5 +174,5 @@ SlideShow.prototype = {
 
 var slideshow = new SlideShow(queryAll('.slide'));
 
-//~ var slideshowTimer = setInterval( function(){ slideshow.synchronise(); },2000);
+var slideshowTimer = setInterval( function(){ slideshow.synchronise(); },2000);
 
