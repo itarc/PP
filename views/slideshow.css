@@ -5,7 +5,7 @@
   left: 0px;
   top: 0px;
   overflow: hidden;
-  background: #000;
+  background: #555;
 }
 
 .slide {
@@ -16,7 +16,8 @@
   overflow: hidden; /* Si le texte dépasse le cadre, il est caché (pour faire apparaitre les srollbar il faut overflow: scroll) */
   width: 90%; /* 900px; /* largeur du bloc de texte*/
   height: 90%; /*700px; /* hauteur du bloc de texte */
-  background-color: #fff; /* couleur de fond */
+  background-color: #000; /* couleur de fond */
+  background: -webkit-gradient(linear, left bottom, left top, from(#ccc), to(#eee));
   -webkit-transition: margin 0.5s ease-in-out;
 }
 
@@ -34,13 +35,119 @@
 
 .slide.next {	
   visibility: hidden;
-  display: block;
+  display: block; /* important pour l'effet de transition */
   margin-left: 100%; /*500px;*/
 }
 
-section {
+/* -------------- Sections (General) ------------ */
+
+section {	
   color: #ff00ff; /* text color */
-  /*margin: 100px 30px 0; /* 100 en haut, 30 sur les cotés, 0 en bas */
-  /*display: block; /* affiche le contenu de la section en bloques (les éléments les un derrière les autres */
+  margin: 5%; 
   overflow: hidden; /* devrait empécher l'affichage des scrollBar */
+  font-size: 2em; 
+}
+
+section.centered_title {
+  margin-top: 30%;
+  text-align: center;
+}
+
+section.title {
+  margin: 1%; 
+  font-size: 1.5em;
+  text-align: left;
+}
+
+section.subtitle {
+  margin: 1%; 
+  font-size: 1.5em;
+  text-align: left;
+  background-color: #f90;
+}
+
+section.validate {
+  text-align: right;
+}
+
+input[type=text] {
+  font-size: 1em;
+}
+
+input[type=button] {
+  font-size: 1em;
+}
+
+input[type=button]:hover {
+  background-color:#d0d0d0;
+}
+
+/* -------------- Coding ------------ */
+
+textarea.code {
+  display:block;
+  font-size:1em;
+  width:100%; 
+  height:40%;
+}
+
+textarea.code_result {
+  display:block;	
+  font-size:1em;
+  width:100%; 
+  height:20%;
+}
+
+textarea + input[type=button] {
+  width:100%; 
+}
+
+/* -------------- Survey ------------ */
+
+input[type=radio].survey_radio {
+  display:none;
+}
+
+input[type=radio].survey_radio + label {
+  display:block;
+  margin:1%;
+  margin-left:3%;
+}
+
+input[type=radio].survey_radio + label:hover {
+  background-color: #e7e7e7;
+  background: -webkit-gradient(linear, left bottom, left top, from(#aaa), to(#eee));
+}
+
+input[type=radio].survey_radio:checked + label { 
+  background-image: none;
+  background-color:#d0d0d0;
+}
+
+/* -------------- Rating ------------ */
+
+section.evaluate {
+  margin: 1%; 
+  font-size: 1.5em;
+  text-align: left;
+}
+
+span.rating {
+  overflow: hidden;
+  display: inline-block;
+}
+input.rating-input {
+  position: absolute;
+  left: 0;
+  top: -50px;
+}
+span.rating:hover label.rating-star:hover,
+span.rating:hover label.rating-star:hover ~ .rating-star,
+input.rating-input:checked ~ label.rating-star {  
+  color: gold;
+}
+label.rating-star,
+span.rating:hover label.rating-star {
+  float: right;
+  display: block;
 }

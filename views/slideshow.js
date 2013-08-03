@@ -46,7 +46,7 @@ Slide.prototype = {
 
   setState: function(state) {
 
-    this._node.className = 'slide' + ( (state != '') ? (' ' + state) : '');
+    this._node.className = 'slide' + ((state != '') ? (' ' + state) : '');
 
   },
 
@@ -59,7 +59,7 @@ var SlideShow = function(slides) {
 
   this._slides = (slides).map(function(element) {
 	    
-  return new Slide(element);
+    return new Slide(element);
 
   });
 
@@ -174,5 +174,5 @@ SlideShow.prototype = {
 
 var slideshow = new SlideShow(queryAll('.slide'));
 
-var slideshowTimer = setInterval( function(){ slideshow.synchronise(); },2000);
+//~ var slideshowTimer = setInterval( function(){ slideshow.synchronise(); },2000);
 
