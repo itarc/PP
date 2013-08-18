@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
-ruby '1.9.2'
 gem 'sinatra', '1.4.3'
 gem 'thin', '1.5.1'
+gem 'rack-test', '0.6.1'
+gem 'capybara', '1.1.2'
+gem 'rake'
