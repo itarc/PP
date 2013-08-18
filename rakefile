@@ -1,0 +1,12 @@
+require 'jasmine'
+
+load 'jasmine/tasks/jasmine.rake'
+
+task :default => [:test_gui, :'jasmine:ci']
+
+task :test_gui do
+  ruby './controllers/slideshow.test.rb'
+  ruby './spec/gui/slideshow.test_navigation.rb'
+  ruby './spec/gui/slideshow.test_poll.rb'
+end
+

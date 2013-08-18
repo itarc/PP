@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <link href="slideshow.css" rel="stylesheet" media="screen"/>
+  </head>
+  <body>
+  
+    <div class="presentation">
+
+        <div class="slide" id="slide_1">
+	    
+            <style>
+	      /* to be able to "choose" a radio button in capybara, it must be visible */
+	      input[type=radio].poll_radio {  display:inline; visibility: visible; background:red;}
+	    </style>
+
+	    <h1>POLL</h1>
+
+            <section>
+	    
+              <div>
+	        <div class="poll_question">QUESTION</div>
+                <input class="poll_radio" type="radio" id="poll_radio_1" name="group_1" onclick="Slide.prototype.savePoll(this.id)"> <label id="label_1" for="poll_radio_1">ANSWER_1</label>
+                <input class="poll_radio" type="radio" id="poll_radio_2" name="group_1" onclick="Slide.prototype.savePoll(this.id)"> <label id="label_2" for="poll_radio_2">ANSWER_2</label>
+	      </div>	      
+	      
+            </section>
+	    
+        </div>
+	
+        <div class="slide" id="slide_2">
+	
+	    <h1>POLL RESULT</h1>
+	
+            <section>
+	    
+		<div>
+		  <div class="poll_question">QUESTION</div>
+		  <div><span class="poll_response">ANSWER_1</span> <span id="poll_rate_1" class="poll_response_rate"></span></div>
+		  <div><span class="poll_response">ANSWER_2</span> <span id="poll_rate_2" class="poll_response_rate"></span></div>
+		</div>
+	      
+            </section>
+	    
+        </div>	
+
+      </div>
+
+    <script src="slideshow.js"></script>
+    
+  </body>
+</html>

@@ -5,148 +5,38 @@
   <body>
   
     <div class="presentation">
-        <!--style>
-	section {   background-color: #000; }
-	</style-->
 
         <div class="slide" id="centered_title">
 	
-            <section class='centered_title' >
+            <section class='centered' >
 	    
-            CENTERED TITLE
-	      
-            </section>
+            <h1>POWER PROF</h1>
+	    <br/><br/>  
+	    <h2>L'OUTIL QUI REND LES FORMATIONS PLUS FUN</h2>
 	    
-        </div>
-	
-	
-        <div class="slide" id="very_long_sentence_twice">
-	
-            <section class='centered'>
-	    
-            VERY LONG SENTENCE, VERY LONG SENTENCE, VERY LONG SENTENCE, VERY LONG SENTENCE, VERY LONG SENTENCE, VERY LONG SENTENCE, 
-	      
-            </section>
-
-            <section class='centered'>
-	    
-            VERY LONG SENTENCE, VERY LONG SENTENCE, VERY LONG SENTENCE, VERY LONG SENTENCE, VERY LONG SENTENCE, VERY LONG SENTENCE, 
-	      
             </section>
 	    
         </div>
 
-
-        <div class="slide" id="survey">
-
-            <section class='title' >
-	    
-            TITLE
-	      
-            </section>
-	    
-            <section class='subtitle' >
-	    
-            SUBTITLE
-	      
-            </section>
+        <div class="slide">
 	
+            <h1>POWER PROF</h1>
+            <h2>...POUR SONDER EN TEMPS REEL</h2>
+	    
             <section>
 
-		  VOUS ETES ?
-                  <input class="survey_radio" type="radio" id="radio_1" name="group_1"> <label for="radio_1">Une Femme</label>
-                  <input class="survey_radio" type="radio" id="radio_2" name="group_1"> <label for="radio_2">Un Homme</label>
+		  <div>
+		    <div class="poll_question">Connaissez vous CSS ?</div>
+                    <input class="poll_radio" type="radio" id="poll_radio_1" name="group_1" onclick="Slide.prototype.savePoll(this.id)"> <label for="poll_radio_1">Oui</label>
+                    <input class="poll_radio" type="radio" id="poll_radio_2" name="group_1" onclick="Slide.prototype.savePoll(this.id)"> <label for="poll_radio_2">Non</label>
+		  </div>
 
-            </section>
+		  <div>
+		    <div class="poll_question">Connaissez vous JavaScript ?</div>
+                    <input class="poll_radio" type="radio" id="poll_radio_3" name="group_2" onclick="Slide.prototype.savePoll(this.id)"> <label for="poll_radio_3">Oui</label>
+                    <input class="poll_radio" type="radio" id="poll_radio_4" name="group_2" onclick="Slide.prototype.savePoll(this.id)"> <label for="poll_radio_4">Non</label>
+		  </div>
 
-            <section>
-
-		  VOUS ETES ?
-                  <input class="survey_radio" type="radio" id="radio_3" name="group_2"> <label for="radio_3">Développeur</label>
-                  <input class="survey_radio" type="radio" id="radio_4" name="group_2"> <label for="radio_4">Manager</label>
-
-            </section>
-	    
-           <section class="validate">
-	   
-             <input type="button" value="VALIDER">
-	     
-           </section>	    
-	    
-        </div> 
-
-
-
-        <div class="slide" id="text_and_evaluation">
-	
-            <section class='title' >
-	    
-            TITLE
-	      
-            </section>
-	    
-            <section class='subtitle' >
-	    
-            SUBTITLE
-	      
-            </section>
-	    
-	    <section class='evaluate'>
-	    	      
-              <span class="rating">
-                <input type="radio" class="rating-input" id="rating-input-1-5" name="rating-input-1">
-                  <label for="rating-input-1-5" class="rating-star">&#9734</label>
-                <input type="radio" class="rating-input" id="rating-input-1-4" name="rating-input-1">
-                  <label for="rating-input-1-4" class="rating-star">&#9734</label>
-	        <input type="radio" class="rating-input" id="rating-input-1-3" name="rating-input-1">
-                  <label for="rating-input-1-3" class="rating-star">&#9734</label>
-                <input type="radio" class="rating-input" id="rating-input-1-2" name="rating-input-1">
-                  <label for="rating-input-1-2" class="rating-star">&#9734</label>
-                <input type="radio" class="rating-input" id="rating-input-1-1" name="rating-input-1">
-                  <label for="rating-input-1-1" class="rating-star">&#9734</label>
-              </span>	      
-	      
-            </section>	    
-
-            <section>
-	    
-            TEXTE/POINT LIST
-	      
-            </section>
-
-        </div> 
-	
-       <div class="slide" id="exercise">
-
-            <section class='title' >
-	    
-            TITLE
-	      
-            </section>
-	    
-            <section class='subtitle' >
-	    
-            SUBTITLE
-	      
-            </section>
-	
-            <section>
-
-                <form name="myform" action="..." method="POST">
-		  COMBIEN FONT 9 X 5 ?
-                  <input type="text" id="response_1">
-                </form>
-		<br>
-               <form name="myform" action="..." method="POST">
-		  COMBIEN FONT 9 X 7 ?
-                  <input type="text" id="response_2">
-                </form>
-		<br>
-               <form name="myform" action="..." method="POST">
-		  COMBIEN FONT 9 X 9 ?
-                  <input type="text" id="response_2">
-                </form>
-		
             </section>
 
            <section class="validate">
@@ -155,44 +45,30 @@
 	     
            </section>
 	    
-        </div>	
-
-        <div class="slide" id="coding">
-
-            <section class='title' >
-	    
-            TITLE
-	      
-            </section>
-	    
-            <section class='subtitle' >
-	    
-            SUBTITLE
-	      
-            </section>
-	    
-	    <section class="code">
-	    
-            <textarea class="code" id="input"></textarea>
-
-              <input type="button" onclick="viewOutput()" value="EXECUTER">
-
-            <textarea class="code_result" id="output"></textarea>	    
-	    
-	    </section>
-	
         </div>
-
- 
-
-
 	
+        <div class="slide">
+
+          <h1>POWER PROF</h1>
+	  <h2>...POUR AFFICHER LE RESULTAT DU SONDAGE</h2>
+
+            <section>
+
+		  <div>
+		    <div class="poll_question">Connaissez vous CSS ?</div>
+		    <div><span class="poll_response">Oui</span> <span id="poll_rate_1" class="poll_response_rate">()</span></div>
+		    <div><span class="poll_response">Non</span> <span id="poll_rate_2" class="poll_response_rate">()</span>
+                  </div>		  
+
+		  <div>
+		    <div class="poll_question">Connaissez vous JavaScript ?</div>
+		    <div><span class="poll_response">Oui</span> <span id="poll_rate_3" class="poll_response_rate">()</span></div>
+		    <div><span class="poll_response">Non</span> <span id="poll_rate_4" class="poll_response_rate">()</span></div>
+		  </div>
+
+            </section>
 	
-    
-   
-
-
-
+      </div>
 
       </div> <!--presentation-->
 

@@ -16,7 +16,7 @@ var queryAll = function(query) {
 var postResource = function(path, params) {
 	  
   var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("POST", path, false);
+  xmlhttp.open("POST", path, true);
   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
   xmlhttp.send(params);	  
 
@@ -49,6 +49,27 @@ Slide.prototype = {
     this._node.className = 'slide' + ((state != '') ? (' ' + state) : '');
 
   },
+  
+  updatePoll: function() {
+	  
+    pollRateNodeList = this._node.querySelectorAll('.poll_response_rate')
+	  
+    if ( pollRateNodeList.length ==  0 ) return;
+	  
+    for (var pollRateNodeIndex in pollRateNodeList) {
+	    pollRateNodeId = pollRateNodeList[pollRateNodeIndex].id
+	    if (! pollRateNodeId) continue;
+	    pollRate = getResource('/' + pollRateNodeId);
+	    this._node.querySelector('#' + pollRateNodeId).innerHTML = "(" + pollRate + "%)";
+    }
+
+  },
+  
+  savePoll: function(elementId) {
+
+    postResource('/'+elementId, '');
+
+  },  
 
 };
 
@@ -81,7 +102,7 @@ SlideShow.prototype = {
   _numberOfSlides : 0,
 
   _update: function() {
-	
+
     window.console && window.console.log("_currentIndex : " + this._currentIndex);
 
     beforePreviousSlide = this._slides[this._currentIndex - 2]
@@ -92,13 +113,14 @@ SlideShow.prototype = {
 	    
     currentSlide = this._slides[this._currentIndex]
     if (currentSlide) currentSlide.setState('current');
+    if (currentSlide) currentSlide.updatePoll();
 	    
     nextSlide = this._slides[this._currentIndex + 1]	      
     if (nextSlide) nextSlide.setState('next');
 	    
     afterNextSlide = this._slides[this._currentIndex + 2]
     if (afterNextSlide) afterNextSlide.setState('');	
-
+	  
   },
 
   _getCurrentIndex: function() {
@@ -119,20 +141,22 @@ SlideShow.prototype = {
     if (this._currentIndex <= 0) return;
 	    
     this._currentIndex = this._currentIndex - 1;
-    this._update();	 
 
     this._postCurrentIndex();
+	  
+    this._update();	  
 
 },
 
   next: function() {
-	    
+
     if (this._currentIndex >= (this._numberOfSlides - 1) ) return;
 	    
     this._currentIndex = this._currentIndex + 1;
-    this._update();
 
     this._postCurrentIndex();
+ 	  
+    this._update();	  
 
   },
 

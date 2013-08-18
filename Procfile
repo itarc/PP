@@ -1,1 +1,1 @@
-web: bundle exec ruby controlers/slideshow.rb -p $PORT
+web: bundle exec ruby controllers/slideshow.rb -p $PORT

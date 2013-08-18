@@ -1,0 +1,1 @@
+../../../views/slideshow.js
