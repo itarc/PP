@@ -2,7 +2,7 @@ require 'jasmine'
 
 load 'jasmine/tasks/jasmine.rake'
 
-task :default => [:test_gui, :'jasmine:ci']
+task :default => [:'jasmine:ci', :test_gui]
 
 task :test_gui do
   ruby './controllers/slideshow.test.rb'
