@@ -3,7 +3,7 @@
 require 'sinatra'
 
 set :public_folder, 'views'
-#~ set :logging, false
+set :logging, false
 
 $teacher_current_slide = nil
 

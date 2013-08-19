@@ -35,7 +35,7 @@ class SlideShow < Test::Unit::TestCase
   end
 
 
-  def test03_should_compute_poll_with_one_response
+  def test03_should_compute_poll_with_one_question_and_one_response
 
     get '/poll_rate_1' 
     assert_equal '0', last_response.body
@@ -47,7 +47,7 @@ class SlideShow < Test::Unit::TestCase
 
   end
   
-  def test04_should_compute_poll_with_two_responses
+  def test04_should_compute_poll_with_one_question_and_two_responses
 
     post '/resume_poll'
 
