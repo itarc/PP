@@ -3,6 +3,7 @@
 require 'sinatra'
 
 set :public_folder, File.dirname(__FILE__) + '/' + 'view_fixtures'
+set :logging, false
 
 $teacher_current_slide = nil
 $poll_rate_1 = 100

@@ -2,11 +2,13 @@ require 'jasmine'
 
 load 'jasmine/tasks/jasmine.rake'
 
-task :default => [:'jasmine:ci', :test_gui]
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec)
+
+task :default => [:'jasmine:ci', :test_gui, :spec]
 
 task :test_gui do
   ruby './controllers/slideshow.test.rb'
-  ruby './spec/gui/slideshow.test_navigation.rb'
-  ruby './spec/gui/slideshow.test_poll.rb'
 end
 
