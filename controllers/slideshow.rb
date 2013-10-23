@@ -5,6 +5,8 @@ require 'sinatra'
 set :public_folder, 'views'
 set :logging, false
 
+set :bind, '0.0.0.0'
+
 $teacher_current_slide = nil
 
 get '/' do
