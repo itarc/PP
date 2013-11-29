@@ -54,6 +54,26 @@ class TestsWithOneAttendee < Test::Unit::TestCase
     
   end  
   
+  def test03_AttendeeGivesTwoAnswerToTwoDifferenteResponses
+	  
+    post '/poll_response_1_to_question_1'
+    assert last_response.ok?, last_response.errors
+
+    post '/poll_response_2_to_question_2'
+    assert last_response.ok?, last_response.errors
+
+    get '/poll_response_1_rate_to_question_1'
+    assert last_response.ok?, last_response.errors  
+
+    assert_equal "100", last_response.body
+    
+    get '/poll_response_2_rate_to_question_2'
+    assert last_response.ok?, last_response.errors  
+
+    assert_equal "100", last_response.body    
+    
+  end   
+  
   def teardown
     $db.execute_sql("delete from polls")    
   end

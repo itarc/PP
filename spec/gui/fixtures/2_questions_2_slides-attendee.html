@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <link href="slideshow.css" rel="stylesheet" media="screen"/>
+    <meta name='viewport' content='user-scalable=no,width=device-width' />
+    <meta charset="utf-8">
+  </head>
+  <body>
+  
+    <div class="presentation">
+
+        <div class="slide">
+	    
+            <section>
+
+		  <div id='question_systeme'>
+		    <div class="poll_question">UNIX est il un système ?</div>
+                     <input class="poll_radio" type="radio" id="poll_response_1_to_question_systeme" name="group_1" onclick="Slide.prototype.savePoll(this.id)"> <label for="poll_response_1_to_question_systeme">Oui</label>
+                     <input class="poll_radio" type="radio" id="poll_response_2_to_question_systeme" name="group_1" onclick="Slide.prototype.savePoll(this.id)"> <label for="poll_response_2_to_question_systeme">Non</label>
+		  </div>
+
+            </section>
+
+        </div>
+	
+        <div class="slide">
+
+            <section>
+
+		  <div id='reponse_systeme'>
+		    <div class="poll_question">UNIX est il un système ?</div>
+		    <div><span class="poll_response">Oui</span> <span id="poll_response_3_rate_to_question_systeme" class="poll_response_rate">()</span></div>
+		    <div><span class="poll_response">Non</span> <span id="poll_response_4_rate_to_question_systeme" class="poll_response_rate">()</span>
+                  </div>		  
+
+            </section>
+	
+      </div>	
+	
+        <div class="slide">
+	    
+            <section>
+
+		  <div id='question_reparti'>
+		    <div class="poll_question">UNIX est il réparti ?</div>
+                     <input class="poll_radio" type="radio" id="poll_response_3_to_question_reparti" name="group_1" onclick="Slide.prototype.savePoll(this.id)"> <label for="poll_response_3_to_question_reparti">Oui</label>
+                     <input class="poll_radio" type="radio" id="poll_response_4_to_question_reparti" name="group_1" onclick="Slide.prototype.savePoll(this.id)"> <label for="poll_response_4_to_question_reparti">Non</label>
+		  </div>
+
+            </section>
+
+        </div>	
+
+        <div class="slide">
+
+            <section>		  
+		  
+		  <div id='reponse_reparti'>
+		    <div class="poll_question">UNIX est il réparti ?</div>
+		    <div><span class="poll_response">Oui</span> <span id="poll_response_1_rate_to_question_reparti" class="poll_response_rate">()</span></div>
+		    <div><span class="poll_response">Non</span> <span id="poll_response_2_rate_to_question_reparti" class="poll_response_rate">()</span>
+                  </div>			  
+
+            </section>
+	
+      </div>      
+
+      </div> <!--presentation-->
+
+    <script src="slideshow.js"></script>
+    <script src="slideshow-teacher.js"></script>
+    
+  </body>
+</html>

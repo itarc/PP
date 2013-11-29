@@ -15,11 +15,11 @@ class PollQuestion
   end
 
   def possible_responses
-    $db.execute_sql("select distinct response from polls").values.map { |value| value[0] }.sort
+    $db.execute_sql("select distinct response from polls where question_id='#{@question_id}'").values.map { |value| value[0] }.sort
   end
   
   def users_for_each_answer
-    rows = $db.execute_sql("select distinct on (user_id) * from polls order by user_id, timestamp desc").values
+    rows = $db.execute_sql("select distinct on (user_id) * from polls where question_id='#{@question_id}' order by user_id, timestamp desc").values
     return {} if rows == []
     users_for_each_answer = {}
     rows.each do |row|

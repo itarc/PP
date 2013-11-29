@@ -17,6 +17,12 @@ get '/2_questions_poll' do
 
 end
 
+get '/2_questions_2_slides' do
+
+  redirect "2_questions_2_slides-attendee.html"
+
+end
+
 get '/star_rating' do
 
   redirect "star_rating-attendee.html"
@@ -38,6 +44,12 @@ end
 get '/teacher/2_questions_poll' do
 
   redirect "2_questions_poll-teacher.html"
+
+end
+
+get '/teacher/2_questions_2_slides' do
+
+  redirect "2_questions_2_slides-teacher.html"
 
 end
 
