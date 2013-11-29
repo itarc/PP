@@ -9,22 +9,22 @@
 }
 
 .slide {
-  display: none; /* n'affiche pas le slide et n'occupe pas la place sur l'écran (contrairement à visibility) */
-  position: absolute; /* la position du bloc est calculée à partir de la position de l'élémént parent */
-  left: 5%; /* décalage à gauche par rapport à la position (absolute) */
-  top: 5%; /* décalage en haut par rapport à la position (absolute) */
-  overflow: auto; /* gère l'apparition des scrollbar dans le bloc */
+  display: none; /* n'affiche pas le slide et n'occupe pas la place sur l'Ã©cran (contrairement Ã  visibility) */
+  position: absolute; /* la position du bloc est calculÃ©e Ã  partir de la position de l'Ã©lÃ©mÃ©nt parent */
+  left: 5%; /* dÃ©calage Ã  gauche par rapport Ã  la position (absolute) */
+  top: 5%; /* dÃ©calage en haut par rapport Ã  la position (absolute) */
+  overflow: auto; /* gÃ¨re l'apparition des scrollbar dans le bloc */
   width: 90%; /* 900px; /* largeur du bloc de texte*/
   height: 90%; /*700px; /* hauteur du bloc de texte */
   background-color: #000; /* couleur de fond */
-  /* border-radius: 15px; /* crée un coin arrondi */
-  /* background: -webkit-gradient(linear, left bottom, left top, from(#ccc), to(#eee)); /* crée un dégradé sur chrome */
-  /* -webkit-transition: margin 0.5s ease-in-out; /* crée un effet de transition sur chrome */
+  /* border-radius: 15px; /* crÃ©e un coin arrondi */
+  /* background: -webkit-gradient(linear, left bottom, left top, from(#ccc), to(#eee)); /* crÃ©e un dÃ©gradÃ© sur chrome */
+  /* -webkit-transition: margin 0.5s ease-in-out; /* crÃ©e un effet de transition sur chrome */
 }
 
 .slide.previous {	
   visibility: hidden;
-  display: block; /* doit être présent sinon display = none ce cache l'élément même si visibility = visible */
+  display: block; /* doit Ãªtre prÃ©sent sinon display = none ce cache l'Ã©lÃ©ment mÃªme si visibility = visible */
   margin-left: -100%; /*-500px;*/
 }
 
@@ -45,7 +45,7 @@
 section {	
   color: #ff00ff; /* text color */
   margin: 5%;
-  overflow: hidden; /* Empécher l'affichage des scrollBar */
+  overflow: hidden; /* EmpÃ©cher l'affichage des scrollBar */
   font-size: 2em;
 }
 
@@ -71,7 +71,7 @@ div.slide > h2 {
   margin: 1%; 
   font-size: 2em;
   text-align: left;
-  background-color: yellow;
+  background-color: #ffffaa;
 }
 
 /* -------------- Input (General) ------------ */
@@ -146,7 +146,7 @@ input[type=radio].poll_radio:checked + label {
 
 section.evaluate {
   margin: 1%; 
-  font-size: 2.5em;
+  font-size: 4.5em;
   text-align: left;
 }
 
@@ -172,6 +172,27 @@ span.rating:hover label.rating-star {
   color:grey;		
   float: right;
   display: block;
+}
+
+/* -------------- Select ------------ */
+
+input.select-input {
+  position: absolute;
+  left: 0;
+  top: -50px;
+}
+
+
+label.select-star:hover {
+    color: gold;
+}
+
+input.select-input:checked + label.select-star:hover {
+    color: #ff00ff;
+}
+
+input.select-input:checked + label.select-star  {
+    color: gold;
 }
 
 /* -------------- Charts ------------ */
