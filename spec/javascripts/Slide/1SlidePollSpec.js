@@ -38,12 +38,9 @@ describe("Slide : Poll", function() {
   it("should post poll choosen answer", function() {
   
     slideNode = sandbox('	  <input class="poll_radio" type="radio" id="poll_radio_1" name="group_1" onclick="Slide.prototype.savePoll(this.id)"> <label id="label_1" for="poll_radio_1">ANSWER_1</label>  <input class="poll_radio" type="radio" id="poll_radio_2" name="group_1" onclick="Slide.prototype.savePoll(this.id)"> <label id="label_1" for="poll_radio_2">ANSWER_2</label> ');
-	  //~ alert(slideshow._slides[slideshow._currentIndex])
     postResource = jasmine.createSpy('postResource');  
-	  function a() { alert("a") }
+
     var slide = new Slide(slideNode);
-	  //~ alert(slideNode)
-    //~ slide.savePoll();
 	  
     slideNode.querySelector('#poll_radio_1').click();	  
 	  

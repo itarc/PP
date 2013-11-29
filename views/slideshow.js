@@ -146,7 +146,7 @@ SlideShow.prototype = {
 	  
     this._update();	  
 
-},
+  },
 
   next: function() {
 
@@ -166,37 +166,8 @@ SlideShow.prototype = {
     this._update();
 
   },
-
-  handleKeys: function(e) {
-	    
-    switch (e.keyCode) {
-	      
-      case LEFT_ARROW: 
-	      
-        this.prev(); 
-	      
-      break;
-	      
-      case RIGHT_ARROW:  
-	      
-        this.next(); 
-	      
-      break;
-	      
-      case SPACE:  
-	      
-        this.synchronise(); 
-	      
-      break;	      
-	      
-    }
-
-  },
-
+  
 };
 
 
-var slideshow = new SlideShow(queryAll('.slide'));
-
-var slideshowTimer = setInterval( function(){ slideshow.synchronise(); },2000);
 

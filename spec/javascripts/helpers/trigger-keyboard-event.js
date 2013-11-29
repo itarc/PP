@@ -1,14 +1,11 @@
-function __triggerKeyboardEvent(el, keyCode)
+function __triggerKeyboardEvent(element, keyCode)
 {
-    var eventObj = document.createEventObject ? document.createEventObject() : document.createEvent("Events");
+
+  var eventObj = document.createEvent("Events");
   
-    if(eventObj.initEvent){
-      eventObj.initEvent("keydown", true, true);
-    }
+  eventObj.initEvent("keydown", true, true);
+  eventObj.keyCode = keyCode;
   
-    eventObj.keyCode = keyCode;
-    eventObj.which = keyCode;
-    
-    el.dispatchEvent ? el.dispatchEvent(eventObj) : el.fireEvent("onkeydown", eventObj); 
+  element.dispatchEvent(eventObj);
   
 }

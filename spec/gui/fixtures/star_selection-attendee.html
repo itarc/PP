@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <link href="slideshow.css" rel="stylesheet" media="screen"/>
+    <meta name='viewport' content='user-scalable=no,width=device-width' />
+  </head>
+  <body>
+  
+    <div class="presentation">
+    
+        <!--
+	slide (poll):
+	  - question : UNIX est il un système ?
+	  - answer_1 : oui
+	  - answer_2 : non
+	-->
+
+        <div class="slide">
+	    
+            <section>
+
+		<div id="proposition_1">
+		  <input type="checkbox" class="select-input" id="rating_input_5" name="rating-input-1" >
+		  <label id="select_input_1_to_proposition" for="rating_input_5" class="select-star" onclick="Slide.prototype.savePoll(this.id)">&#9733</label>
+		</div>
+
+            </section>
+
+        </div>
+
+      </div> <!--presentation-->
+
+    <script src="slideshow.js"></script>
+    <script src="slideshow-attendee.js"></script>
+    
+  </body>
+</html>

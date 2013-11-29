@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <link href="slideshow.css" rel="stylesheet" media="screen"/>
+    <meta name='viewport' content='user-scalable=no,width=device-width' />
+  </head>
+  <body>
+  
+    <div class="presentation">
+      
+       <div class="slide" id="star_rating">
+
+	    <section class='evaluate'>
+	    
+	      </br>
+	      </br>
+
+	      
+	      <span style="color:black">_________</span>
+	    	      
+              <span id="stars" class="rating">
+                <input type="radio" class="rating-input" id="rating_input_5" name="rating-input-1" >
+                  <label id="rating_input_5_to_global_evaluation" for="rating_input_5" class="rating-star" onclick="Slide.prototype.savePoll(this.id)">&#9733</label>
+                <input type="radio" class="rating-input" id="rating_input_4" name="rating-input-1" >
+                  <label id="rating_input_4_to_global_evaluation" for="rating_input_4" class="rating-star" onclick="Slide.prototype.savePoll(this.id)">&#9733</label>
+	        <input type="radio" class="rating-input" id="rating_input_3" name="rating-input-1" >
+                  <label id="rating_input_3_to_global_evaluation" for="rating_input_3" class="rating-star" onclick="Slide.prototype.savePoll(this.id)">&#9733</label>
+                <input type="radio" class="rating-input" id="rating_input_2" name="rating-input-1" >
+                  <label id="rating_input_2_to_global_evaluation" for="rating_input_2" class="rating-star" onclick="Slide.prototype.savePoll(this.id)">&#9733</label>
+                <input type="radio" class="rating-input" id="rating_input_1" name="rating-input-1">
+                  <label id="rating_input_1_to_global_evaluation" for="rating_input_1" class="rating-star" onclick="Slide.prototype.savePoll(this.id)">&#9733</label>
+              </span>		      
+	      
+            </section>	    
+
+        </div>      
+	
+
+      </div> <!--presentation-->
+
+    <script src="slideshow.js"></script>
+    <script src="slideshow-attendee.js"></script>
+    
+  </body>
+</html>

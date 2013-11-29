@@ -1,71 +1,4 @@
-describe("SlideShow : key management", function() {
-
-  it("should detect key pressed", function() {
-
-    spyOn(SlideShow.prototype, 'handleKeys');
-
-    var slideShow = new SlideShow([]);	
-	  
-    expect(SlideShow.prototype.handleKeys.calls.length).toBe(0);
-
-    __triggerKeyboardEvent(document, RIGHT_ARROW);
-
-    expect(SlideShow.prototype.handleKeys).toHaveBeenCalled();
-    expect(SlideShow.prototype.handleKeys.calls.length).toBe(2); // ETRANGE DEVRAIT ETRE 1 mais 2 appels sont faits avec des objets de structure différentes
-
-  });	
-
-  it("should call next when right arrow pressed", function() {
-
-    spyOn(SlideShow.prototype, 'next');
-
-    var slideShow = new SlideShow([]);	
-	  
-    expect(SlideShow.prototype.next.calls.length).toBe(0);
-
-    __triggerKeyboardEvent(document, RIGHT_ARROW);
-
-    expect(SlideShow.prototype.next).toHaveBeenCalled();
-    expect(SlideShow.prototype.next.calls.length).toBe(3); // ETRANGE DEVRAIT ETRE 1 mais 3 appels sont faits avec des objets de structure différentes
-    expect(SlideShow.prototype.next).toHaveBeenCalledWith();    
-
-  });  
-  
-  it("should call prev when left arrow pressed", function() {
-
-   spyOn(SlideShow.prototype, 'prev');
-
-    var slideShow = new SlideShow([]); 
-	  
-    expect(SlideShow.prototype.prev.calls.length).toBe(0);
-	  
-    __triggerKeyboardEvent(document, LEFT_ARROW);
-
-    expect(SlideShow.prototype.prev).toHaveBeenCalled();
-    expect(SlideShow.prototype.prev.calls.length).toBe(4); // ETRANGE DEVRAIT ETRE 1 mais 4 appels sont faits avec des objets de structure différentes
-    expect(SlideShow.prototype.prev).toHaveBeenCalledWith();    
-
-  }); 
-
-  it("should call synchronise when space pressed", function() {
-
-   spyOn(SlideShow.prototype, 'synchronise');
-
-    var slideShow = new SlideShow([]); 
-	  
-    expect(SlideShow.prototype.synchronise.calls.length).toBe(0);
-	  
-    __triggerKeyboardEvent(document, SPACE);
-
-    expect(SlideShow.prototype.synchronise).toHaveBeenCalled();
-    expect(SlideShow.prototype.synchronise.calls.length).toBe(5); // ETRANGE DEVRAIT ETRE 1 mais 5 appels sont faits avec des objets de structure différentes
-    expect(SlideShow.prototype.synchronise).toHaveBeenCalledWith();    
-
-  });   
-
-});
-
-describe("SlideShow : slide index management", function() {
+describe("SlideShow slide index management :", function() {
 
   it("should init with currentIndex to zero", function() {
 
@@ -129,7 +62,7 @@ describe("SlideShow : slide index management", function() {
   
 });
 
-describe("SlideShow : teacher current slide management", function() {
+describe("TeacherSlideShow : teacher current slide management", function() {
 	
   it("should post current slide index on server", function() {
 
@@ -233,21 +166,6 @@ describe("SlideShow : teacher current slide management", function() {
     slideShow._getCurrentIndex();
 
     expect(slideShow._currentIndex).toBe(0);    
-
-  });  
-
-  it("should get current slide index on server every 2 seconds", function() {
-	  
-    spyOn(SlideShow.prototype, 'synchronise');
-    jasmine.Clock.useMock();
-
-    setInterval( function(){ slideshow.synchronise(); },2000);
-	  
-    expect(SlideShow.prototype.synchronise).not.toHaveBeenCalled();
-    jasmine.Clock.tick(3001);
-    expect(SlideShow.prototype.synchronise.callCount).toEqual(1);
-    
-    expect(slideshowTimer).toBeDefined(); // Test if timer is defined in production javascript
 
   });
   

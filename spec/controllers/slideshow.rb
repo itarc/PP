@@ -27,6 +27,12 @@ get '/' do
   
 end
 
+get '/1_question_poll' do
+	
+  redirect "1_question_poll-attendee.html"
+  
+end
+
 get '/2_questions_poll' do
 	
   redirect "2_questions_poll-attendee.html"
@@ -48,6 +54,12 @@ end
 get '/teacher' do
 	
   redirect "slideshow-teacher.html"
+
+end
+
+get '/teacher/1_question_poll' do
+	
+  redirect "1_question_poll-teacher.html"
 
 end
 
