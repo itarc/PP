@@ -12,7 +12,7 @@ class TestsWithOneAttendee < Test::Unit::TestCase
   end
   
   def setup
-    $db.execute_sql("delete from polls")    
+    $db.execute_sql("delete from polls")  
   end
   
   def test01_AttendeeDoesNotAnswer

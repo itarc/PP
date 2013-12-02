@@ -17,10 +17,10 @@ class TestsTwoAttendees < Test::Unit::TestCase
   
   def test_should_be_50_50
 	  
-    post '/poll_response_1_to_question_1', {}, 'rack.session' => { :session_id => 'user_1' }
+    post '/poll_response_1_to_question_1', {}, 'rack.session' => { :user_id => 'user_1' }
     assert last_response.ok?, last_response.errors
 
-    post '/poll_response_2_to_question_1', {}, 'rack.session' => { :session_id => 'user_2' }
+    post '/poll_response_2_to_question_1', {}, 'rack.session' => { :user_id => 'user_2' }
     assert last_response.ok?, last_response.errors
 
     get '/poll_response_1_rate_to_question_1'
@@ -37,13 +37,13 @@ class TestsTwoAttendees < Test::Unit::TestCase
   
   def test_should_be_67_33
 	  
-    post '/poll_response_1_to_question_1', {}, 'rack.session' => { :session_id => 'user_1' }
+    post '/poll_response_1_to_question_1', {}, 'rack.session' => { :user_id => 'user_1' }
     assert last_response.ok?, last_response.errors
 
-    post '/poll_response_2_to_question_1', {}, 'rack.session' => { :session_id => 'user_2' }
+    post '/poll_response_2_to_question_1', {}, 'rack.session' => { :user_id => 'user_2' }
     assert last_response.ok?, last_response.errors
 
-    post '/poll_response_1_to_question_1', {}, 'rack.session' => { :session_id => 'user_3' }
+    post '/poll_response_1_to_question_1', {}, 'rack.session' => { :user_id => 'user_3' }
     assert last_response.ok?, last_response.errors
 
     get '/poll_response_1_rate_to_question_1'

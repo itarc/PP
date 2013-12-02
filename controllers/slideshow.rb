@@ -8,7 +8,7 @@ set :logging, false
 set :bind, '0.0.0.0'
 
 $teacher_current_slide = nil
-$session_id = 0
+$user_id = 0
 
 require_relative '../models/Poll'
 
@@ -21,7 +21,7 @@ $db = Accesseur.new
 
 get '/' do
 	
-  session[:session_id] ||= next_id
+  session[:user_id] ||= next_id
 	
   redirect "slideshow-attendee.html"
   
@@ -104,10 +104,9 @@ def answer
 end
 
 def user_id
-  #puts Rack::Session::Cookie::Base64::Marshal.new.decode()
-  session[:session_id]  
+  session[:user_id]  
 end
 
 def next_id
-  $session_id += 1
+  $user_id += 1
 end
