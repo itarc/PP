@@ -4,10 +4,6 @@ $db = Accesseur.new
 USER_ID = 1
 ANSWER = 3
 
-def timestamp
-  Time.now.strftime("%Y-%m-%d %H:%M:%S.%L")
-end
-
 class PollQuestion
 	
   def initialize(question_id)
@@ -67,4 +63,10 @@ class PollQuestion
 	  
   end
 
+end
+
+# ---- HELPERS
+
+def timestamp
+  Time.now.to_f
 end
