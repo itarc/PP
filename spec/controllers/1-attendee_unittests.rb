@@ -21,7 +21,7 @@ class TestsWithOneAttendee < Test::Unit::TestCase
     assert last_response.ok?, last_response.errors    
     assert_equal "0", last_response.body
     
-  end  
+  end
 
   def test02_AttendeeGivesOnlyOneAnswer
 	  
@@ -72,10 +72,30 @@ class TestsWithOneAttendee < Test::Unit::TestCase
 
     assert_equal "100", last_response.body    
     
-  end   
+  end 
+
+  def test04_AttendeeGivesOnlyOneAnswerWhichIsAStringAnswer
+	  
+    post '/poll_response_OUI_to_question_1'
+    assert last_response.ok?, last_response.errors
+
+    post '/poll_response_NON_to_question_1'
+    assert last_response.ok?, last_response.errors
+
+    get '/poll_response_OUI_rate_to_question_1'
+    assert last_response.ok?, last_response.errors  
+
+    assert_equal "0", last_response.body
+    
+    get '/poll_response_NON_rate_to_question_1'
+    assert last_response.ok?, last_response.errors  
+
+    assert_equal "100", last_response.body  
+    
+  end
   
   def teardown
-    $db.execute_sql("delete from polls")    
+    #~ $db.execute_sql("delete from polls")    
   end
   
 end
