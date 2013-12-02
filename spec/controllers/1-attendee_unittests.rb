@@ -95,7 +95,7 @@ class TestsWithOneAttendee < Test::Unit::TestCase
   end
   
   def teardown
-    #~ $db.execute_sql("delete from polls")    
+    $db.execute_sql("delete from polls")    
   end
   
 end

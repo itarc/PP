@@ -100,7 +100,7 @@ def question_id
 end
 
 def answer
-  params[:splat][0].to_i 
+  params[:splat][0]
 end
 
 def user_id
