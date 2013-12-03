@@ -27,33 +27,9 @@ get '/' do
   
 end
 
-get '/2_questions_poll' do
-	
-  redirect "2_questions_poll-attendee.html"
-  
-end
-
-get '/star_rating' do
-	
-  redirect "star_rating-attendee.html"
-  
-end
-
-get '/star_selection' do
-	
-  redirect "star_selection-attendee.html"
-  
-end
-
 get '/teacher' do
 	
   redirect "slideshow-teacher.html"
-
-end
-
-get '/teacher/2_questions_poll' do
-	
-  redirect "2_questions_poll-teacher.html"
 
 end
 
