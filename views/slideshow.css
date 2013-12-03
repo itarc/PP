@@ -195,6 +195,14 @@ input.select-input:checked + label.select-star  {
     color: gold;
 }
 
+
+video {
+  margin-left: 5%; 
+  background-color: none; 
+  width: 90%; 
+  height:80%
+}
+
 /* -------------- Charts ------------ */
 
 canvas {
