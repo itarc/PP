@@ -52,15 +52,15 @@ describe("AttendeeSlideShow : keyboard handling", function() {
 
   });
   
-  it("should get current slide index on server every 2 seconds", function() {
+  it("should get current slide index on server every second", function() {
 	  
     spyOn(AttendeeSlideShow.prototype, 'synchronise');
     jasmine.Clock.useMock();
 
-    setInterval( function(){ attendeeSlideshow.synchronise(); },2000); // Mandatory even if it is already done in the javascript
+    setInterval( function(){ attendeeSlideshow.synchronise(); },1000); // Mandatory even if it is already done in the javascript
 
     expect(AttendeeSlideShow.prototype.synchronise).not.toHaveBeenCalled();
-    jasmine.Clock.tick(3001);
+    jasmine.Clock.tick(1001);
     expect(AttendeeSlideShow.prototype.synchronise.callCount).toEqual(1);
     
     expect(slideshowTimer).toBeDefined(); // Test if timer is javascript
