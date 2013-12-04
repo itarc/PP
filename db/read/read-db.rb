@@ -9,7 +9,15 @@ connection = PG.connect( db.host, db.port, '', '', db.path[1..-1], db.user, db.p
 
 # LECTURE
 
-puts '----- POWERPREZ'
+puts '----- POLLS_SAVE'
+read = connection.exec('select * from polls_save')
+p read.fields
+
+read.values.each do |row|
+  p row
+end
+
+puts '----- POLLS'
 read = connection.exec('select * from polls')
 p read.fields
 
