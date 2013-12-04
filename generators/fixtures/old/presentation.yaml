@@ -1,0 +1,65 @@
+- slide:
+  - text : "INTRODUCTION AU CLOUD COMPUTING" 
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: SONDAGE  
+  - poll : 
+    - question : "Etes vous déjà familier avec le 'cloud computing' ?" 
+    - answer : "Oui"
+    - answer : "Non"
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: HISTOIRE DE L'INFORMATIQUE    
+  - image_url : "http://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/IBM_701_frame.jpg/800px-IBM_701_frame.jpg" 
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: HISTOIRE DE L'INFORMATIQUE   
+  - image_url : "http://upload.wikimedia.org/wikipedia/commons/6/6d/Inside_Z9_2094.jpg" 
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: UN DATACENTER GOOGLE    
+  - video_url : "https://s3-eu-west-1.amazonaws.com/itarc/videos/GoogleDataCenter.mp4" 
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: LOCALISATION DES DATACENTER GOOGLE DANS LE MONDE    
+  - image_url : "https://s3-eu-west-1.amazonaws.com/itarc/images/GoogleDataCentersLocation.PNG"   
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: SCHEMA D'UN DATACENTER CHEZ GOOGLE    
+  - image_url : "https://s3-eu-west-1.amazonaws.com/itarc/images/GoogleDataCenterInfrastructure.svg"
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: LA VIRTUALISATION   
+  - image_url : ""
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: SCHEMA D'UN DATACENTER VIRTUALISE    
+  - image_url : "https://s3-eu-west-1.amazonaws.com/itarc/images/GoogleDataCenterInfrastructure.svg"  
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: IAAS ( Liste des choses à faire )  
+  - image_url : ""    
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: PAAS  ( Liste des choses à faire )  
+  - image_url : "" 
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: "EXEMLE DE PAAS  : Heroku"
+  - image_url : "image du curseur dyno"    
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: SAAS  ( Liste des choses à faire )
+  - image_url : "" 
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: LES CONSEQUENCES DU CLOUD COMPUTING
+  - image_url : ""   
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: LES FORMATIONS PROPOSEES
+  - image_url : "" 
+- slide:
+  - title: INTRODUCTION AU CLOUD COMPUTING
+  - subtitle: MERCI
+  - image_url : ""   
