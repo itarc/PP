@@ -8,7 +8,7 @@ describe("Teacher SlideShow : Navigation with 3 Slides", function() {
     expect(teacherSlideShow._slides.length).toBe(3);	  
 
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide current')
-    expect(teacherSlideShow._slides[1]._node.className).toBe('slide next')	  
+    expect(teacherSlideShow._slides[1]._node.className).toBe('slide')	  
     expect(teacherSlideShow._slides[2]._node.className).toBe('slide')	  
 	  
   })
@@ -20,9 +20,9 @@ describe("Teacher SlideShow : Navigation with 3 Slides", function() {
 
     __triggerKeyboardEvent(document, RIGHT_ARROW)
 	  
-    expect(teacherSlideShow._slides[0]._node.className).toBe('slide previous')
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide')
     expect(teacherSlideShow._slides[1]._node.className).toBe('slide current')
-    expect(teacherSlideShow._slides[2]._node.className).toBe('slide next')	  
+    expect(teacherSlideShow._slides[2]._node.className).toBe('slide')	  
 
   }); 
 
@@ -35,7 +35,7 @@ describe("Teacher SlideShow : Navigation with 3 Slides", function() {
     __triggerKeyboardEvent(document, RIGHT_ARROW)
 	  
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide')
-    expect(teacherSlideShow._slides[1]._node.className).toBe('slide previous')
+    expect(teacherSlideShow._slides[1]._node.className).toBe('slide')
     expect(teacherSlideShow._slides[2]._node.className).toBe('slide current')	  
     
   });   
@@ -49,9 +49,9 @@ describe("Teacher SlideShow : Navigation with 3 Slides", function() {
     __triggerKeyboardEvent(document, RIGHT_ARROW)
     __triggerKeyboardEvent(document, LEFT_ARROW)
 	  
-    expect(teacherSlideShow._slides[0]._node.className).toBe('slide previous')
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide')
     expect(teacherSlideShow._slides[1]._node.className).toBe('slide current')
-    expect(teacherSlideShow._slides[2]._node.className).toBe('slide next')		  
+    expect(teacherSlideShow._slides[2]._node.className).toBe('slide')		  
     
   }); 
   
@@ -66,7 +66,7 @@ describe("Teacher SlideShow : Navigation with 3 Slides", function() {
     __triggerKeyboardEvent(document, LEFT_ARROW)
 	  
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide current')
-    expect(teacherSlideShow._slides[1]._node.className).toBe('slide next')
+    expect(teacherSlideShow._slides[1]._node.className).toBe('slide')
     expect(teacherSlideShow._slides[2]._node.className).toBe('slide')	  
     
   })

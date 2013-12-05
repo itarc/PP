@@ -105,22 +105,21 @@ SlideShow.prototype = {
 
     window.console && window.console.log("_currentIndex : " + this._currentIndex);
 
-    beforePreviousSlide = this._slides[this._currentIndex - 2]
-    if (beforePreviousSlide) beforePreviousSlide.setState('');
-
-    previousSlide = this._slides[this._currentIndex - 1]
-    if (previousSlide) previousSlide.setState('previous');	    
-	    
     currentSlide = this._slides[this._currentIndex]
-    if (currentSlide) currentSlide.setState('current');
-    if (currentSlide) currentSlide.updatePoll();
-	    
-    nextSlide = this._slides[this._currentIndex + 1]	      
-    if (nextSlide) nextSlide.setState('next');
-	    
-    afterNextSlide = this._slides[this._currentIndex + 2]
-    if (afterNextSlide) afterNextSlide.setState('');	
 	  
+    if (currentSlide) {
+	  
+      for(var slideIndex in this._slides) {
+
+	this._slides[slideIndex].setState('')
+
+      }
+    
+      currentSlide.setState('current');
+      currentSlide.updatePoll();
+      
+    }
+
   },
 
   _getCurrentIndex: function() {
@@ -142,9 +141,9 @@ SlideShow.prototype = {
 	    
     this._currentIndex = this._currentIndex - 1;
 
-    this._postCurrentIndex();
-	  
     this._update();	  
+
+    this._postCurrentIndex();
 
   },
 
@@ -154,9 +153,9 @@ SlideShow.prototype = {
 	    
     this._currentIndex = this._currentIndex + 1;
 
-    this._postCurrentIndex();
- 	  
     this._update();	  
+
+    this._postCurrentIndex();
 
   },
 

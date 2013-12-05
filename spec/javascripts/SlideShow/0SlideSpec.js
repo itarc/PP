@@ -172,6 +172,15 @@ describe("TeacherSlideShow : teacher current slide management", function() {
 });
 
 describe("SlideShow : Update", function() {
+	
+  it("should update first slide to current when slideshow initialized", function() {
+	  
+    setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
+    var slideShow = new SlideShow(queryAll('.slide'))
+
+    expect(slideShow._slides[0]._node.className).toBe('slide current');
+
+  });		
 
   it("should not update if current index unknown", function() {
 	  
@@ -179,13 +188,11 @@ describe("SlideShow : Update", function() {
     var slideShow = new SlideShow(queryAll('.slide'))
 
     expect(slideShow._slides[0]._node.className).toBe('slide current');
-    expect(slideShow._slides[1]._node.className).toBe('slide next');
 	  
     slideShow._currentIndex = 'UNKNOWN';
     slideShow._update();
 	  
     expect(slideShow._slides[0]._node.className).toBe('slide current');
-    expect(slideShow._slides[1]._node.className).toBe('slide next');
 
   });	
   
