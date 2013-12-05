@@ -14,7 +14,7 @@ class TestsSession < Test::Unit::TestCase
   end
   
   def setup
-    $user_id = 0
+    $db.execute_sql("update compteur set identifiant = 0")
   end  
   
   def test01_should_create_one_user_id
@@ -52,7 +52,8 @@ class TestsSession < Test::Unit::TestCase
     
   end  
   
-  def teardown    
+  def teardown
+    $db.execute_sql("update compteur set identifiant = 0")	  
   end  
   
 end

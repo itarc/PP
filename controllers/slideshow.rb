@@ -8,7 +8,6 @@ set :logging, false
 set :bind, '0.0.0.0'
 
 $teacher_current_slide = nil
-$user_id = 0
 
 require_relative '../models/Poll'
 
@@ -84,5 +83,8 @@ def user_id
 end
 
 def next_id
-  $user_id += 1
+  current_id = $db.execute_sql("select identifiant from compteur").to_a[0]['identifiant'].to_i
+  next_id = current_id + 1
+  $db.execute_sql("update compteur set identifiant = #{next_id} where identifiant = #{current_id}")
+  return next_id
 end
