@@ -26,7 +26,7 @@ read.values.each do |row|
 end
 
 puts '----- POLLS'
-read = connection.exec('select * from polls')
+read = connection.exec('select * from polls order by timestamp desc')
 p read.fields
 
 read.values.each do |row|
