@@ -68,6 +68,24 @@ post '/select_input_*_to_*' do
   
 end
 
+get '/admin' do
+	
+  last_user_id = "LAST_USER_ID</br>"
+  last_user_id << $db.execute_sql("select identifiant from compteur")[0]["identifiant"]
+  last_user_id << "</br>"
+
+  polls = "POLLS</br>"
+  PollQuestion.find_all.each do |tuple|
+    line = ''
+    tuple.each do | value|
+      line << value + ", "
+    end
+    polls << line + "</br>"
+  end
+  last_user_id + polls
+	
+end
+
 # ---- HELPERS
 
 def question_id

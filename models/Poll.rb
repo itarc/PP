@@ -62,6 +62,10 @@ class PollQuestion
     {@question_id => rates }
 	  
   end
+  
+  def PollQuestion.find_all
+    $db.execute_sql('select * from polls').values
+  end
 
 end
 
