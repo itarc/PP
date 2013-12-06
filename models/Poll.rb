@@ -64,7 +64,7 @@ class PollQuestion
   end
   
   def PollQuestion.find_all
-    $db.execute_sql('select * from polls').values
+    $db.execute_sql('select * from polls order by timestamp desc').values
   end
 
 end

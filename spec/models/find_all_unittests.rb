@@ -24,12 +24,22 @@ class TestPollQuestionWithNoResponseGiven < Test::Unit::TestCase
 
   end
   
-    def test03
+  def test03
+
+    $db.execute_sql("insert into polls values ('1', '1', '1', '1')")
+    $db.execute_sql("insert into polls values ('0', '0', '0', '0')")
+    
+    assert_equal [  ['1', '1', '1', '1'], ['0', '0', '0', '0'] ], PollQuestion.find_all
+
+  end  
+  
+  def test04_should_order_tuples_by_time_stamp
+
 
     $db.execute_sql("insert into polls values ('0', '0', '0', '0')")
-    $db.execute_sql("insert into polls values ('1', '1', '1', '1')")
-    
-    assert_equal [  ['0', '0', '0', '0'] , ['1', '1', '1', '1'] ], PollQuestion.find_all
+    $db.execute_sql("insert into polls values ('1', '1', '1', '1')")    
+
+    assert_equal [  ['1', '1', '1', '1'], ['0', '0', '0', '0'] ], PollQuestion.find_all
 
   end  
   
