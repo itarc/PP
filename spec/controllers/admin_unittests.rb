@@ -43,7 +43,7 @@ class TestsSession < Test::Unit::TestCase
 
     get '/admin'
     
-    assert_equal "LAST_USER_ID</br>1</br>POLLS</br>0, 0, 0, 0, </br>1, 1, 1, 1, </br>", last_response.body
+    assert_equal "LAST_USER_ID</br>1</br>POLLS</br>1, 1, 1, 1, </br>0, 0, 0, 0, </br>", last_response.body
 
   end
   
