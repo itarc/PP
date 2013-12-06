@@ -44,6 +44,7 @@ class TestPollQuestionWithNoResponseGiven < Test::Unit::TestCase
   end  
   
   def teardown
+    $db.execute_sql("delete from polls")	  
   end
 
 end
