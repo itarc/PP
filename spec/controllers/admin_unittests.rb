@@ -20,7 +20,7 @@ class TestsSession < Test::Unit::TestCase
 
     get '/admin'
     
-    assert_equal "LAST_USER_ID</br>0</br>POLLS</br>", last_response.body
+    assert_equal "LAST_USER_ID</br>0</br>POLLS</br>GLOBAL_EVALUATION</br>", last_response.body
 
   end
   
@@ -31,7 +31,7 @@ class TestsSession < Test::Unit::TestCase
 
     get '/admin'
     
-    assert_equal "LAST_USER_ID</br>1</br>POLLS</br>0, 0, 0, 0, </br>", last_response.body
+    assert_equal "LAST_USER_ID</br>1</br>POLLS</br>0, 0, 0, 0, </br>GLOBAL_EVALUATION</br>", last_response.body
 
   end
 
@@ -43,7 +43,7 @@ class TestsSession < Test::Unit::TestCase
 
     get '/admin'
     
-    assert_equal "LAST_USER_ID</br>1</br>POLLS</br>1, 1, 1, 1, </br>0, 0, 0, 0, </br>", last_response.body
+    assert_equal "LAST_USER_ID</br>1</br>POLLS</br>1, 1, 1, 1, </br>0, 0, 0, 0, </br>GLOBAL_EVALUATION</br>", last_response.body
 
   end
   
@@ -53,3 +53,31 @@ class TestsSession < Test::Unit::TestCase
   end  
   
 end  
+
+class TestsGlobalEvaluation < Test::Unit::TestCase
+	
+  include Rack::Test::Methods	
+
+  def app
+    Sinatra::Application
+  end
+  
+  def setup  
+    $db.execute_sql("delete from polls")
+  end
+  
+  def test01
+	  
+    $db.execute_sql("insert into polls values ('0', '0', 'global_evaluation', '5')")	  
+
+    get '/admin'
+    
+    assert_equal "LAST_USER_ID</br>0</br>POLLS</br>0, 0, global_evaluation, 5, </br>GLOBAL_EVALUATION</br>5.0", last_response.body
+
+  end
+  
+  def teardown	  
+    $db.execute_sql("delete from polls")	  
+  end   
+
+end

@@ -66,6 +66,18 @@ class PollQuestion
   def PollQuestion.find_all
     $db.execute_sql('select * from polls order by timestamp desc').values
   end
+  
+  def PollQuestion.global_evaluation
+    all_last_evaluations =$db.execute_sql("select distinct on (user_id) response from polls where question_id = 'global_evaluation' order by user_id, timestamp desc")
+    nb_user = all_last_evaluations.to_a.size
+    if nb_user != 0 then
+      ge = 0
+      all_last_evaluations.to_a.each do |response|
+        ge += response["response"].to_i 
+      end
+      (ge.to_f / nb_user).round(2)
+    end
+  end
 
 end
 

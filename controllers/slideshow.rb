@@ -26,9 +26,9 @@ get '/' do
   
 end
 
-get '/teacher' do
+get '/teacher-x1973' do
 	
-  redirect "slideshow-teacher.html"
+  redirect "slideshow-teacher.1973x.html"
 
 end
 
@@ -82,7 +82,10 @@ get '/admin' do
     end
     polls << line + "</br>"
   end
-  last_user_id + polls
+  
+  global_evaluation = "GLOBAL_EVALUATION</br>" + PollQuestion.global_evaluation.to_s
+  
+  last_user_id + polls + global_evaluation
 	
 end
 
