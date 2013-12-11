@@ -85,6 +85,10 @@ describe 'Poll with ONE QUESTION and only ONE ATTENDEE', :type => :feature, :js 
     end
     
   end 
+  
+  after(:each) do
+    $db.execute_sql("delete from polls") 
+  end    
 
 end
 

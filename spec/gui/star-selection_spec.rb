@@ -27,8 +27,11 @@ describe 'Star Rating with ONE attendee', :type => :feature, :js => true do
     
     expect(db_rating).to be 1
 
-  end   
+  end  
 
+  after(:each) do
+    $db.execute_sql("delete from polls") 
+  end
 
 end
 

@@ -1,3 +1,5 @@
+/* -------------- Presentation ------------ */
+
 .presentation {
   position: absolute;
   height: 100%;
@@ -5,27 +7,14 @@
   left: 0px;
   top: 0px;
   overflow: hidden;
-  background: #555;
 }
+
+/* -------------- Slide ------------ */
 
 .slide {
-  display: none; /* n'affiche pas le slide et n'occupe pas la place sur l'écran (contrairement à visibility) */
-  position: absolute; /* la position du bloc est calculée à partir de la position de l'élémént parent */
-  left: 5%; /* décalage à gauche par rapport à la position (absolute) */
-  top: 5%; /* décalage en haut par rapport à la position (absolute) */
-  overflow: auto; /* gère l'apparition des scrollbar dans le bloc */
-  width: 90%; /* 900px; /* largeur du bloc de texte*/
-  height: 90%; /*700px; /* hauteur du bloc de texte */
-  background-color: #000; /* couleur de fond */
-  /* border-radius: 15px; /* crée un coin arrondi */
-  /* background: -webkit-gradient(linear, left bottom, left top, from(#ccc), to(#eee)); /* crée un dégradé sur chrome */
-  /* -webkit-transition: margin 0.5s ease-in-out; /* crée un effet de transition sur chrome */
-}
-
-.slide.previous {	
-  visibility: hidden;
-  display: block; /* doit être présent sinon display = none ce cache l'élément même si visibility = visible */
-  margin-left: -100%; /*-500px;*/
+  display: none;
+  position: absolute;
+  overflow: auto;  
 }
 
 .slide.current {
@@ -34,47 +23,30 @@
   margin-left: 0px;
 }
 
-.slide.next {	
-  visibility: hidden;
-  display: block; /* important pour l'effet de transition */
-  margin-left: 100%; /*500px;*/
-}
+/* -------------- Section ------------ */
 
-/* -------------- Sections (General) ------------ */
-
-section {	
-  color: #ff00ff; /* text color */
+section {
   margin: 5%;
-  overflow: hidden; /* Empécher l'affichage des scrollBar */
-  font-size: 2em;
+  overflow: hidden;
 }
 
 section.centered {
   text-align: center;
 }
 
-section.validate {
-  text-align: right;
-}
+/* -------------- Title and Subtitle ------------ */
 
-/* -------------- Headers ------------ */
-
-div.slide > h1 {
-  color: #ff00ff;
+div.slide > h1 { /* Title */
   margin: 1%; 
-  font-size: 2em;
   text-align: left;
 }
 
-div.slide > h2 {
-  color: #ff00ff;
+div.slide > h2 { /* Subtitle */
   margin: 1%; 
-  font-size: 2em;
   text-align: left;
-  background-color: #ffffaa;
 }
 
-/* -------------- Input (General) ------------ */
+/* -------------- Form Slide ------------ */
 
 input[type=text] {
   font-size: 1em;
@@ -88,7 +60,90 @@ input[type=button]:hover {
   background-color:#d0d0d0;
 }
 
-/* -------------- Coding ------------ */
+/* -------------- Poll Slide------------ */
+
+.poll_question { 
+  margin-top:1%;
+}
+
+.poll_response { 
+  margin-left:3%;	
+}
+
+.poll_response_rate { 
+  color:green;
+  font-weight:bold;
+}
+
+input[type=radio].poll_response {
+  display:none;
+}
+
+input[type=radio].poll_response + label {
+  display:block;
+}
+
+input[type=radio].poll_response + label:hover {
+  background-color: #e7e7e7;
+}
+
+input[type=radio].poll_response:checked + label { 
+  background-color:#d0d0d0;
+}
+
+/* -------------- Star Rating ------------ */
+
+span.rating-stars {
+  margin-left: 1%;  
+  margin-bottom: -4%;
+  display: inline-block;
+}
+
+input.rating-radio {
+  position: absolute;
+  left: 0;
+  top: -50px;
+}
+
+span.rating-stars:hover label.rating-star:hover,
+span.rating-stars:hover label.rating-star:hover ~ .rating-star,
+input.rating-radio:checked ~ label.rating-star {  
+  color: gold;
+}
+
+label.rating-star,
+span.rating-stars:hover label.rating-star {
+  color:grey;		
+  float: right;
+  display: block;
+}
+
+/* -------------- Star Selection ------------ */
+
+input.select-input {
+  position: absolute;
+  left: 0;
+  top: -50px;
+}
+
+input.select-input:checked + label.select-star  {
+  color: gold;
+}
+
+input.select-input:not(:checked) + label.select-star  {
+  color: inherit;
+}
+
+/* -------------- Video slide ------------ */
+
+video {
+  margin-left: 5%; 
+  background-color: none; 
+  width: 90%; 
+  height:80%
+}
+
+/* -------------- Code Slide ------------ */
 
 textarea.code {
   display:block;
@@ -108,104 +163,39 @@ textarea + input[type=button] {
   width:100%; 
 }
 
-/* -------------- Poll ------------ */
+/* ------------------------------------------------------------------------ */
+/* CAN BE MODIFIED FOR EACH PRESENTATION */
+/* ------------------------------------------------------------------------ */
 
-input[type=radio].poll_radio {
-  display:none;
+.presentation {
+  background: #555;
 }
 
-input[type=radio].poll_radio + label {
-  display:block;
-  margin-left:3%;
+.slide {
+  left: 5%;
+  top: 5%;
+  width: 90%;
+  height: 90%;
+  background-color: #000;
+  border-radius: 15px;
 }
 
-input[type=radio].poll_radio + label:hover {
-  background-color: #e7e7e7;
-  background: -webkit-gradient(linear, left bottom, left top, from(#aaa), to(#eee));
+section {
+  color: #ff00ff;
+  font-size: 2em;
 }
 
-input[type=radio].poll_radio:checked + label { 
-  background-image: none;
-  background-color:#d0d0d0;
+div.slide > h1 {  /* Title */
+  font-size: 2em;
+  color: #ff00ff;  
 }
 
-.poll_question { 
-  margin-top:1%;
+div.slide > h2 {  /* Subtitle */
+  font-size: 2em;
+  color: #ff00ff;
+  background-color: #ffffaa;
 }
 
-.poll_response { 
-  margin-left:3%;	
-}
-
-.poll_response_rate { 
-  color:green;
-  font-weight:bold;
-}
-
-/* -------------- Rating ------------ */
-
-section.evaluate {
-  margin: 1%; 
-  font-size: 4.5em;
-  text-align: left;
-}
-
-span.rating {
-  overflow: hidden;
-  display: inline-block;
-}
-
-input.rating-input {
-  position: absolute;
-  left: 0;
-  top: -50px;
-}
-
-span.rating:hover label.rating-star:hover,
-span.rating:hover label.rating-star:hover ~ .rating-star,
-input.rating-input:checked ~ label.rating-star {  
-  color: gold;
-}
-
-label.rating-star,
-span.rating:hover label.rating-star {
-  color:grey;		
-  float: right;
-  display: block;
-}
-
-/* -------------- Select ------------ */
-
-input.select-input {
-  position: absolute;
-  left: 0;
-  top: -50px;
-}
-
-
-label.select-star:hover {
-    color: gold;
-}
-
-input.select-input:checked + label.select-star:hover {
-    color: #ff00ff;
-}
-
-input.select-input:checked + label.select-star  {
-    color: gold;
-}
-
-
-video {
-  margin-left: 5%; 
-  background-color: none; 
-  width: 90%; 
-  height:80%
-}
-
-/* -------------- Charts ------------ */
-
-canvas {
-  display: block;
-  margin: 0 auto;
+span.rating-stars {
+  font-size: 2em;
 }

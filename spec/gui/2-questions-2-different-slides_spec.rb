@@ -120,6 +120,10 @@ describe 'Poll with TWO QUESTIONS on TWO Different slides with only ONE ATTENDEE
     end     
     
   end
+
+  after(:each) do
+    $db.execute_sql("delete from polls") 
+  end 
   
 end
 

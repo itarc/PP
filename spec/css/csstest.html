@@ -5,11 +5,11 @@
   <body>
   
     <div class="presentation">
-        <!--style>
-	section {   background-color: red; }
+        <style>
+	/*section {   background-color: red; }
 	canvas {   background-color: blue; }
-	span {   background-color: yellow; }
-	</style-->
+	span {   background-color: yellow; }*/
+	</style>
 
         <div class="slide" id="poll">
 	
@@ -20,23 +20,16 @@
 	    
               <div>
 	        <div class="poll_question">Connaissez Vous ... ?</div>
-                <input class="poll_radio" type="radio" id="poll_radio_1" name="group_1"> <label for="poll_radio_1">Oui</label>
-                <input class="poll_radio" type="radio" id="poll_radio_2" name="group_1"> <label for="poll_radio_2">Non</label>
+		
+                  <input class="poll_response" id="poll_radio_1" type="radio" name="group_1"> 
+		  <label class="poll_response" for="poll_radio_1">Oui</label>
+		  
+                  <input class="poll_response" id="poll_radio_2" type="radio" name="group_1"> 
+		  <label class="poll_response" for="poll_radio_2">Non</label>
+		  
 	      </div>
-
-	     <div>
-	       <div class="poll_question">Connaissez Vous ... ?<div>
-               <input class="poll_radio" type="radio" id="poll_radio_3" name="group_2"> <label for="poll_radio_3">Oui</label>
-               <input class="poll_radio" type="radio" id="poll_radio_4" name="group_2"> <label for="poll_radio_4">Non</label>
-	     </div>
 	     
-           </section>	
-
-            <section class="validate">
-	    
-	      <input type="button" value="VALIDER">
-	      
-	    </section>	
+           </section>
 	    
         </div> 
 
@@ -49,31 +42,21 @@
 
 		<div>
 		  <div class="poll_question">Connaissez Vous ... ?</div>
-		  <div><span class="poll_response">Oui</span> <span class="poll_response_rate">(60%)</span></div>
-		  <div><span class="poll_response">Non</span> <span class="poll_response_rate">(40%)</span></div>
-		</div>
-		
-		<div>
-		  <div class="poll_question">Connaissez Vous ... ?</div>
-		  <div><span class="poll_response">Oui</span> <span class="poll_response_rate">(30%)</span></div>
-		  <div><span class="poll_response">Non</span> <span class="poll_response_rate">(70%)</span></div>
+		  
+		  <div>
+		    <span class="poll_response">Oui</span> 
+		    <span class="poll_response_rate">(60%)</span>
+		  </div>
+		  
+		  <div>
+		    <span class="poll_response">Non</span> 
+		    <span class="poll_response_rate">(40%)</span>
+		  </div>
+		  
 		</div>
 		
             </section>
 	    
-        </div>
-
-        <div class="slide" id="canevas">
-
-	  <h1>CANEVAS</h1>
-	  <h2>SHOULD DISPLAY A CANVAS (300x300)</h2>
-
-	  <section>
-	  
-            <canvas id="canvas" width="300" height="300"></canvas>
-	    
-	  </section>
-
         </div>
 
         <div class="slide" id="centered_title">
@@ -82,7 +65,7 @@
 	    <h2>SHOULD CENTER SECTION CONTENT</h2>
 	    
 	    <section class='centered'>
-	    SECTION CONTENT
+	    CENTERED SECTION CONTENT
 	    </section>
 	    
         </div>
@@ -164,7 +147,7 @@
         <div class="slide" id="image">
 
             <h1>IMAGE</h1>
-            <h2>SHOULD DISPLAY AN IMAGE VIDEO</h2>
+            <h2>SHOULD DISPLAY AN IMAGE</h2>
 	    
 	    <section>
 	    
@@ -179,29 +162,72 @@
             <h1>RATING</h1>
             <h2>SHOULD ALLOW STAR RATING</h2>
 
-	    <section class='evaluate'>
-	    	      
-              <span class="rating">
-                <input type="radio" class="rating-input" id="rating-input-1-5" name="rating-input-1">
-                  <label for="rating-input-1-5" class="rating-star">&#9733</label>
-                <input type="radio" class="rating-input" id="rating-input-1-4" name="rating-input-1">
-                  <label for="rating-input-1-4" class="rating-star">&#9733</label>
-	        <input type="radio" class="rating-input" id="rating-input-1-3" name="rating-input-1">
-                  <label for="rating-input-1-3" class="rating-star">&#9733</label>
-                <input type="radio" class="rating-input" id="rating-input-1-2" name="rating-input-1">
-                  <label for="rating-input-1-2" class="rating-star">&#9733</label>
-                <input type="radio" class="rating-input" id="rating-input-1-1" name="rating-input-1">
-                  <label for="rating-input-1-1" class="rating-star">&#9733</label>
-              </span>	      
+              <span class="rating-stars">
+                <input type="radio" class="rating-radio" id="star-1-5" name="rating-input">
+                  <label for="star-1-5" class="rating-star">&#9733</label>
+                <input type="radio" class="rating-radio" id="star-1-4" name="rating-input">
+                  <label for="star-1-4" class="rating-star">&#9733</label>
+	        <input type="radio" class="rating-radio" id="star-1-3" name="rating-input">
+                  <label for="star-1-3" class="rating-star">&#9733</label>
+                <input type="radio" class="rating-radio" id="star-1-2" name="rating-input">
+                  <label for="star-1-2" class="rating-star">&#9733</label>
+                <input type="radio" class="rating-radio" id="star-1-1" name="rating-input">
+                  <label for="star-1-1" class="rating-star">&#9733</label>
+              </span>
+
+            <section style="background-color: red; width: 90%; height: 60%">
+		SECTION
+            </section>
+
+        </div>
+	
+        <div class="slide" id="star_rating">
+	
+            <h1>RATING</h1>
+            <h2>SHOULD ALLOW GLOBAL EVALUATION</h2>
+
+            <section class="centered" style="background-color: red; width: 90%; height: 60%">
+	    
+	    GLOBAL EVALUATION</br>
+	    
+              <span class="rating-stars">
+                <input type="radio" class="rating-radio" id="star-2-5" name="rating-input">
+                  <label for="star-2-5" class="rating-star">&#9733</label>
+                <input type="radio" class="rating-radio" id="star-2-4" name="rating-input">
+                  <label for="star-2-4" class="rating-star">&#9733</label>
+	        <input type="radio" class="rating-radio" id="star-2-3" name="rating-input">
+                  <label for="star-2-3" class="rating-star">&#9733</label>
+                <input type="radio" class="rating-radio" id="star-2-2" name="rating-input">
+                  <label for="star-2-2" class="rating-star">&#9733</label>
+                <input type="radio" class="rating-radio" id="star-2-1" name="rating-input">
+                  <label for="star-2-1" class="rating-star">&#9733</label>
+              </span>
+
+            </section>
+
+        </div>
+
+        <div class="slide" id="star_selection">
+	
+            <h1>STAR SELECTION</h1>
+            <h2>SHOULD DISPLAY A SELECTION LIST</h2>
+
+            <section>
+
+	    <div>SELECTION_1<input type="checkbox" class="select-input" id="selection_1"><label for="selection_1" class="select-star">&#9733</label></div>
+	    <div>SELECTION_2<input type="checkbox" class="select-input" id="selection_2"><label for="selection_2" class="select-star">&#9733</label></div>
+	    <div>SELECTION_3<input type="checkbox" class="select-input" id="selection_3"><label for="selection_3" class="select-star">&#9733</label></div>
+	    <div>SELECTION_4<input type="checkbox" class="select-input" id="selection_4"><label for="selection_4" class="select-star">&#9733</label></div>
+	    <div>SELECTION_5<input type="checkbox" class="select-input" id="selection_5"><label for="selection_5" class="select-star">&#9733</label></div>
 	      
-            </section>	    
+            </section>
 
         </div>
 
         <div class="slide" id="bullet_points">
 	
             <h1>BULLET POINTS</h1>
-            <h2>HOULD DISPLAY BULLET POINTS</h2>
+            <h2>SHOULD DISPLAY BULLET POINTS</h2>
 
             <section>
 	    
@@ -238,7 +264,7 @@
 		
             </section>
 	    
-            <section class="validate">
+            <section style="text-align: right;">
 	    
 	      <input type="button" value="VALIDER">
 	      
@@ -255,7 +281,7 @@
 	    
             <textarea class="code" id="input">puts "print something in ruby"</textarea>
 
-	    <input type="button" onclick="viewOutput()" value="EXECUTE">
+	    <input type="button" onclick="viewOutput()" value="EXECUTE (ALT-R)">
 
             <textarea class="code_result" id="output">print something in ruby</textarea>	    
 	    

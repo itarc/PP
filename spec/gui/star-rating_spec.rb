@@ -20,10 +20,7 @@ describe 'Star Rating with ONE attendee', :type => :feature, :js => true do
     
     # attendee.click_on(:first_star)
     visit ATTENDEE_RATE_SLIDE
-
-    within ("#stars") do
-      find("#rating_input_1_to_global_evaluation").click
-    end
+    find("#rating_input_1_to_global_evaluation").click
     
     expect(db_rating).to be 1
 
@@ -33,10 +30,7 @@ describe 'Star Rating with ONE attendee', :type => :feature, :js => true do
     
     # attendee.click_on(:first_star)
     visit ATTENDEE_RATE_SLIDE
-
-    within ("#stars") do
-      find("#rating_input_2_to_global_evaluation").click
-    end
+    find("#rating_input_2_to_global_evaluation").click
     
     # inspect database
     expect(db_rating).to be 2
@@ -47,10 +41,7 @@ describe 'Star Rating with ONE attendee', :type => :feature, :js => true do
     
     # attendee.click_on(:first_star)
     visit ATTENDEE_RATE_SLIDE
-
-    within ("#stars") do
-      find("#rating_input_3_to_global_evaluation").click
-    end
+    find("#rating_input_3_to_global_evaluation").click
  
     # inspect database 
     expect(db_rating).to be 3
@@ -61,10 +52,7 @@ describe 'Star Rating with ONE attendee', :type => :feature, :js => true do
     
     # attendee.click_on(:first_star)
     visit ATTENDEE_RATE_SLIDE
-
-    within ("#stars") do
-      find("#rating_input_4_to_global_evaluation").click
-    end
+    find("#rating_input_4_to_global_evaluation").click
     
     # inspect database    
     expect(db_rating).to be 4
@@ -75,15 +63,16 @@ describe 'Star Rating with ONE attendee', :type => :feature, :js => true do
     
     # attendee.click_on(:first_star)
     visit ATTENDEE_RATE_SLIDE
-
-    within ("#stars") do
-      find("#rating_input_5_to_global_evaluation").click
-    end
+    find("#rating_input_5_to_global_evaluation").click
  
     # inspect database 
     expect(db_rating).to be 5
 
   end 
+
+  after(:each) do
+    $db.execute_sql("delete from polls") 
+  end   
 
 end
 
