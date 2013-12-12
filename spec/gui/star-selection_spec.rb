@@ -20,11 +20,8 @@ describe 'Star Rating with ONE attendee', :type => :feature, :js => true do
     
     # attendee.click_on(:first_star)
     visit ATTENDEE_SELECT_SLIDE
+    find("#select_input_1_to_proposition").click
 
-    within ("#proposition_1") do
-      find("#select_input_1_to_proposition").click
-    end
-    
     expect(db_rating).to be 1
 
   end  
