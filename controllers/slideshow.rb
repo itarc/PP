@@ -7,9 +7,6 @@ set :logging, false
 
 set :bind, '0.0.0.0'
 
-#~ $teacher_current_slide = nil
-#~ update_current_slide_id('0')
-
 require_relative '../models/Poll'
 require_relative '../models/Statistics'
 
@@ -36,14 +33,12 @@ end
 
 post '/teacher_current_slide' do
 	
-  #~ $teacher_current_slide = params[:index]
   update_current_slide_id params[:index]
   
 end
 
 get '/teacher_current_slide' do
 	
-  #~ $teacher_current_slide
   current_slide_id
   
 end
