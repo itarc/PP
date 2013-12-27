@@ -7,9 +7,11 @@ set :logging, false
 
 set :bind, '0.0.0.0'
 
-$teacher_current_slide = nil
+#~ $teacher_current_slide = nil
+#~ update_current_slide_id('0')
 
 require_relative '../models/Poll'
+require_relative '../models/Statistics'
 
 enable :sessions; set :session_secret, 'secret'
 
@@ -34,13 +36,15 @@ end
 
 post '/teacher_current_slide' do
 	
-  $teacher_current_slide = params[:index]
+  #~ $teacher_current_slide = params[:index]
+  update_current_slide_id params[:index]
   
 end
 
 get '/teacher_current_slide' do
 	
-  $teacher_current_slide
+  #~ $teacher_current_slide
+  current_slide_id
   
 end
 
@@ -83,7 +87,7 @@ get '/admin' do
     polls << line + "</br>"
   end
   
-  global_evaluation = "GLOBAL_EVALUATION</br>" + PollQuestion.global_evaluation.to_s
+  global_evaluation = "GLOBAL_EVALUATION</br>" + GlobalEvaluation.new.global_evaluation.to_s
   
   last_user_id + polls + global_evaluation
 	
@@ -106,4 +110,12 @@ end
 def next_id
   $db.execute_sql("update compteur set identifiant = identifiant + 1")
   return $db.execute_sql("select identifiant from compteur").to_a[0]['identifiant'].to_i
+end
+
+def current_slide_id
+  $db.execute_sql("select current_slide_id from teacher_current_slide").to_a[0]['current_slide_id'].to_s
+end
+
+def update_current_slide_id(current_slide_id)
+   $db.execute_sql("update teacher_current_slide set current_slide_id = '#{current_slide_id}'")
 end
