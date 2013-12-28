@@ -8,10 +8,10 @@ $user_id_1 = '1'
 $user_id_2 = '2'
 $user_id_3 = '3'
 
-class TestsSlideStatInitialization < Test::Unit::TestCase
+class TestsSlideStatsInitialization < Test::Unit::TestCase
 
   def test00_should_initialize_slide_id
-    @slide_stat = SlideStat.new($slide_id_1)
+    @slide_stat = SlideStats.new($slide_id_1)
     assert_equal $slide_id_1, @slide_stat.slide_id
   end  
 
@@ -21,7 +21,7 @@ class TestsGrades < Test::Unit::TestCase
 
   def setup
     $db.execute_sql("delete from polls")
-    @slide_stat = SlideStat.new($slide_id_1)
+    @slide_stat = SlideStats.new($slide_id_1)
   end
   
   def test01_should_be_empty_when_initialized
@@ -46,7 +46,7 @@ class TestsGrades < Test::Unit::TestCase
   end  
   
   def test05_should_select_grades_of_slide_only
-    slide_stat_2 = SlideStat.new($slide_id_2)
+    slide_stat_2 = SlideStats.new($slide_id_2)
     slide_stat_2.add_grade(2, $user_id_1)
     assert_equal [2], slide_stat_2.grades
     @slide_stat.add_grade(1, $user_id_2)
@@ -63,7 +63,7 @@ class TestRating < Test::Unit::TestCase
 
   def setup
     $db.execute_sql("delete from polls")
-    @slide_stat = SlideStat.new($slide_id_1)
+    @slide_stat = SlideStats.new($slide_id_1)
   end
  
   def test01_should_be_nil_when_initialized
@@ -100,5 +100,45 @@ class TestRating < Test::Unit::TestCase
     $db.execute_sql("delete from polls")
   end
   
+end
+
+class TestPresentationsStats < Test::Unit::TestCase
+	
+  def setup
+    $db.execute_sql("delete from polls")	  
+    @presentation_stat = PresentationStats.new
+  end
+
+  def test01_should_be_empty_when_initialized
+    assert_equal [], @presentation_stat.slides
+  end
+  
+  def test02_should_find_one_slide
+    @presentation_stat.add_slide("1")
+    assert_equal ["1"], @presentation_stat.slides
+  end
+  
+  def test03_should_find_two_slides
+    @presentation_stat.add_slide("1")
+    @presentation_stat.add_slide("2")
+    assert_equal ["1", "2"], @presentation_stat.slides
+  end  
+  
+  def test04_should_select_rating_slides_only
+    @presentation_stat.add_slide("1")
+    @presentation_stat.add_slide("slide_x_evaluation")
+    assert_equal ["slide_x_evaluation"], @presentation_stat.rating_slides   
+  end
+  
+  def test05_should_select_unique_slide_names
+    @presentation_stat.add_slide("1")
+    @presentation_stat.add_slide("1")
+    assert_equal ["1"], @presentation_stat.slides
+  end  
+  
+  def teardown
+    $db.execute_sql("delete from polls")
+  end
+
 end
 

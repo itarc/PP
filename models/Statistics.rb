@@ -2,7 +2,7 @@ require_relative '../controllers/slideshow.rb'
 
 require 'rack/test'
 
-class SlideStat
+class SlideStats
 	
   attr_accessor :slide_id	
 	
@@ -25,3 +25,20 @@ class SlideStat
   
 end
 
+class PresentationStats
+  $slides = []
+  
+  def add_slide(name)
+    $db.execute_sql("insert into polls values ('', '', '#{name}', '1')")
+  end
+  
+  def slides
+    $db.execute_sql("select question_id from polls").values.flatten.uniq
+  end
+  
+  def rating_slides
+    slides.select { |slide_name| slide_name if /slide_.+_evaluation/ =~ slide_name}
+  end
+
+end
+  
