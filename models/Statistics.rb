@@ -26,7 +26,6 @@ class SlideStats
 end
 
 class PresentationStats
-  $slides = []
   
   def add_slide(name)
     $db.execute_sql("insert into polls values ('', '', '#{name}', '1')")
@@ -37,8 +36,16 @@ class PresentationStats
   end
   
   def rating_slides
-    slides.select { |slide_name| slide_name if /slide_.+_evaluation/ =~ slide_name}
+    slides.select { |slide_name| slide_name if /.+_evaluation/ =~ slide_name}
+  end
+
+  def add_user(user_id)
+    $db.execute_sql("insert into polls values ('0', '#{user_id}', '0', '0')")
+  end	
+ 
+  def users
+    $db.execute_sql("select distinct user_id from polls order by user_id asc").values.flatten
   end
 
 end
-  
+
