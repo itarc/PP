@@ -230,3 +230,74 @@ class TestsUserStatGrades < Test::Unit::TestCase
   
 end
 
+class TestsUserStatProfile < Test::Unit::TestCase
+	
+  def setup
+    $db.execute_sql("delete from polls")
+    @user_id = "user"
+    @user_stat = UserStat.new(@user_id)    
+  end
+
+  def test01_should_be_empty_when_initialized
+    assert_equal [], @user_stat.profile
+  end
+  
+  def test02_should_have_no_questions_when_initialized
+    assert_equal [], @user_stat.questions
+  end
+  
+  def test03_should_find_one_question  
+    @user_stat.add_question("$informaticien_question")
+    assert_equal ["$informaticien_question"], @user_stat.questions
+  end
+  
+  def test04_should_not_find_a_question
+    @user_stat.add_question("x")
+    assert_equal [], @user_stat.questions
+  end  
+  
+  def test030_should_find_a_unique_question
+    @user_stat.add_question("$informaticien_question")
+    @user_stat.add_question("$informaticien_question")
+    assert_equal ["$informaticien_question"], @user_stat.questions
+  end 
+  
+  def test05_should_find_nil_response_to
+    assert_equal nil, @user_stat.response_to("$informaticien_question")
+  end
+  
+  def test06_should_find_a_response_to
+    @user_stat.add_response("$informaticien_question", "oui")	  
+    assert_equal "oui", @user_stat.response_to("$informaticien_question")
+  end   
+
+  def test07_should_find_a_response_for_each_user
+    user_stat_other = UserStat.new("another_user")
+    user_stat_other.add_response("$informaticien_question", "non")
+    @user_stat.add_response("$informaticien_question", "oui")
+    assert_equal "non", user_stat_other.response_to("$informaticien_question")
+    assert_equal "oui", @user_stat.response_to("$informaticien_question")
+  end 
+
+  def test08_should_find_a_question
+    @user_stat.add_response("$informaticien_question", "oui")
+    assert_equal [["$informaticien_question", "oui"]], @user_stat.profile
+  end
+  
+  def test09_should_find_another_question
+    @user_stat.add_response("$cloud_computing_question", "oui")
+    assert_equal [["$cloud_computing_question", "oui"]], @user_stat.profile
+  end
+  
+  def test10_should_find_two_questions
+    @user_stat.add_response("$informaticien_question", "oui")	  
+    @user_stat.add_response("$cloud_computing_question", "oui")
+    assert_equal [["$informaticien_question", "oui"], ["$cloud_computing_question", "oui"]], @user_stat.profile
+  end
+
+  def teardown
+    $db.execute_sql("delete from polls")
+  end  
+
+end
+

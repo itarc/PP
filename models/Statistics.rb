@@ -29,6 +29,7 @@ class UserStat
 	
   def initialize(user_id)
     @user_id = user_id
+    @profiles = []
   end
   
   def add_grade(grade)
@@ -38,6 +39,27 @@ class UserStat
   def grades
     $db.execute_sql("select distinct on(question_id) response from polls where user_id = '#{@user_id}' order by question_id, timestamp desc").values.flatten
   end
+  
+  def profile
+    questions.each { |question_id| @profiles << [question_id, response_to(question_id)] }
+    @profiles
+  end
+  
+  def questions
+    $db.execute_sql("select distinct question_id from polls where question_id like '%question%'").values.flatten
+  end  
+  
+  def add_question(question)
+    $db.execute_sql("insert into polls values ('0', '0', '#{question}', '0')")
+  end  
+  
+  def response_to(question)
+    $db.execute_sql("select response from polls where question_id = '#{question}' and user_id = '#{@user_id}'").values.flatten[0]
+  end 
+
+  def add_response(question, response)
+    $db.execute_sql("insert into polls values ('0', '#{@user_id}', '#{question}', '#{response}')")
+  end  
   
 end
 
