@@ -217,6 +217,13 @@ class TestsUserStatGrades < Test::Unit::TestCase
     assert_equal ["2"], user_stat_2.grades
   end
   
+  def test04
+    user_stat = UserStat.new(@user_id)
+    user_stat.add_grade("1")
+    user_stat.add_grade("2")
+    assert_equal ["2"], user_stat.grades    
+  end
+  
   def teardown
     $db.execute_sql("delete from polls")
   end  

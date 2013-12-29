@@ -32,11 +32,11 @@ class UserStat
   end
   
   def add_grade(grade)
-    $db.execute_sql("insert into polls values ('0', '#{@user_id}', '0', '#{grade}')")
+    $db.execute_sql("insert into polls values ('#{Time.now.to_f}', '#{@user_id}', '0', '#{grade}')")
   end
   
   def grades
-    $db.execute_sql("select response from polls where user_id = '#{@user_id}'").values.flatten
+    $db.execute_sql("select distinct on(question_id) response from polls where user_id = '#{@user_id}' order by question_id, timestamp desc").values.flatten
   end
   
 end
