@@ -2,7 +2,7 @@ require_relative '../controllers/slideshow.rb'
 
 require 'rack/test'
 
-class SlideStats
+class SlideStat
 	
   attr_accessor :slide_id	
 	
@@ -21,6 +21,22 @@ class SlideStats
   def rating
     return nil if grades == []
     ( grades.reduce(:+) / grades.size.to_f ).round(2)
+  end
+  
+end
+
+class UserStat
+	
+  def initialize(user_id)
+    @user_id = user_id
+  end
+  
+  def add_grade(grade)
+    $db.execute_sql("insert into polls values ('0', '#{@user_id}', '0', '#{grade}')")
+  end
+  
+  def grades
+    $db.execute_sql("select response from polls where user_id = '#{@user_id}'").values.flatten
   end
   
 end
@@ -48,23 +64,3 @@ class PresentationStats
   end
 
 end
-
-class UserStat
-	
-  def initialize(user_id)
-    @user_id = user_id
-  end
-  
-  def add_grade(grade)
-    $db.execute_sql("insert into polls values ('0', '#{@user_id}', '0', '#{grade}')")
-  end
-  
-  def grades
-    $db.execute_sql("select response from polls where user_id = '#{@user_id}'").values.flatten
-  end
-  
-end
-
-
-
-

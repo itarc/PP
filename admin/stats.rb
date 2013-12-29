@@ -7,7 +7,7 @@ end
 
 PresentationStats.new.rating_slides.each do |slide_id|
   puts "--" + slide_id
-  puts ">notes : " + SlideStats.new(slide_id).grades.to_s
-  puts ">moyenne :" + SlideStats.new(slide_id).rating.to_s
+  puts ">notes : " + SlideStat.new(slide_id).grades.to_s
+  puts ">moyenne :" + SlideStat.new(slide_id).rating.to_s
 end
 

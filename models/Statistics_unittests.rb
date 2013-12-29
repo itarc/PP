@@ -8,10 +8,10 @@ $user_id_1 = '1'
 $user_id_2 = '2'
 $user_id_3 = '3'
 
-class TestsSlideStatsInitialization < Test::Unit::TestCase
+class TestsSlideStatInitialization < Test::Unit::TestCase
 
   def test00_should_initialize_slide_id
-    @slide_stat = SlideStats.new($slide_id_1)
+    @slide_stat = SlideStat.new($slide_id_1)
     assert_equal $slide_id_1, @slide_stat.slide_id
   end  
 
@@ -21,7 +21,7 @@ class TestsGrades < Test::Unit::TestCase
 
   def setup
     $db.execute_sql("delete from polls")
-    @slide_stat = SlideStats.new($slide_id_1)
+    @slide_stat = SlideStat.new($slide_id_1)
   end
   
   def test01_should_be_empty_when_initialized
@@ -46,7 +46,7 @@ class TestsGrades < Test::Unit::TestCase
   end  
   
   def test05_should_select_grades_of_slide_only
-    slide_stat_2 = SlideStats.new($slide_id_2)
+    slide_stat_2 = SlideStat.new($slide_id_2)
     slide_stat_2.add_grade(2, $user_id_1)
     assert_equal [2], slide_stat_2.grades
     @slide_stat.add_grade(1, $user_id_2)
@@ -63,7 +63,7 @@ class TestRating < Test::Unit::TestCase
 
   def setup
     $db.execute_sql("delete from polls")
-    @slide_stat = SlideStats.new($slide_id_1)
+    @slide_stat = SlideStat.new($slide_id_1)
   end
  
   def test01_should_be_nil_when_initialized
@@ -102,7 +102,7 @@ class TestRating < Test::Unit::TestCase
   
 end
 
-class TestPresentationSlideStats < Test::Unit::TestCase
+class TestPresentationSlideStat < Test::Unit::TestCase
 	
   def setup
     $db.execute_sql("delete from polls")	  
