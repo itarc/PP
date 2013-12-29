@@ -17,7 +17,7 @@ class TestsSlideStatInitialization < Test::Unit::TestCase
 
 end
 
-class TestsGrades < Test::Unit::TestCase
+class TestsSlideStatGrades < Test::Unit::TestCase
 
   def setup
     $db.execute_sql("delete from polls")
@@ -59,7 +59,7 @@ class TestsGrades < Test::Unit::TestCase
 
 end
   
-class TestRating < Test::Unit::TestCase 
+class TestSlideStatRating < Test::Unit::TestCase 
 
   def setup
     $db.execute_sql("delete from polls")
@@ -102,7 +102,7 @@ class TestRating < Test::Unit::TestCase
   
 end
 
-class TestPresentationSlideStat < Test::Unit::TestCase
+class TestPresentationStatSlides < Test::Unit::TestCase
 	
   def setup
     $db.execute_sql("delete from polls")	  
@@ -148,7 +148,7 @@ class TestPresentationSlideStat < Test::Unit::TestCase
 
 end
 
-class TestPresentationPresentationStats < Test::Unit::TestCase
+class TestPresentationStatsUsers < Test::Unit::TestCase
 	
   def setup
     $db.execute_sql("delete from polls")
@@ -157,7 +157,7 @@ class TestPresentationPresentationStats < Test::Unit::TestCase
     @user_id_2 = "user_2"
   end
 
-  def test01
+  def test01_should_be_empty_when
     user_stats = PresentationStats.new
     assert_equal [], user_stats.users
   end
