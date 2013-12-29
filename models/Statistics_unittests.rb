@@ -188,3 +188,38 @@ class TestPresentationPresentationStats < Test::Unit::TestCase
 
 end
 
+class TestsUserStat < Test::Unit::TestCase
+
+  def setup
+    $db.execute_sql("delete from polls")
+    @user_id = "user"
+    @user_id_1 = "user_1"
+    @user_id_2= "user_2"
+  end
+  
+  def test01
+    user_stat = UserStat.new(@user_id)
+    assert_equal [], user_stat.grades
+  end
+  
+  def test02
+    user_stat = UserStat.new(@user_id)
+    user_stat.add_grade("1")
+    assert_equal ["1"], user_stat.grades
+  end
+  
+  def test03
+    user_stat_1 = UserStat.new(@user_id_1)
+    user_stat_2 = UserStat.new(@user_id_2)
+    user_stat_1.add_grade("1")
+    user_stat_2.add_grade("2")
+    assert_equal ["1"], user_stat_1.grades
+    assert_equal ["2"], user_stat_2.grades
+  end
+  
+  def teardown
+    $db.execute_sql("delete from polls")
+  end  
+  
+end
+

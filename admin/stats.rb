@@ -1,6 +1,9 @@
 require "../models/Statistics"
 
-p PresentationStats.new.users
+PresentationStats.new.users.each do |user|
+  puts "--" + user
+  p UserStat.new(user).grades
+end
 
 PresentationStats.new.rating_slides.each do |slide_id|
   puts "--" + slide_id
