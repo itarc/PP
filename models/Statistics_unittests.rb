@@ -217,7 +217,7 @@ class TestsUserStatGrades < Test::Unit::TestCase
     assert_equal ["2"], user_stat_2.grades
   end
   
-  def test04
+  def test04_should_take_lattest_grade_for_a_given_slide
     user_stat = UserStat.new(@user_id)
     user_stat.add_grade("1")
     user_stat.add_grade("2")
