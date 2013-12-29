@@ -157,25 +157,25 @@ class TestPresentationStatsUsers < Test::Unit::TestCase
     @user_id_2 = "user_2"
   end
 
-  def test01_should_be_empty_when
+  def test01_should_be_empty_when_initialized
     user_stats = PresentationStats.new
     assert_equal [], user_stats.users
   end
   
-  def test02
+  def test02_should_finf_one_user
     user_stats = PresentationStats.new
     user_stats.add_user(@user_id)
     assert_equal [@user_id], user_stats.users
   end
   
-  def test03
+  def test03_should_find_one_unique_user
     user_stats = PresentationStats.new	  
     user_stats.add_user(@user_id)    
     user_stats.add_user(@user_id)
     assert_equal [@user_id], user_stats.users
   end
   
-  def test04
+  def test04_should_find_two_users
     user_stats = PresentationStats.new	  
     user_stats.add_user(@user_id_2)    
     user_stats.add_user(@user_id_1)	  
@@ -188,7 +188,7 @@ class TestPresentationStatsUsers < Test::Unit::TestCase
 
 end
 
-class TestsUserStat < Test::Unit::TestCase
+class TestsUserStatGrades < Test::Unit::TestCase
 
   def setup
     $db.execute_sql("delete from polls")
@@ -197,18 +197,18 @@ class TestsUserStat < Test::Unit::TestCase
     @user_id_2= "user_2"
   end
   
-  def test01
+  def test01_should_be_empty_when_initialized
     user_stat = UserStat.new(@user_id)
     assert_equal [], user_stat.grades
   end
   
-  def test02
+  def test02_shiould_find_one_grade
     user_stat = UserStat.new(@user_id)
     user_stat.add_grade("1")
     assert_equal ["1"], user_stat.grades
   end
   
-  def test03
+  def test03_should_find_one_grade_for_each_user
     user_stat_1 = UserStat.new(@user_id_1)
     user_stat_2 = UserStat.new(@user_id_2)
     user_stat_1.add_grade("1")
