@@ -1,21 +1,18 @@
 require "../models/Statistics"
 
 PresentationStats.new.users.each do |user|
-  puts "--" + user
+  puts "-- user : " + user
   user_stat = UserStat.new(user)
-  p user_stat.profile.map { |pr| 
-  case pr 
-  when ["question_1", "1"] 
-  'cloud' 	
-  when ["question_1", "2"] 
-  'non_cloud' 	  
-  when ["question_2", "3"] 
-  'informaticien' 
-  when ["question_2", "4"] 
-  'non_informaticien'
-  end
-  }
-  p UserStat.new(user).grades
+  
+  user_stat.add_map ({
+  ["question_1", "1"] =>  'cloud', 
+  ["question_1", "2"] =>  'non_cloud', 
+  ["question_2", "3"] =>  'informaticien', 
+  ["question_2", "4"] =>  'non_informaticien'
+  })
+
+  p user_stat.mapped_profile
+  p user_stat.slide_grades
 end
 
 PresentationStats.new.rating_slides.each do |slide_id|

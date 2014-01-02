@@ -30,18 +30,21 @@ class UserStat
   def initialize(user_id)
     @user_id = user_id
     @profiles = []
+    @profile_map = {}
+    @slide_grades = []
   end
   
   def add_grade(grade)
-    $db.execute_sql("insert into polls values ('#{Time.now.to_f}', '#{@user_id}', '0', '#{grade}')")
+    $db.execute_sql("insert into polls values ('#{Time.now.to_f}', '#{@user_id}', 'evaluation', '#{grade}')")
   end
   
   def grades
-    $db.execute_sql("select distinct on(question_id) response from polls where user_id = '#{@user_id}' order by question_id, timestamp desc").values.flatten
+    $db.execute_sql("select distinct on(question_id) response from polls where user_id = '#{@user_id}' and question_id like '%evaluation' order by question_id, timestamp desc").values.flatten
   end
   
   def profile
-    questions.each { |question_id| @profiles << [question_id, response_to(question_id)] }
+    @profiles = []
+    questions.each { |question_id| @profiles << [question_id, response_to(question_id)] }	  
     @profiles
   end
   
@@ -60,6 +63,31 @@ class UserStat
   def add_response(question, response)
     $db.execute_sql("insert into polls values ('0', '#{@user_id}', '#{question}', '#{response}')")
   end  
+  
+  $slide_user_stats = []
+  def slide_user_stats
+    $slide_user_stats
+  end
+  
+  def add_slide_user_stat(slide_user_stat)
+    $slide_user_stats << slide_user_stat
+  end  
+  
+  def add_map(map)
+    @profile_map = map
+  end
+  
+  def mapped_profile
+    profile.map { |sub_profile|  @profile_map[sub_profile] || sub_profile }
+  end
+  
+  def slide_grades
+    $db.execute_sql("select distinct on(question_id) question_id, response from polls where user_id = '#{@user_id}' and question_id like '%evaluation' order by question_id, timestamp desc").values
+  end
+  
+  def add_slide_grade(slide_grade)
+    $db.execute_sql("insert into polls values ('#{Time.now.to_f}', '#{@user_id}', '#{slide_grade[0]}', '#{slide_grade[1]}')")
+  end
   
 end
 
@@ -86,3 +114,5 @@ class PresentationStats
   end
 
 end
+
+

@@ -114,7 +114,76 @@ class TestsUserStat_profile < Test::Unit::TestCase
     @user_stat.add_response("$cloud_computing_question", "oui")
     assert_equal [["$informaticien_question", "oui"], ["$cloud_computing_question", "oui"]], @user_stat.profile
   end
+  
+  def test11
+    @user_stat.add_response("$cloud_computing_question", "oui")  
+    assert_equal [["$cloud_computing_question", "oui"]], @user_stat.mapped_profile
+  end
 
+  def test12
+    @user_stat.add_response("$cloud_computing_question", "oui")
+    @user_stat.add_map({["$cloud_computing_question", "oui"] => "cloud_computing"})    
+    assert_equal ["cloud_computing"], @user_stat.mapped_profile
+  end
+
+  def teardown
+    $db.execute_sql("delete from polls")
+  end  
+
+end
+
+$slide_1_evaluation="slide_1_evaluation"
+$slide_2_evaluation="slide_2_evaluation"
+$slide_3_NO_evaluation="x"
+
+class TestUserStat_slide_grades < Test::Unit::TestCase
+	
+  def setup
+    @user_stat = UserStat.new("user_1")
+    $db.execute_sql("delete from polls")    
+  end
+	
+  def test01_should_be_empty_when_initialized
+    assert_equal [], @user_stat.slide_grades
+  end	
+
+  def test02_should_find_one_slide_grade
+    @user_stat.add_slide_grade([$slide_1_evaluation, "1"])
+    assert_equal [[$slide_1_evaluation, "1"]], @user_stat.slide_grades	  
+  end
+  
+  def test03_should_find_two_slide_grades
+    @user_stat.add_slide_grade([$slide_1_evaluation, "1"])
+    @user_stat.add_slide_grade([$slide_2_evaluation, "2"])
+    assert_equal [[$slide_1_evaluation, "1"], [$slide_2_evaluation, "2"]], @user_stat.slide_grades	  
+  end  
+
+  #~ def test030_should_find_slides_grades_in_time_order
+    #~ @user_stat.add_slide_grade(["b_evaluation", "2"])	  
+    #~ @user_stat.add_slide_grade(["a_evaluation", "1"])
+    #~ assert_equal [["b", "1"], ["a", "2"]], @user_stat.slide_grades	  
+  #~ end 
+  
+  def test04_should_find_slide_grade_for_a_specific_user_only
+    @user_stat.add_slide_grade([$slide_1_evaluation, "1"])
+    another_user_stat = UserStat.new("user_2")    
+    another_user_stat.add_slide_grade([$slide_2_evaluation, "2"])
+    assert_equal [[$slide_1_evaluation, "1"]], @user_stat.slide_grades    
+    assert_equal [[$slide_2_evaluation, "2"]], another_user_stat.slide_grades    
+  end
+  
+  def test05_shoud_find_lattest_slide_grade
+    @user_stat.add_slide_grade([$slide_1_evaluation, "1"])
+    @user_stat.add_slide_grade([$slide_1_evaluation, "2"])
+    assert_equal [[$slide_1_evaluation, "2"]], @user_stat.slide_grades	     
+  end
+  
+  def test06_should_only_take_evaluation_slides
+    @user_stat.add_slide_grade([$slide_1_evaluation, "1"])
+    @user_stat.add_slide_grade([$slide_3_NO_evaluation, ""])
+    assert_equal [[$slide_1_evaluation, "1"]], @user_stat.slide_grades    
+  end
+  
   def teardown
     $db.execute_sql("delete from polls")
   end  
