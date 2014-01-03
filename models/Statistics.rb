@@ -26,6 +26,8 @@ class SlideStat
 end
 
 class UserStat
+
+  attr_accessor :user_id
 	
   def initialize(user_id)
     @user_id = user_id
@@ -89,9 +91,31 @@ class UserStat
     $db.execute_sql("insert into polls values ('#{Time.now.to_f}', '#{@user_id}', '#{slide_grade[0]}', '#{slide_grade[1]}')")
   end
   
+  def UserStat.find_all
+    user_stats_values = $db.execute_sql("select user_id from polls").values
+    all_user_stats = []
+    user_stats_values.each do |values|
+	all_user_stats << UserStat.new(values[0])
+    end
+    all_user_stats
+  end
+  
+  def save
+    $db.execute_sql("insert into polls values ('#{Time.now.to_f}', '#{@user_id}', '', '')")
+  end
+  
 end
 
 class PresentationStats
+	
+  attr_accessor :user_stats
+
+  def initialize
+    @user_stats = []
+    UserStat.find_all.each do |user_stat|
+      add_user_stat(user_stat)
+    end
+  end
   
   def add_slide(name)
     $db.execute_sql("insert into polls values ('', '', '#{name}', '1')")
@@ -105,12 +129,11 @@ class PresentationStats
     slides.select { |slide_name| slide_name if /.+_evaluation/ =~ slide_name}
   end
 
-  def add_user(user_id)
-    $db.execute_sql("insert into polls values ('0', '#{user_id}', '0', '0')")
-  end	
- 
-  def users
-    $db.execute_sql("select distinct user_id from polls order by user_id asc").values.flatten
+  def add_user_stat(new_user_stat)
+    @user_stats.each do |user_stat| 
+	    return if user_stat.user_id == new_user_stat.user_id 
+    end
+    @user_stats << new_user_stat
   end
 
 end

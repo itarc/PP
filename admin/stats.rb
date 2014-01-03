@@ -1,23 +1,50 @@
 require "../models/Statistics"
 
-PresentationStats.new.users.each do |user|
-  puts "-- user : " + user
-  user_stat = UserStat.new(user)
+#~ PresentationStats.new.users.each do |user|
+	
+  #~ puts "-- user : " + user
   
-  user_stat.add_map ({
-  ["question_1", "1"] =>  'cloud', 
-  ["question_1", "2"] =>  'non_cloud', 
-  ["question_2", "3"] =>  'informaticien', 
-  ["question_2", "4"] =>  'non_informaticien'
-  })
+  #~ user_stat = UserStat.new(user)
+  
+  #~ user_stat.add_map ({
+  #~ ["question_1", "1"] =>  'cloud', 
+  #~ ["question_1", "2"] =>  'non_cloud', 
+  #~ ["question_2", "3"] =>  'informaticien', 
+  #~ ["question_2", "4"] =>  'non_informaticien'
+  #~ })
 
-  p user_stat.mapped_profile
+  #~ p user_stat.mapped_profile
+  #~ p user_stat.slide_grades
+  
+#~ end
+
+#~ PresentationStats.new.rating_slides.each do |slide_id|
+  #~ puts "--" + slide_id
+  #~ puts ">notes : " + SlideStat.new(slide_id).grades.to_s
+  #~ puts ">moyenne :" + SlideStat.new(slide_id).rating.to_s
+#~ end
+
+presentation_stats = PresentationStats.new
+#~ presentation_stats.add_profile_map ({
+#~ ["question_1", "1"] =>  'cloud', 
+#~ ["question_1", "2"] =>  'non_cloud', 
+#~ ["question_2", "3"] =>  'informaticien', 
+#~ ["question_2", "4"] =>  'non_informaticien'}
+#~ )
+
+presentation_stats.user_stats.each do |user_stat|
+  p user_stat.user_id
+  p user_stat.profile
   p user_stat.slide_grades
 end
 
-PresentationStats.new.rating_slides.each do |slide_id|
-  puts "--" + slide_id
-  puts ">notes : " + SlideStat.new(slide_id).grades.to_s
-  puts ">moyenne :" + SlideStat.new(slide_id).rating.to_s
-end
+#~ presentation_stats.slides.each do |slide|
+  #~ p slide.id
+  #~ p slide.all_grades
+  #~ p slide.rating
+#~ end
 
+#~ presentation_stats.profiles.each do |profile|
+  #~ p profile.id
+  #~ p profile.slide_ratings
+#~ end

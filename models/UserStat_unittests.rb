@@ -8,6 +8,40 @@ $user_id_1 = '1'
 $user_id_2 = '2'
 $user_id_3 = '3'
 
+class TestsUserStat_initialize < Test::Unit::TestCase
+	
+  def test01_should_initialize_user_id
+    user_stat = UserStat.new(@user_id)
+    assert_equal @user_id, user_stat.user_id
+  end
+  
+end
+
+class TestsUserStat_find_all < Test::Unit::TestCase
+
+  def setup
+    $db.execute_sql("delete from polls")
+    @user_id = "user_id"    
+  end
+
+  def test01_should_be_empty_when_database_is_empty
+    all_user_stats = UserStat.find_all
+    assert_equal [], all_user_stats
+  end
+  
+  def test02_should_find_one_user_stat
+    UserStat.new(@user_id).save
+    all_user_stats = UserStat.find_all
+    assert_equal 1, all_user_stats.size
+    assert_equal @user_id, all_user_stats[0].user_id
+  end
+  
+  def teardown
+    $db.execute_sql("delete from polls")	  
+  end
+  
+end
+
 class TestsUserStat_grades < Test::Unit::TestCase
 
   def setup
