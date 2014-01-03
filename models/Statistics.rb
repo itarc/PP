@@ -1,103 +1,64 @@
 require_relative '../controllers/slideshow.rb'
 
-require 'rack/test'
+class PresentationStats
+	
+  attr_accessor :profile_response_map
 
-class SlideStat
-	
-  attr_accessor :slide_id	
-	
-  def initialize (slide_id)
-    @slide_id = slide_id
-  end	
-  
-  def add_grade(grade, user_id)
-    $db.execute_sql("insert into polls values ('#{Time.now.to_f}', '#{user_id}', '#{slide_id}', #{grade})")
+  def initialize
+    @user_stats = []
+    @profile_response_map = {}
   end
   
-  def grades
-   $db.execute_sql("select distinct on (user_id) response from polls where question_id = '#{slide_id}' order by user_id, timestamp desc").values.map{ |grade| grade[0].to_i }
+  def user_stats
+    UserStat.find_all.each { |user_stat| add_user_stat(user_stat) }
+    @user_stats
   end
-  
-  def rating
-    return nil if grades == []
-    ( grades.reduce(:+) / grades.size.to_f ).round(2)
+
+  def add_user_stat(new_user_stat)
+    @user_stats.each do |user_stat| 
+	    return if user_stat.user_id == new_user_stat.user_id 
+    end
+    new_user_stat.user_profile.add_response_map(profile_response_map)
+    @user_stats << new_user_stat
   end
-  
+
 end
+
 
 class UserStat
 
-  attr_accessor :user_id
+  attr_accessor :user_id, :user_profile, :slide_stats
 	
   def initialize(user_id)
     @user_id = user_id
-    @profiles = []
-    @profile_map = {}
-    @slide_grades = []
+    @user_profile = UserProfile.new(@user_id)
+    @response_map = {}
+    @slide_ratings = []
   end
   
-  def add_grade(grade)
-    $db.execute_sql("insert into polls values ('#{Time.now.to_f}', '#{@user_id}', 'evaluation', '#{grade}')")
+  def slide_ratings
+    SlideRating.find_all.each do |slide_rating| add_slide_rating(slide_rating) end
+    @slide_ratings
   end
   
-  def grades
-    $db.execute_sql("select distinct on(question_id) response from polls where user_id = '#{@user_id}' and question_id like '%evaluation' order by question_id, timestamp desc").values.flatten
+  def global_user_rating
+    GlobalRating.find.user_ratings[@user_id]
+  end
+  
+  def add_slide_rating(slide_rating)
+    @slide_ratings << slide_rating
+  end
+  
+  def profile_responses
+    @user_profile.questions.map { |question_id| [question_id, @user_profile.response_to(question_id)] }	  
   end
   
   def profile
-    @profiles = []
-    questions.each { |question_id| @profiles << [question_id, response_to(question_id)] }	  
-    @profiles
-  end
-  
-  def questions
-    $db.execute_sql("select distinct question_id from polls where question_id like '%question%'").values.flatten
-  end  
-  
-  def add_question(question)
-    $db.execute_sql("insert into polls values ('0', '0', '#{question}', '0')")
-  end  
-  
-  def response_to(question)
-    $db.execute_sql("select response from polls where question_id = '#{question}' and user_id = '#{@user_id}'").values.flatten[0]
-  end 
-
-  def add_response(question, response)
-    $db.execute_sql("insert into polls values ('0', '#{@user_id}', '#{question}', '#{response}')")
-  end  
-  
-  $slide_user_stats = []
-  def slide_user_stats
-    $slide_user_stats
-  end
-  
-  def add_slide_user_stat(slide_user_stat)
-    $slide_user_stats << slide_user_stat
-  end  
-  
-  def add_map(map)
-    @profile_map = map
-  end
-  
-  def mapped_profile
-    profile.map { |sub_profile|  @profile_map[sub_profile] || sub_profile }
-  end
-  
-  def slide_grades
-    $db.execute_sql("select distinct on(question_id) question_id, response from polls where user_id = '#{@user_id}' and question_id like '%evaluation' order by question_id, timestamp desc").values
-  end
-  
-  def add_slide_grade(slide_grade)
-    $db.execute_sql("insert into polls values ('#{Time.now.to_f}', '#{@user_id}', '#{slide_grade[0]}', '#{slide_grade[1]}')")
+    profile_responses.map { |profile_response| @user_profile.response_map[profile_response] || profile_response}
   end
   
   def UserStat.find_all
-    user_stats_values = $db.execute_sql("select user_id from polls").values
-    all_user_stats = []
-    user_stats_values.each do |values|
-	all_user_stats << UserStat.new(values[0])
-    end
-    all_user_stats
+    $db.execute_sql("select user_id from polls").values.map {|values| UserStat.new(values[0]) }
   end
   
   def save
@@ -106,36 +67,104 @@ class UserStat
   
 end
 
-class PresentationStats
+class GlobalRating
 	
-  attr_accessor :user_stats
+  attr_accessor :user_ratings
+  
+  @@slide_id = "global_evaluation"
+	
+  def initialize(user_ratings)
+    @user_ratings = user_ratings
+  end
+  
+  def save
+    @user_ratings.keys.each do |user_id|
+      $db.execute_sql("insert into polls values ('#{Time.now.to_f}', '#{user_id}', '#{@@slide_id}', '#{@user_ratings[user_id]}')")
+    end
+  end
+	
+  def GlobalRating.find
+    ratings = {}
+    $db.execute_sql("select user_id, response from polls where question_id = '#{@@slide_id}'").to_a.each do |rating|
+      ratings[rating["user_id"]] = rating["response"].to_i
+     end
+     GlobalRating.new(ratings)
+  end
+  
+end
 
-  def initialize
-    @user_stats = []
-    UserStat.find_all.each do |user_stat|
-      add_user_stat(user_stat)
+
+class SlideRating
+	
+  attr_accessor :slide_id, :user_ratings	
+	
+  def initialize (slide_id, user_ratings)
+    @slide_id = slide_id
+    @user_ratings = user_ratings
+  end
+  
+  def SlideRating.find_all
+    $db.execute_sql("select distinct question_id from polls where question_id like 'slide_%_evaluation' order by question_id").to_a.map do |question|
+      ratings = {}
+      $db.execute_sql("select user_id, response from polls where question_id = '#{question["question_id"]}'").to_a.each do |rating|
+	ratings[rating["user_id"]] = rating["response"].to_i
+      end
+      SlideRating.new(question["question_id"], ratings)
     end
   end
   
-  def add_slide(name)
-    $db.execute_sql("insert into polls values ('', '', '#{name}', '1')")
-  end
-  
-  def slides
-    $db.execute_sql("select question_id from polls").values.flatten.uniq
-  end
-  
-  def rating_slides
-    slides.select { |slide_name| slide_name if /.+_evaluation/ =~ slide_name}
-  end
-
-  def add_user_stat(new_user_stat)
-    @user_stats.each do |user_stat| 
-	    return if user_stat.user_id == new_user_stat.user_id 
+  def save
+    @user_ratings.keys.each do |user_id|
+      $db.execute_sql("insert into polls values ('#{Time.now.to_f}', '#{user_id}', '#{@slide_id}', '#{@user_ratings[user_id]}')")
     end
-    @user_stats << new_user_stat
+  end
+  
+  def user_rating(user_id)	  
+    @user_ratings[user_id]
+  end
+  
+  def add_user_rate(user_id, user_rate)
+    @user_ratings[user_id] = user_rate
+  end
+  
+end
+
+
+class UserProfile
+	
+  def initialize(user_id)
+    @user_id = user_id
+    @response_map = {}
+  end
+  
+  def add_response(question, response)
+    $db.execute_sql("insert into polls values ('0', '#{@user_id}', '#{question}', '#{response}')")
+  end
+  
+  def add_question(question)
+    $db.execute_sql("insert into polls values ('0', '0', '#{question}', '0')")
+  end  
+  
+  def add_response_map(map)
+    @response_map = map
+  end  
+  
+  def questions
+    $db.execute_sql("select distinct question_id from polls where question_id like '%question%'").values.flatten
+  end  
+  
+  def response_to(question)
+    $db.execute_sql("select response from polls where question_id = '#{question}' and user_id = '#{@user_id}'").values.flatten[0]
+  end
+  
+  def response_map
+    @response_map
   end
 
 end
+
+
+
+
 
 
