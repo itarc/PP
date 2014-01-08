@@ -29,6 +29,15 @@ class TestsUserStat_find_all < Test::Unit::TestCase
     assert_equal @user_id, all_user_stats[0].user_id
   end
   
+  def test02_should_find_two_user_stats_in_ascending_order
+    UserStat.new("B").save
+    UserStat.new("A").save
+    all_user_stats = UserStat.find_all
+    assert_equal 2, all_user_stats.size
+    assert_equal "A", all_user_stats[0].user_id
+    assert_equal "B", all_user_stats[1].user_id
+  end  
+  
   def teardown
     $db.execute_sql("delete from polls")	  
   end

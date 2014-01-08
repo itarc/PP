@@ -58,7 +58,7 @@ class UserStat
   end
   
   def UserStat.find_all
-    $db.execute_sql("select user_id from polls").values.map {|values| UserStat.new(values[0]) }
+    $db.execute_sql("select user_id from polls order by user_id").values.map {|values| UserStat.new(values[0]) }
   end
   
   def save
@@ -162,9 +162,3 @@ class UserProfile
   end
 
 end
-
-
-
-
-
-
