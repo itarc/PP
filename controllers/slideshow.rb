@@ -8,6 +8,7 @@ set :logging, false
 set :bind, '0.0.0.0'
 
 require_relative '../models/Poll'
+require_relative '../models/RunTime'
 require_relative '../models/Statistics'
 
 enable :sessions; set :session_secret, 'secret'
@@ -86,6 +87,12 @@ get '/admin' do
   
   last_user_id + polls + global_evaluation
 	
+end
+
+get '/code_execution_result' do
+
+  run_ruby(params[:code] || "")
+
 end
 
 # ---- HELPERS

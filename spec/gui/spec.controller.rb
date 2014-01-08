@@ -53,4 +53,10 @@ get '/teacher/2_questions_2_slides' do
 
 end
 
+get '/coding_slide' do
+
+  redirect "coding_slide.html"
+
+end
+
 
