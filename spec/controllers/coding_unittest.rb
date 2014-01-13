@@ -26,25 +26,15 @@ class TestCoding < Test::Unit::TestCase
     get '/code_execution_result', { :code => "1"}
     assert_equal "1", last_response.body	  
   end
-
-  def test03_should_execute_another_evaluation
-    get '/code_execution_result', { :code => "1 + 1"}
-    assert_equal "2", last_response.body	  
-  end
   
   def test04_should_execute_an_instruction
     get '/code_execution_result', { :code => "print 3"}
     assert_equal "3", last_response.body	  
   end
   
-  def test05_should_execute_an_instruction
-    get '/code_execution_result', { :code => "puts 'a'"}
-    assert_equal "a\n", last_response.body	  
-  end
-  
-  #~ def test05_should_raise_an_error
-    #~ post '/code', { :code => "puts a"}
-    #~ assert_equal "a\n", last_response.body, last_response.errors 
-  #~ end  
+  def test05_should_raise_an_error
+    get '/code_execution_result', { :code => "puts a"}
+    assert last_response.body.include?("undefined local variable or method `a'"), last_response.errors 
+  end  
 
 end

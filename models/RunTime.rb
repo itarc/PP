@@ -6,6 +6,8 @@ def run_ruby(ruby_code)
   begin
     $stdout = $stderr = io
     result = eval(ruby_code)
+  rescue Exception => e
+    result = e
   ensure
     $stdout = STDOUT
     $stderr = STDERR
