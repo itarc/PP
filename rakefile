@@ -7,8 +7,8 @@ load 'jasmine/tasks/jasmine.rake'
 task :default => [:'jasmine:ci', :unit_tests, :acceptance_tests]
 
 task :unit_tests do
-  FileList['./spec/controllers/*_unittests.rb'].each { |file| ruby file }
-  FileList['./spec/models/*_unittests.rb'].each { |file| ruby file }
+  FileList['./spec/controllers/*_test.rb'].each { |file| ruby file }
+  FileList['./spec/models/*_test.rb'].each { |file| ruby file }
 end
 
 task :acceptance_tests do
