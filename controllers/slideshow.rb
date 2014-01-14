@@ -42,7 +42,7 @@ post '/select_input_*_to_*' do
   PollQuestion.new(question_id).add_a_choice(user_id, answer)
 end
 
-get '/code_execution_result' do
+post '/code_execution_result' do
   run_ruby(params[:code] || "")
 end
 
