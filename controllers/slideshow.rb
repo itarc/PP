@@ -1,3 +1,12 @@
+require 'sinatra'
+
+set :public_folder, 'views'
+set :logging, false
+
+set :bind, '0.0.0.0'
+
+enable :sessions; set :session_secret, 'secret'
+
 require_relative 'slideshow_helper'
 
 get '/' do
