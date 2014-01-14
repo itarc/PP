@@ -13,6 +13,19 @@ describe("TeacherSlideShow : keyboard handling", function() {
 
   });	
 
+  it("should detect atlt-key pressed", function() {
+
+    spyOn(TeacherSlideShow.prototype, 'handleKeys');
+	  
+    expect(TeacherSlideShow.prototype.handleKeys.calls.length).toBe(0);
+
+    __triggerKeyboardEvent(document, R, ALT);
+
+    expect(TeacherSlideShow.prototype.handleKeys).toHaveBeenCalled();
+    expect(TeacherSlideShow.prototype.handleKeys.calls.length).toBe(1); // ETRANGE DEVRAIT ETRE 1 mais 2 appels sont faits avec des objets de structure différentes
+
+  });	  
+  
   it("should call next when right arrow pressed", function() {
 
     spyOn(TeacherSlideShow.prototype, 'next');
@@ -53,6 +66,20 @@ describe("TeacherSlideShow : keyboard handling", function() {
     expect(TeacherSlideShow.prototype.synchronise.calls.length).toBe(1); // ETRANGE DEVRAIT ETRE 1 mais 5 appels sont faits avec des objets de structure différentes
     expect(TeacherSlideShow.prototype.synchronise).toHaveBeenCalledWith();    
 
-  });   
+  });
+  
+  it("should call executeCode when alt-r pressed", function() {
 
+    spyOn(TeacherSlideShow.prototype, 'executeCode');
+
+    expect(TeacherSlideShow.prototype.executeCode.calls.length).toBe(0);
+	  
+    __triggerKeyboardEvent(document, R, ALT);
+
+    expect(TeacherSlideShow.prototype.executeCode).toHaveBeenCalled();
+    expect(TeacherSlideShow.prototype.executeCode.calls.length).toBe(1);
+    expect(TeacherSlideShow.prototype.executeCode).toHaveBeenCalledWith();    
+
+  });  
+  
 });

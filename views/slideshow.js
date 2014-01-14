@@ -9,6 +9,9 @@ var SPACE = 32;
 var SYNCHRONOUS = false;
 var ASYNCHRONOUS = true;
 
+var ALT = true 
+var R=82
+
 var queryAll = function(query) {
 
   nodeList = document.querySelectorAll(query);
@@ -176,7 +179,11 @@ SlideShow.prototype = {
 
   },
   
+  executeCode: function() {
+
+    currentSlide = this._slides[this._currentIndex]
+    currentSlide.executeCode()
+	  
+  }
+  
 };
-
-
-

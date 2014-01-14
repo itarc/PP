@@ -21,15 +21,5 @@ describe("Slide : Coding", function() {
     
   });
   
-  it("should call code execution when ALT-R", function() {
-
-    
-  });  
-  
-  it("should call code execution when button clicked", function() {
-
-    
-  });    
-  
 });
 
