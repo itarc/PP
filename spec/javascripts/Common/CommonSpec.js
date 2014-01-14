@@ -55,28 +55,47 @@ describe("Common key handling", function() {
 
 describe("Common post and get", function() {
   
-  it("should post and get resource", function() {
+  it("should post ASynchronous", function() {
 
     spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
     spyOn(XMLHttpRequest.prototype, 'send')
 
-    postResource('/teacher_current_slide', "1")
+    postResponse = postResource('/teacher_current_slide', "1")
 
     expect(XMLHttpRequest.prototype.open).toHaveBeenCalled()
     expect(XMLHttpRequest.prototype.open.calls.length).toBe(1)
-    expect(XMLHttpRequest.prototype.open).toHaveBeenCalledWith('POST', '/teacher_current_slide', true)
+    expect(XMLHttpRequest.prototype.open).toHaveBeenCalledWith('POST', '/teacher_current_slide', ASYNCHRONOUS)
     expect(XMLHttpRequest.prototype.send).toHaveBeenCalled()
     expect(XMLHttpRequest.prototype.send).toHaveBeenCalledWith("1")
     expect(XMLHttpRequest.prototype.send.calls.length).toBe(1)	  
-	  
-    getResource('/teacher_current_slide')
-
-    expect(XMLHttpRequest.prototype.open).toHaveBeenCalled()
-    expect(XMLHttpRequest.prototype.open.calls.length).toBe(2)	  
-    expect(XMLHttpRequest.prototype.open).toHaveBeenCalledWith('GET', '/teacher_current_slide', false)
-    expect(XMLHttpRequest.prototype.send).toHaveBeenCalled()  
-    expect(XMLHttpRequest.prototype.send.calls.length).toBe(2)	  
+    expect(postResponse).not.toBeUndefined()
 
   });
+  
+  it("should get and post Synchronous", function() {
+
+    spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
+    spyOn(XMLHttpRequest.prototype, 'send')	  
+	  
+    getResponse = getResource('/teacher_current_slide')
+
+    expect(XMLHttpRequest.prototype.open).toHaveBeenCalled()
+    expect(XMLHttpRequest.prototype.open.calls.length).toBe(1)	  
+    expect(XMLHttpRequest.prototype.open).toHaveBeenCalledWith('GET', '/teacher_current_slide', SYNCHRONOUS)
+    expect(XMLHttpRequest.prototype.send).toHaveBeenCalled()  
+    expect(XMLHttpRequest.prototype.send.calls.length).toBe(1)
+    expect(getResponse).not.toBeUndefined()
+	  
+    postResponse = postResource('/teacher_current_slide', "1", SYNCHRONOUS)
+
+    expect(XMLHttpRequest.prototype.open).toHaveBeenCalled()
+    expect(XMLHttpRequest.prototype.open.calls.length).toBe(2)
+    expect(XMLHttpRequest.prototype.open).toHaveBeenCalledWith('POST', '/teacher_current_slide', SYNCHRONOUS)
+    expect(XMLHttpRequest.prototype.send).toHaveBeenCalled()
+    expect(XMLHttpRequest.prototype.send).toHaveBeenCalledWith("1")
+    expect(XMLHttpRequest.prototype.send.calls.length).toBe(2)	  
+    expect(postResponse).not.toBeUndefined()	  
+	  
+  });	  
 
 });

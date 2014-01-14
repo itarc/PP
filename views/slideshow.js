@@ -6,6 +6,9 @@ var LEFT_ARROW = 37;
 var RIGHT_ARROW = 39;
 var SPACE = 32;
 
+var SYNCHRONOUS = false;
+var ASYNCHRONOUS = true;
+
 var queryAll = function(query) {
 
   nodeList = document.querySelectorAll(query);
@@ -13,12 +16,13 @@ var queryAll = function(query) {
 
 };
 
-var postResource = function(path, params) {
+var postResource = function(path, params, synchronous_asynchronous = ASYNCHRONOUS) {
 	  
   var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("POST", path, true);
+  xmlhttp.open("POST", path, synchronous_asynchronous);
   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-  xmlhttp.send(params);	  
+  xmlhttp.send(params);
+  return xmlhttp.responseText;
 
 };
 
