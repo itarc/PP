@@ -1,4 +1,5 @@
 require "../models/Statistics"
+require "../models/Presentation"
 
 presentation_stats = PresentationStats.new
 presentation_stats.profile_response_map = ({
@@ -7,6 +8,16 @@ presentation_stats.profile_response_map = ({
 ["question_2", "3"] =>  'informaticien', 
 ["question_2", "4"] =>  'non_informaticien'}
 )
+
+presentation = Presentation.new
+puts presentation.duration
+puts presentation.first_event_time
+puts presentation.last_event_time
+
+
+pp presentation.ratings
+
+exit
 
 presentation_stats.user_stats.each do |user_stat|
   puts "---"
