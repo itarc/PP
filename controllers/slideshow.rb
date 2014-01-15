@@ -43,6 +43,7 @@ post '/select_input_*_to_*' do
 end
 
 post '/code_execution_result' do
-  run_ruby(params[:code] || "")
+  code = request.env["rack.input"].read
+  run_ruby(code)
 end
 

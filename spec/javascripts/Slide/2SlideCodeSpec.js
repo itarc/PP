@@ -14,7 +14,7 @@ describe("Slide : Coding", function() {
 	  
     expect(postResource).toHaveBeenCalled();
     expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/code_execution_result', 'code='  + 'puts 1', SYNCHRONOUS);
+    expect(postResource).toHaveBeenCalledWith('/code_execution_result', 'puts 1', SYNCHRONOUS);
 	  
     expect(slideNode.querySelector('#code_input').innerHTML).toBe('puts 1');
     expect(slideNode.querySelector('#code_output').innerHTML).toBe('1');

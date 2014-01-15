@@ -31,6 +31,17 @@ describe 'Coding Slide', :type => :feature, :js => true do
     
     expect(page).to have_field 'code_output', :with => "something"
     
-  end  
+  end 
+
+  it 'should evaluate an aritmetic operation' do
+
+    visit CODING_SLIDE
+    
+    fill_in 'code_input', :with => '1 + 1'
+    click_on 'execute'
+    
+    expect(page).to have_field 'code_output', :with => "2"
+    
+  end 
 
 end

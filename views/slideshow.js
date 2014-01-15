@@ -89,7 +89,7 @@ Slide.prototype = {
 
   executeCode: function() {
     url = "/code_execution_result"
-    code = "code=" + this._node.querySelector('#code_input').value
+    code = this._node.querySelector('#code_input').value
     this._node.querySelector('#code_output').innerHTML = postResource(url, code, SYNCHRONOUS)
   }, 
 
