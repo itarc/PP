@@ -44,11 +44,15 @@ var getResource = function(path) {
 var Slide = function(node) {
 
   this._node = node;
-
-  var _t = this;   	
-  this._node.querySelector('#execute').addEventListener('click',
-    function(e) { _t.executeCode(); }, false
-  );
+	
+  executeButton = this._node.querySelector('#execute')
+  
+  if (executeButton) {
+    var _t = this;   	
+    executeButton.addEventListener('click',
+      function(e) { _t.executeCode(); }, false
+    );
+  }
   
 };
 

@@ -21,5 +21,18 @@ describe("Slide : Coding", function() {
     
   });
   
+  it("should call code execution when click on execute", function() {
+  
+    slideNode = sandbox("<div class='slide'><section><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><textarea id='code_output'></textarea></section></div>");
+  
+    spyOn(Slide.prototype, 'executeCode');
+	  
+    var slide = new Slide(slideNode);
+    slideNode.querySelector('#execute').click();
+
+    expect(Slide.prototype.executeCode).toHaveBeenCalled();
+    
+  });  
+  
 });
 
