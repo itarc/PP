@@ -15,7 +15,7 @@
 	    
             <textarea class="code" id="code_input"></textarea>
 
-	    <input type="button" id="execute" onclick="viewOutput()" value="EXECUTE (ALT-R)">
+	    <input type="button" id="execute" value="EXECUTE (ALT-R)">
 
             <textarea class="code_result" id="code_output"></textarea>	    
 	    
@@ -24,16 +24,6 @@
         </div>
 
       </div> <!--presentation-->
-
-    <script>
-      function viewOutput() { 
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("POST", '/code_execution_result', false);
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-        xmlhttp.send('code=' + document.getElementById('code_input').value);
-        document.getElementById('code_output').innerHTML = xmlhttp.responseText
-      }
-    </script>
 
     <script src="slideshow.js"></script>
     <script src="slideshow-teacher.js"></script>

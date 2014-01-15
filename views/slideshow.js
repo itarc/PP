@@ -45,6 +45,11 @@ var Slide = function(node) {
 
   this._node = node;
 
+  var _t = this;   	
+  this._node.querySelector('#execute').addEventListener('click',
+    function(e) { _t.executeCode(); }, false
+  );
+  
 };
 
 Slide.prototype = {
@@ -81,8 +86,8 @@ Slide.prototype = {
   executeCode: function() {
     url = "/code_execution_result"
     code = "code=" + this._node.querySelector('#code_input').value
-    this._node.querySelector('#code_output').innerHTML = postResource(url, code, SYNCHRONOUS)	  
-  },    
+    this._node.querySelector('#code_output').innerHTML = postResource(url, code, SYNCHRONOUS)
+  }, 
 
 };
 
@@ -102,7 +107,7 @@ var SlideShow = function(slides) {
   var _t = this;
   document.addEventListener('keydown',
     function(e) { _t.handleKeys(e); }, false
-  );
+  );   
 
   this._update();
 
@@ -183,7 +188,9 @@ SlideShow.prototype = {
 
     currentSlide = this._slides[this._currentIndex]
     currentSlide.executeCode()
-	  
-  }
+
+  },
+  
+
   
 };
