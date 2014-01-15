@@ -11,24 +11,25 @@ set :logging, false
 CODING_SLIDE = '/coding_slide'
 
 
-describe 'Coding Slide', :type => :feature do
+describe 'Coding Slide', :type => :feature, :js => true do
   
   it 'should display one coding area and a result area' do
 
     visit CODING_SLIDE
     
-    expect(page).to have_field 'input', :with => ""
-    expect(page).to have_field 'output', :with => ""
+    expect(page).to have_field 'code_input', :with => ""
+    expect(page).to have_field 'code_output', :with => ""
     
   end
   
-  it 'should show show "result" when puts "result" is executed' do
+  it 'should show "something" when puts "something" is executed' do
 
     visit CODING_SLIDE
-
-    fill_in 'input', :with => 'puts "result"'
+    
+    fill_in 'code_input', :with => 'print "something"'
     click_on 'execute'
-    expect(page).to have_field 'output', :with => "result"    
+    
+    expect(page).to have_field 'code_output', :with => "something"
     
   end  
 
