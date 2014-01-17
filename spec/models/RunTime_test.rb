@@ -1,4 +1,4 @@
-require_relative 'RunTime'
+require_relative '../../models/RunTime'
 require 'test/unit'
 
 class TestRunTime_run_ruby < Test::Unit::TestCase

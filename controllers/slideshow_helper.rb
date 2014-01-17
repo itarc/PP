@@ -2,7 +2,6 @@
 
 require_relative '../models/Poll'
 require_relative '../models/RunTime'
-require_relative '../models/Statistics'
 
 def question_id
   params[:splat][1]
