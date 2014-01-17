@@ -32,6 +32,22 @@ class Presentation
   def ratings
     @events.select { |event|   /.*evaluation/ =~ event.question_id }
   end
+  
+  def ratings_by_user
+    h = {}
+    ratings.each do |event|
+      if h[event.user_id] then
+        h[event.user_id] << event
+      else
+	h[event.user_id] = [event]
+      end
+    end
+    h
+  end
+  
+  def users
+    (@events.map { |event| event.user_id }).uniq
+  end
 
 end
 
@@ -147,6 +163,75 @@ class TestPresentation_ratings < Test::Unit::TestCase
   def teardown
     $db.execute_sql("delete from polls")
   end    
+
+end
+
+class TestPresentation_users < Test::Unit::TestCase
+
+  def setup
+    $db.execute_sql("delete from polls")
+  end    
+
+  def test01_should_be_empty_when_no_events_in_database
+    presentation = Presentation.new
+    assert_equal [], presentation.users 
+  end
+  
+  def test02_should_find_one_user
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'question', 'answer')")
+    presentation = Presentation.new
+    assert_equal ['user'], presentation.users 
+  end  
+
+  def test02_should_find_a_unique_user
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'question', 'answer')")
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'question', 'answer')")
+    presentation = Presentation.new
+    assert_equal ['user'], presentation.users 
+  end  
+  
+  def teardown
+    $db.execute_sql("delete from polls")
+  end      
+  
+end
+
+class TestPresentation_ratings_by_user < Test::Unit::TestCase
+	
+  def setup
+    $db.execute_sql("delete from polls")	  
+    @time_1 = Time.parse('2014-01-13 14:00')   
+    @time_2 = Time.parse('2014-01-13 15:00')        
+  end
+
+  def test01_should_be_empty_when_initialized
+    presentation = Presentation.new
+    assert_equal ({}), presentation.ratings_by_user    
+  end
+  
+  def test02_should_find_one_rating_for_one_user
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'evaluation', 'answer')")     	  
+    presentation = Presentation.new
+    assert_equal ({'user' => [[@time_1, 'user', 'evaluation', 'answer']]}).inspect, presentation.ratings_by_user.inspect
+  end
+  
+  def test03_should_filter_to_find_one_rating_event
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'evaluation', 'answer')")	  
+    $db.execute_sql("insert into polls values ('#{@time_2.to_f}', 'user', 'x', 'answer')")    	  
+    presentation = Presentation.new
+    assert_equal ({'user' => [[@time_1, 'user', 'evaluation', 'answer']]}).inspect, presentation.ratings_by_user.inspect
+  end    
+  
+  def test03
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'evaluation', 'answer')")     	  
+    $db.execute_sql("insert into polls values ('#{@time_2.to_f}', 'user', 'evaluation', 'answer')")     	  
+    presentation = Presentation.new
+    assert_equal ({'user' => [[@time_1, 'user', 'evaluation', 'answer'], [@time_2, 'user', 'evaluation', 'answer']]}).inspect, presentation.ratings_by_user.inspect
+  end  
+  
+  def teardown
+    $db.execute_sql("delete from polls")
+  end   
 
 end
 

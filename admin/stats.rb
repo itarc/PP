@@ -14,8 +14,8 @@ puts presentation.duration
 puts presentation.first_event_time
 puts presentation.last_event_time
 
-
-pp presentation.ratings
+pp presentation.users
+pp presentation.ratings_by_user
 
 exit
 
