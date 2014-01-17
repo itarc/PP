@@ -18,6 +18,10 @@ class Presentation
   def duration
     (@end_time - @start_time) / 60
   end
+
+  def users
+    (@events.map { |event| event.user_id }).uniq
+  end  
   
   def first_event_time
     return 0 if @events == []
@@ -34,19 +38,28 @@ class Presentation
   end
   
   def ratings_by_user
-    h = {}
+    user_ratings = {}
     ratings.each do |event|
-      if h[event.user_id] then
-        h[event.user_id] << event
-      else
-	h[event.user_id] = [event]
-      end
+      user_ratings[event.user_id] = ( user_ratings[event.user_id] || [] ) + [event]
     end
-    h
+    user_ratings
   end
-  
-  def users
-    (@events.map { |event| event.user_id }).uniq
+
+  def ratings_by_question
+    question_ratings = {}
+    ratings.each do |event|
+      question_ratings[event.question_id] = ( question_ratings[event.question_id] || [] ) + [event]
+    end
+    question_ratings
+  end
+
+  def ratings_by_question_and_user
+    question_and_user_ratings = {}
+    ratings.each do |event|
+      question_and_user_ratings[event.question_id] = {} unless question_and_user_ratings[event.question_id]
+      question_and_user_ratings[event.question_id][event.user_id] = ( question_and_user_ratings[event.question_id][event.user_id] || [] ) + [event]
+    end
+    question_and_user_ratings
   end
 
 end
@@ -222,7 +235,7 @@ class TestPresentation_ratings_by_user < Test::Unit::TestCase
     assert_equal ({'user' => [[@time_1, 'user', 'evaluation', 'answer']]}).inspect, presentation.ratings_by_user.inspect
   end    
   
-  def test03
+  def test04_should_find_two_ratings_for_the_same_user
     $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'evaluation', 'answer')")     	  
     $db.execute_sql("insert into polls values ('#{@time_2.to_f}', 'user', 'evaluation', 'answer')")     	  
     presentation = Presentation.new
@@ -231,6 +244,70 @@ class TestPresentation_ratings_by_user < Test::Unit::TestCase
   
   def teardown
     $db.execute_sql("delete from polls")
+  end   
+
+end
+
+
+class TestPresentation_ratings_by_question < Test::Unit::TestCase
+	
+  def setup
+    $db.execute_sql("delete from polls")	  
+    @time_1 = Time.parse('2014-01-13 14:00')	  
+  end
+
+  def test01_should_be_empty_when_initialized
+    presentation = Presentation.new
+    assert_equal ({}), presentation.ratings_by_question
+  end
+  
+  def test02_should_find_one_question_rating
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'slide_1_evaluation', 'answer')")     	  
+    presentation = Presentation.new
+    assert_equal ({'slide_1_evaluation' => [[@time_1, 'user', 'slide_1_evaluation', 'answer']]}).inspect, presentation.ratings_by_question.inspect
+  end  
+  
+  def teardown
+    $db.execute_sql("delete from polls")	  
+  end   
+
+end
+
+class TestPresentation_ratings_by_question_and_user < Test::Unit::TestCase
+	
+  def setup
+    $db.execute_sql("delete from polls")	  
+    @time_1 = Time.parse('2014-01-13 14:00')
+    @time_2 = Time.parse('2014-01-13 15:00')       
+  end
+
+  def test01_should_be_empty_when_initialized
+    presentation = Presentation.new
+    assert_equal ({}), presentation.ratings_by_question_and_user
+  end
+  
+  def test02_should_find_one_question_and_user_rating
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'slide_1_evaluation', 'answer')")     	  
+    presentation = Presentation.new
+    assert_equal ({'slide_1_evaluation' => { 'user' =>[ [@time_1, 'user', 'slide_1_evaluation', 'answer'] ]}}).inspect, presentation.ratings_by_question_and_user.inspect
+  end  
+  
+  def test03_should_find_two_different_question_rating_for_the_same_user
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'slide_1_evaluation', 'answer')")     	  
+    $db.execute_sql("insert into polls values ('#{@time_2.to_f}', 'user', 'slide_2_evaluation', 'answer')")     	  
+    presentation = Presentation.new
+    assert_equal ({'slide_1_evaluation' => { 'user' =>[ [@time_1, 'user', 'slide_1_evaluation', 'answer'] ]}, 'slide_2_evaluation' => { 'user' => [[@time_2, 'user', 'slide_2_evaluation', 'answer']] }}).inspect, presentation.ratings_by_question_and_user.inspect
+  end   
+
+  def test04_should_find_two_different_user_rating_for_the_same_question
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user_1', 'slide_1_evaluation', 'answer')")     	  
+    $db.execute_sql("insert into polls values ('#{@time_2.to_f}', 'user_2', 'slide_1_evaluation', 'answer')")     	  
+    presentation = Presentation.new
+    assert_equal ({'slide_1_evaluation' => { 'user_1' =>[ [@time_1, 'user_1', 'slide_1_evaluation', 'answer'] ], 'user_2' => [[@time_2, 'user_2', 'slide_1_evaluation', 'answer']] } } ).inspect, presentation.ratings_by_question_and_user.inspect
+  end
+  
+  def teardown
+    $db.execute_sql("delete from polls")	  
   end   
 
 end
