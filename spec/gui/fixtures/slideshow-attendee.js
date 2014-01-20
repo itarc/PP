@@ -1,1 +1,1 @@
-../../../views/slideshow-attendee.js
+../../../public/slideshow-attendee.js

@@ -1,5 +1,5 @@
 src_files:
-  - views/*.js
+  - public/*.js
 
 helpers:
   - 'helpers/**/*.js'
