@@ -1,6 +1,6 @@
 require 'sinatra'
 
-set :public_folder, 'views'
+set :public_folder, 'public'
 set :logging, false
 
 set :bind, '0.0.0.0'
@@ -15,11 +15,11 @@ require_relative 'slideshow_helper'
 
 get '/' do
   session[:user_id] ||= next_user_id
-  redirect "slideshow-attendee.html"
+  send_file "views/slideshow-attendee.html"
 end
 
 get '/teacher-x1973' do
-  redirect "slideshow-teacher.1973x.html"
+  send_file "views/slideshow-teacher.1973x.html"
 end
 
 get '/teacher_current_slide' do
