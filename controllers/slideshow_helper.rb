@@ -15,7 +15,7 @@ def user_id
   session[:user_id]  
 end
 
-def next_id
+def next_user_id
   $db.execute_sql("update compteur set identifiant = identifiant + 1")
   return $db.execute_sql("select identifiant from compteur").to_a[0]['identifiant'].to_i
 end

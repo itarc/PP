@@ -14,7 +14,7 @@ require_relative 'slideshow_helper'
 # ---------
 
 get '/' do
-  session[:user_id] ||= next_id
+  session[:user_id] ||= next_user_id
   redirect "slideshow-attendee.html"
 end
 
