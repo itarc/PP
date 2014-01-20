@@ -5,7 +5,16 @@ require 'rack/test'
 
 disable :sessions # Mandatory to test sessions, otherwise we cannot access session object
 
-class TestsSession < Test::Unit::TestCase
+class TestSlideShowHelper_next_user_id < Test::Unit::TestCase
+
+  def test01 
+    $db.execute_sql("update compteur set identifiant = 0")
+    assert_equal 1, next_user_id
+  end
+
+end
+
+class TestSession < Test::Unit::TestCase
   
   include Rack::Test::Methods
 
