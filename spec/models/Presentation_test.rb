@@ -67,7 +67,7 @@ class TestPresentation_all_events < Test::Unit::TestCase
     assert_equal ([[@time_1, 'user', 'question', 'answer']]).inspect, presentation.all_events.inspect
   end  
   
-  def test02_should_find_to_all_events_in_order
+  def test03_should_find_to_all_events_in_order
     $db.execute_sql("insert into polls values ('#{@time_2.to_f}', 'user', 'question', 'answer')")  	  
     $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'question', 'answer')")     	  
     presentation = Presentation.new
@@ -77,6 +77,46 @@ class TestPresentation_all_events < Test::Unit::TestCase
   def teardown
     $db.execute_sql("delete from polls")
   end  
+	
+end
+
+class TestPresentation_last_events < Test::Unit::TestCase
+	
+  def setup
+    $db.execute_sql("delete from polls")   
+    @time_1 = Time.parse('2014-01-13 14:00')  
+    @time_2 = Time.parse('2014-01-13 15:00')     
+  end
+  
+  def test01_should_be_empty_when_initialized
+    presentation = Presentation.new
+    assert_equal [], presentation.last_events
+  end
+  
+  def test02_should_find_one_event
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'question', 'answer')")     	  
+    presentation = Presentation.new
+    assert_equal ([[@time_1, 'user', 'question', 'answer']]).inspect, presentation.last_events.inspect
+  end
+  
+  def test03_should_find_one_last_event
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user', 'question', 'answer')")     	  
+    $db.execute_sql("insert into polls values ('#{@time_2.to_f}', 'user', 'question', 'answer')")     	  
+    presentation = Presentation.new
+    assert_equal ([[@time_2, 'user', 'question', 'answer']]).inspect, presentation.last_events.inspect
+  end  
+  
+  def test03_should_find_two_lats_events
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user_1', 'question', 'answer')")     	  
+    $db.execute_sql("insert into polls values ('#{@time_2.to_f}', 'user_1', 'question', 'answer')")     	  
+    $db.execute_sql("insert into polls values ('#{@time_1.to_f}', 'user_2', 'question', 'answer')")     	  
+    presentation = Presentation.new
+    assert_equal ([[@time_2, 'user_1', 'question', 'answer'], [@time_1, 'user_2', 'question', 'answer']]).inspect, presentation.last_events.inspect
+  end  
+
+  def teardown
+    $db.execute_sql("delete from polls")	  
+  end
 	
 end
 
@@ -242,5 +282,51 @@ class TestPresentation_ratings_by_question_and_user < Test::Unit::TestCase
   def teardown
     $db.execute_sql("delete from polls")	  
   end   
+
+end
+
+class TestPresentation_global_evaluation < Test::Unit::TestCase
+
+  def setup
+    $db.execute_sql("delete from polls")	         
+  end
+  
+  def test01_shoulb_be_nil_when_database_is_empty
+    assert_equal nil, Presentation.new.global_evaluation
+  end
+  
+  def test02_should_be_nil_when_no_global_evaluation_in_database
+    $db.execute_sql("insert into polls values ('0', '0', '0', '0')")
+    assert_equal nil, Presentation.new.global_evaluation
+  end
+  
+  def test03_should_find_one_global_evaluation
+    $db.execute_sql("insert into polls values ('0', '0', '0', '0')")
+    $db.execute_sql("insert into polls values ('1', '1', 'global_evaluation', '5')")
+    assert_equal 5, Presentation.new.global_evaluation
+  end  
+  
+  def test04_should_keep_only_last_answer
+    $db.execute_sql("insert into polls values ('1', '1', 'global_evaluation', '1')")
+    $db.execute_sql("insert into polls values ('2', '1', 'global_evaluation', '5')")    
+    assert_equal 5, Presentation.new.global_evaluation
+  end 
+  
+  def test05_should_be_an_integer
+    $db.execute_sql("insert into polls values ('t1', '1', 'global_evaluation', '5')")
+    $db.execute_sql("insert into polls values ('t2', '2', 'global_evaluation', '1')")    
+    assert_equal 3, Presentation.new.global_evaluation
+  end
+  
+  def test06_should_be_a_float_rounded_to_two_digits
+    $db.execute_sql("insert into polls values ('t1', '1', 'global_evaluation', '5')")
+    $db.execute_sql("insert into polls values ('t2', '2', 'global_evaluation', '3')")    
+    $db.execute_sql("insert into polls values ('t3', '3', 'global_evaluation', '2')")    
+    assert_equal 3.33, Presentation.new.global_evaluation
+  end    
+  
+  def teardown
+    $db.execute_sql("delete from polls")	  
+  end    
 
 end

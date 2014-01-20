@@ -19,6 +19,11 @@ class Presentation
     all_events = $db.execute_sql("select timestamp, user_id, question_id, response from polls order by timestamp asc").values
     all_events.map { |tuple| Event.new(Time.at(tuple[0].to_f), tuple[1], tuple[2], tuple[3]) }
   end
+  
+  def last_events
+    all_events = $db.execute_sql("select distinct on(user_id) timestamp, user_id, question_id, response from polls order by user_id, timestamp desc").values
+    all_events.map { |tuple| Event.new(Time.at(tuple[0].to_f), tuple[1], tuple[2], tuple[3]) }
+  end
 
   def duration
     (@end_time - @start_time) / 60
@@ -40,6 +45,15 @@ class Presentation
   
   def ratings
     @events.select { |event|   /.*evaluation/ =~ event.question_id }
+  end
+  
+  def global_evaluation
+    global_evaluations=last_events.select { |rating|   /global_evaluation/ =~ rating.question_id }
+    sum = 0
+    global_evaluations.each do |user_global_evaluation| # Try with an array.inject
+      sum += user_global_evaluation.response.to_i
+    end
+    average = (sum.to_f / global_evaluations.size).round(2) if sum != 0
   end
   
   def ratings_by_user
