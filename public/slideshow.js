@@ -48,6 +48,9 @@ var Slide = function(node) {
     executeButton.addEventListener('click',
       function(e) { _t.executeCode(); }, false
     );
+    this._node.querySelector('#code_input').addEventListener('keydown',
+      function(e) { if ( e.altKey && e.which == R) { _t.executeCode(); }}, false
+    );
   }
 };
 
@@ -75,9 +78,8 @@ Slide.prototype = {
   }, 
 
   executeCode: function() {
-    url = "/code_execution_result"
-    code = this._node.querySelector('#code_input').value
-    this._node.querySelector('#code_output').innerHTML = postResource(url, code, SYNCHRONOUS)
+    url = "/code_execution_result"; code = this._node.querySelector('#code_input').value;
+    this._node.querySelector('#code_output').innerHTML = postResource(url, code, SYNCHRONOUS);
   }, 
 
 };
@@ -143,9 +145,5 @@ SlideShow.prototype = {
     this._getCurrentIndex();
     this._update();
   },
-  
-  executeCode: function() {
-    currentSlide = this._slides[this._currentIndex]
-    currentSlide.executeCode()
-  },
+
 };

@@ -68,18 +68,4 @@ describe("TeacherSlideShow : keyboard handling", function() {
 
   });
   
-  it("should call executeCode when alt-r pressed", function() {
-
-    spyOn(TeacherSlideShow.prototype, 'executeCode');
-
-    expect(TeacherSlideShow.prototype.executeCode.calls.length).toBe(0);
-	  
-    __triggerKeyboardEvent(document, R, ALT);
-
-    expect(TeacherSlideShow.prototype.executeCode).toHaveBeenCalled();
-    expect(TeacherSlideShow.prototype.executeCode.calls.length).toBe(1);
-    expect(TeacherSlideShow.prototype.executeCode).toHaveBeenCalledWith();    
-
-  });  
-  
 });

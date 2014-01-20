@@ -12,18 +12,5 @@ describe("Teacher SlideShow : Navigation with 1 Slide", function() {
     expect(teacherSlideShow._currentIndex).toBe(0);
 
   });
-
-  it("should call code execution when ALT-R", function() {
-
-    setFixtures("<div class='slides'><div class='slide'/><section><textarea id='code_input'>puts 1</textarea><textarea id='code_output'></textarea></section><div class='slide'/></div>");
-    spyOn(Slide.prototype, 'executeCode');
-	  
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));
-
-    __triggerKeyboardEvent(document, R, ALT);
-	  
-    expect(Slide.prototype.executeCode).toHaveBeenCalled();
-
-  });    
   
 });

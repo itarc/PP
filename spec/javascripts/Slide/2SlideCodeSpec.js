@@ -32,7 +32,20 @@ describe("Slide : Coding", function() {
 
     expect(Slide.prototype.executeCode).toHaveBeenCalled();
     
-  });  
+  });
+  
+  it("should call code execution when ALT-R pressed", function() {
+
+    slideNode = sandbox("<div class='slide'/><section><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><textarea id='code_output'></textarea></section><div>");
+    spyOn(Slide.prototype, 'executeCode');
+	  
+    var slide = new Slide(slideNode);
+
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
+	  
+    expect(Slide.prototype.executeCode).toHaveBeenCalled();
+
+  });      
   
 });
 

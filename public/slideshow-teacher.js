@@ -7,7 +7,6 @@ var TeacherSlideShow = function(slides) {
 
 TeacherSlideShow.prototype = {
   handleKeys: function(e) {
-    if ( e.altKey && e.which == R) { this.executeCode() }
     switch (e.keyCode) {
       case LEFT_ARROW: 
         this.prev(); 
