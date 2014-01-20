@@ -50,17 +50,12 @@ class PollQuestion
   end
   
   def rates
-  
     rates = {}
     possible_responses.each do |response|
-  
       rate = rate_for(response)
       rates[response] = rate
-    
     end
-  
     {@question_id => rates }
-	  
   end
 
 end
