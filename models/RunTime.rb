@@ -27,10 +27,11 @@ def eval_ruby(ruby_code)
 end
 
 def run_ruby(ruby_code)
-  file = File.new("file_to_execute.rb", 'w')
+  file_name = "ruby_file_to_run.#{Time.now.to_f}.rb"
+  file = File.new(file_name, 'w')
   file << ruby_code
   file.close
-  result = `ruby file_to_execute.rb 2>&1`
+  result = `ruby #{file_name} 2>&1`
   File.delete(file)
   result
 end
