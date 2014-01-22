@@ -1,6 +1,6 @@
 require 'stringio'
   
-def run_ruby(ruby_code)
+def eval_ruby(ruby_code)
  
   io = StringIO.new
   begin
@@ -24,4 +24,13 @@ def run_ruby(ruby_code)
     io.string
   end  
   
+end
+
+def run_ruby(ruby_code)
+  file = File.new("file_to_execute.rb", 'w')
+  file << ruby_code
+  file.close
+  result = `ruby file_to_execute.rb 2>&1`
+  File.delete(file)
+  result
 end
