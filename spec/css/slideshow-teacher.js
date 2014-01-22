@@ -1,1 +1,1 @@
-../../views/slideshow-teacher.js
+../../public/slideshow-teacher.js

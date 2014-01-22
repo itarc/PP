@@ -146,21 +146,26 @@ video {
 /* -------------- Code Slide ------------ */
 
 textarea.code {
-  display:block;
   font-size:0.5em;
-  width:100%; 
-  height:40%;
+  width:60%; 
+  height:50%;
+}
+
+textarea.code_help {
+  font-size:0.5em;
+  width:38%; 
+  height:50%;
 }
 
 textarea.code_result {
-  display:block;	
   font-size:0.5em;
   width:100%; 
-  height:20%;
+  height:15%;
 }
 
 textarea + input[type=button] {
-  width:100%; 
+  width:20%; 
+  font-size: 0.5em;
 }
 
 /* ------------------------------------------------------------------------ */
