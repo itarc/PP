@@ -41,21 +41,27 @@ var getResource = function(path) {
 // ----------------------------------
 var Slide = function(node) {
   this._node = node;
+
+  if (this._isCodingSlide()) { this._initializeCodingSlide(); }
+
+};
+
+Slide.prototype = {
+  _states: [ 'previous', 'current', 'next'],
 	
-  executeButton = this._node.querySelector('#execute')
-  if (executeButton) {
+  _isCodingSlide: function() {
+    return this._node.querySelector('#execute');
+  },
+  
+  _initializeCodingSlide: function() {
     var _t = this;   	
-    executeButton.addEventListener('click',
+    this._node.querySelector('#execute').addEventListener('click',
       function(e) { _t.executeCode(); }, false
     );
     this._node.querySelector('#code_input').addEventListener('keydown',
       function(e) { if ( e.altKey && e.which == R) { _t.executeCode(); }}, false
     );
-  }
-};
-
-Slide.prototype = {
-  _states: [ 'previous', 'current', 'next'],
+  },
 
   setState: function(state) {
     this._node.className = 'slide' + ((state != '') ? (' ' + state) : '');
