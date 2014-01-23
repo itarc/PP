@@ -29,23 +29,8 @@ describe 'Coding Slide', :type => :feature, :js => true do
     fill_in 'code_input', :with => 'print "something"'
     click_on 'execute'
     
-    within('#code_output') do
-      expect(page).to have_content "something"
-    end    
+    expect(page).to have_field 'code_output', :with => 'something'
     
-  end 
-
-  it 'should execute unit/tests' do
-
-    visit CODING_SLIDE
-    
-    fill_in 'code_input', :with => 'require "test/unit"'
-    click_on 'execute'
-    
-    within('#code_output') do
-      expect(page).to have_content "0 tests, 0 assertions, 0 failures, 0 errors, 0 skips"
-    end
-    
-  end 
+  end
 
 end

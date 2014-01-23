@@ -2,12 +2,12 @@ describe("Slide : Coding", function() {
 
   it("should call code execution", function() {
   
-    slideNode = sandbox("<div class='slide'><section><textarea id='code_input'>puts 1</textarea><textarea id='code_output'></textarea></section></div>");
+    slideNode = sandbox("<div class='slide'><section><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><textarea id='code_output'></textarea></section></div>");
   
     postResource = jasmine.createSpy('postResource').andReturn('1');  
 	  
-    expect(slideNode.querySelector('#code_input').innerHTML).toBe('puts 1');
-    expect(slideNode.querySelector('#code_output').innerHTML).toBe('');	  
+    expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
+    expect(slideNode.querySelector('#code_output').value).toBe('');	  
 	  
     var slide = new Slide(slideNode);
     slide.executeCode()
@@ -16,8 +16,8 @@ describe("Slide : Coding", function() {
     expect(postResource.calls.length).toBe(1);
     expect(postResource).toHaveBeenCalledWith('/code_run_result', 'puts 1', SYNCHRONOUS);
 	  
-    expect(slideNode.querySelector('#code_input').innerHTML).toBe('puts 1');
-    expect(slideNode.querySelector('#code_output').innerHTML).toBe('1');
+    expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
+    expect(slideNode.querySelector('#code_output').value).toBe('1');
     
   });
   

@@ -168,6 +168,18 @@ textarea + input[type=button] {
   font-size: 0.5em;
 }
 
+div.code {
+  display:inline-block;
+  width:60%; 
+  height:50%;
+}
+
+div.code_helper {
+  display:inline-block;
+  width:38%; 
+  height:50%;
+}
+
 /* ------------------------------------------------------------------------ */
 /* CAN BE MODIFIED FOR EACH PRESENTATION */
 /* ------------------------------------------------------------------------ */
