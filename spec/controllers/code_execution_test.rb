@@ -3,8 +3,6 @@ require_relative "../../controllers/slideshow"
 require 'test/unit'
 require 'rack/test'
 
-disable :sessions # Mandatory to test sessions, otherwise we cannot access session object
-
 class TestCodeEvaluation < Test::Unit::TestCase
   
   include Rack::Test::Methods
