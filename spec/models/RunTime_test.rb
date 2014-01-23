@@ -63,3 +63,45 @@ class TestRunTime_run_ruby < Test::Unit::TestCase
   end  
 
 end
+
+class TestRunTimeEvent < Test::Unit::TestCase
+  
+  def setup
+    $db.execute_sql("delete from run_events")
+  end
+  
+  def test01_initialization
+    runtime_event = RunTimeEvent.new("user", code_input = "print 1", code_output = "1")
+    assert_equal  "user", runtime_event.user
+    assert_equal  "print 1", runtime_event.code_input
+    assert_equal  "1", runtime_event.code_output
+    assert_equal (["user", "print 1", "1"]).inspect, runtime_event.to_s
+  end
+  
+  def test02_should_find_a_runtime_event_for_a_user
+    RunTimeEvent.new("user", code_input = "print 2", code_output = "2").save
+    runtime_events = RunTimeEvent.find("user")
+    assert_equal 1, runtime_events.size
+    assert_equal ([["user", "print 2", "2"]]).inspect, runtime_events.inspect
+  end
+  
+  def test03_should_find_a_runtime_event_for_a_user
+    RunTimeEvent.new("user_1", code_input = "print 1", code_output = "1").save
+    RunTimeEvent.new("user_2", code_input = "print 2", code_output = "2").save
+    runtime_events = RunTimeEvent.find("user_1")
+    assert_equal 1, runtime_events.size
+    assert_equal ([["user_1", "print 1", "1"]]).inspect, runtime_events.inspect
+  end  
+  
+  def test04_should_find_all_runtime_events
+    RunTimeEvent.new("user", code_input = "print 3", code_output = "3").save
+    runtime_events = RunTimeEvent.find_all
+    assert_equal 1, runtime_events.size
+    assert_equal ([["user", "print 3", "3"]]).inspect, runtime_events.inspect
+  end
+
+  def teardown
+    $db.execute_sql("delete from run_events")
+  end
+
+end

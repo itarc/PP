@@ -35,3 +35,34 @@ def run_ruby(ruby_code)
   File.delete(file)
   result
 end
+
+require_relative '../db/Accesseur'  
+$db = Accesseur.new
+
+class RunTimeEvent
+  attr_accessor :user, :code_input, :code_output
+  
+  def initialize(user, code_input, code_output)
+    @user = user
+    @code_input = code_input
+    @code_output = code_output
+  end
+  
+  def save
+    $db.execute_sql("insert into run_events values ('#{Time.now.to_f}', '#{@user}', '#{@code_input}', '#{@code_output}')")
+  end
+  
+  def RunTimeEvent.find(user)
+    RunTimeEvent.find_all.select { |event|  event.user == user }
+  end
+  
+  def RunTimeEvent.find_all
+    events = $db.execute_sql("select timestamp, user_id, code_input, code_output from run_events order by timestamp asc").values
+    events.map { |tuple| RunTimeEvent.new(tuple[1], tuple[2], tuple[3]) }
+  end
+  
+  def to_s
+    ([@user, @code_input, @code_output]).inspect
+  end
+  
+end
