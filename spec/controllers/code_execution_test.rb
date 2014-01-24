@@ -46,6 +46,10 @@ class TestCodeRun < Test::Unit::TestCase
     Sinatra::Application
   end
   
+  def setup
+    $db.execute_sql("delete from run_events")	  
+  end
+  
   def test01_should_not_run_anything_when_no_code
     post '/code_run_result', ""
     assert_equal "", last_response.body
@@ -64,6 +68,10 @@ class TestCodeRun < Test::Unit::TestCase
   def test04_should_run_unit_tests
     post '/code_run_result', "require 'test/unit'"
     assert last_response.body.include?("0 tests, 0 assertions, 0 failures, 0 errors, 0 skips")  
+  end
+  
+  def teardown
+    $db.execute_sql("delete from run_events")	  
   end
   
 end

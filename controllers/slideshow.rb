@@ -57,5 +57,5 @@ end
 
 post '/code_run_result' do
   code = request.env["rack.input"].read
-  run_ruby(code)
+  run_ruby(code, user_id)
 end
