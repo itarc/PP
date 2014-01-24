@@ -79,7 +79,16 @@ if __FILE__ == $0 then
     def test40_to_sql
       db = Accesseur.new
       assert_equal "doubler ''apostrophe''", db.format_to_sql("doubler 'apostrophe'")
-      assert_equal "", db.format_to_sql(nil)
+      assert_equal "", db.format_to_sql(nil)     
+    end
+    
+    def test50_insert_with_quote
+      db = Accesseur.new
+      db.execute_sql("drop table if exists a")
+      db.create_table('a', 'c1 TEXT')
+      assert_nothing_raised { db.execute_sql("insert into a values ('#{db.format_to_sql("'string with quotes'")}')") }
+      assert_equal "'string with quotes'", db.execute_sql('select c1 from a')[0]['c1']
+      db.execute_sql("drop table if exists a")
     end
 
   end
