@@ -12,6 +12,10 @@ CODING_SLIDE = '/coding_slide'
 
 
 describe 'Coding Slide', :type => :feature, :js => true do
+	
+  before(:each) do
+    $db.execute_sql("delete from run_events") 
+  end	
   
   it 'should display one coding area and a result area' do
 
@@ -32,5 +36,9 @@ describe 'Coding Slide', :type => :feature, :js => true do
     expect(page).to have_field 'code_output', :with => 'something'
     
   end
+  
+  after(:each) do
+    $db.execute_sql("delete from run_events") 
+  end    
 
 end
