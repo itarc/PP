@@ -190,7 +190,7 @@ describe("SlideShow : Update", function() {
     expect(slideShow._slides[0]._node.className).toBe('slide current');
 	  
     slideShow._currentIndex = 'UNKNOWN';
-    slideShow._update();
+    slideShow._update_current_slide_state();
 	  
     expect(slideShow._slides[0]._node.className).toBe('slide current');
 

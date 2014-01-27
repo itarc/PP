@@ -99,7 +99,7 @@ var SlideShow = function(slides) {
   var _t = this;
   document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );   
 
-  this._update()
+  this._update();
 };
 
 
@@ -117,14 +117,24 @@ SlideShow.prototype = {
     return this._slides[this._currentIndex];
   },  
   
-  _update: function() {
+  _update_current_slide_state: function() {
     window.console && window.console.log("_currentIndex : " + this._currentIndex);
     if (this._current_slide()) {
       this._clean();
       this._current_slide().setState('current');
-      this._current_slide().updatePoll();
     }
   },
+  
+  _update_poll: function() {
+    if (this._current_slide()) {
+      this._current_slide().updatePoll();
+    }
+  },  
+
+  _update: function() {
+    this._update_current_slide_state();
+    this._update_poll();
+  },   
 
   _getCurrentIndex: function() {
     serverIndex = parseInt(getResource('/teacher_current_slide'));
@@ -151,6 +161,6 @@ SlideShow.prototype = {
 
   synchronise: function() {
     this._getCurrentIndex();
-    this._update();
+    this._update_current_slide_state();
   },
 };
