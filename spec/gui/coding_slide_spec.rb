@@ -8,7 +8,7 @@ Capybara.app = Sinatra::Application.new
 
 set :logging, false
 
-CODING_SLIDE = '/coding_slide'
+CODING_SLIDE = '/teacher/coding_slide'
 
 
 describe 'Coding Slide', :type => :feature, :js => true do

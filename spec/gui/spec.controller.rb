@@ -55,9 +55,9 @@ get '/teacher/2_questions_2_slides' do
 
 end
 
-get '/coding_slide' do
+get '/teacher/coding_slide' do
 
-  redirect "coding_slide.html"
+  redirect "coding_slide-teacher.html"
 
 end
 
