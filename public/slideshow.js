@@ -18,21 +18,17 @@ var queryAll = function(query) {
 };
 
 var postResource = function(path, params, synchronous_asynchronous = ASYNCHRONOUS) {
-  var xmlhttp = new XMLHttpRequest();
-	
+  var xmlhttp = new XMLHttpRequest();	
   xmlhttp.open("POST", path, synchronous_asynchronous);
   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-  xmlhttp.send(params);
-	
+  xmlhttp.send(params);	
   return xmlhttp.responseText;
 };
 
 var getResource = function(path) {
   var xmlhttp = new XMLHttpRequest();
-
   xmlhttp.open("GET", path, false);
   xmlhttp.send();
-
   return xmlhttp.responseText;
 };
 
@@ -43,8 +39,9 @@ var Slide = function(node) {
   this._node = node;
 
   if (this._isCodingSlide()) { this._initializeCodingSlide(); }
-
 };
+
+
 
 Slide.prototype = {
   _states: [ 'previous', 'current', 'next'],
@@ -90,7 +87,6 @@ Slide.prototype = {
     if (typeof ace != 'undefined') { code = this.code_editor.getValue() }
     this._node.querySelector('#code_output').value = postResource(url, code, SYNCHRONOUS);
   }, 
-
 };
 
 // ----------------------------------
@@ -105,6 +101,8 @@ var SlideShow = function(slides) {
 
   this._update()
 };
+
+
 
 SlideShow.prototype = {
   _slides : [],
