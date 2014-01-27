@@ -50,6 +50,10 @@ Slide.prototype = {
     return this._node.querySelector('#execute');
   },
   
+  _isPollResultSlide: function() {
+    return this._node.querySelectorAll('.poll_response_rate').length > 0  
+  },
+  
   _initializeCodingSlide: function() {
     var _t = this;
     if (typeof ace != 'undefined') { this.code_editor = ace.edit(this._node.querySelector('#code_input')); }
@@ -67,15 +71,13 @@ Slide.prototype = {
   },
   
   updatePoll: function() {
-    pollRateNodeList = this._node.querySelectorAll('.poll_response_rate')
-    if ( pollRateNodeList.length ==  0 ) return;
-    for (var pollRateNodeIndex in pollRateNodeList) {
-	    pollRateNodeId = pollRateNodeList[pollRateNodeIndex].id
-	    if (! pollRateNodeId) continue;
-	    pollRate = getResource('/' + pollRateNodeId);
-	    this._node.querySelector('#' + pollRateNodeId).innerHTML = "(" + pollRate + "%)";
+    if (! this._isPollResultSlide()) return;
+    rateNodes = this._node.querySelectorAll('.poll_response_rate')
+    for (var i=0; i<rateNodes.length; i++) {
+      rateNodeId = '#' + rateNodes[i].id;
+      rateNodeValue = "(" + getResource('/' + rateNodes[i].id) + "%)"
+      this._node.querySelector(rateNodeId).innerHTML = rateNodeValue;
     }
-
   },
   
   savePoll: function(elementId) {
@@ -83,8 +85,10 @@ Slide.prototype = {
   }, 
 
   executeCode: function() {
-    url = "/code_run_result"; code = this._node.querySelector('#code_input').value;
+    url = "/code_run_result";
+    code = this._node.querySelector('#code_input').value;
     if (typeof ace != 'undefined') { code = this.code_editor.getValue() }
+    
     this._node.querySelector('#code_output').value = postResource(url, code, SYNCHRONOUS);
   }, 
 };
