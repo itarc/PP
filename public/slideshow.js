@@ -97,17 +97,13 @@ Slide.prototype = {
 // SLIDESHOW CLASS
 // ----------------------------------  
 var SlideShow = function(slides) {
-  this._slides = (slides).map(function(element) {
-    return new Slide(element);
-  });
+  this._slides = (slides).map(function(element) { return new Slide(element); });
   this._numberOfSlides = this._slides.length;
 
   var _t = this;
-  document.addEventListener('keydown',
-    function(e) { _t.handleKeys(e); }, false
-  );   
+  document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );   
 
-  this._update();
+  this._update()
 };
 
 SlideShow.prototype = {
@@ -115,15 +111,20 @@ SlideShow.prototype = {
   _currentIndex : 0,
   _numberOfSlides : 0,
 
+  _clean: function() {
+    for(var slideIndex in this._slides) { this._slides[slideIndex].setState('') }
+  },
+
+  _current_slide: function() {
+    return this._slides[this._currentIndex];
+  },  
+  
   _update: function() {
     window.console && window.console.log("_currentIndex : " + this._currentIndex);
-    currentSlide = this._slides[this._currentIndex]
-    if (currentSlide) {
-      for(var slideIndex in this._slides) {
-	this._slides[slideIndex].setState('')
-      }
-      currentSlide.setState('current');
-      currentSlide.updatePoll();
+    if (this._current_slide()) {
+      this._clean();
+      this._current_slide().setState('current');
+      this._current_slide().updatePoll();
     }
   },
 
@@ -154,5 +155,4 @@ SlideShow.prototype = {
     this._getCurrentIndex();
     this._update();
   },
-
 };
