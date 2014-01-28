@@ -248,6 +248,9 @@ describe("SlideShow : Update", function() {
 
     slideShow.prev();  
     expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(1);
+	  
+    slideShow.synchronise();  
+    expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(1);    
 
     slideShow.up();
     expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(2);	  
@@ -256,7 +259,10 @@ describe("SlideShow : Update", function() {
     expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(3);
 
     slideShow.prev();  
-    expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(4);    
+    expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(4);
+
+    slideShow.synchronise();  
+    expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(5);
 
   });   
 

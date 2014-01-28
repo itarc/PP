@@ -199,7 +199,7 @@ SlideShow.prototype = {
 
   synchronise: function() {
     this._getCurrentIndex();
-    this._update_current_slide_state(); 
+    if (this._isUp) this._update_current_slide_state(); 
     this._update_coding_slide();
   },
 };
