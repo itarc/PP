@@ -45,7 +45,25 @@ describe("Slide : Coding", function() {
 	  
     expect(Slide.prototype.executeCode).toHaveBeenCalled();
 
-  });      
+  });
+
+  it("should update current code_helper", function() {
+
+    slideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><textarea id='code_helper_1'></textarea><textarea id='code_helper_2'></textarea><input type='button' id='execute'><textarea id='code_output'></textarea></section><div>");
+
+    var slide = new Slide(slideNode);
+
+    slide.updateCodingSlide(0);
+	  
+    expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper current');
+    expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper');
+	  
+    slide.updateCodingSlide(1);	
+
+    expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper');
+    expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper current');  
+
+  });    
   
 });
 

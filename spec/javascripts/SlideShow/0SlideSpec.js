@@ -207,4 +207,29 @@ describe("SlideShow : Update", function() {
 
   });	  
 
+  it("should update coding slide slideshow is updated", function() {
+
+    setFixtures("<div class='slides'><div class='slide'><div class='slide'/></div>")	  
+    spyOn(Slide.prototype, 'updateCodingSlide');
+
+    var slideShow = new SlideShow(queryAll('.slide'))
+
+    expect(Slide.prototype.updateCodingSlide).toHaveBeenCalled();    
+    expect(Slide.prototype.updateCodingSlide).toHaveBeenCalledWith(slideShow._currentIndex);   	  
+
+  });  
+  
+  it("should update coding slide when synchronised", function() {
+
+    setFixtures("<div class='slides'><div class='slide'><div class='slide'/></div>")	  
+    spyOn(Slide.prototype, 'updateCodingSlide');
+
+    var slideShow = new SlideShow(queryAll('.slide'))	  
+    slideShow.synchronise();
+
+    expect(Slide.prototype.updateCodingSlide).toHaveBeenCalled();    
+    expect(Slide.prototype.updateCodingSlide).toHaveBeenCalledWith(slideShow._currentIndex);    
+
+  });    
+
 });

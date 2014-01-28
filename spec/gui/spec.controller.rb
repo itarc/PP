@@ -47,6 +47,14 @@ get '/teacher/coding_slide' do
   redirect "coding_slide-teacher.html"
 end
 
+get '/attendee/coding_slide' do
+  redirect "coding_slide-attendee.html"
+end
+
+get '/teacher/coding_presentation' do
+  redirect "coding_presentation-teacher.html"
+end
+
 # ---------
 # POSTs
 # ---------

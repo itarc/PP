@@ -153,10 +153,14 @@ video {
 }
 
 .code_helper {
+  display: none;	
   font-size:0.5em;
-  display:inline-block;
   width:38%; 
   height:50%;
+}
+
+.code_helper.current {
+  display:inline-block;
 }
 
 .code_result {

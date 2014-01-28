@@ -80,6 +80,15 @@ Slide.prototype = {
     }
   },
   
+  updateCodingSlide: function(slide_index) {
+    if(! this._isCodingSlide()) return;
+    this._node.querySelector('#code_helper_1').className = 'code_helper'
+    this._node.querySelector('#code_helper_2').className = 'code_helper'
+
+    if (slide_index == 0) { this._node.querySelector('#code_helper_1').className = 'code_helper current'; }
+    if (slide_index == 1) { this._node.querySelector('#code_helper_2').className = 'code_helper current'; }	  
+  }, 
+  
   savePoll: function(elementId) {
     postResource('/'+elementId, '');
   }, 
@@ -111,6 +120,7 @@ var SlideShow = function(slides) {
 SlideShow.prototype = {
   _slides : [],
   _currentIndex : 0,
+  _currentServerIndex : 0,
   _numberOfSlides : 0,
 
   _clean: function() {
@@ -123,6 +133,7 @@ SlideShow.prototype = {
   
   _update_current_slide_state: function() {
     window.console && window.console.log("_currentIndex : " + this._currentIndex);
+    window.console && window.console.log("_currentServerIndex : " + this._currentServerIndex);
     if (this._current_slide()) {
       this._clean();
       this._current_slide().setState('current');
@@ -134,15 +145,24 @@ SlideShow.prototype = {
       this._current_slide().updatePoll();
     }
   },  
+  
+  _update_coding_slide:function() {
+    if (this._current_slide()) { 
+      this._current_slide().updateCodingSlide(this._currentServerIndex); 
+    }
+  },
 
   _update: function() {
     this._update_current_slide_state();
     this._update_poll();
+    this._update_coding_slide();
   },   
 
   _getCurrentIndex: function() {
     serverIndex = parseInt(getResource('/teacher_current_slide'));
-    if ( !( isNaN(serverIndex) ) ) this._currentIndex = serverIndex;
+    if ( !( isNaN(serverIndex) ) ) this._currentServerIndex = serverIndex;
+    if (this._numberOfSlides == 0 ) { this._currentIndex = this._currentServerIndex; }
+    if (this._currentServerIndex <= (this._numberOfSlides -1) ) { this._currentIndex = this._currentServerIndex; }
   },    
 
   _postCurrentIndex: function() {
@@ -165,6 +185,7 @@ SlideShow.prototype = {
 
   synchronise: function() {
     this._getCurrentIndex();
-    this._update_current_slide_state();
+    this._update_current_slide_state(); 
+    this._update_coding_slide();
   },
 };

@@ -13,4 +13,15 @@ describe("Teacher SlideShow : Navigation with 1 Slide", function() {
 
   });
   
+   it("should init server with currentIndex when teacher slideshow is intialized", function() {
+
+    spyOn(TeacherSlideShow.prototype, '_postCurrentIndex');
+
+    var teacherSlideShow = new TeacherSlideShow([]);
+
+    expect(TeacherSlideShow.prototype._postCurrentIndex).toHaveBeenCalled();
+    expect(TeacherSlideShow.prototype._postCurrentIndex.call.length).toBe(1);
+
+  });  
+  
 });
