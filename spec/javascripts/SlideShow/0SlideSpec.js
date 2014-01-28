@@ -232,4 +232,32 @@ describe("SlideShow : Update", function() {
 
   });    
 
+  it("should not update slideshow state if slide not up (i.e. coding slide is visible)", function() {
+	  
+    setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
+    spyOn(SlideShow.prototype, '_update_current_slide_state');
+	  
+    var slideShow = new SlideShow(queryAll('.slide'))
+
+    expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(1);
+
+    slideShow.down();
+
+    slideShow.next(); 
+    expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(1);
+
+    slideShow.prev();  
+    expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(1);
+
+    slideShow.up();
+    expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(2);	  
+	  
+    slideShow.next(); 
+    expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(3);
+
+    slideShow.prev();  
+    expect(SlideShow.prototype._update_current_slide_state.calls.length).toBe(4);    
+
+  });   
+
 });

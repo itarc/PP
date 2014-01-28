@@ -4,6 +4,8 @@
 
 var LEFT_ARROW = 37;
 var RIGHT_ARROW = 39;
+var DOWN_ARROW = 40;
+var UP_ARROW = 38;
 var SPACE = 32;
 
 var SYNCHRONOUS = false;
@@ -112,7 +114,9 @@ var SlideShow = function(slides) {
   var _t = this;
   document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );   
 
-  this._update();
+  this._update_current_slide_state();
+  this._update_poll();
+  this._update_coding_slide();  
 };
 
 
@@ -122,6 +126,7 @@ SlideShow.prototype = {
   _currentIndex : 0,
   _currentServerIndex : 0,
   _numberOfSlides : 0,
+  _isUp : true,
 
   _clean: function() {
     for(var slideIndex in this._slides) { this._slides[slideIndex].setState('') }
@@ -150,13 +155,7 @@ SlideShow.prototype = {
     if (this._current_slide()) { 
       this._current_slide().updateCodingSlide(this._currentServerIndex); 
     }
-  },
-
-  _update: function() {
-    this._update_current_slide_state();
-    this._update_poll();
-    this._update_coding_slide();
-  },   
+  },  
 
   _getCurrentIndex: function() {
     serverIndex = parseInt(getResource('/teacher_current_slide'));
@@ -172,15 +171,30 @@ SlideShow.prototype = {
   prev: function() {
     if (this._currentIndex <= 0) return;
     this._currentIndex = this._currentIndex - 1;
-    this._update();	  
+    if (this._isUp) this._update_current_slide_state();
+    this._update_poll();
+    this._update_coding_slide();	  
     this._postCurrentIndex();
   },
 
   next: function() {
     if (this._currentIndex >= (this._numberOfSlides - 1) ) return;
     this._currentIndex = this._currentIndex + 1;
-    this._update();	  
+    if (this._isUp) this._update_current_slide_state();
+    this._update_poll();
+    this._update_coding_slide();	  
     this._postCurrentIndex();
+  },
+  
+  down: function() {
+    this._clean();
+    this._slides[this._numberOfSlides-1].setState('current');
+    this._isUp = false;
+  },
+  
+  up: function() {
+    this._isUp = true;
+    this._update_current_slide_state();	  
   },
 
   synchronise: function() {

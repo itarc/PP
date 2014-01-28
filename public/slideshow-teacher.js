@@ -15,6 +15,12 @@ TeacherSlideShow.prototype = {
       case RIGHT_ARROW:  
         this.next(); 
       break;
+      case DOWN_ARROW:
+        this.down();
+      break;
+      case UP_ARROW:
+        this.up();
+      break;	    
       case SPACE:  
         this.synchronise(); 
       break;	      

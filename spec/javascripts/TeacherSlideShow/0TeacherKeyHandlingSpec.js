@@ -53,6 +53,34 @@ describe("TeacherSlideShow : keyboard handling", function() {
     expect(TeacherSlideShow.prototype.prev).toHaveBeenCalledWith();    
 
   }); 
+  
+  it("should call down when down arrow pressed", function() {
+
+    spyOn(TeacherSlideShow.prototype, 'down');
+
+    expect(TeacherSlideShow.prototype.down.calls.length).toBe(0);
+	  
+    __triggerKeyboardEvent(document, DOWN_ARROW);
+
+    expect(TeacherSlideShow.prototype.down).toHaveBeenCalled();
+    expect(TeacherSlideShow.prototype.down.calls.length).toBe(1);
+    expect(TeacherSlideShow.prototype.down).toHaveBeenCalledWith();    
+
+  });   
+  
+  it("should call up when up arrow pressed", function() {
+
+    spyOn(TeacherSlideShow.prototype, 'up');
+
+    expect(TeacherSlideShow.prototype.up.calls.length).toBe(0);
+	  
+    __triggerKeyboardEvent(document, UP_ARROW);
+
+    expect(TeacherSlideShow.prototype.up).toHaveBeenCalled();
+    expect(TeacherSlideShow.prototype.up.calls.length).toBe(1);
+    expect(TeacherSlideShow.prototype.up).toHaveBeenCalledWith();    
+
+  });  
 
   it("should call synchronise when space pressed", function() {
 
