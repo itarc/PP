@@ -49,7 +49,7 @@ describe("Slide : Coding", function() {
 
   it("should update current code_helper", function() {
 
-    slideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><textarea id='code_helper_1'></textarea><textarea id='code_helper_2'></textarea><input type='button' id='execute'><textarea id='code_output'></textarea></section><div>");
+    slideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea><input type='button' id='execute'><textarea id='code_output'></textarea></section><div>");
 
     var slide = new Slide(slideNode);
 

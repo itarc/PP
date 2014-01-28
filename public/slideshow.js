@@ -82,11 +82,11 @@ Slide.prototype = {
   
   updateCodingSlide: function(slide_index) {
     if(! this._isCodingSlide()) return;
-    this._node.querySelector('#code_helper_1').className = 'code_helper'
-    this._node.querySelector('#code_helper_2').className = 'code_helper'
-
-    if (slide_index == 0) { this._node.querySelector('#code_helper_1').className = 'code_helper current'; }
-    if (slide_index == 1) { this._node.querySelector('#code_helper_2').className = 'code_helper current'; }	  
+    codeHelpers = this._node.querySelectorAll('.code_helper');
+    for (var i=0; i<codeHelpers.length; i++) {
+      codeHelpers[i].className = 'code_helper';
+    }
+    codeHelpers[slide_index].className = 'code_helper current';	  
   }, 
   
   savePoll: function(elementId) {
