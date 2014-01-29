@@ -83,7 +83,6 @@ Slide.prototype = {
   },
   
   updateCodingSlide: function(slide_index) {
-    if(! this._isCodingSlide()) return;
     codeHelpers = this._node.querySelectorAll('.code_helper');
     for (var i=0; i<codeHelpers.length; i++) {
       codeHelpers[i].className = 'code_helper';
@@ -160,8 +159,11 @@ SlideShow.prototype = {
   },  
   
   _update_coding_slide:function() {
-    if (this._current_slide()) { 
+    if (this._current_slide() && this._current_slide()._isCodingSlide()) { 
       this._current_slide().updateCodingSlide(this._currentServerIndex); 
+    }
+    if (!this._isUp) {
+      this._slides[this._numberOfSlides-1].updateCodingSlide(this._currentIndex);
     }
   },  
 
@@ -190,7 +192,7 @@ SlideShow.prototype = {
     this._currentIndex = this._currentIndex + 1;
     if (this._isUp) this._update_current_slide_state();
     this._update_poll();
-    this._update_coding_slide();	  
+    this._update_coding_slide();
     this._postCurrentIndex();
   },
   

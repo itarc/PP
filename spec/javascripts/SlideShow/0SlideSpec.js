@@ -207,9 +207,9 @@ describe("SlideShow : Update", function() {
 
   });	  
 
-  it("should update coding slide slideshow is updated", function() {
+  it("should update coding slide if slideshow is updated", function() {
 
-    setFixtures("<div class='slides'><div class='slide'><div class='slide'/></div>")	  
+    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='code_output'><div class='slide'/></div>")	  
     spyOn(Slide.prototype, 'updateCodingSlide');
 
     var slideShow = new SlideShow(queryAll('.slide'))
@@ -221,7 +221,7 @@ describe("SlideShow : Update", function() {
   
   it("should update coding slide when synchronised", function() {
 
-    setFixtures("<div class='slides'><div class='slide'><div class='slide'/></div>")	  
+    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='code_output'><div class='slide'/></div>")	  
     spyOn(Slide.prototype, 'updateCodingSlide');
 
     var slideShow = new SlideShow(queryAll('.slide'))	  
@@ -230,12 +230,26 @@ describe("SlideShow : Update", function() {
     expect(Slide.prototype.updateCodingSlide).toHaveBeenCalled();    
     expect(Slide.prototype.updateCodingSlide).toHaveBeenCalledWith(slideShow._currentIndex);    
 
-  });    
+  });  
 
-  it("should not update slideshow state if slide not up (i.e. coding slide is visible)", function() {
+  it("should update coding slide when synchronised and slide is down (i.e. coding slide is visible)", function() {
+
+    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div id='execute'><div id='code_output'><div class='slide'/></div>")	  
+    spyOn(Slide.prototype, 'updateCodingSlide');
+
+    var slideShow = new SlideShow(queryAll('.slide'))	  
+    slideShow.down();
+    slideShow.synchronise();
+
+    expect(Slide.prototype.updateCodingSlide).toHaveBeenCalled();    
+    expect(Slide.prototype.updateCodingSlide).toHaveBeenCalledWith(slideShow._currentIndex);    
+
+  });  
+
+  it("should not update slideshow state if slide down (i.e. coding slide is visible)", function() {
 	  
-    setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
-    spyOn(SlideShow.prototype, '_update_current_slide_state');
+   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='code_output'></div></div>")	  
+   spyOn(SlideShow.prototype, '_update_current_slide_state');
 	  
     var slideShow = new SlideShow(queryAll('.slide'))
 
