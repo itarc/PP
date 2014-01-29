@@ -41,3 +41,18 @@ read.values.each do |row|
   p row
 end
 
+puts '----- RUN EVENTS SAVE'
+read = connection.exec('select * from run_events_save order by timestamp desc')
+p read.fields
+
+read.values.each do |row|
+  p row
+end
+
+puts '----- RUN EVENTS'
+read = connection.exec('select * from run_events order by timestamp desc')
+p read.fields
+
+read.values.each do |row|
+  p row
+end
