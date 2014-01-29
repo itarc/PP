@@ -59,7 +59,6 @@ Slide.prototype = {
   _initializeCodingSlide: function() {
     var _t = this;
     if (typeof ace != 'undefined') { this.code_editor = ace.edit(this._node.querySelector('#code_input')); }
-    if (typeof ace != 'undefined') { this.code_helper = ace.edit(this._node.querySelector('#code_helper')); }
     this._node.querySelector('#code_input').addEventListener('keydown',
       function(e) { if ( e.altKey && e.which == R) { _t.executeCode(); } else {e.stopPropagation()} }, false
     );

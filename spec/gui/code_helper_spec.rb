@@ -21,8 +21,8 @@ describe 'Code Helper', :type => :feature, :js => true do
 
     visit ATTENDEE_CODING_SLIDE_HELPER
 
-    expect(page).to have_field 'code_helper_1', :with => "HELPER 1", :visible => true
-    expect(page).to have_no_field 'code_helper_2', :with => "HELPER 2", :visible => true
+    expect(page).to have_selector '#code_helper_1', :text => "HELPER 1", :visible => true
+    expect(page).to have_no_selector '#code_helper_2', :text => "HELPER 2", :visible => true
  
     visit TEACHER_CODING_PRESENTATION_HELPER
     find(:css, 'div.presentation').native.send_key(:arrow_right)  
@@ -30,8 +30,8 @@ describe 'Code Helper', :type => :feature, :js => true do
     visit ATTENDEE_CODING_SLIDE_HELPER
     find(:css, 'div.presentation').native.send_key(:space)      
     
-    expect(page).to have_no_field 'code_helper_1', :with => "HELPER 1", :visible => true
-    expect(page).to have_field 'code_helper_2', :with => "HELPER 2", :visible => true
+    expect(page).to have_no_selector '#code_helper_1', :text => "HELPER 1", :visible => true
+    expect(page).to have_selector '#code_helper_2', :text => "HELPER 2", :visible => true
 
     visit TEACHER_CODING_PRESENTATION_HELPER
     find(:css, 'div.presentation').native.send_key(:arrow_left)
@@ -39,8 +39,8 @@ describe 'Code Helper', :type => :feature, :js => true do
     visit ATTENDEE_CODING_SLIDE_HELPER
     find(:css, 'div.presentation').native.send_key(:space) 
 
-    expect(page).to have_field 'code_helper_1', :with => "HELPER 1", :visible => true
-    expect(page).to have_no_field 'code_helper_2', :with => "HELPER 2", :visible => true
+    expect(page).to have_selector '#code_helper_1', :text => "HELPER 1", :visible => true
+    expect(page).to have_no_selector '#code_helper_2', :text => "HELPER 2", :visible => true
 
   end
   

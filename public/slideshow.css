@@ -157,6 +157,8 @@ video {
   font-size:0.5em;
   width:38%; 
   height:50%;
+  float: right;
+  overflow: auto;
 }
 
 .code_helper.current {
