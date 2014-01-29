@@ -200,6 +200,7 @@ SlideShow.prototype = {
     this._clean();
     this._slides[this._numberOfSlides-1].setState('current');
     this._isUp = false;
+    this._update_coding_slide();  
   },
   
   up: function() {

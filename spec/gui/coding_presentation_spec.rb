@@ -41,5 +41,51 @@ describe 'Coding Presentation', :type => :feature, :js => true do
     expect(page).to have_content 'EXERCISE - 2'
     
   end
+  
+  it 'should display right code_helper on attendee slideshow' do
+
+    visit TEACHER_CODING_PRESENTATION
+
+    expect(page).to have_content 'EXERCISE - 1'
+    
+    visit ATTENDEE_CODING_SLIDE
+
+    expect(page).to have_content 'HELPER 1'
+
+    visit TEACHER_CODING_PRESENTATION
+    find(:css, 'div.presentation').native.send_key(:arrow_right)
+    
+    visit ATTENDEE_CODING_SLIDE
+    find(:css, 'div.presentation').native.send_key(:space)     
+
+    expect(page).to have_content 'HELPER 2'
+
+    visit TEACHER_CODING_PRESENTATION
+    find(:css, 'div.presentation').native.send_key(:arrow_left)
+    
+    visit ATTENDEE_CODING_SLIDE
+    find(:css, 'div.presentation').native.send_key(:space)     
+
+    expect(page).to have_content 'HELPER 1'
+    
+  end  
+
+  it 'should display right code_helper on teacher coding slide' do
+	  
+    visit TEACHER_CODING_PRESENTATION
+
+    find(:css, 'div.presentation').native.send_key(:arrow_down)
+
+    expect(page).to have_content 'HELPER 1'	  
+
+    find(:css, 'div.presentation').native.send_key(:arrow_right)
+
+    expect(page).to have_content 'HELPER 2'
+
+    find(:css, 'div.presentation').native.send_key(:arrow_left)
+
+    expect(page).to have_content 'HELPER 1'
+	  
+  end
 
 end
