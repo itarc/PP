@@ -93,23 +93,36 @@ class TestRunTimeEvent < Test::Unit::TestCase
     runtime_event = RunTimeEvent.new("user", code_input = "print 1", code_output = "1", timestamp = "x")    
     assert_equal "x", runtime_event.timestamp
   end
+
+  def test03_should_find_empty_list_when_no_runtime_events
+    assert_equal [], RunTimeEvent.find_all
+  end
   
-  def test03_should_find_a_runtime_event
+  def test04_should_find_a_runtime_event
     RunTimeEvent.new("user", code_input = "print 3", code_output = "3", timestamp = 'timestamp').save
     runtime_events = RunTimeEvent.find_all
     assert_equal 1, runtime_events.size
     assert_equal ([["user", "print 3", "3"]]).inspect, runtime_events.inspect
     assert_equal "timestamp", runtime_events[0].timestamp
   end  
+
+  def test05_should_find_a_runtime_event_in_order
+    RunTimeEvent.new("user_2", code_input = "print 5", code_output = "5", timestamp = 'timestamp').save
+    RunTimeEvent.new("user_1", code_input = "print 4", code_output = "4", timestamp = 'timestamp').save
+    runtime_events = RunTimeEvent.find_all
+    assert_equal 2, runtime_events.size
+    assert_equal ([["user_2", "print 5", "5"], ["user_1", "print 4", "4"]]).inspect, runtime_events.inspect
+    assert_equal "timestamp", runtime_events[0].timestamp
+  end
   
-  def test04_should_find_a_runtime_event_for_a_user
+  def test06_should_find_a_runtime_event_for_a_user
     RunTimeEvent.new("user", code_input = "print 2", code_output = "2").save
     runtime_events = RunTimeEvent.find("user")
     assert_equal 1, runtime_events.size
     assert_equal ([["user", "print 2", "2"]]).inspect, runtime_events.inspect
   end
   
-  def test05_should_find_the_runtime_event_for_a_user
+  def test07_should_find_the_runtime_event_for_a_user
     RunTimeEvent.new("user_1", code_input = "print 1", code_output = "1").save
     RunTimeEvent.new("user_2", code_input = "print 2", code_output = "2").save
     runtime_events = RunTimeEvent.find("user_1")
@@ -117,7 +130,7 @@ class TestRunTimeEvent < Test::Unit::TestCase
     assert_equal ([["user_1", "print 1", "1"]]).inspect, runtime_events.inspect
   end  
   
-  def test05_should_not_raise_an_error_when_quotes_in_strings
+  def test08_should_not_raise_an_error_when_quotes_in_strings
     assert_nothing_raised { RunTimeEvent.new("user_1", code_input = "'string in simple quotes 1'", code_output = "").save }
   end  
 

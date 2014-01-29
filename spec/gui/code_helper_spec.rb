@@ -8,8 +8,8 @@ Capybara.app = Sinatra::Application.new
 
 set :logging, false
 
-TEACHER_CODING_PRESENTATION = '/teacher/coding_presentation'
-ATTENDEE_CODING_SLIDE = '/attendee/coding_slide'
+TEACHER_CODING_PRESENTATION_HELPER = '/teacher/coding_presentation'
+ATTENDEE_CODING_SLIDE_HELPER = '/attendee/coding_slide'
 
 describe 'Code Helper', :type => :feature, :js => true do
 	
@@ -19,24 +19,24 @@ describe 'Code Helper', :type => :feature, :js => true do
   
   it 'should change code helper when left arrow pressed' do
 
-    visit ATTENDEE_CODING_SLIDE
+    visit ATTENDEE_CODING_SLIDE_HELPER
 
     expect(page).to have_field 'code_helper_1', :with => "HELPER 1", :visible => true
     expect(page).to have_no_field 'code_helper_2', :with => "HELPER 2", :visible => true
  
-    visit TEACHER_CODING_PRESENTATION
+    visit TEACHER_CODING_PRESENTATION_HELPER
     find(:css, 'div.presentation').native.send_key(:arrow_right)  
     
-    visit ATTENDEE_CODING_SLIDE
+    visit ATTENDEE_CODING_SLIDE_HELPER
     find(:css, 'div.presentation').native.send_key(:space)      
     
     expect(page).to have_no_field 'code_helper_1', :with => "HELPER 1", :visible => true
     expect(page).to have_field 'code_helper_2', :with => "HELPER 2", :visible => true
 
-    visit TEACHER_CODING_PRESENTATION
+    visit TEACHER_CODING_PRESENTATION_HELPER
     find(:css, 'div.presentation').native.send_key(:arrow_left)
     
-    visit ATTENDEE_CODING_SLIDE
+    visit ATTENDEE_CODING_SLIDE_HELPER
     find(:css, 'div.presentation').native.send_key(:space) 
 
     expect(page).to have_field 'code_helper_1', :with => "HELPER 1", :visible => true

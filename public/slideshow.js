@@ -49,7 +49,7 @@ Slide.prototype = {
   _states: [ 'previous', 'current', 'next'],
 	
   _isCodingSlide: function() {
-    return this._node.querySelector('#execute');
+    return this._node.querySelector('#execute') != null;
   },
   
   _isPollResultSlide: function() {
@@ -89,6 +89,14 @@ Slide.prototype = {
       codeHelpers[i].className = 'code_helper';
     }
     codeHelpers[slide_index].className = 'code_helper current';	  
+  }, 
+  
+  updateEditorAndExecuteCode: function(slide_index) {
+    if (! this._isCodingSlide()) return;
+    code = getResource('/code_last_run');
+    this._node.querySelector('#code_input').value = code;
+    if (typeof ace != 'undefined') { this.code_editor.setValue(code) }
+    this.executeCode();	  
   }, 
   
   savePoll: function(elementId) {

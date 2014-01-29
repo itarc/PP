@@ -8,7 +8,7 @@ Capybara.app = Sinatra::Application.new
 
 set :logging, false
 
-CODING_SLIDE = '/teacher/coding_slide'
+TEACHER_CODING_SLIDE = '/teacher/coding_slide'
 
 
 describe 'Coding Slide', :type => :feature, :js => true do
@@ -19,7 +19,7 @@ describe 'Coding Slide', :type => :feature, :js => true do
   
   it 'should display one coding area and a result area' do
 
-    visit CODING_SLIDE
+    visit TEACHER_CODING_SLIDE
     
     expect(page).to have_field 'code_input', :with => ""
     expect(page).to have_field 'code_output', :with => ""
@@ -28,7 +28,7 @@ describe 'Coding Slide', :type => :feature, :js => true do
   
   it 'should show "something" when puts "something" is executed' do
 
-    visit CODING_SLIDE
+    visit TEACHER_CODING_SLIDE
     
     fill_in 'code_input', :with => 'print "something"'
     click_on 'execute'

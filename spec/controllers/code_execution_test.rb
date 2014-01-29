@@ -75,3 +75,32 @@ class TestCodeRun < Test::Unit::TestCase
   end
   
 end
+
+class TestCodeGet < Test::Unit::TestCase
+  
+  include Rack::Test::Methods
+
+  def app
+    Sinatra::Application
+  end
+  
+  def setup
+    $db.execute_sql("delete from run_events")	  
+  end
+  
+  def test01
+    get '/code_last_run'
+    assert_equal "", last_response.body
+  end
+
+  def test02
+    post '/code_run_result', "print 3"
+    get '/code_last_run'
+    assert_equal "print 3", last_response.body
+  end
+  
+  def teardown
+    $db.execute_sql("delete from run_events")	  
+  end
+  
+end
