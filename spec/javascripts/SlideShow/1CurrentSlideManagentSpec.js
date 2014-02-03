@@ -10,7 +10,7 @@ describe("SlideShow : teacher current slide management", function() {
 	  
     expect(postResource).toHaveBeenCalled();
     expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + slideShow._currentIndex);
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + slideShow._currentIndex, ASYNCHRONOUS);
 
   });	
 

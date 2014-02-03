@@ -60,7 +60,7 @@ describe("Common post and get", function() {
     spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
     spyOn(XMLHttpRequest.prototype, 'send')
 
-    postResponse = postResource('/teacher_current_slide', "1")
+    postResponse = postResource('/teacher_current_slide', "1", ASYNCHRONOUS)
 
     expect(XMLHttpRequest.prototype.open).toHaveBeenCalled()
     expect(XMLHttpRequest.prototype.open.calls.length).toBe(1)

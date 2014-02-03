@@ -46,13 +46,13 @@ describe("Slide : Poll", function() {
 	  
     expect(postResource).toHaveBeenCalled();
     expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/poll_radio_1','');
+    expect(postResource).toHaveBeenCalledWith('/poll_radio_1', '', ASYNCHRONOUS);
 	  
     slideNode.querySelector('#poll_radio_2').click();
 	  
     expect(postResource).toHaveBeenCalled();
     expect(postResource.calls.length).toBe(2);
-    expect(postResource).toHaveBeenCalledWith('/poll_radio_2','');
+    expect(postResource).toHaveBeenCalledWith('/poll_radio_2','', ASYNCHRONOUS);
     
   });
   

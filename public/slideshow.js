@@ -19,7 +19,7 @@ var queryAll = function(query) {
   return Array.prototype.slice.call(nodeList, 0);
 };
 
-var postResource = function(path, params, synchronous_asynchronous = ASYNCHRONOUS) {
+var postResource = function(path, params, synchronous_asynchronous) {
   var xmlhttp = new XMLHttpRequest();	
   xmlhttp.open("POST", path, synchronous_asynchronous);
   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -98,7 +98,7 @@ Slide.prototype = {
   }, 
   
   savePoll: function(elementId) {
-    postResource('/'+elementId, '');
+    postResource('/'+elementId, '', ASYNCHRONOUS);
   }, 
 
   executeCode: function() {
@@ -174,7 +174,7 @@ SlideShow.prototype = {
   },    
 
   _postCurrentIndex: function() {
-    postResource('/teacher_current_slide', 'index=' + this._currentIndex);
+    postResource('/teacher_current_slide', 'index=' + this._currentIndex, ASYNCHRONOUS);
   },
 
   prev: function() {
