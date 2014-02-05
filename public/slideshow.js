@@ -119,7 +119,7 @@ var SlideShow = function(slides) {
   document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );   
 
   this._show_current_slide();
-  this._update_poll();
+  this._update_poll_slide();
   this._update_coding_slide();  
 };
 
@@ -153,7 +153,7 @@ SlideShow.prototype = {
     }
   },
   
-  _update_poll: function() {
+  _update_poll_slide: function() {
     if (this._current_slide() && this._current_slide()._isPollResultSlide()) {
       this._current_slide().updatePoll();
     }
@@ -183,7 +183,7 @@ SlideShow.prototype = {
     if (this._currentIndex <= 0) return;
     this._currentIndex = this._currentIndex - 1;
     if (this._isUp) this._show_current_slide();
-    this._update_poll();
+    this._update_poll_slide();
     this._update_coding_slide();	  
     this._postCurrentIndex();
   },
@@ -192,7 +192,7 @@ SlideShow.prototype = {
     if (this._currentIndex >= (this._numberOfSlides - 1) ) return;
     this._currentIndex = this._currentIndex + 1;
     if (this._isUp) this._show_current_slide();
-    this._update_poll();
+    this._update_poll_slide();
     this._update_coding_slide();
     this._postCurrentIndex();
   },
