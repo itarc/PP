@@ -17,7 +17,7 @@ describe("SlideShow : Update", function() {
     expect(slideShow._slides[0]._node.className).toBe('slide current');
 	  
     slideShow._currentIndex = 'UNKNOWN';
-    slideShow._update_current_slide();
+    slideShow._show_current_slide();
 	  
     expect(slideShow._slides[0]._node.className).toBe('slide current');
 
@@ -89,34 +89,34 @@ describe("SlideShow : Update", function() {
   it("should not update slideshow state if slide down (i.e. coding slide is visible)", function() {
 	  
    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='code_output'></div></div>")	  
-   spyOn(SlideShow.prototype, '_update_current_slide');
+   spyOn(SlideShow.prototype, '_show_current_slide');
 	  
     var slideShow = new SlideShow(queryAll('.slide'))
 
-    expect(SlideShow.prototype._update_current_slide.calls.length).toBe(1);
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
 
     slideShow.down();
 
     slideShow.next(); 
-    expect(SlideShow.prototype._update_current_slide.calls.length).toBe(1);
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
 
     slideShow.prev();  
-    expect(SlideShow.prototype._update_current_slide.calls.length).toBe(1);
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
 	  
     slideShow.synchronise();  
-    expect(SlideShow.prototype._update_current_slide.calls.length).toBe(1);    
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);    
 
     slideShow.up();
-    expect(SlideShow.prototype._update_current_slide.calls.length).toBe(2);	  
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(2);	  
 	  
     slideShow.next(); 
-    expect(SlideShow.prototype._update_current_slide.calls.length).toBe(3);
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(3);
 
     slideShow.prev();  
-    expect(SlideShow.prototype._update_current_slide.calls.length).toBe(4);
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(4);
 
     slideShow.synchronise();  
-    expect(SlideShow.prototype._update_current_slide.calls.length).toBe(5);
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(5);
 
   });   
 

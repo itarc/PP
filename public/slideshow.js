@@ -119,7 +119,7 @@ var SlideShow = function(slides) {
   var _t = this;
   document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );   
 
-  this._update_current_slide();
+  this._show_current_slide();
   this._update_poll();
   this._update_coding_slide();  
 };
@@ -145,7 +145,7 @@ SlideShow.prototype = {
     return this._slides[this._numberOfSlides-1]
   },
   
-  _update_current_slide: function() {
+  _show_current_slide: function() {
     window.console && window.console.log("_currentIndex : " + this._currentIndex);
     window.console && window.console.log("_currentServerIndex : " + this._currentServerIndex);
     if (this._current_slide()) {
@@ -183,7 +183,7 @@ SlideShow.prototype = {
   prev: function() {
     if (this._currentIndex <= 0) return;
     this._currentIndex = this._currentIndex - 1;
-    if (this._isUp) this._update_current_slide();
+    if (this._isUp) this._show_current_slide();
     this._update_poll();
     this._update_coding_slide();	  
     this._postCurrentIndex();
@@ -192,7 +192,7 @@ SlideShow.prototype = {
   next: function() {
     if (this._currentIndex >= (this._numberOfSlides - 1) ) return;
     this._currentIndex = this._currentIndex + 1;
-    if (this._isUp) this._update_current_slide();
+    if (this._isUp) this._show_current_slide();
     this._update_poll();
     this._update_coding_slide();
     this._postCurrentIndex();
@@ -207,12 +207,12 @@ SlideShow.prototype = {
   
   up: function() {
     this._isUp = true;
-    this._update_current_slide();	  
+    this._show_current_slide();	  
   },
 
   synchronise: function() {
     this._getCurrentIndexOnServer();
-    if (this._isUp) this._update_current_slide(); 
+    if (this._isUp) this._show_current_slide(); 
     this._update_coding_slide();
   },
 };
