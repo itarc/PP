@@ -14,7 +14,7 @@ describe("SlideShow : teacher current slide management", function() {
 
   });	
 
-  it("should post current slide index on server when next slide", function() {
+  it("should post current slide index on server when next slide is called", function() {
 
     spyOn(SlideShow.prototype, '_postCurrentIndex');
 	  
@@ -31,7 +31,7 @@ describe("SlideShow : teacher current slide management", function() {
   });
 
   
-  it("should post current slide index on server when previous slide", function() {
+  it("should post current slide index on server when previous slide is called", function() {
 
     spyOn(SlideShow.prototype, '_postCurrentIndex');
 	  
@@ -47,7 +47,7 @@ describe("SlideShow : teacher current slide management", function() {
 
   });
 
-  it("should get current slide index on server when synchronise", function() {
+  it("should get current slide index on server when synchronise is called", function() {
 
     getResource = jasmine.createSpy('getResource');
 	  
@@ -71,35 +71,27 @@ describe("SlideShow : teacher current slide management", function() {
     expect(slideShow._currentIndex).toBe(0);    
 
   });
-  
-  it("should display teacher current slide even if an error occured in slide update", function() {
     
-    /* should be done, it is the case when an error occured when updating the slide. If so next and prev must post the techer current index and the slide is not updated*/    
-    /* If it is the other way round, an error occurs in slide and next or prev does not save the current teacher slide, which make them to have no effect */ 
-    /*(we do not want that, because every time you go to prev or next it should go there even if the slide can not be updated properly)*/    
-
-  });  
-    
-  it("should always update current index with an integer", function() {
+  it("should always update current index with a number even if number is in string format ", function() {
     
     var slideShow = new SlideShow([]);
     expect(slideShow._currentIndex).toBe(0)	  
 
     getResource = jasmine.createSpy('getResource').andReturn('1'); 	  
-    slideShow._getCurrentIndex();
+    slideShow._getCurrentIndexOnServer();
 	  
     expect(getResource).toHaveBeenCalled();
     expect(slideShow._currentIndex).toBe(1);    
 
   });   
 
-  it("should go back to 0 when current index is 1", function() {
+  it("should get current index on server", function() {
     
     var slideShow = new SlideShow([]);
     slideShow._currentIndex = 1;	  
 
     getResource = jasmine.createSpy('getResource').andReturn(0);	  
-    slideShow._getCurrentIndex();
+    slideShow._getCurrentIndexOnServer();
 
     expect(slideShow._currentIndex).toBe(0);    
 

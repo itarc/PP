@@ -39,7 +39,6 @@ var getResource = function(path) {
 // ----------------------------------
 var Slide = function(node) {
   this._node = node;
-
   if (this._isCodingSlide()) { this._initializeCodingSlide(); }
 };
 
@@ -120,7 +119,7 @@ var SlideShow = function(slides) {
   var _t = this;
   document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );   
 
-  this._update_current_slide_state();
+  this._update_current_slide();
   this._update_poll();
   this._update_coding_slide();  
 };
@@ -140,9 +139,13 @@ SlideShow.prototype = {
 
   _current_slide: function() {
     return this._slides[this._currentIndex];
-  },  
+  },
+
+  _coding_slide:function() {
+    return this._slides[this._numberOfSlides-1]
+  },
   
-  _update_current_slide_state: function() {
+  _update_current_slide: function() {
     window.console && window.console.log("_currentIndex : " + this._currentIndex);
     window.console && window.console.log("_currentServerIndex : " + this._currentServerIndex);
     if (this._current_slide()) {
@@ -162,11 +165,11 @@ SlideShow.prototype = {
       this._current_slide().updateCodingSlide(this._currentServerIndex); 
     }
     if (!this._isUp) {
-      this._slides[this._numberOfSlides-1].updateCodingSlide(this._currentIndex);
+      this._coding_slide().updateCodingSlide(this._currentIndex);
     }
   },  
 
-  _getCurrentIndex: function() {
+  _getCurrentIndexOnServer: function() {
     serverIndex = parseInt(getResource('/teacher_current_slide'));
     if ( !( isNaN(serverIndex) ) ) this._currentServerIndex = serverIndex;
     if (this._numberOfSlides == 0 ) { this._currentIndex = this._currentServerIndex; }
@@ -180,7 +183,7 @@ SlideShow.prototype = {
   prev: function() {
     if (this._currentIndex <= 0) return;
     this._currentIndex = this._currentIndex - 1;
-    if (this._isUp) this._update_current_slide_state();
+    if (this._isUp) this._update_current_slide();
     this._update_poll();
     this._update_coding_slide();	  
     this._postCurrentIndex();
@@ -189,7 +192,7 @@ SlideShow.prototype = {
   next: function() {
     if (this._currentIndex >= (this._numberOfSlides - 1) ) return;
     this._currentIndex = this._currentIndex + 1;
-    if (this._isUp) this._update_current_slide_state();
+    if (this._isUp) this._update_current_slide();
     this._update_poll();
     this._update_coding_slide();
     this._postCurrentIndex();
@@ -197,19 +200,19 @@ SlideShow.prototype = {
   
   down: function() {
     this._clean();
-    this._slides[this._numberOfSlides-1].setState('current');
+    this._coding_slide().setState('current');
     this._isUp = false;
     this._update_coding_slide();  
   },
   
   up: function() {
     this._isUp = true;
-    this._update_current_slide_state();	  
+    this._update_current_slide();	  
   },
 
   synchronise: function() {
-    this._getCurrentIndex();
-    if (this._isUp) this._update_current_slide_state(); 
+    this._getCurrentIndexOnServer();
+    if (this._isUp) this._update_current_slide(); 
     this._update_coding_slide();
   },
 };
