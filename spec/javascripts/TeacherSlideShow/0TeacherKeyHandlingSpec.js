@@ -84,15 +84,15 @@ describe("TeacherSlideShow : keyboard handling", function() {
 
   it("should call synchronise when space pressed", function() {
 
-    //~ spyOn(TeacherSlideShow.prototype, 'synchronise');
+    spyOn(TeacherSlideShow.prototype, 'synchronise');
 
-    //~ expect(TeacherSlideShow.prototype.synchronise.calls.length).toBe(0);
+    expect(TeacherSlideShow.prototype.synchronise.calls.length).toBe(0);
 	  
-    //~ __triggerKeyboardEvent(document, SPACE);
+    __triggerKeyboardEvent(document, SPACE);
 
-    //~ expect(TeacherSlideShow.prototype.synchronise).toHaveBeenCalled();
-    //~ expect(TeacherSlideShow.prototype.synchronise.calls.length).toBe(1);
-    //~ expect(TeacherSlideShow.prototype.synchronise).toHaveBeenCalledWith();    
+    expect(TeacherSlideShow.prototype.synchronise).toHaveBeenCalled();
+    expect(TeacherSlideShow.prototype.synchronise.calls.length).toBe(1);
+    expect(TeacherSlideShow.prototype.synchronise).toHaveBeenCalledWith();    
 
   });
   
