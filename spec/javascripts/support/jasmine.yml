@@ -17,4 +17,5 @@ spec_files:
   - 'TeacherSlideShow/1*[sS]pec.js'
   - 'TeacherSlideShow/2*[sS]pec.js'
   - 'TeacherSlideShow/3*[sS]pec.js'
+  - 'TeacherSlideShow/4*[sS]pec.js'
   - '*[sS]pec.js'

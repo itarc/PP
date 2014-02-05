@@ -194,6 +194,7 @@ SlideShow.prototype = {
 
   next: function() {
     if (this._currentIndex >= (this._numberOfSlides - 1) ) return;
+    if (this._slides[this._currentIndex+1] && this._slides[this._currentIndex+1]._isCodingSlide()) return;
     this._currentIndex += 1;
     if (this._isUp) this._show_current_slide();
     this._update_poll_slide();
