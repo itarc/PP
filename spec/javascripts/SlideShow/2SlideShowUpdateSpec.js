@@ -1,6 +1,6 @@
 describe("SlideShow : Update", function() {
 	
-  it("should update first slide to current when slideshow initialized", function() {
+  it("should show first slide when slideshow initialized", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
     var slideShow = new SlideShow(queryAll('.slide'))
@@ -9,7 +9,7 @@ describe("SlideShow : Update", function() {
 
   });		
 
-  it("should not update if current index unknown", function() {
+  it("should stay on current slide if new index is unknown", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
     var slideShow = new SlideShow(queryAll('.slide'))
@@ -23,9 +23,9 @@ describe("SlideShow : Update", function() {
 
   });	
   
-  it("should update poll when slideshow is updated", function() {
+  it("should update poll when slideshow is updated and first slide is a poll result slide", function() {
 	  
-    setFixtures("<div class='slides'><div class='slide'/></div>")
+    setFixtures("<div class='slides'><div class='slide'><span id='poll_rate_1' class='poll_response_rate'></span></div></div>")
     spyOn(Slide.prototype, 'updatePoll');
 	  
     var slideShow = new SlideShow(queryAll('.slide'))
@@ -34,7 +34,7 @@ describe("SlideShow : Update", function() {
 
   });	  
 
-  it("should update coding slide when slideshow is initialized", function() {
+  it("should update coding slide when slideshow is initialized and first slide is a coding slide", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='code_output'><div class='slide'/></div>")	  
     spyOn(Slide.prototype, 'updateCodingSlide');
@@ -46,7 +46,7 @@ describe("SlideShow : Update", function() {
 
   });  
   
-  it("should update coding slide when synchronised", function() {
+  it("should update coding slide when synchronise is called", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='code_output'><div class='slide'/></div>")	  
     spyOn(Slide.prototype, 'updateCodingSlide');
@@ -59,7 +59,7 @@ describe("SlideShow : Update", function() {
 
   });  
   
-  it("should update coding slide when slide is down", function() {
+  it("should update coding slide when slide down is called", function() {
 
     setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><div id='code_input'><div id='execute'><div id='code_output'><div class='slide'/></div>")	  
     spyOn(Slide.prototype, 'updateCodingSlide');

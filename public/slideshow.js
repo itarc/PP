@@ -71,7 +71,6 @@ Slide.prototype = {
   },
   
   updatePoll: function() {
-    if (! this._isPollResultSlide()) return;
     rateNodes = this._node.querySelectorAll('.poll_response_rate')
     for (var i=0; i<rateNodes.length; i++) {
       rateNodeId = '#' + rateNodes[i].id;
@@ -155,7 +154,7 @@ SlideShow.prototype = {
   },
   
   _update_poll: function() {
-    if (this._current_slide()) {
+    if (this._current_slide() && this._current_slide()._isPollResultSlide()) {
       this._current_slide().updatePoll();
     }
   },  
