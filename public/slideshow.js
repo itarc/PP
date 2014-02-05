@@ -168,11 +168,15 @@ SlideShow.prototype = {
     }
   },  
 
+  _is_a_number: function(index) {
+	return  !( isNaN(index) )
+  },
+  
   _getCurrentIndexOnServer: function() {
     serverIndex = parseInt(getResource('/teacher_current_slide'));
-    if ( !( isNaN(serverIndex) ) ) this._currentServerIndex = serverIndex;
-    if (this._numberOfSlides == 0 ) { this._currentIndex = this._currentServerIndex; }
-    if (this._currentServerIndex <= (this._numberOfSlides -1) ) { this._currentIndex = this._currentServerIndex; }
+    if ( this._is_a_number(serverIndex) ) this._currentServerIndex = serverIndex;
+    if (this._numberOfSlides == 0 ) this._currentIndex = this._currentServerIndex;
+    if (this._currentServerIndex <= (this._numberOfSlides -1) ) this._currentIndex = this._currentServerIndex;
   },    
 
   _postCurrentIndexOnServer: function() {
