@@ -175,7 +175,7 @@ SlideShow.prototype = {
     if (this._currentServerIndex <= (this._numberOfSlides -1) ) { this._currentIndex = this._currentServerIndex; }
   },    
 
-  _postCurrentIndex: function() {
+  _postCurrentIndexOnServer: function() {
     postResource('/teacher_current_slide', 'index=' + this._currentIndex, ASYNCHRONOUS);
   },
 
@@ -185,7 +185,7 @@ SlideShow.prototype = {
     if (this._isUp) this._show_current_slide();
     this._update_poll_slide();
     this._update_coding_slide();	  
-    this._postCurrentIndex();
+    this._postCurrentIndexOnServer();
   },
 
   next: function() {
@@ -194,7 +194,7 @@ SlideShow.prototype = {
     if (this._isUp) this._show_current_slide();
     this._update_poll_slide();
     this._update_coding_slide();
-    this._postCurrentIndex();
+    this._postCurrentIndexOnServer();
   },
   
   down: function() {

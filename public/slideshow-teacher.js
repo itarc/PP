@@ -3,7 +3,7 @@
 // ----------------------------------
 var TeacherSlideShow = function(slides) {
   SlideShow.call(this, slides);
-  this._postCurrentIndex();	
+  this._postCurrentIndexOnServer();	
 };
 
 TeacherSlideShow.prototype = {

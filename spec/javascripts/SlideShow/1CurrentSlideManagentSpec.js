@@ -6,7 +6,7 @@ describe("SlideShow : teacher current slide management", function() {
 	  
     var slideShow = new SlideShow([]);
 
-    slideShow._postCurrentIndex();
+    slideShow._postCurrentIndexOnServer();
 	  
     expect(postResource).toHaveBeenCalled();
     expect(postResource.calls.length).toBe(1);
@@ -16,7 +16,7 @@ describe("SlideShow : teacher current slide management", function() {
 
   it("should post current slide index on server when next slide is called", function() {
 
-    spyOn(SlideShow.prototype, '_postCurrentIndex');
+    spyOn(SlideShow.prototype, '_postCurrentIndexOnServer');
 	  
     var slideShow = new SlideShow([]);	  
 	  
@@ -25,15 +25,15 @@ describe("SlideShow : teacher current slide management", function() {
 
     slideShow.next();
 	  
-    expect(SlideShow.prototype._postCurrentIndex).toHaveBeenCalled();
-    expect(SlideShow.prototype._postCurrentIndex.calls.length).toBe(1);
+    expect(SlideShow.prototype._postCurrentIndexOnServer).toHaveBeenCalled();
+    expect(SlideShow.prototype._postCurrentIndexOnServer.calls.length).toBe(1);
 
   });
 
   
   it("should post current slide index on server when previous slide is called", function() {
 
-    spyOn(SlideShow.prototype, '_postCurrentIndex');
+    spyOn(SlideShow.prototype, '_postCurrentIndexOnServer');
 	  
     var slideShow = new SlideShow([]);	  
 	  
@@ -42,8 +42,8 @@ describe("SlideShow : teacher current slide management", function() {
 
     slideShow.prev();
 	  
-    expect(SlideShow.prototype._postCurrentIndex).toHaveBeenCalled();
-    expect(SlideShow.prototype._postCurrentIndex.calls.length).toBe(1);
+    expect(SlideShow.prototype._postCurrentIndexOnServer).toHaveBeenCalled();
+    expect(SlideShow.prototype._postCurrentIndexOnServer.calls.length).toBe(1);
 
   });
 

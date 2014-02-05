@@ -15,12 +15,12 @@ describe("Teacher SlideShow : Navigation with 1 Slide", function() {
   
    it("should init server with currentIndex when teacher slideshow is intialized", function() {
 
-    spyOn(TeacherSlideShow.prototype, '_postCurrentIndex');
+    spyOn(TeacherSlideShow.prototype, '_postCurrentIndexOnServer');
 
     var teacherSlideShow = new TeacherSlideShow([]);
 
-    expect(TeacherSlideShow.prototype._postCurrentIndex).toHaveBeenCalled();
-    expect(TeacherSlideShow.prototype._postCurrentIndex.call.length).toBe(1);
+    expect(TeacherSlideShow.prototype._postCurrentIndexOnServer).toHaveBeenCalled();
+    expect(TeacherSlideShow.prototype._postCurrentIndexOnServer.call.length).toBe(1);
 
   });  
   
