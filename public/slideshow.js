@@ -181,7 +181,7 @@ SlideShow.prototype = {
 
   prev: function() {
     if (this._currentIndex <= 0) return;
-    this._currentIndex = this._currentIndex - 1;
+    this._currentIndex -= 1;
     if (this._isUp) this._show_current_slide();
     this._update_poll_slide();
     this._update_coding_slide();	  
@@ -190,7 +190,7 @@ SlideShow.prototype = {
 
   next: function() {
     if (this._currentIndex >= (this._numberOfSlides - 1) ) return;
-    this._currentIndex = this._currentIndex + 1;
+    this._currentIndex += 1;
     if (this._isUp) this._show_current_slide();
     this._update_poll_slide();
     this._update_coding_slide();
