@@ -91,7 +91,7 @@ Slide.prototype = {
     if (! this._isCodingSlide()) return;
     code = getResource('/code_last_run');
     this._node.querySelector('#code_input').value = code;
-    if (typeof ace != 'undefined') { this.code_editor.setValue(code) }
+    if (typeof ace != 'undefined') { this.code_editor.setValue(code, 1) }
     this.executeCode();	  
   }, 
   
