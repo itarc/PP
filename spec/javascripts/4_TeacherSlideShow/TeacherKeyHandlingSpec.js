@@ -1,4 +1,4 @@
-describe("TeacherSlideShow : keyboard handling", function() {
+describe("TeacherSlideShow KeyHandling", function() {
 
   it("should detect key pressed", function() {
 

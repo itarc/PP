@@ -1,28 +1,5 @@
-describe("Teacher SlideShow : Navigation with 1 Slide", function() {
-
-  it("should have one current slide", function() {
-	  
-    setFixtures("<div class='slides'><div class='slide'></div></div>");
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));
-
-    expect(teacherSlideShow._slides.length).toBe(1);	  
-    expect(teacherSlideShow._slides[0] instanceof Slide).toBe(true);
-
-    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current');
-    expect(teacherSlideShow._currentIndex).toBe(0);
-
-  });
-  
-   it("should init server with currentIndex when teacher slideshow is intialized", function() {
-
-    spyOn(TeacherSlideShow.prototype, '_postCurrentIndexOnServer');
-
-    var teacherSlideShow = new TeacherSlideShow([]);
-
-    expect(TeacherSlideShow.prototype._postCurrentIndexOnServer).toHaveBeenCalled();
-    expect(TeacherSlideShow.prototype._postCurrentIndexOnServer.call.length).toBe(1);
-
-  });  
+describe("TeacherSlideShow Code Slide", function() {
+	
   
   it("should call updateEditorAndExecuteCode when coding slide and space pressed", function() {
 
