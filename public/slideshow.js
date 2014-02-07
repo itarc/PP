@@ -109,10 +109,28 @@ Slide.prototype = {
 };
 
 // ----------------------------------
+// CODE SLIDE EXTENDS SLIDE CLASS
+// ----------------------------------
+var CodeSlide = function(node) {
+  Slide.call(this, node);	
+};
+
+CodeSlide.prototype = {
+  
+};
+
+for(key in Slide.prototype) {
+  CodeSlide.prototype[key] = Slide.prototype[key];
+};
+
+// ----------------------------------
 // SLIDESHOW CLASS
 // ----------------------------------  
 var SlideShow = function(slides) {
-  this._slides = (slides).map(function(element) { return new Slide(element); });
+  this._slides = (slides).map(function(element) { 
+	  if (element.querySelector('#execute') != null) return new CodeSlide(element); 
+	  return new Slide(element); 
+  });
   this._numberOfSlides = this._slides.length;
 
   var _t = this;
@@ -122,7 +140,6 @@ var SlideShow = function(slides) {
   this._update_poll_slide();
   this._update_coding_slide();  
 };
-
 
 
 SlideShow.prototype = {
