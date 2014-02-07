@@ -1,4 +1,4 @@
-describe("Slide : Poll", function() {
+describe("Poll Slide", function() {
 
   it("should NOT update poll rates if slide is NOT a poll result", function() {
   

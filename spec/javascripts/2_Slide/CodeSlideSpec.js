@@ -1,4 +1,4 @@
-describe("Slide : Coding", function() {
+describe("Code Slide", function() {
 
   it("should call code execution", function() {
   

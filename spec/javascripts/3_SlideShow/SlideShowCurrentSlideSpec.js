@@ -1,6 +1,6 @@
-describe("SlideShow slide index management :", function() {
+describe("SlideShow current slide :", function() {
 
-  it("should init with currentIndex to zero", function() {
+  it("should be first slide when slideshow is initialized", function() {
 
     var slideShow = new SlideShow([]);
 
@@ -8,7 +8,7 @@ describe("SlideShow slide index management :", function() {
 
   });  
 	
-  it("should increase currentIndex", function() {
+  it("should be next slide when next slide is called", function() {
 
     var slideShow = new SlideShow([]);
 	  
@@ -21,7 +21,7 @@ describe("SlideShow slide index management :", function() {
 
   });
   
-  it("should decrease currentIndex", function() {
+  it("should be previous slide when previous slide is called", function() {
 
     var slideShow = new SlideShow([]);
 	  
@@ -34,7 +34,7 @@ describe("SlideShow slide index management :", function() {
 
   });
 
-  it("should not go beyond last slide", function() {
+  it("should NOT be a slide beyond last slide", function() {
 
     var slideShow = new SlideShow([]);
 	  
@@ -47,7 +47,7 @@ describe("SlideShow slide index management :", function() {
 
   });
   
-  it("should not go under first slide", function() {
+  it("should NOT be a slide under first slide", function() {
 
     var slideShow = new SlideShow([]);
 	  

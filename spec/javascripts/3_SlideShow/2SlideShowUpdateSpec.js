@@ -1,4 +1,4 @@
-describe("SlideShow : Update", function() {
+describe("SlideShow update", function() {
 	
   it("should show first slide when slideshow initialized", function() {
 	  
