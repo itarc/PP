@@ -53,12 +53,12 @@ describe("Code Slide", function() {
 
     var slide = new CodeSlide(codeSlideNode);
 
-    slide.updateCodingSlideHelpers(0);
+    slide.showCurrentCodeHelper(0);
 	  
     expect(codeSlideNode.querySelector('#code_helper_1').className).toBe('code_helper current');
     expect(codeSlideNode.querySelector('#code_helper_2').className).toBe('code_helper');
 	  
-    slide.updateCodingSlideHelpers(1);	
+    slide.showCurrentCodeHelper(1);	
 
     expect(codeSlideNode.querySelector('#code_helper_1').className).toBe('code_helper');
     expect(codeSlideNode.querySelector('#code_helper_2').className).toBe('code_helper current');  
@@ -71,7 +71,7 @@ describe("Code Slide", function() {
 
     var slide = new CodeSlide(codeSlideNode);
 
-    slide.updateCodingSlideHelpers(0);
+    slide.showCurrentCodeHelper(0);
 
   });  
 

@@ -39,20 +39,16 @@ var getResource = function(path) {
 // ----------------------------------
 var Slide = function(node) {
   this._node = node;
-  //~ if (this._isCodingSlide()) { }
 };
 
 
-
 Slide.prototype = {
-  _states: [ 'previous', 'current', 'next'],
   
   _isPollResultSlide: function() {
     return this._node.querySelectorAll('.poll_response_rate').length > 0  
   },
   
   _update: function() {
-
   },
   
   _isCodingSlide: function() {
@@ -76,7 +72,6 @@ Slide.prototype = {
     postResource('/'+elementId, '', ASYNCHRONOUS);
   }, 
 
-
 };
 
 // ----------------------------------
@@ -84,18 +79,24 @@ Slide.prototype = {
 // ----------------------------------
 var CodeSlide = function(node) {
   Slide.call(this, node);
-  this._initializeCodingSlide(); 	
+  this._codeHelpers = this._node.querySelectorAll('.code_helper');
+  this._declareEditor();
+  this._declareEvents();
 };
 
 CodeSlide.prototype = {
+  _codeHelpers: [],
 	
   _isCodingSlide: function() {
     return this._node.querySelector('#execute') != null;
   },  
 
-  _initializeCodingSlide: function() {
-    var _t = this;
+  _declareEditor: function() {
     if (typeof ace != 'undefined') { this.code_editor = ace.edit(this._node.querySelector('#code_input')); }
+  }, 
+  
+  _declareEvents: function() {  
+    var _t = this;	  
     this._node.querySelector('#code_input').addEventListener('keydown',
       function(e) { if ( e.altKey && e.which == R) { _t.executeCode(); } else {e.stopPropagation()} }, false
     );
@@ -104,25 +105,30 @@ CodeSlide.prototype = {
     );      
   },  
 
-  executeCode: function() {
-    url = "/code_run_result";
-    code = this._node.querySelector('#code_input').value;
-    if (typeof ace != 'undefined') { code = this.code_editor.getValue() }
-    
-    this._node.querySelector('#code_output').value = postResource(url, code, SYNCHRONOUS);
-  },   
-  
   _update: function(slide_index) {
-    this.updateCodingSlideHelpers(slide_index);
-  },
+    this.showCurrentCodeHelper(slide_index);
+  },  
   
-  updateCodingSlideHelpers: function(slide_index) {
-    codeHelpers = this._node.querySelectorAll('.code_helper');
-    if (codeHelpers.length == 0) return;
-    for (var i=0; i<codeHelpers.length; i++) {
-      codeHelpers[i].className = 'code_helper';
+  code: function() {
+    editorContent = this._node.querySelector('#code_input').value;
+    if (typeof ace != 'undefined') { editorContent = this.code_editor.getValue() }
+    return editorContent;
+  },	  
+
+  executeCode: function() {
+    this._node.querySelector('#code_output').value = postResource("/code_run_result", this.code(), SYNCHRONOUS);
+  },
+
+  _cleanCodeHelpers: function() {
+    for (var i=0; i<this._codeHelpers.length; i++) {
+      this._codeHelpers[i].className = 'code_helper';
     }
-    codeHelpers[slide_index].className = 'code_helper current';	  
+  },  
+  
+  showCurrentCodeHelper: function(slide_index) {
+    if (this._codeHelpers.length == 0) return;
+    this._cleanCodeHelpers();
+    this._codeHelpers[slide_index].className = 'code_helper current';	  
   },   
   
   updateEditorAndExecuteCode: function(slide_index) {
