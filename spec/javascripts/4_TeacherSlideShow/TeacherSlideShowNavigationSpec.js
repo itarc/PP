@@ -152,7 +152,7 @@ describe("TeacherSlideShow Navigation with 3 Slides", function() {
 
 describe("TeacherSlideShow Navigation With a Coding Slide At The End", function() {
 
-  it("should not go beyond penultimate slide if last slide is coding slide", function() {
+  it("should not go beyond penultimate slide", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><textarea id='code_output'></textarea></div></div>")
     var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
