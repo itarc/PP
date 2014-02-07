@@ -1,4 +1,4 @@
-describe("SlideShow : teacher current slide management", function() {
+describe("TeacherSlideShow Current Slide", function() {
 	
   it("should post current slide index on server", function() {
 
@@ -14,7 +14,7 @@ describe("SlideShow : teacher current slide management", function() {
 
   });	
 
-  it("should post current slide index on server when next slide is called", function() {
+  it("should be sent to server when when next slide is called", function() {
 
     spyOn(SlideShow.prototype, '_postCurrentIndexOnServer');
 	  
@@ -31,7 +31,7 @@ describe("SlideShow : teacher current slide management", function() {
   });
 
   
-  it("should post current slide index on server when previous slide is called", function() {
+  it("should be sent to server when previous slide is called", function() {
 
     spyOn(SlideShow.prototype, '_postCurrentIndexOnServer');
 	  
@@ -47,7 +47,7 @@ describe("SlideShow : teacher current slide management", function() {
 
   });
 
-  it("should get current slide index on server when synchronise is called", function() {
+  it("should be retreived from server when synchronise is called", function() {
 
     getResource = jasmine.createSpy('getResource');
 	  
@@ -61,7 +61,7 @@ describe("SlideShow : teacher current slide management", function() {
 
   }); 
 
-  it("should not change current index if server unavailable", function() {
+  it("should not change if server unavailable", function() {
     
     var slideShow = new SlideShow([]);
     expect(slideShow._currentIndex).toBe(0);
@@ -72,7 +72,7 @@ describe("SlideShow : teacher current slide management", function() {
 
   });
     
-  it("should always update current index with a number even if number is in string format ", function() {
+  it("should be server current index enven if server returns a string format ", function() {
     
     var slideShow = new SlideShow([]);
     expect(slideShow._currentIndex).toBe(0)	  
@@ -95,6 +95,6 @@ describe("SlideShow : teacher current slide management", function() {
 
     expect(slideShow._currentIndex).toBe(0);    
 
-  });
+  });  
   
 });
