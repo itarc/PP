@@ -3,52 +3,51 @@ describe("SlideShow Code Slide", function() {
   it("should  be updated when when slideshow is initialized and first slide is a coding slide", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='code_output'><div class='slide'/></div>")	  
-    spyOn(Slide.prototype, 'updateCodingSlide');
+    spyOn(CodeSlide.prototype, 'updateCodingSlideHelpers');
 
     var slideShow = new SlideShow(queryAll('.slide'))
 
-    expect(Slide.prototype.updateCodingSlide.calls.length).toBe(1);    
-    expect(Slide.prototype.updateCodingSlide).toHaveBeenCalledWith(slideShow._currentIndex);   	  
+    expect(CodeSlide.prototype.updateCodingSlideHelpers.calls.length).toBe(1);    
+    //~ expect(CodeSlide.prototype.updateCodingSlideHelpers).toHaveBeenCalledWith(slideShow._currentIndex);   	  
 
   });  
   
   it("should be updated when when synchronise is called", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='code_output'><div class='slide'/></div>")	  
-    spyOn(Slide.prototype, 'updateCodingSlide');
+    spyOn(CodeSlide.prototype, 'updateCodingSlideHelpers');
 
     var slideShow = new SlideShow(queryAll('.slide'))	  
     slideShow.synchronise();
 
-    expect(Slide.prototype.updateCodingSlide.calls.length).toBe(2);  // initialized and synchronised
-    expect(Slide.prototype.updateCodingSlide).toHaveBeenCalledWith(slideShow._currentIndex);    
+    expect(CodeSlide.prototype.updateCodingSlideHelpers.calls.length).toBe(2);  // initialized and synchronised
+    //~ expect(CodeSlide.prototype.updateCodingSlideHelpers).toHaveBeenCalledWith(slideShow._currentIndex);    
 
   });  
   
   it("should be updated when slide down is called", function() {
 
-    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><div id='code_input'><div id='execute'><div id='code_output'><div class='slide'/></div>")	  
-    spyOn(Slide.prototype, 'updateCodingSlide');
+    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><div id='code_input'/><div id='execute'/><div id='code_output'/></div></div>")	  
+    spyOn(CodeSlide.prototype, 'updateCodingSlideHelpers');
 
     var slideShow = new SlideShow(queryAll('.slide'))	  
-    slideShow.down();
-
-    expect(Slide.prototype.updateCodingSlide.calls.length).toBe(1);  // initialized and synchronised
-    expect(Slide.prototype.updateCodingSlide).toHaveBeenCalledWith(slideShow._currentIndex);    
+    slideShow.down();	  
+    expect(CodeSlide.prototype.updateCodingSlideHelpers.calls.length).toBe(1);  // initialized and synchronised
+    //~ expect(CodeSlide.prototype.updateCodingSlideHelpers).toHaveBeenCalledWith(slideShow._currentIndex);    
 
   });    
 
   it("should be updated when synchronised is called and slide is down (i.e. coding slide is visible)", function() {
 
-    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div id='execute'><div id='code_output'><div class='slide'/></div>")	  
-    spyOn(Slide.prototype, 'updateCodingSlide');
+    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'/><div id='execute'/><div id='code_output'/></div></div>")
+    spyOn(CodeSlide.prototype, 'updateCodingSlideHelpers');
 
-    var slideShow = new SlideShow(queryAll('.slide')) // updateCodingSlide not call because not first slide	  
+    var slideShow = new SlideShow(queryAll('.slide')) // updateCodingSlideHelpers not call because not first slide	  
     slideShow.down();
     slideShow.synchronise();
 
-    expect(Slide.prototype.updateCodingSlide.calls.length).toBe(2); // down + synchronise     
-    expect(Slide.prototype.updateCodingSlide).toHaveBeenCalledWith(slideShow._currentIndex);    
+    expect(CodeSlide.prototype.updateCodingSlideHelpers.calls.length).toBe(2); // down + synchronise     
+    //~ expect(CodeSlide.prototype.updateCodingSlideHelpers).toHaveBeenCalledWith(slideShow._currentIndex);    
 
   });  
 
