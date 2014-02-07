@@ -119,7 +119,7 @@ CodeSlide.prototype = {
     this._node.querySelector('#code_output').value = postResource("/code_run_result", this.code(), SYNCHRONOUS);
   },
 
-  _cleanCodeHelpers: function() {
+  _clearCodeHelpers: function() {
     for (var i=0; i<this._codeHelpers.length; i++) {
       this._codeHelpers[i].className = 'code_helper';
     }
@@ -127,15 +127,18 @@ CodeSlide.prototype = {
   
   showCurrentCodeHelper: function(slide_index) {
     if (this._codeHelpers.length == 0) return;
-    this._cleanCodeHelpers();
+    this._clearCodeHelpers();
     this._codeHelpers[slide_index].className = 'code_helper current';	  
   },   
+
+  updateEditor: function(code) {
+    this._node.querySelector('#code_input').value = code;
+    if (typeof ace != 'undefined') { this.code_editor.setValue(code, 1); }	  
+  },	  
   
   updateEditorAndExecuteCode: function(slide_index) {
-    if (! this._isCodingSlide()) return;
     code = getResource('/code_last_run');
-    this._node.querySelector('#code_input').value = code;
-    if (typeof ace != 'undefined') { this.code_editor.setValue(code, 1) }
+    this.updateEditor(code);
     this.executeCode();	  
   }, 
   
@@ -164,7 +167,7 @@ var SlideShow = function(slides) {
 
   this._show_current_slide();
   this._update_poll_slide();
-  this._update_coding_slide();  
+  this._show_current_code_helper();  
 };
 
 
@@ -176,7 +179,7 @@ SlideShow.prototype = {
   _numberOfSlides : 0,
   _isUp : true,
 
-  _clean: function() {
+  _clear: function() {
     for(var slideIndex in this._slides) { this._slides[slideIndex].setState('') }
   },
 
@@ -184,19 +187,23 @@ SlideShow.prototype = {
     if (! this._isUp) return this._coding_slide();
     return this._slides[this._currentIndex];
   },
-
-  _coding_slide:function() {
-    return this._slides[this._numberOfSlides-1]
-  },
   
   _show_current_slide: function() {
     window.console && window.console.log("_currentIndex : " + this._currentIndex);
     window.console && window.console.log("_currentServerIndex : " + this._currentServerIndex);
     if (this._current_slide()) {
-      this._clean();
+      this._clear();
       this._current_slide().setState('current');
     }
   },
+
+  _coding_slide:function() {
+    return this._slides[this._numberOfSlides-1]
+  },  
+  
+  _show_coding_slide: function() {
+    this._coding_slide().setState('current');
+  },	  
   
   _update_poll_slide: function() {
     if (this._current_slide() && this._current_slide()._isPollResultSlide()) {
@@ -204,12 +211,12 @@ SlideShow.prototype = {
     }
   },  
   
-  _update_coding_slide:function() {
+  _show_current_code_helper:function() {
     if (this._current_slide()) this._current_slide()._update(this._currentServerIndex);
   },  
 
   _is_a_number: function(index) {
-	return  !( isNaN(index) )
+    return  !( isNaN(index) );
   },
   
   _getCurrentIndexOnServer: function() {
@@ -229,7 +236,7 @@ SlideShow.prototype = {
     this._currentServerIndex = this._currentIndex;	  
     if (this._isUp) this._show_current_slide();
     this._update_poll_slide();
-    this._update_coding_slide();	  
+    this._show_current_code_helper();	  
     this._postCurrentIndexOnServer();
   },
 
@@ -240,15 +247,15 @@ SlideShow.prototype = {
     this._currentServerIndex = this._currentIndex;		  
     if (this._isUp) this._show_current_slide();
     this._update_poll_slide();
-    this._update_coding_slide();
+    this._show_current_code_helper();
     this._postCurrentIndexOnServer();
   },
   
   down: function() {
-    this._clean();
-    this._coding_slide().setState('current');
+    this._clear();
+    this._show_coding_slide();
     this._isUp = false;
-    this._update_coding_slide();  
+    this._show_current_code_helper();  
   },
   
   up: function() {
@@ -259,6 +266,6 @@ SlideShow.prototype = {
   synchronise: function() {
     this._getCurrentIndexOnServer();
     if (this._isUp) this._show_current_slide(); 
-    this._update_coding_slide();
+    this._show_current_code_helper();
   },
 };

@@ -23,9 +23,7 @@ TeacherSlideShow.prototype = {
       break;	    
       case SPACE:  
         this.synchronise();
-        currentSlide = this._slides[this._currentIndex];
-        if (currentSlide._isCodingSlide()) { currentSlide.updateEditorAndExecuteCode(); }
-        if (!this._isUp) { this._slides[this._numberOfSlides-1].updateEditorAndExecuteCode(); }
+	if (this._current_slide()._isCodingSlide()) this._current_slide().updateEditorAndExecuteCode();
       break;	      
     }
   },	
