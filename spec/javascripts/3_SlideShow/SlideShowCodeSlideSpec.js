@@ -79,6 +79,18 @@ describe("SlideShow Code Slide", function() {
     slideShow.synchronise();  
     expect(SlideShow.prototype._show_current_slide.calls.length).toBe(5);
 
-  });   
+  }); 
+
+  it("should execute code which is in code helper when initialized and code slide is first slide", function() {
+	  	  
+    setFixtures("<div class='slides'><div class='slide'><div id='code_input'/><div class='code_helper' id='code_helper_1'><div class='code_to_display'>puts 'CODE IN HELPER'</div></div><div id='execute'/><div id='code_output'/></div></div>")
+    spyOn(CodeSlide.prototype, 'updateEditorAndExecuteCode');
+
+    var slideShow = new SlideShow(queryAll('.slide'))
+	  
+    expect(CodeSlide.prototype.updateEditorAndExecuteCode.calls.length).toBe(1); 
+    expect(CodeSlide.prototype.updateEditorAndExecuteCode).toHaveBeenCalledWith(0); 	  
+
+  }); 	  
 
 });

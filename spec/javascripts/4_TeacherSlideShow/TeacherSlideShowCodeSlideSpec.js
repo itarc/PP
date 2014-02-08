@@ -1,7 +1,6 @@
-describe("TeacherSlideShow Code Slide", function() {
-	
+describe("TeacherSlideShow Code Slide", function() { 	
   
-  it("should call updateEditorAndExecuteCode when coding slide and space pressed", function() {
+  it("should call updateEditorAndExecuteCode when first slide or space pressed", function() {
 
     setFixtures("<div class='slides'><div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><textarea id='code_output'></textarea></section></div></div>");
     spyOn(CodeSlide.prototype, 'updateEditorAndExecuteCode');
@@ -10,11 +9,11 @@ describe("TeacherSlideShow Code Slide", function() {
 	  
     var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));	  
 	  
+    expect(CodeSlide.prototype.updateEditorAndExecuteCode.calls.length).toBe(1);   
+	  
     __triggerKeyboardEvent(document, SPACE);
 
-
-    expect(CodeSlide.prototype.updateEditorAndExecuteCode.calls.length).toBe(1); 
-   
+    expect(CodeSlide.prototype.updateEditorAndExecuteCode.calls.length).toBe(2);
 
   });  
 
@@ -47,6 +46,6 @@ describe("TeacherSlideShow Code Slide", function() {
 
     expect(CodeSlide.prototype.updateEditorAndExecuteCode.calls.length).toBe(2); // sum of test above + this test
   
-  });   
+  });
   
 });

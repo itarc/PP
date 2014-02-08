@@ -138,6 +138,8 @@ CodeSlide.prototype = {
   
   updateEditorAndExecuteCode: function(slide_index) {
     code = getResource('/code_last_run');
+    if (code == '' && this._codeHelpers[slide_index] && this._codeHelpers[slide_index].querySelector('.code_to_display') ) code = this._codeHelpers[slide_index].querySelector('.code_to_display').innerHTML;
+    if (code == '') return;
     this.updateEditor(code);
     this.executeCode();	  
   }, 
@@ -167,7 +169,8 @@ var SlideShow = function(slides) {
 
   this._show_current_slide();
   this._update_poll_slide();
-  this._show_current_code_helper();  
+  this._show_current_code_helper(); 
+  this._execute_code_in_code_helper();    
 };
 
 
@@ -213,6 +216,10 @@ SlideShow.prototype = {
   
   _show_current_code_helper:function() {
     if (this._current_slide()) this._current_slide()._update(this._currentServerIndex);
+  },  
+  
+  _execute_code_in_code_helper: function() {
+    if (this._current_slide() && this._current_slide()._isCodingSlide()) this._current_slide().updateEditorAndExecuteCode(this._currentServerIndex);	  
   },  
 
   _is_a_number: function(index) {

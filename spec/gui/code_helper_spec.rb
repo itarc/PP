@@ -44,6 +44,20 @@ describe 'Code Helper', :type => :feature, :js => true do
 
   end
   
+  it 'should place code into editor when code is present in code helper' do
+       
+    visit ATTENDEE_CODING_SLIDE_HELPER
+    
+    within '#code_helper_1' do
+      expect(page).to have_content "HELPER 1"
+      expect(page).to have_no_content "print 'HELPER CODE'"
+    end    
+    
+    expect(page).to have_field 'code_input', :with => "print 'HELPER CODE'"
+    expect(page).to have_field 'code_output', :with => "HELPER CODE"
+
+  end  
+  
   after(:each) do
     $db.execute_sql("delete from run_events") 
   end    

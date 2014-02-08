@@ -165,6 +165,10 @@ video {
   display:inline-block;
 }
 
+.code_to_display {
+  display:none
+}
+
 .code_result {
   font-size:0.5em;
   width:100%; 
