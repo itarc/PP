@@ -10,7 +10,7 @@ set :logging, false
 
 TEACHER_CODING_PRESENTATION_SYNC = '/teacher/coding_presentation'
 TEACHER_CODING_SLIDE_SYNC = '/teacher/coding_slide'
-ATTENDEE_CODING_SLIDE_SYNC = '/attendee/coding_slide'
+ATTENDEE_CODING_SLIDE_SYNC = '/attendee/coding_slide_no_code'
 
 
 describe 'Coding Slide', :type => :feature, :js => true do
@@ -61,15 +61,12 @@ describe 'Coding Slide', :type => :feature, :js => true do
 
   it 'should synchronised with last attendee run when space pressed on teacher slide' do   
 
-    visit ATTENDEE_CODING_SLIDE_SYNC
-    
-    fill_in 'code_input', :with => 'print "something new"'
-    click_on 'execute'
-
     visit TEACHER_CODING_SLIDE_SYNC
     
     expect(page).to have_field 'code_input', :with => ""
     expect(page).to have_field 'code_output', :with => ""
+    
+    run_ruby 'print "something new"', "attendee 1"
 
     find(:css, 'div.presentation').native.send_key(:space)
     

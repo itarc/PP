@@ -51,6 +51,10 @@ get '/attendee/coding_slide' do
   redirect "coding_slide-attendee.html"
 end
 
+get '/attendee/coding_slide_no_code' do
+  redirect "coding_slide-attendee-with-no-code-to-display.html"
+end
+
 get '/teacher/coding_presentation' do
   redirect "coding_presentation-teacher.html"
 end
