@@ -163,6 +163,7 @@ var SlideShow = function(slides) {
 	  };
   });
   this._numberOfSlides = this._slides.length;
+  this._currentSlide = this._slides[this._currentIndex];
 
   var _t = this;
   document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );   
@@ -178,24 +179,25 @@ var SlideShow = function(slides) {
 SlideShow.prototype = {
   _slides : [],
   _currentIndex : 0,
+  _currentSlide : undefined, 
   _currentServerIndex : 0,
   _numberOfSlides : 0,
-  _isUp : true,
+
 
   _clear: function() {
     for(var slideIndex in this._slides) { this._slides[slideIndex].setState('') }
   },
 
   _current_slide: function() {
-    if (! this._isUp) return this._coding_slide();
-    return this._slides[this._currentIndex];
+    return this._currentSlide;
   },
   
   _show_current_slide: function() {
     window.console && window.console.log("_currentIndex : " + this._currentIndex);
     window.console && window.console.log("_currentServerIndex : " + this._currentServerIndex);
+    this._currentSlide = this._slides[this._currentIndex];
     if (this._current_slide()) {
-      this._clear();
+      this._clear();	    
       this._current_slide().setState('current');
     }
   },
@@ -206,6 +208,7 @@ SlideShow.prototype = {
   
   _show_coding_slide: function() {
     this._coding_slide().setState('current');
+    this._currentSlide = this._coding_slide();
   },	  
   
   _update_poll_slide: function() {
@@ -241,7 +244,7 @@ SlideShow.prototype = {
     if (this._currentIndex <= 0) return;
     this._currentIndex -= 1;
     this._currentServerIndex = this._currentIndex;	  
-    if (this._isUp) this._show_current_slide();
+    if (this._currentSlide && ! this._currentSlide._isCodingSlide()) this._show_current_slide();
     this._update_poll_slide();
     this._show_current_code_helper();	  
     this._postCurrentIndexOnServer();
@@ -252,7 +255,7 @@ SlideShow.prototype = {
     if (this._slides[this._currentIndex+1] && this._slides[this._currentIndex+1]._isCodingSlide()) return;
     this._currentIndex += 1;
     this._currentServerIndex = this._currentIndex;		  
-    if (this._isUp) this._show_current_slide();
+    if (this._currentSlide && ! this._currentSlide._isCodingSlide()) this._show_current_slide();
     this._update_poll_slide();
     this._show_current_code_helper();
     this._postCurrentIndexOnServer();
@@ -261,18 +264,18 @@ SlideShow.prototype = {
   down: function() {
     this._clear();
     this._show_coding_slide();
-    this._isUp = false;
+
     this._show_current_code_helper();  
   },
   
-  up: function() {
-    this._isUp = true;
-    this._show_current_slide();	  
+  up: function() {  
+    this._currentSlide = this._slides[this._currentIndex];
+    this._show_current_slide();
   },
 
   synchronise: function() {
     this._getCurrentIndexOnServer();
-    if (this._isUp) this._show_current_slide(); 
+    if (this._currentSlide && ! this._currentSlide._isCodingSlide()) this._show_current_slide(); 
     this._show_current_code_helper();
   },
 };

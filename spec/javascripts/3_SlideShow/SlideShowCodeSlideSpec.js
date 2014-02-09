@@ -1,6 +1,6 @@
 describe("SlideShow Code Slide", function() {  
 
-  it("should  be updated when when slideshow is initialized and first slide is a coding slide", function() {
+  it("should  be updated when slideshow is initialized and first slide is a coding slide", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='code_output'><div class='slide'/></div>")	  
     spyOn(CodeSlide.prototype, 'showCurrentCodeHelper');
@@ -11,7 +11,7 @@ describe("SlideShow Code Slide", function() {
 
   });  
   
-  it("should be updated when when synchronise is called", function() {
+  it("should be updated when synchronise is called", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='code_output'><div class='slide'/></div>")	  
     spyOn(CodeSlide.prototype, 'showCurrentCodeHelper');
@@ -34,7 +34,7 @@ describe("SlideShow Code Slide", function() {
 
   });    
 
-  it("should be updated when synchronised is called and slide is down (i.e. coding slide is visible)", function() {
+  it("should be updated when visible and synchronised is called", function() {
 
     setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'/><div id='execute'/><div id='code_output'/></div></div>")
     spyOn(CodeSlide.prototype, 'showCurrentCodeHelper');
@@ -47,7 +47,7 @@ describe("SlideShow Code Slide", function() {
 
   });  
 
-  it("should not update slideshow state if slide down (i.e. coding slide is visible)", function() {
+  it("should NOT show current slide when code slide is visible", function() {
 	  
    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='code_output'></div></div>")	  
    spyOn(SlideShow.prototype, '_show_current_slide');
@@ -61,7 +61,7 @@ describe("SlideShow Code Slide", function() {
     slideShow.next(); 
     expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
 
-    slideShow.prev();  
+    slideShow.prev(); 
     expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
 	  
     slideShow.synchronise();  
