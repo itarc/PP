@@ -43,16 +43,12 @@ get '/teacher/2_questions_2_slides' do
   redirect "2_questions_2_slides-teacher.html"
 end
 
-get '/teacher/coding_slide' do
-  redirect "coding_slide-teacher.html"
+get '/attendee/coding_slide_with_code_to_display' do
+  redirect "coding_slide_with_code_to_display-attendee.html"
 end
 
-get '/attendee/coding_slide' do
-  redirect "coding_slide-attendee.html"
-end
-
-get '/attendee/coding_slide_no_code' do
-  redirect "coding_slide-attendee-with-no-code-to-display.html"
+get '/attendee/coding_slide_with_NO_code_to_display' do
+  redirect "coding_slide_with_NO_code_to_display-attendee.html"
 end
 
 get '/teacher/coding_presentation' do
