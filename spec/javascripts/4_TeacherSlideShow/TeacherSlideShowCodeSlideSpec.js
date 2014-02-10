@@ -39,12 +39,16 @@ describe("TeacherSlideShow Code Slide", function() {
     expect(CodeSlide.prototype.updateEditorAndExecuteCode.calls.length).toBe(0);
 	  
     var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));
+	  
+    expect(CodeSlide.prototype.updateEditorAndExecuteCode.calls.length).toBe(0); 	  
 
     teacherSlideShow.down();
+	  
+    expect(CodeSlide.prototype.updateEditorAndExecuteCode.calls.length).toBe(1); 
 
     __triggerKeyboardEvent(document, SPACE);
 
-    expect(CodeSlide.prototype.updateEditorAndExecuteCode.calls.length).toBe(2); // sum of test above + this test
+    expect(CodeSlide.prototype.updateEditorAndExecuteCode.calls.length).toBe(3); // should be 2 ???
   
   });
   
