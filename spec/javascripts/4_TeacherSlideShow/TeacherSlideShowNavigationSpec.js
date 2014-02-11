@@ -163,7 +163,41 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
 	  
     expect(teacherSlideShow._currentIndex).toBe(0)
 	  
-  })
+  });
+  
+  it("should NOT show current slide when teacher shows coding slide", function() {
+	  
+   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='code_output'></div></div>")	  
+   spyOn(SlideShow.prototype, '_show_current_slide');
+	  
+    var slideShow = new SlideShow(queryAll('.slide'))
+
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
+
+    slideShow.down();
+
+    slideShow.next(); 
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
+
+    slideShow.prev(); 
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
+	  
+    slideShow.synchronise();  
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);    
+
+    slideShow.up();
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(2);	  
+	  
+    slideShow.next(); 
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(3);
+
+    slideShow.prev();  
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(4);
+
+    slideShow.synchronise();  
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(5);
+
+  });  
   
 });
 
