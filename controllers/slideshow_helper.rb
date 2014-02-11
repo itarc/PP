@@ -15,6 +15,10 @@ def user_id
   session[:user_id]  
 end
 
+def slide_index
+  params[:splat][0]
+end
+
 def next_user_id
   $db.execute_sql("update compteur set identifiant = identifiant + 1")
   $db.execute_sql("select identifiant from compteur").to_a[0]['identifiant'].to_i

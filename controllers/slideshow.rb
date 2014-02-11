@@ -31,7 +31,7 @@ get '/poll_response_*_rate_to_*' do
 end
 
 get '/code_last_run/*' do
-  last_runtime_event = RunTimeEvent.find_last(params[:splat][0])
+  last_runtime_event = RunTimeEvent.find_last(slide_index)
   return "" if last_runtime_event == nil
   last_runtime_event.code_input
 end
@@ -63,6 +63,5 @@ end
 
 post '/code_run_result/*' do
   code = request.env["rack.input"].read
-  slide_index = params[:splat][0]
   run_ruby(code, user_id, slide_index)
 end
