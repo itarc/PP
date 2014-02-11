@@ -19,6 +19,7 @@ get '/' do
 end
 
 get '/teacher-x1973' do
+  session[:user_id] = 0
   send_file "views/slideshow-teacher.1973x.html"
 end
 
