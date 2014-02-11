@@ -23,6 +23,7 @@ TeacherSlideShow.prototype = {
       break;	    
       case SPACE:  
         this.synchronise();
+        this._refresh();	    
       break;	      
     }
   },	

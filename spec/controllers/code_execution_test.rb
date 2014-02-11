@@ -51,22 +51,22 @@ class TestCodeRun < Test::Unit::TestCase
   end
   
   def test01_should_not_run_anything_when_no_code
-    post '/code_run_result', ""
+    post '/code_run_result/0', ""
     assert_equal "", last_response.body
   end
   
   def test02_should_run_code
-    post '/code_run_result', "print 2"
+    post '/code_run_result/0', "print 2"
     assert_equal "2", last_response.body
   end
 
   def test03_should_catch_exception
-    post '/code_run_result', "print A"
+    post '/code_run_result/0', "print A"
     assert last_response.body.include?("uninitialized constant A")
   end
   
   def test04_should_run_unit_tests
-    post '/code_run_result', "require 'test/unit'"
+    post '/code_run_result/0', "require 'test/unit'"
     assert last_response.body.include?("0 tests, 0 assertions, 0 failures, 0 errors, 0 skips")  
   end
   
@@ -89,14 +89,16 @@ class TestCodeGet < Test::Unit::TestCase
   end
   
   def test01
-    get '/code_last_run'
+    get '/code_last_run/0'
     assert_equal "", last_response.body
   end
 
   def test02
-    post '/code_run_result', "print 3"
-    get '/code_last_run'
+    post '/code_run_result/0', "print 3"
+    get '/code_last_run/0'
     assert_equal "print 3", last_response.body
+    get '/code_last_run/1'
+    assert_equal "", last_response.body    
   end
   
   def teardown

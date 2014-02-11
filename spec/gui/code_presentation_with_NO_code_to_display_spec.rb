@@ -13,6 +13,10 @@ ATTENDEE_CODING_SLIDE_WITH_NO_CODE_TO_DISPPLAY = '/attendee/coding_slide_with_NO
 
 
 describe 'Teacher Code Presentation', :type => :feature, :js => true do
+	
+  before(:each) do
+    $db.execute_sql("delete from run_events") 
+  end	
   
   it 'should show code slide when down array is pressed' do
 
@@ -41,6 +45,10 @@ describe 'Teacher Code Presentation', :type => :feature, :js => true do
     expect(page).to have_content 'EXERCISE - 2'
     
   end
+
+  after(:each) do
+    $db.execute_sql("delete from run_events") 
+  end  
   
 end
   
@@ -92,7 +100,7 @@ describe 'Teacher Code Slide', :type => :feature, :js => true do
 	  
   end
   
-  it 'should show last run when space pressed' do   
+  it 'should show current slide last run (from any attendee) when space pressed' do   
 
     visit TEACHER_CODING_PRESENTATION
     
@@ -101,14 +109,52 @@ describe 'Teacher Code Slide', :type => :feature, :js => true do
     expect(page).to have_field 'code_input', :with => ""
     expect(page).to have_field 'code_output', :with => ""
     
-    run_ruby 'print "attendee run"', "attendee 1"
+    run_ruby 'print "attendee run"', "attendee 1", "0"
 
     find(:css, 'div.presentation').native.send_key(:space)
     
     expect(page).to have_field 'code_input', :with => 'print "attendee run"'
     expect(page).to have_field 'code_output', :with => 'attendee run'
     
-  end  
+  end 
+
+  
+  it 'should NOT show current slide last run when space pressed and no last run for current slide' do   
+
+    visit TEACHER_CODING_PRESENTATION
+    
+    find(:css, 'div.presentation').native.send_key(:arrow_down)    
+    
+    expect(page).to have_field 'code_input', :with => ""
+    expect(page).to have_field 'code_output', :with => ""
+    
+    run_ruby 'print "attendee run"', "attendee 1", "0"
+    
+    find(:css, 'div.presentation').native.send_key(:arrow_right)
+
+    find(:css, 'div.presentation').native.send_key(:space)
+    
+    expect(page).to have_field 'code_input', :with => ''
+    expect(page).to have_field 'code_output', :with => '' # no run on this slide
+    
+    find(:css, 'div.presentation').native.send_key(:arrow_left) 
+
+    find(:css, 'div.presentation').native.send_key(:space)
+    
+    expect(page).to have_field 'code_input', :with => 'print "attendee run"'
+    expect(page).to have_field 'code_output', :with => 'attendee run'
+
+    find(:css, 'div.presentation').native.send_key(:arrow_right)
+
+    expect(page).to have_field 'code_input', :with => 'print "attendee run"'
+    expect(page).to have_field 'code_output', :with => 'attendee run'
+
+    find(:css, 'div.presentation').native.send_key(:space)
+    
+    expect(page).to have_field 'code_input', :with => 'print "attendee run"'
+    expect(page).to have_field 'code_output', :with => 'attendee run'    
+    
+  end 
   
   after(:each) do
     $db.execute_sql("delete from run_events") 

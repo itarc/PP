@@ -66,11 +66,11 @@ describe("Code Slide", function() {
     expect(codeSlideNode.querySelector('#code_output').value).toBe('');	  
 	  
     var slide = new CodeSlide(codeSlideNode);
-    slide.executeCode()
+    slide.executeCode(0)
 	  
     expect(postResource).toHaveBeenCalled();
     expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/code_run_result', 'puts 1', SYNCHRONOUS);
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);
 	  
     expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 1');
     expect(codeSlideNode.querySelector('#code_output').value).toBe('1');
@@ -134,13 +134,13 @@ describe("Code Slide", function() {
 	  
     var slide = new CodeSlide(codeSlideNode);
 
-    slide.updateEditorAndExecuteCode();
+    slide.updateEditorAndExecuteCode(0);
 	  
     expect(postResource).toHaveBeenCalled();	  
 	  
     expect(getResource).toHaveBeenCalled();
     expect(getResource.calls.length).toBe(1);
-    expect(getResource).toHaveBeenCalledWith('/code_last_run');
+    expect(getResource).toHaveBeenCalledWith('/code_last_run/0');
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 2');
     expect(codeSlideNode.querySelector('#code_output').value).toBe('2');

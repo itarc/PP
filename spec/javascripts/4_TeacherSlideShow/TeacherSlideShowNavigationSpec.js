@@ -182,6 +182,7 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
     slideShow.prev(); 
     expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
 	  
+    getResource = jasmine.createSpy('getResource').andReturn('0'); // prevent from other spy somewhere else in a spec
     slideShow.synchronise();  
     expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);    
 
@@ -195,7 +196,7 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
     expect(SlideShow.prototype._show_current_slide.calls.length).toBe(4);
 
     slideShow.synchronise();  
-    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(5);
+    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(4); // same slide as current slide
 
   });  
   

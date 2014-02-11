@@ -13,10 +13,10 @@ describe("TeacherSlideShow Code Slide", function() {
 
   });	
 
-  it("should NOT be updated if current slide is not the coding slide and space pressed", function() {
+  it("should NOT be updated when teacher do not show it and press space", function() {
 
     setFixtures("<div class='slides'><div class='slide'/></div>");
-    spyOn(CodeSlide.prototype, '_update');
+    spyOn(CodeSlide.prototype, '_update');  
 
     expect(CodeSlide.prototype._update.calls.length).toBe(0);
 	  

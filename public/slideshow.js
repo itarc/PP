@@ -117,8 +117,8 @@ CodeSlide.prototype = {
     return editorContent;
   },	  
 
-  executeCode: function() {
-    this._node.querySelector('#code_output').value = postResource("/code_run_result", this.code(), SYNCHRONOUS);
+  executeCode: function(slide_index) {
+    this._node.querySelector('#code_output').value = postResource("/code_run_result" + "/" + slide_index, this.code(), SYNCHRONOUS);
   },
 
   _clearCodeHelpers: function() {
@@ -140,7 +140,7 @@ CodeSlide.prototype = {
   },	  
   
   updateEditorAndExecuteCode: function(slide_index) {
-    code = getResource('/code_last_run');
+    code = getResource('/code_last_run' + '/' + slide_index);
     if (code == '' && this._codeHelpers[slide_index] && this._codeHelpers[slide_index].querySelector('.code_to_display') ) code = this._codeHelpers[slide_index].querySelector('.code_to_display').innerHTML;
     if (code == '') return;
     this.updateEditor(code);
@@ -217,8 +217,7 @@ SlideShow.prototype = {
   
   _getCurrentIndexOnServer: function() {
     serverIndex = parseInt(getResource('/teacher_current_slide'));
-    if ( this._is_a_number(serverIndex) ) this._currentIndex = serverIndex;
-    window.console && window.console.log("_currentIndex : " + this._currentIndex);	  
+    if ( this._is_a_number(serverIndex) ) this._currentIndex = serverIndex;	  
   },    
 
   _postCurrentIndexOnServer: function() {
@@ -232,8 +231,9 @@ SlideShow.prototype = {
     else
 	this._show_teacher_coding_slide();
     this._update_poll_slide();
-    this._currentSlide._update(this._currentIndex);	  
-  },
+    this._currentSlide._update(this._currentIndex);
+    window.console && window.console.log("Refreshed with this._currentIndex = " + this._currentIndex);
+  }, 
 
   prev: function() {
     if (this._currentIndex <= 0) return;
@@ -259,9 +259,11 @@ SlideShow.prototype = {
     this._isUp = true;	  
     this._refresh();
   },
-
+  
   synchronise: function() {
+    previous_index = this._currentIndex
     this._getCurrentIndexOnServer();
-    this._refresh();  
-  },
+    if (this._currentIndex != previous_index) this._refresh();  
+   },
+  
 };
