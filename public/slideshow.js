@@ -108,7 +108,7 @@ CodeSlide.prototype = {
 
   _update: function(slide_index) {
     this.showCurrentCodeHelper(slide_index);
-    this.updateEditorAndExecuteCode(slide_index);
+    this.updateEditorAndExecuteCode();
   },  
   
   code: function() {
@@ -117,8 +117,8 @@ CodeSlide.prototype = {
     return editorContent;
   },	  
 
-  executeCode: function(slide_index) {
-    this._node.querySelector('#code_output').value = postResource("/code_run_result" + "/" + slide_index, this.code(), SYNCHRONOUS);
+  executeCode: function() {
+    this._node.querySelector('#code_output').value = postResource("/code_run_result" + "/" + this._codeHelper_current_index, this.code(), SYNCHRONOUS);
   },
 
   _clearCodeHelpers: function() {
@@ -139,9 +139,9 @@ CodeSlide.prototype = {
     if (typeof ace != 'undefined') { this.code_editor.setValue(code, 1); }	  
   },	  
   
-  updateEditorAndExecuteCode: function(slide_index) {
-    code = getResource('/code_last_run' + '/' + slide_index);
-    if (code == '' && this._codeHelpers[slide_index] && this._codeHelpers[slide_index].querySelector('.code_to_display') ) code = this._codeHelpers[slide_index].querySelector('.code_to_display').innerHTML;
+  updateEditorAndExecuteCode: function() {
+    code = getResource('/code_last_run' + '/' + this._codeHelper_current_index);
+    if (code == '' && this._codeHelpers[this._codeHelper_current_index] && this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_display') ) code = this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_display').innerHTML;
     if (code == '') return;
     this.updateEditor(code);
     this.executeCode();	  

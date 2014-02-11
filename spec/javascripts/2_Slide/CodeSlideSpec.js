@@ -40,6 +40,27 @@ describe("Code Slide", function() {
 	  
    expect(codeSlideNode.querySelector('#code_input').value).toBe("print 'editor updated'");
     
+  }); 
+  
+  it("should run code in code editor", function() {
+  
+    codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><textarea id='code_output'></textarea></section></div>");
+  
+    postResource = jasmine.createSpy('postResource').andReturn('1');  
+	  
+    expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 1');
+    expect(codeSlideNode.querySelector('#code_output').value).toBe('');	  
+	  
+    var slide = new CodeSlide(codeSlideNode);
+    slide.executeCode()
+	  
+    expect(postResource).toHaveBeenCalled();
+    expect(postResource.calls.length).toBe(1);
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);
+	  
+    expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 1');
+    expect(codeSlideNode.querySelector('#code_output').value).toBe('1');
+    
   });  
   
   it("should show current helper and run code when updated", function() {
@@ -55,70 +76,49 @@ describe("Code Slide", function() {
     expect(CodeSlide.prototype.updateEditorAndExecuteCode.calls.length).toBe(1);
 	  
   });
-
-  it("should run code in code editor", function() {
-  
-    codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><textarea id='code_output'></textarea></section></div>");
-  
-    postResource = jasmine.createSpy('postResource').andReturn('1');  
-	  
-    expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 1');
-    expect(codeSlideNode.querySelector('#code_output').value).toBe('');	  
-	  
-    var slide = new CodeSlide(codeSlideNode);
-    slide.executeCode(0)
-	  
-    expect(postResource).toHaveBeenCalled();
-    expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);
-	  
-    expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 1');
-    expect(codeSlideNode.querySelector('#code_output').value).toBe('1');
-    
-  });
   
   it("should run code when click on execute button", function() {
   
     codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><textarea id='code_output'></textarea></section></div>");
   
-    spyOn(CodeSlide.prototype, 'executeCode');
+    postResource = jasmine.createSpy('postResource'); 	  
 	  
     var slide = new CodeSlide(codeSlideNode);
     codeSlideNode.querySelector('#execute').click();
 
-    expect(CodeSlide.prototype.executeCode).toHaveBeenCalled();
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);	  
     
   });
   
   it("should run code when ALT-R pressed", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><textarea id='code_output'></textarea></section><div>");
-    spyOn(CodeSlide.prototype, 'executeCode');
+    postResource = jasmine.createSpy('postResource'); 		  
 	  
     var slide = new CodeSlide(codeSlideNode);
 
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), R, ALT);
 	  
-    expect(CodeSlide.prototype.executeCode).toHaveBeenCalled();
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);	  
 
   });
   
   it("should run code and give current code helper index when ALT-R pressed", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'></div><div class='code_helper'></div><input type='button' id='execute'/><textarea id='code_output'></textarea></section><div>");
-    spyOn(CodeSlide.prototype, 'executeCode');
+    postResource = jasmine.createSpy('postResource'); 		  
 	  
     var slide = new CodeSlide(codeSlideNode);
 
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), R, ALT);
 	  
-    expect(CodeSlide.prototype.executeCode).toHaveBeenCalledWith(0);
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', '', SYNCHRONOUS);		  
 	  
     slide.showCurrentCodeHelper(1);
 	  
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), R, ALT);	  
 
-    expect(CodeSlide.prototype.executeCode).toHaveBeenCalledWith(1);
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/1', '', SYNCHRONOUS);		  
 	  
   });  
 
@@ -134,13 +134,15 @@ describe("Code Slide", function() {
 	  
     var slide = new CodeSlide(codeSlideNode);
 
-    slide.updateEditorAndExecuteCode(0);
+    slide.updateEditorAndExecuteCode();
 	  
     expect(postResource).toHaveBeenCalled();	  
 	  
     expect(getResource).toHaveBeenCalled();
     expect(getResource.calls.length).toBe(1);
     expect(getResource).toHaveBeenCalledWith('/code_last_run/0');
+	 
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 2', SYNCHRONOUS);	 
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 2');
     expect(codeSlideNode.querySelector('#code_output').value).toBe('2');
@@ -153,21 +155,20 @@ describe("Code Slide", function() {
 
     var slide = new CodeSlide(codeSlideNode);
 
-    getResource = jasmine.createSpy('getResource').andReturn('');
-    spyOn(CodeSlide.prototype, 'executeCode');       
+    getResource = jasmine.createSpy('getResource').andReturn(''); 
+    postResource = jasmine.createSpy('postResource'); 		  
          
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
 
-    slide.updateEditorAndExecuteCode(0);
+    slide.updateEditorAndExecuteCode();
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe("puts 'HELP CODE'");
 
-    expect(CodeSlide.prototype.executeCode).toHaveBeenCalled();      
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', "puts 'HELP CODE'", SYNCHRONOUS);	  
 
   });  
   
-  it("should NOT run if no code in code helper and no last run", function() {
+  it("should NOT run code if no code in code helper and no last run", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper' id='code_helper_1'></div></div><input type='button' id='execute'/><textarea id='code_output'></textarea></section><div>");
 
@@ -178,7 +179,7 @@ describe("Code Slide", function() {
          
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
 
-    slide.updateEditorAndExecuteCode(0);
+    slide.updateEditorAndExecuteCode();
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
 
