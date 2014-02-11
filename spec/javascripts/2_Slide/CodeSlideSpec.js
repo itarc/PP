@@ -102,6 +102,25 @@ describe("Code Slide", function() {
     expect(CodeSlide.prototype.executeCode).toHaveBeenCalled();
 
   });
+  
+  it("should run code and give current code helper index when ALT-R pressed", function() {
+
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'></div><div class='code_helper'></div><input type='button' id='execute'/><textarea id='code_output'></textarea></section><div>");
+    spyOn(CodeSlide.prototype, 'executeCode');
+	  
+    var slide = new CodeSlide(codeSlideNode);
+
+    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), R, ALT);
+	  
+    expect(CodeSlide.prototype.executeCode).toHaveBeenCalledWith(0);
+	  
+    slide.showCurrentCodeHelper(1);
+	  
+    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), R, ALT);	  
+
+    expect(CodeSlide.prototype.executeCode).toHaveBeenCalledWith(1);
+	  
+  });  
 
  it("should run last run if exists", function() {
   
@@ -130,7 +149,7 @@ describe("Code Slide", function() {
 
   it("should run code helper code if last run does not exist", function() {
 
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper' id='code_helper_1'><div class='code_to_display'>puts 'HELP CODE'</div></div><input type='button' id='execute'/><textarea id='code_output'></textarea></section></div>");
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'HELP CODE'</div></div><input type='button' id='execute'/><textarea id='code_output'></textarea></section></div>");
 
     var slide = new CodeSlide(codeSlideNode);
 

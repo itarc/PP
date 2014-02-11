@@ -80,6 +80,7 @@ Slide.prototype = {
 var CodeSlide = function(node) {
   Slide.call(this, node);
   this._codeHelpers = this._node.querySelectorAll('.code_helper');
+  this._codeHelper_current_index = 0;
   this._declareEditor();
   this._declareEvents();
 };
@@ -98,7 +99,7 @@ CodeSlide.prototype = {
   _declareEvents: function() {  
     var _t = this;	  
     this._node.querySelector('#code_input').addEventListener('keydown',
-      function(e) { if ( e.altKey && e.which == R) { _t.executeCode(); } else {e.stopPropagation()} }, false
+      function(e) { if ( e.altKey && e.which == R) { _t.executeCode(_t._codeHelper_current_index); } else {e.stopPropagation()} }, false
     );
     this._node.querySelector('#execute').addEventListener('click',
       function(e) { _t.executeCode(); }, false
@@ -129,7 +130,8 @@ CodeSlide.prototype = {
   showCurrentCodeHelper: function(slide_index) {
     if (this._codeHelpers.length == 0) return;
     this._clearCodeHelpers();
-    this._codeHelpers[slide_index].className = 'code_helper current';	  
+    this._codeHelpers[slide_index].className = 'code_helper current';
+    this._codeHelper_current_index = slide_index;    	  
   },   
 
   updateEditor: function(code) {
