@@ -169,6 +169,11 @@ video {
   display:none
 }
 
+.code_to_add {
+  font-family: monospace;
+  white-space: pre;
+}
+
 .code_result {
   font-size:0.5em;
   width:100%; 

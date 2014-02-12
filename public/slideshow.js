@@ -14,6 +14,8 @@ var ASYNCHRONOUS = true;
 var ALT = true 
 var R = 82
 
+var SEPARATOR = '\n#{SEP}#\n'
+
 var queryAll = function(query) {
   nodeList = document.querySelectorAll(query);
   return Array.prototype.slice.call(nodeList, 0);
@@ -111,14 +113,14 @@ CodeSlide.prototype = {
     this.updateEditorAndExecuteCode();
   },  
   
-  code: function() {
+  codeToExecute: function() {
     editorContent = this._node.querySelector('#code_input').value;
     if (typeof ace != 'undefined') { editorContent = this.code_editor.getValue() }
-    return editorContent;
+    return editorContent + this.codeToAdd();
   },	  
 
   executeCode: function() {
-    this._node.querySelector('#code_output').value = postResource("/code_run_result" + "/" + this._codeHelper_current_index, this.code(), SYNCHRONOUS);
+    this._node.querySelector('#code_output').value = postResource("/code_run_result" + "/" + this._codeHelper_current_index, this.codeToExecute(), SYNCHRONOUS);
   },
 
   _clearCodeHelpers: function() {
@@ -137,13 +139,31 @@ CodeSlide.prototype = {
   updateEditor: function(code) {
     this._node.querySelector('#code_input').value = code;
     if (typeof ace != 'undefined') { this.code_editor.setValue(code, 1); }	  
-  },	  
+  },	 
+
+  codeToDisplay: function() {
+    code = '';
+    if (this._codeHelpers[this._codeHelper_current_index] && this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_display') ) 
+      code = this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_display').innerHTML;
+    return code;
+  },
+
+  codeToAdd: function() {
+    code = '';
+    if (this._codeHelpers[this._codeHelper_current_index] && this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_add') ) 
+      code = SEPARATOR + this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_add').innerHTML;
+    return code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+  },
+
+  lastRun: function() {
+    return getResource('/code_last_run' + '/' + this._codeHelper_current_index);
+  },
   
   updateEditorAndExecuteCode: function() {
-    code = getResource('/code_last_run' + '/' + this._codeHelper_current_index);
-    if (code == '' && this._codeHelpers[this._codeHelper_current_index] && this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_display') ) code = this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_display').innerHTML;
-    if (code == '') return;
-    this.updateEditor(code);
+    codeForEditor = this.lastRun().split(SEPARATOR)[0];
+    if (codeForEditor == '' ) codeForEditor = this.codeToDisplay();
+    if (codeForEditor == '' && this.codeToAdd() == '') return;
+    this.updateEditor(codeForEditor);
     this.executeCode();	  
   }, 
   
