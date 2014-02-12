@@ -59,8 +59,8 @@ class RunTimeEvent
     RunTimeEvent.find_all.select { |event|  event.user == user }
   end
 
-  def RunTimeEvent.find_last(slide_index)
-    (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index }).last
+  def RunTimeEvent.find_last(slide_index, user_id = 0)
+    (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index && ( user_id.nil? || user_id == 0 || event.user == user_id)}).last
   end
   
   def RunTimeEvent.find_all

@@ -136,7 +136,19 @@ class TestRunTimeEvent < Test::Unit::TestCase
     RunTimeEvent.new("user_1", slide_index = "slide_index_1" ,code_input = "print 2", code_output = "2").save
     runtime_events = RunTimeEvent.find_last("slide_index_1")
     assert_equal (["user_1", "slide_index_1", "print 2", "2"]).inspect, runtime_events.inspect
+    runtime_events = RunTimeEvent.find_last("slide_index_1", 0)
+    assert_equal (["user_1", "slide_index_1", "print 2", "2"]).inspect, runtime_events.inspect
+    runtime_events = RunTimeEvent.find_last("slide_index_1", nil)
+    assert_equal (["user_1", "slide_index_1", "print 2", "2"]).inspect, runtime_events.inspect    
   end 
+
+  def test09_should_find_the_last_runtime_event_for_a_slide_index_and_a_user
+    RunTimeEvent.new("user_1", slide_index = "slide_index_1" ,code_input = "print A", code_output = "A").save
+    RunTimeEvent.new("user_1", slide_index = "slide_index_1" ,code_input = "print B", code_output = "B").save
+    RunTimeEvent.new("user_2", slide_index = "slide_index_1" ,code_input = "print C", code_output = "C").save
+    runtime_events = RunTimeEvent.find_last("slide_index_1", "user_1")
+    assert_equal (["user_1", "slide_index_1", "print B", "B"]).inspect, runtime_events.inspect
+  end
   
   def test10_should_not_raise_an_error_when_quotes_in_strings
     assert_nothing_raised { RunTimeEvent.new("user_1", slide_index = "0" ,code_input = "'string in simple quotes 1'", code_output = "").save }

@@ -1,16 +1,27 @@
 require 'rspec'
 require 'capybara/rspec'
 
+## SINATRA CONTROLLER (BEGIN)
+
 require_relative '../../controllers/slideshow.rb'
-require_relative 'spec.controller'
 
 Capybara.app = Sinatra::Application.new
 
+set :public_folder, 'fixtures'
 set :logging, false
 
 TEACHER_CODING_PRESENTATION = '/teacher/coding_presentation'
 ATTENDEE_CODING_SLIDE_WITH_NO_CODE_TO_DISPPLAY = '/attendee/coding_slide_with_NO_code_to_display'
 
+get '/attendee/coding_slide_with_NO_code_to_display' do
+  redirect "coding_slide_with_NO_code_to_display-attendee.html"
+end
+
+get '/teacher/coding_presentation' do	
+  redirect "coding_presentation-teacher.html"
+end
+
+## SINATRA CONTROLLER (END)
 
 describe 'Teacher Code Presentation', :type => :feature, :js => true do
 	
