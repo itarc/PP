@@ -26,17 +26,16 @@ end
 
 def current_slide_id
   slide_index = $db.execute_sql("select current_slide_id from teacher_current_slide").to_a[0]
-  if (slide_index) then
-    $db.execute_sql("select current_slide_id from teacher_current_slide").to_a[0]['current_slide_id']
-  else
-    '0'
+  if (! slide_index) then
+    $db.execute_sql("insert into teacher_current_slide values (0)")
   end
+  $db.execute_sql("select current_slide_id from teacher_current_slide").to_a[0]['current_slide_id']
 end
 
 def update_current_slide_id(current_slide_id)
   if $db.execute_sql("select current_slide_id from teacher_current_slide").to_a[0] then
     $db.execute_sql("update teacher_current_slide set current_slide_id = '#{current_slide_id}'")
   else
-    $db.execute_sql("insert into teacher_current_slide values (0)")
+    $db.execute_sql("insert into teacher_current_slide values (#{current_slide_id})")
   end
 end

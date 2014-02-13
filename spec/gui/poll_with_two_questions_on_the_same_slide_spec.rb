@@ -15,6 +15,7 @@ describe 'Poll with TWO QUESTIONS and only ONE ATTENDEE', :type => :feature, :js
   
   before(:each) do
     $db.execute_sql("delete from polls") 
+    $db.execute_sql("delete from teacher_current_slide")        
   end
   
   it 'should display 0% when attendee does not answer' do
@@ -78,6 +79,7 @@ describe 'Poll with TWO QUESTIONS and only ONE ATTENDEE', :type => :feature, :js
 
   after(:each) do
     $db.execute_sql("delete from polls") 
+    $db.execute_sql("delete from teacher_current_slide")        
   end   
   
 end

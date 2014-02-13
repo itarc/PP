@@ -15,6 +15,7 @@ describe 'Poll with TWO QUESTIONS on TWO Different slides with only ONE ATTENDEE
   
   before(:each) do
     $db.execute_sql("delete from polls") 
+    $db.execute_sql("delete from teacher_current_slide")        
   end
   
   it 'should display 0% when attendee does not answer' do
@@ -71,7 +72,6 @@ describe 'Poll with TWO QUESTIONS on TWO Different slides with only ONE ATTENDEE
     # teacher.go_to(:poll_slide_2)
      visit TEACHER_SLIDESHOW_2_QUESTIONS_2_SLIDES
     find(:css, 'div.presentation').native.send_key(:arrow_right)
-    find(:css, 'div.presentation').native.send_key(:arrow_right)
      
     # attendee.question_reparti.click_on("Oui")
     visit ATTENDEE_SLIDESHOW_2_QUESTIONS_2_SLIDES   
@@ -82,9 +82,7 @@ describe 'Poll with TWO QUESTIONS on TWO Different slides with only ONE ATTENDEE
     
     # teacher.go_to(:poll_result_slide_2)
     visit TEACHER_SLIDESHOW_2_QUESTIONS_2_SLIDES
-    find(:css, 'div.presentation').native.send_key(:arrow_right)     
-    find(:css, 'div.presentation').native.send_key(:arrow_right)     
-    find(:css, 'div.presentation').native.send_key(:arrow_right)     
+    find(:css, 'div.presentation').native.send_key(:arrow_right)   
 
     # expect(teacher.current_slide.reponse_reparti).to have_content "Oui (100%)"
     # expect(teacher.current_slide.reponse_reparti).to have_content "Non (0%)" 
@@ -97,6 +95,7 @@ describe 'Poll with TWO QUESTIONS on TWO Different slides with only ONE ATTENDEE
 
     # teacher.go_to(:poll_result_slide_1)
     visit TEACHER_SLIDESHOW_2_QUESTIONS_2_SLIDES
+    find(:css, 'div.presentation').native.send_key(:home)
     find(:css, 'div.presentation').native.send_key(:arrow_right)
     
     # expect(teacher.current_slide.reponse_systeme).to have_content "Oui (100%)"
@@ -107,8 +106,7 @@ describe 'Poll with TWO QUESTIONS on TWO Different slides with only ONE ATTENDEE
     end
     
     # teacher.go_to(:poll_result_slide_2)
-    visit TEACHER_SLIDESHOW_2_QUESTIONS_2_SLIDES
-    find(:css, 'div.presentation').native.send_key(:arrow_right)     
+    visit TEACHER_SLIDESHOW_2_QUESTIONS_2_SLIDES    
     find(:css, 'div.presentation').native.send_key(:arrow_right)     
     find(:css, 'div.presentation').native.send_key(:arrow_right)     
 
@@ -123,6 +121,7 @@ describe 'Poll with TWO QUESTIONS on TWO Different slides with only ONE ATTENDEE
 
   after(:each) do
     $db.execute_sql("delete from polls") 
+    $db.execute_sql("delete from teacher_current_slide")        
   end 
   
 end

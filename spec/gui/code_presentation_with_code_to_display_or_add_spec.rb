@@ -30,6 +30,7 @@ describe 'Attendee Code Slide', :type => :feature, :js => true do
 	
   before(:each) do
     $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")        
   end	
 
   it 'should run code to display' do
@@ -85,6 +86,7 @@ describe 'Attendee Code Slide', :type => :feature, :js => true do
   
   after(:each) do
     $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")        
   end    
 
 end

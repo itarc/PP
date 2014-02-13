@@ -27,9 +27,10 @@ describe 'Teacher Code Presentation', :type => :feature, :js => true do
 	
   before(:each) do
     $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
   end	
   
-  it 'should show code slide when down array is pressed' do
+  it 'should show code slide when down arrow is pressed' do
 
     visit TEACHER_CODING_PRESENTATION
     
@@ -59,6 +60,7 @@ describe 'Teacher Code Presentation', :type => :feature, :js => true do
 
   after(:each) do
     $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
   end  
   
 end
@@ -67,6 +69,7 @@ describe 'Teacher Code Slide', :type => :feature, :js => true do
 	
   before(:each) do
     $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide") 
   end
 
   it 'should be empty when initialized' do
@@ -169,6 +172,7 @@ describe 'Teacher Code Slide', :type => :feature, :js => true do
   
   after(:each) do
     $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
   end   
 
 end
@@ -178,6 +182,7 @@ describe 'Attendee Code Slide', :type => :feature, :js => true do
 	
   before(:each) do
     $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
   end	
   
   it 'should be empty when initialized' do
@@ -230,6 +235,7 @@ describe 'Attendee Code Slide', :type => :feature, :js => true do
   
   after(:each) do
     $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
   end  
 
 end
