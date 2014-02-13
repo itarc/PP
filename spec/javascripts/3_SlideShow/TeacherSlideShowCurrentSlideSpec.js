@@ -51,12 +51,14 @@ describe("TeacherSlideShow Current Slide", function() {
 
     getResource = jasmine.createSpy('getResource');
 	  
-    var slideShow = new SlideShow([]);	  
+    var slideShow = new SlideShow([]);	
+
+    expect(getResource.calls.length).toBe(1);	  
 	  
     slideShow.synchronise();
 	  
     expect(getResource).toHaveBeenCalled();
-    expect(getResource.calls.length).toBe(1);
+    expect(getResource.calls.length).toBe(2);
     expect(getResource).toHaveBeenCalledWith('/teacher_current_slide');
 
   }); 

@@ -24,7 +24,12 @@ TeacherSlideShow.prototype = {
       case SPACE:  
         this.synchronise();
         this._refresh();	    
-      break;	      
+      break;	
+      case HOME:  
+        this._currentIndex = 0;
+        this._refresh();
+        this._postCurrentIndexOnServer();	    
+      break;		    
     }
   },	
 };

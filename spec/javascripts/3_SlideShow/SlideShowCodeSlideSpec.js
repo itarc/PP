@@ -18,6 +18,7 @@ describe("SlideShow Code Slide", function() {
     getResource = jasmine.createSpy('getResource').andReturn('11');
   
     var slideShow = new SlideShow(queryAll('.slide'))
+    slideShow._currentIndex = 0
 
     expect(CodeSlide.prototype._update.calls.length).toBe(1);    
     expect(slideShow._currentIndex).toBe(0);     

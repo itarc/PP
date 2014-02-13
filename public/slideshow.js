@@ -7,6 +7,7 @@ var RIGHT_ARROW = 39;
 var DOWN_ARROW = 40;
 var UP_ARROW = 38;
 var SPACE = 32;
+var HOME = 36;
 
 var SYNCHRONOUS = false;
 var ASYNCHRONOUS = true;
@@ -191,6 +192,7 @@ var SlideShow = function(slides) {
   var _t = this;
   document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );   
 
+  this._getCurrentIndexOnServer();
   this._refresh();  
 };
 
@@ -257,7 +259,7 @@ SlideShow.prototype = {
 
   prev: function() {
     if (this._currentIndex <= 0) return;
-    this._currentIndex -= 1;	  
+    this._currentIndex -= 1;
     this._refresh();	  
     this._postCurrentIndexOnServer();
   },

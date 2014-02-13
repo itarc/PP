@@ -1,10 +1,12 @@
 describe("SlideShow Current Slide", function() {
 
-  it("should be first slide when slideshow is initialized", function() {
+  it("should current server slide when slideshow is initialized", function() {
+	  
+    spyOn(SlideShow.prototype, '_getCurrentIndexOnServer');
 
     var slideShow = new SlideShow([]);
 
-    expect(slideShow._currentIndex).toBe(0)
+    expect(SlideShow.prototype._getCurrentIndexOnServer.calls.length).toBe(1); 
 
   });  
 	

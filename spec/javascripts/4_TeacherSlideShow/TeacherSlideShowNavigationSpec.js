@@ -71,7 +71,20 @@ describe("TeacherSlideShow Navigation with 2 Slides", function() {
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide current')
     expect(teacherSlideShow._slides[1]._node.className).toBe('slide')
 
-  });   
+  }); 
+
+  it("should show first slide when home pressed", function() {
+
+    setFixtures("<div class='slides'><div class='slide'><div class='slide'></div></div>")
+    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
+
+    __triggerKeyboardEvent(document, RIGHT_ARROW)
+    __triggerKeyboardEvent(document, HOME)	  
+
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current')
+    expect(teacherSlideShow._slides[1]._node.className).toBe('slide')	  
+ 
+  });    
 
 });
 
