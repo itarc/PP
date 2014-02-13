@@ -182,6 +182,7 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
 	  
    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='code_output'></div></div>")	  
    spyOn(SlideShow.prototype, '_show_current_slide');
+   spyOn(CodeSlide.prototype, 'lastRun').andReturn('');
 	  
     var slideShow = new SlideShow(queryAll('.slide'))
 
@@ -194,8 +195,7 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
 
     slideShow.prev(); 
     expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
-	  
-    getResource = jasmine.createSpy('getResource').andReturn('0'); // prevent from other spy somewhere else in a spec
+
     slideShow.synchronise();  
     expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);    
 
