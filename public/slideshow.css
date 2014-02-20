@@ -175,6 +175,7 @@ video {
 
 .code_to_add {
   font-family: monospace;
+  font-weight:bold;  
   white-space: pre;
 }
 
