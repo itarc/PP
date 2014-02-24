@@ -223,5 +223,15 @@ describe("Code Slide", function() {
 	  
   });
   
+  it("should esacape html caracters in code to display", function() { 
+
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'><<<>>>&&&'''\"\"\"</div></div><input type='button' id='execute'/><textarea id='code_output'></textarea></section></div>");
+
+    var slide = new CodeSlide(codeSlideNode);
+	  
+    expect(slide.codeToDisplay()).toBe("<<<>>>&&&'''\"\"\"");
+	  
+  });  
+  
 });
 

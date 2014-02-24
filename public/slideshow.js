@@ -146,7 +146,7 @@ CodeSlide.prototype = {
     code = '';
     if (this._codeHelpers[this._codeHelper_current_index] && this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_display') ) 
       code = this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_display').innerHTML;
-    return code;
+    return code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
   },
 
   codeToAdd: function() {
