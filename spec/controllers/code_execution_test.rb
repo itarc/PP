@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 require_relative "../../controllers/slideshow"
 
 require 'test/unit'
@@ -69,6 +71,13 @@ class TestCodeRun < Test::Unit::TestCase
     post '/code_run_result/0', "require 'test/unit'"
     assert last_response.body.include?("0 tests, 0 assertions, 0 failures, 0 errors, 0 skips")  
   end
+  
+  def test05_should_run_utf8_code
+    post '/code_run_result/0', "puts 'éèêàâùï'"
+    assert last_response.body.include?('invalid multibyte char (US-ASCII)') 	  
+    post '/code_run_result/0', "#encoding: utf-8\nputs 'éèêàâùï'"
+    assert_equal "éèêàâùï\n", last_response.body
+  end  
   
   def teardown
     $db.execute_sql("delete from run_events")	  

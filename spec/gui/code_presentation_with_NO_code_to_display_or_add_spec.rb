@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 require 'rspec'
 require 'capybara/rspec'
 
@@ -94,7 +96,25 @@ describe 'Teacher Code Slide', :type => :feature, :js => true do
     
     expect(page).to have_field 'code_output', :with => 'something'
     
-  end   
+  end  
+
+  it 'should display result when code with utf-8 characters is executed' do
+
+    visit TEACHER_CODING_PRESENTATION
+    
+    find(:css, 'div.presentation').native.send_key(:arrow_down)    
+    
+    fill_in 'code_input', :with => 'print "éèêàâùï"'
+    click_on 'execute'
+    
+    expect(find_field('code_output').value).to have_content 'invalid multibyte char (US-ASCII)'
+    
+    fill_in 'code_input', :with => "#encoding: utf-8" + "\n" + 'print "éèêàâùï"'
+    click_on 'execute'
+    
+    expect(page).to have_field 'code_output', :with => 'éèêàâùï'
+    
+  end  
 
   it 'should show current code_helper' do
 	  

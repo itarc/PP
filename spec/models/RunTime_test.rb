@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 require_relative '../../models/RunTime'
 require 'test/unit'
 
@@ -68,6 +70,10 @@ class TestRunTime_run_ruby < Test::Unit::TestCase
     assert_equal (['user', 'slide_index', 'print 7', '7']).inspect, RunTimeEvent.find_all[0].inspect
     $db.execute_sql("delete from run_events")
   end
+  
+  def test09_should_run_another_instruction
+    assert_equal "éèêàâùï\n", run_ruby("#encoding: utf-8\nputs 'éèêàâùï'", nil, nil)
+  end   
 
 end
 

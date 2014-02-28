@@ -64,5 +64,5 @@ end
 
 post '/code_run_result/*' do
   code = request.env["rack.input"].read
-  run_ruby(code, user_id, slide_index)
+  run_ruby(code.force_encoding("UTF-8"), user_id, slide_index)
 end
