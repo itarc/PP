@@ -57,11 +57,6 @@ post '/select_input_*_to_*' do
   PollQuestion.new(question_id).add_a_choice(user_id, answer)
 end
 
-post '/code_evaluation_result' do
-  code = request.env["rack.input"].read
-  eval_ruby(code)
-end
-
 post '/code_run_result/*' do
   code = request.env["rack.input"].read
   run_ruby(code.force_encoding("UTF-8"), user_id, slide_index)
