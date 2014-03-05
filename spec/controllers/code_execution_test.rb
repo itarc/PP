@@ -101,7 +101,7 @@ class TestLastRun < Test::Unit::TestCase
   
 end
 
-class TestLastRun < Test::Unit::TestCase
+class TestLastSend < Test::Unit::TestCase
   
   include Rack::Test::Methods
 
