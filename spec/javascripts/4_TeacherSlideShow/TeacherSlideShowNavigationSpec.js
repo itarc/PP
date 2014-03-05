@@ -167,7 +167,7 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
 
   it("should not go beyond penultimate slide", function() {
 	  
-    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><textarea id='code_output'></textarea></div></div>")
+    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
     var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
 	  
     expect(teacherSlideShow._currentIndex).toBe(0)	  
@@ -180,9 +180,9 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
   
   it("should NOT show current slide when teacher shows coding slide", function() {
 	  
-   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='code_output'></div></div>")	  
+   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='send_code'><div id='code_output'></div></div>")	  
    spyOn(SlideShow.prototype, '_show_current_slide');
-   spyOn(CodeSlide.prototype, 'lastRun').andReturn('');
+   spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
 	  
     var slideShow = new SlideShow(queryAll('.slide'))
 

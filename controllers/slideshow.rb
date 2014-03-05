@@ -37,6 +37,12 @@ get '/code_last_run/*' do
   last_runtime_event.code_input
 end
 
+get '/code_last_send/*' do
+  last_send = RunTimeEvent.find_last_send(slide_index, session[:user_id])
+  return "" if last_send == nil
+  last_send.code_input
+end
+
 # ---------
 # POSTs
 # ---------
@@ -59,5 +65,11 @@ end
 
 post '/code_run_result/*' do
   code = request.env["rack.input"].read
-  run_ruby(code.force_encoding("UTF-8"), user_id, slide_index)
+  run_ruby("run", code.force_encoding("UTF-8"), user_id, slide_index)
 end
+
+post '/code_send_result/*' do
+  code = request.env["rack.input"].read
+  run_ruby("send", code.force_encoding("UTF-8"), user_id, slide_index)
+end
+

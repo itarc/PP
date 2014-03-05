@@ -14,6 +14,7 @@ var ASYNCHRONOUS = true;
 
 var ALT = true 
 var R = 82
+var S = 83
 
 var SEPARATOR = '\n#{SEP}#\n'
 
@@ -102,17 +103,27 @@ CodeSlide.prototype = {
   _declareEvents: function() {  
     var _t = this;	  
     this._node.querySelector('#code_input').addEventListener('keydown',
-      function(e) { if ( e.altKey && e.which == R) { _t.executeCode(_t._codeHelper_current_index); } else {e.stopPropagation()} }, false
+      function(e) { 
+	if ( e.altKey ) { 
+	  if (e.which == R) { _t.executeCode(_t._codeHelper_current_index); }
+	  if (e.which == S) { _t.executeAndSendCode(_t._codeHelper_current_index); }
+	} else {
+	  e.stopPropagation()
+	} 
+      }, false
     );
     this._node.querySelector('#execute').addEventListener('click',
       function(e) { _t.executeCode(); }, false
-    );      
+    );     
+    this._node.querySelector('#send_code').addEventListener('click',
+      function(e) { _t.executeAndSendCode(); }, false
+    );       
   },  
 
   _update: function(slide_index) {
     this.showCurrentCodeHelper(slide_index);
     this.updateEditorAndExecuteCode();
-  },  
+  },
   
   codeToExecute: function() {
     editorContent = this._node.querySelector('#code_input').value;
@@ -123,6 +134,10 @@ CodeSlide.prototype = {
   executeCode: function() {
     this._node.querySelector('#code_output').value = postResource("/code_run_result" + "/" + this._codeHelper_current_index, this.codeToExecute(), SYNCHRONOUS);
   },
+  
+  executeAndSendCode: function() {
+    this._node.querySelector('#code_output').value = postResource("/code_send_result" + "/" + this._codeHelper_current_index, this.codeToExecute(), SYNCHRONOUS);
+  },  
 
   _clearCodeHelpers: function() {
     for (var i=0; i<this._codeHelpers.length; i++) {
@@ -155,13 +170,13 @@ CodeSlide.prototype = {
       code = SEPARATOR + this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_add').innerHTML;
     return code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
   },
-
-  lastRun: function() {
-    return getResource('/code_last_run' + '/' + this._codeHelper_current_index);
+  
+  lastSend: function() {
+    return getResource('/code_last_send' + '/' + this._codeHelper_current_index);
   },
   
   updateEditorAndExecuteCode: function() {
-    codeForEditor = this.lastRun().split(SEPARATOR)[0];
+    codeForEditor = this.lastSend().split(SEPARATOR)[0];
     if (codeForEditor == '' ) codeForEditor = this.codeToDisplay();
     if (codeForEditor == '' && this.codeToAdd() == '') return;
     this.updateEditor(codeForEditor);

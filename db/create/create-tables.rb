@@ -64,6 +64,7 @@ nom_de_table = 'run_events';
 colonnes = '
   timestamp TEXT,
   user_id TEXT,
+  type TEXT,
   slide_index TEXT,
   code_input TEXT,
   code_output TEXT
