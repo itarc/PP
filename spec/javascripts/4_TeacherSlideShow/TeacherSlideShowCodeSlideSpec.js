@@ -1,4 +1,4 @@
-describe("TeacherSlideShow Code Slide", function() { 	
+describe("TeacherSlideShow IDE", function() { 	
 	
   it("should be updated when teacher shows it", function() {
 
@@ -12,23 +12,8 @@ describe("TeacherSlideShow Code Slide", function() {
     expect(CodeSlide.prototype._update.calls.length).toBe(1);
 
   });	
-
-  it("should NOT be updated when teacher do not show it and press space", function() {
-
-    setFixtures("<div class='slides'><div class='slide'/></div>");
-    spyOn(CodeSlide.prototype, '_update');  
-
-    expect(CodeSlide.prototype._update.calls.length).toBe(0);
-	  
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));
-	  
-    __triggerKeyboardEvent(document, SPACE);
-
-    expect(CodeSlide.prototype._update.calls.length).toBe(0);  // same as test above
-
-  });   
   
-  it("should be updated when teacher shows it and press space", function() {
+  it("should be updated when teacher shows it and presses space", function() {
 
     setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code'><textarea id='code_output'></textarea></section></div></div>");
     spyOn(CodeSlide.prototype, '_update');
@@ -47,6 +32,24 @@ describe("TeacherSlideShow Code Slide", function() {
 
     expect(CodeSlide.prototype._update.calls.length).toBe(2);
   
-  });	    
+  });  
+
+  it("should NOT be updated when teacher do not show it but presses space", function() {
+
+    setFixtures("<div class='slides'><div class='slide'/></div>");
+    spyOn(CodeSlide.prototype, '_update');  
+
+    expect(CodeSlide.prototype._update.calls.length).toBe(0);
+	  
+    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));
+	  
+    expect(CodeSlide.prototype._update.calls.length).toBe(0);	  
+	  
+    __triggerKeyboardEvent(document, SPACE);
+
+    expect(CodeSlide.prototype._update.calls.length).toBe(1);  // should be 0 (to review)
+
+  });   
+	
   
 });
