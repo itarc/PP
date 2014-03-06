@@ -1,8 +1,9 @@
 require 'rspec'
 require 'capybara/rspec'
 
-
+## -------------------------------------------------------
 ## SINATRA CONTROLLER (BEGIN)
+## -------------------------------------------------------
 
 require_relative '../../controllers/slideshow.rb'
 
@@ -11,22 +12,24 @@ Capybara.app = Sinatra::Application.new
 set :public_folder, 'fixtures'
 set :logging, false
 
-TEACHER_CODING_PRESENTATION_2 = '/teacher/coding_presentation'
-ATTENDEE_CODING_SLIDE_WITH_CODE_TO_DISPLAY = '/attendee/coding_slide_with_code_to_display'
+teacher_coding_presentation = '/teacher/coding_presentation'
+attendee_IDE_with_code_to_display = '/attendee/coding_slide_with_code_to_display'
 
-get '/attendee/coding_slide_with_code_to_display' do
-  session[:user_id] = 1	
-  redirect "coding_slide_with_code_to_display-attendee.html"
-end
-
-get '/teacher/coding_presentation' do
+get teacher_coding_presentation do
   session[:user_id] = 0	
   redirect "coding_presentation-teacher.html"
 end
 
-## SINATRA CONTROLLER (END)
+get attendee_IDE_with_code_to_display do
+  session[:user_id] = 1	
+  redirect "coding_slide_with_code_to_display-attendee.html"
+end
 
-describe 'Attendee Code Slide', :type => :feature, :js => true do
+## -------------------------------------------------------
+## SINATRA CONTROLLER (END)
+## -------------------------------------------------------
+
+describe 'Attendee IDE', :type => :feature, :js => true do
 	
   before(:each) do
     $db.execute_sql("delete from run_events") 
@@ -35,7 +38,7 @@ describe 'Attendee Code Slide', :type => :feature, :js => true do
 
   it 'should run code to display' do
        
-    visit ATTENDEE_CODING_SLIDE_WITH_CODE_TO_DISPLAY
+    visit attendee_IDE_with_code_to_display
     
     within '#code_helper_1' do
       expect(page).to have_content "HELPER 1"
@@ -49,11 +52,11 @@ describe 'Attendee Code Slide', :type => :feature, :js => true do
   
   it 'should run code to add without displaying it' do
 	  
-    visit TEACHER_CODING_PRESENTATION_2
+    visit teacher_coding_presentation
 
     find(:css, 'div.presentation').native.send_key(:arrow_right)
        
-    visit ATTENDEE_CODING_SLIDE_WITH_CODE_TO_DISPLAY
+    visit attendee_IDE_with_code_to_display
     
     find(:css, 'div.presentation').native.send_key(:space)
     
@@ -69,7 +72,7 @@ describe 'Attendee Code Slide', :type => :feature, :js => true do
   
   it 'should run last attendee code (not teacher code)' do
 	  
-    visit TEACHER_CODING_PRESENTATION_2
+    visit teacher_coding_presentation
 
     find(:css, 'div.presentation').native.send_key(:down)
     
@@ -77,7 +80,7 @@ describe 'Attendee Code Slide', :type => :feature, :js => true do
    
     click_button('execute')   
        
-    visit ATTENDEE_CODING_SLIDE_WITH_CODE_TO_DISPLAY
+    visit attendee_IDE_with_code_to_display
     
     expect(page).to have_field 'code_input', :with => "print 'DISPLAYED CODE'"
     expect(page).to have_field 'code_output', :with => "DISPLAYED CODE"
