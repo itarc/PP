@@ -3,7 +3,9 @@
 require 'rspec'
 require 'capybara/rspec'
 
+## -------------------------------------------------------
 ## SINATRA CONTROLLER (BEGIN)
+## -------------------------------------------------------
 
 require_relative '../../controllers/slideshow.rb'
 
@@ -12,18 +14,20 @@ Capybara.app = Sinatra::Application.new
 set :public_folder, 'fixtures'
 set :logging, false
 
-TEACHER_CODING_PRESENTATION = '/teacher/coding_presentation'
-ATTENDEE_CODING_SLIDE_WITH_NO_CODE_TO_DISPPLAY = '/attendee/coding_slide_with_NO_code_to_display'
+teacher_coding_presentation = '/teacher/coding_presentation'
+attendee_IDE_with_NO_code_to_display = '/attendee/coding_slide_with_NO_code_to_display'
 
-get '/attendee/coding_slide_with_NO_code_to_display' do
-  redirect "coding_slide_with_NO_code_to_display-attendee.html"
-end
-
-get '/teacher/coding_presentation' do	
+get teacher_coding_presentation do	
   redirect "coding_presentation-teacher.html"
 end
 
+get attendee_IDE_with_NO_code_to_display do
+  redirect "coding_slide_with_NO_code_to_display-attendee.html"
+end
+
+## -------------------------------------------------------
 ## SINATRA CONTROLLER (END)
+## -------------------------------------------------------
 
 describe 'Teacher Code Presentation', :type => :feature, :js => true do
 	
@@ -34,7 +38,7 @@ describe 'Teacher Code Presentation', :type => :feature, :js => true do
   
   it 'should show code slide when down arrow is pressed' do
 
-    visit TEACHER_CODING_PRESENTATION
+    visit teacher_coding_presentation
     
     expect(page).to have_no_field 'code_input', :with => "", :visible => true
     expect(page).to have_no_field 'code_output', :with => "", :visible => true
@@ -48,7 +52,7 @@ describe 'Teacher Code Presentation', :type => :feature, :js => true do
 
   it 'should show current slide when up is pressed' do
 
-    visit TEACHER_CODING_PRESENTATION
+    visit teacher_coding_presentation
 
     expect(page).to have_content 'EXERCISE - 1'
 
@@ -76,7 +80,7 @@ describe 'Teacher Code Slide', :type => :feature, :js => true do
 
   it 'should be empty when initialized' do
 
-    visit TEACHER_CODING_PRESENTATION
+    visit teacher_coding_presentation
     
     find(:css, 'div.presentation').native.send_key(:arrow_down)
     
@@ -87,7 +91,7 @@ describe 'Teacher Code Slide', :type => :feature, :js => true do
   
   it 'should display result when code is executed' do
 
-    visit TEACHER_CODING_PRESENTATION
+    visit teacher_coding_presentation
     
     find(:css, 'div.presentation').native.send_key(:arrow_down)    
     
@@ -100,7 +104,7 @@ describe 'Teacher Code Slide', :type => :feature, :js => true do
 
   it 'should display result when code with utf-8 characters is executed' do
 
-    visit TEACHER_CODING_PRESENTATION
+    visit teacher_coding_presentation
     
     find(:css, 'div.presentation').native.send_key(:arrow_down)    
     
@@ -118,7 +122,7 @@ describe 'Teacher Code Slide', :type => :feature, :js => true do
 
   it 'should show current code_helper' do
 	  
-    visit TEACHER_CODING_PRESENTATION
+    visit teacher_coding_presentation
 
     find(:css, 'div.presentation').native.send_key(:arrow_down)
 
@@ -151,7 +155,7 @@ describe 'Attendee Code Slide', :type => :feature, :js => true do
   
   it 'should be empty when initialized' do
 
-    visit ATTENDEE_CODING_SLIDE_WITH_NO_CODE_TO_DISPPLAY
+    visit attendee_IDE_with_NO_code_to_display
     
     expect(page).to have_field 'code_input', :with => "", :visible => true
     expect(page).to have_field 'code_output', :with => "", :visible => true
@@ -160,7 +164,7 @@ describe 'Attendee Code Slide', :type => :feature, :js => true do
   
   it 'should display result when code is executed' do
 
-    visit ATTENDEE_CODING_SLIDE_WITH_NO_CODE_TO_DISPPLAY
+    visit attendee_IDE_with_NO_code_to_display
     
     fill_in 'code_input', :with => 'print "something"'
     click_on 'execute'
@@ -171,26 +175,26 @@ describe 'Attendee Code Slide', :type => :feature, :js => true do
 
   it 'should display current code_helper' do
 
-    visit TEACHER_CODING_PRESENTATION
+    visit teacher_coding_presentation
 
     expect(page).to have_content 'EXERCISE - 1'
     
-    visit ATTENDEE_CODING_SLIDE_WITH_NO_CODE_TO_DISPPLAY
+    visit attendee_IDE_with_NO_code_to_display
 
     expect(page).to have_content 'HELPER 1'
 
-    visit TEACHER_CODING_PRESENTATION
+    visit teacher_coding_presentation
     find(:css, 'div.presentation').native.send_key(:arrow_right)
     
-    visit ATTENDEE_CODING_SLIDE_WITH_NO_CODE_TO_DISPPLAY
+    visit attendee_IDE_with_NO_code_to_display
     find(:css, 'div.presentation').native.send_key(:space)     
 
     expect(page).to have_content 'HELPER 2'
 
-    visit TEACHER_CODING_PRESENTATION
+    visit teacher_coding_presentation
     find(:css, 'div.presentation').native.send_key(:arrow_left)
     
-    visit ATTENDEE_CODING_SLIDE_WITH_NO_CODE_TO_DISPPLAY
+    visit attendee_IDE_with_NO_code_to_display
     find(:css, 'div.presentation').native.send_key(:space)     
 
     expect(page).to have_content 'HELPER 1'
