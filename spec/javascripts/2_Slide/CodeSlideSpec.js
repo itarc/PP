@@ -1,10 +1,11 @@
-describe("Code Slide", function() {
+describe("IDE with NO code to display or add", function() {
+	
+  beforeEach(function () {
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea><input type='button' id='execute'><input type='button' id='send_code'/><textarea id='code_output'></textarea></section><div>");
+    slide = new CodeSlide(codeSlideNode);	  
+  });	
 
   it("should show current code_helper", function() {
-
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea><input type='button' id='execute'><input type='button' id='send_code'/><textarea id='code_output'></textarea></section><div>");
-
-    var slide = new CodeSlide(codeSlideNode);
 
     slide.showCurrentCodeHelper(0);
 	  
@@ -20,19 +21,11 @@ describe("Code Slide", function() {
   
   it("should NOT show current code_helper if no code helper", function() {
 
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><input type='button' id='execute'><input type='button' id='send_code'/><textarea id='code_output'></textarea></section><div>");
-
-    var slide = new CodeSlide(codeSlideNode);
-
     slide.showCurrentCodeHelper(0);
 
   });	
 	
   it("should update code editor", function() {
-	  
-   codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
-   
-   var slide = new CodeSlide(codeSlideNode);
 	  
    expect(codeSlideNode.querySelector('#code_input').value).toBe('');
 
@@ -42,33 +35,29 @@ describe("Code Slide", function() {
     
   }); 
   
-  it("should run code in code editor", function() {
-  
-    codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
+  it("should run code", function() {
   
     postResource = jasmine.createSpy('postResource').andReturn('1');  
 	  
+    slide.updateEditor('puts 1');
+	  
     expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 1');
-    expect(codeSlideNode.querySelector('#code_output').value).toBe('');	  
+    expect(codeSlideNode.querySelector('#code_output').value).toBe('');
+    expect(postResource.calls.length).toBe(0);	  
+
+    slide.executeCode();  
 	  
-    var slide = new CodeSlide(codeSlideNode);
-    slide.executeCode()
-	  
-    expect(postResource).toHaveBeenCalled();
     expect(postResource.calls.length).toBe(1);
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);
-	  
     expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 1');
     expect(codeSlideNode.querySelector('#code_output').value).toBe('1');
     
   });  
   
-  it("should show current helper and run code when updated", function() {
+  it("should show current helper and run current code when updated", function() {
 	  
     spyOn(CodeSlide.prototype, 'showCurrentCodeHelper');	  
-    spyOn(CodeSlide.prototype, 'updateEditorAndExecuteCode');	  
-    
-    var slide = new CodeSlide(codeSlideNode);
+    spyOn(CodeSlide.prototype, 'updateEditorAndExecuteCode');
 	  
     slide._update();
 	  
@@ -77,25 +66,21 @@ describe("Code Slide", function() {
 	  
   });
   
-  it("should run code of current slide when click on execute button", function() {
+  it("should run code when when run button clicked", function() {
   
-    codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
-  
-    postResource = jasmine.createSpy('postResource'); 	  
+    postResource = jasmine.createSpy('postResource');
 	  
-    var slide = new CodeSlide(codeSlideNode);
+    slide.updateEditor('puts 1');	  
+	  
     codeSlideNode.querySelector('#execute').click();
 
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);	  
     
   });
   
-  it("should run code of current slide when ALT-R pressed", function() {
+  it("should run code when ALT-R pressed", function() {
 
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'></div><div class='code_helper'></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section><div>");
-    postResource = jasmine.createSpy('postResource'); 		  
-	  
-    var slide = new CodeSlide(codeSlideNode);
+    postResource = jasmine.createSpy('postResource');
 
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), R, ALT);
 	  
@@ -109,25 +94,21 @@ describe("Code Slide", function() {
 	  
   });  
   
-  it("should run and send code of current slide when click on send button", function() {
-  
-    codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
-  
-    postResource = jasmine.createSpy('postResource'); 	  
+  it("should run and send code when send button clicked", function() {
+
+    postResource = jasmine.createSpy('postResource');
 	  
-    var slide = new CodeSlide(codeSlideNode);
+    slide.updateEditor('puts 1');
+	  
     codeSlideNode.querySelector('#send_code').click();
 
     expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'puts 1', SYNCHRONOUS);	  
     
   });
   
-  it("should run code of current slide when ALT-S pressed", function() {
+  it("should run and send code when ALT-S pressed", function() {
 
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'></div><div class='code_helper'></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section><div>");
-    postResource = jasmine.createSpy('postResource'); 		  
-	  
-    var slide = new CodeSlide(codeSlideNode);
+    postResource = jasmine.createSpy('postResource');
 
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), S, ALT);
 	  
@@ -141,33 +122,31 @@ describe("Code Slide", function() {
 	  
   });   
 
- it("should run last send if exists", function() {
-  
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section><div>");
- 
+ it("should get last send and run it if exist", function() {
+
     expect(codeSlideNode.querySelector('#code_input').value).toBe('');
     expect(codeSlideNode.querySelector('#code_output').value).toBe('');
 	  
     getResource = jasmine.createSpy('getResource').andReturn('puts 2');
-    postResource = jasmine.createSpy('postResource').andReturn('2');	  
-	  
-    var slide = new CodeSlide(codeSlideNode);
+    postResource = jasmine.createSpy('postResource').andReturn('2');
 
     slide.updateEditorAndExecuteCode();
-	  
-    expect(postResource).toHaveBeenCalled();	  
-	  
-    expect(getResource).toHaveBeenCalled();
-    expect(getResource.calls.length).toBe(1);
-    expect(getResource).toHaveBeenCalledWith('/code_last_send/0');
 	 
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 2', SYNCHRONOUS);	 
+    expect(getResource.calls.length).toBe(1);
+    expect(getResource).toHaveBeenCalledWith('/code_last_send/0');	 
+
+    expect(postResource.calls.length).toBe(1);
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 2', SYNCHRONOUS);		 
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 2');
     expect(codeSlideNode.querySelector('#code_output').value).toBe('2');
     
-  });
+  }); 
+  
+});  
 
+describe("IDE with code to add", function() {
+	
   it("should run code to display if last send does not exist", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
@@ -185,7 +164,7 @@ describe("Code Slide", function() {
 
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', "puts 'CODE TO DISPLAY'", SYNCHRONOUS);	  
 
-  }); 
+  });	
   
   it("should run code in editor + code to add", function() {
 
