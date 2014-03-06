@@ -29,14 +29,14 @@ end
 ## SINATRA CONTROLLER (END)
 ## -------------------------------------------------------
 
-describe 'Teacher Code Presentation', :type => :feature, :js => true do
+describe 'Teacher Presentation', :type => :feature, :js => true do
 	
   before(:each) do
     $db.execute_sql("delete from run_events") 
     $db.execute_sql("delete from teacher_current_slide")    
   end	
   
-  it 'should show code slide when down arrow is pressed' do
+  it 'should show IDE when down arrow is pressed' do
 
     visit teacher_coding_presentation
     
@@ -50,7 +50,7 @@ describe 'Teacher Code Presentation', :type => :feature, :js => true do
     
   end
 
-  it 'should show current slide when up is pressed' do
+  it 'should show current slide when up arrow is pressed' do
 
     visit teacher_coding_presentation
 
@@ -71,7 +71,7 @@ describe 'Teacher Code Presentation', :type => :feature, :js => true do
   
 end
   
-describe 'Teacher Code Slide', :type => :feature, :js => true do  
+describe 'Teacher IDE', :type => :feature, :js => true do  
 	
   before(:each) do
     $db.execute_sql("delete from run_events") 
@@ -146,7 +146,7 @@ describe 'Teacher Code Slide', :type => :feature, :js => true do
 end
 
 
-describe 'Attendee Code Slide', :type => :feature, :js => true do
+describe 'Attendee IDE', :type => :feature, :js => true do
 	
   before(:each) do
     $db.execute_sql("delete from run_events") 
