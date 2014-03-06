@@ -27,6 +27,10 @@ end
 ## SINATRA CONTROLLER (END)
 ## -------------------------------------------------------
 
+## -------------------------------------------------------
+## HELPERS (BEGIN)
+## -------------------------------------------------------
+
 def go_down
   find(:css, 'div.presentation').native.send_key(:arrow_down)
 end
@@ -43,6 +47,19 @@ def go_left
   find(:css, 'div.presentation').native.send_key(:arrow_left)
 end
 
+def expect_ide_to_have(code_input, code_output)
+  expect(page).to have_field 'code_input', :with => code_input
+  expect(page).to have_field 'code_output', :with => code_output
+end
+
+def expect_ide_be_empty
+  expect_ide_to_have(code_input = '', code_output = '')
+end
+
+## -------------------------------------------------------
+## HELPERS (END)
+## -------------------------------------------------------
+
 describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
 
   before(:each) do
@@ -53,55 +70,43 @@ describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
   it 'should NOT show attendee last run' do   
 
     visit teacher_coding_presentation
-     
     go_down
     
-    expect(page).to have_field 'code_input', :with => ""
-    expect(page).to have_field 'code_output', :with => ""
+    expect_ide_be_empty
     
     run_ruby "run", 'print "attendee run"', "attendee 1", "0"
-
     press_space
     
-    expect(page).to have_field 'code_input', :with => ""
-    expect(page).to have_field 'code_output', :with => ""
+    expect_ide_be_empty
     
   end 
   
   it 'should show attendee last send of current slide' do   
 
     visit teacher_coding_presentation
-    
     go_down 
     
-    expect(page).to have_field 'code_input', :with => ""
-    expect(page).to have_field 'code_output', :with => ""
+    expect_ide_be_empty
     
     run_ruby "send", 'print "attendee send"', "attendee 1", "0"
-
     press_space
     
-    expect(page).to have_field 'code_input', :with => 'print "attendee send"'
-    expect(page).to have_field 'code_output', :with => 'attendee send'
+    expect_ide_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
     
   end
   
   it 'should ONLY show attendee CURRENT SLIDE last send' do   
 
     visit teacher_coding_presentation
-    
     go_down   
     
-    expect(page).to have_field 'code_input', :with => ""
-    expect(page).to have_field 'code_output', :with => ""
+    expect_ide_be_empty
     
     run_ruby "send", 'print "attendee send"', "attendee 1", "0"
-    
     go_right
     press_space
     
-    expect(page).to have_field 'code_input', :with => ''
-    expect(page).to have_field 'code_output', :with => ''
+    expect_ide_be_empty
 
   end
   
@@ -122,28 +127,22 @@ describe 'NAVIGATION in teacher IDE slide', :type => :feature, :js => true do
   it 'should keep last send when navigating right' do   
 
     visit teacher_coding_presentation
+    go_down
     
-    go_down   
-    
-    expect(page).to have_field 'code_input', :with => ""
-    expect(page).to have_field 'code_output', :with => ""
+    expect_ide_be_empty
     
     run_ruby "send", 'print "attendee send"', "attendee 1", "0"
-    
     go_right
     
-    expect(page).to have_field 'code_input', :with => ''
-    expect(page).to have_field 'code_output', :with => ''     
+    expect_ide_be_empty   
     
     go_left
     
-    expect(page).to have_field 'code_input', :with => 'print "attendee send"'
-    expect(page).to have_field 'code_output', :with => 'attendee send'
-
+    expect_ide_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    
     go_right
 
-    expect(page).to have_field 'code_input', :with => 'print "attendee send"'
-    expect(page).to have_field 'code_output', :with => 'attendee send'    
+    expect_ide_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')   
     
   end  
   
