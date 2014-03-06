@@ -132,11 +132,13 @@ CodeSlide.prototype = {
   },	  
 
   executeCode: function() {
-    this._node.querySelector('#code_output').value = postResource("/code_run_result" + "/" + this._codeHelper_current_index, this.codeToExecute(), SYNCHRONOUS);
+    run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
+    this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);
   },
   
   executeAndSendCode: function() {
-    this._node.querySelector('#code_output').value = postResource("/code_send_result" + "/" + this._codeHelper_current_index, this.codeToExecute(), SYNCHRONOUS);
+    send_url = "/code_send_result" + "/" + this._codeHelper_current_index;
+    this._node.querySelector('#code_output').value = postResource(send_url, this.codeToExecute(), SYNCHRONOUS);
   },  
 
   _clearCodeHelpers: function() {
