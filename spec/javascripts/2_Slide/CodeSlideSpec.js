@@ -122,7 +122,7 @@ describe("IDE with NO code to display or add", function() {
 	  
   });   
 
- it("should get last send and run it if exist", function() {
+ it("should get and run last send if exist", function() {
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe('');
     expect(codeSlideNode.querySelector('#code_output').value).toBe('');
@@ -143,9 +143,26 @@ describe("IDE with NO code to display or add", function() {
     
   }); 
   
+  it("should NOT run code if no last run, no code to display and no code to add", function() {
+
+    spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
+         
+    spyOn(CodeSlide.prototype, 'executeCode');       
+    spyOn(CodeSlide.prototype, 'updateEditor');       
+         
+    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
+
+    slide.updateEditorAndExecuteCode();
+
+    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
+    expect(CodeSlide.prototype.updateEditor.calls.length).toBe(0);  
+
+  });  
+  
 });  
 
-describe("IDE with code to add", function() {
+describe("IDE with code to display", function() {
 	
   it("should run code to display if last send does not exist", function() {
 
@@ -161,12 +178,25 @@ describe("IDE with code to add", function() {
     slide.updateEditorAndExecuteCode();
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");
-
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', "puts 'CODE TO DISPLAY'", SYNCHRONOUS);	  
 
-  });	
+  });
   
-  it("should run code in editor + code to add", function() {
+  it("should esacape html caracters in code to display", function() { 
+
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'><<<>>>&&&'''\"\"\"</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
+
+    var slide = new CodeSlide(codeSlideNode);
+	  
+    expect(slide.codeToDisplay()).toBe("<<<>>>&&&'''\"\"\"");
+	  
+  });   
+
+});
+  
+describe("IDE with code to add", function() {  
+  
+  it("should run code in editor with code to add", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
     spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
@@ -180,49 +210,26 @@ describe("IDE with code to add", function() {
     slide.updateEditorAndExecuteCode();
 	  
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");	  
-
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', SEPARATOR + "puts 'CODE TO ADD'", SYNCHRONOUS);
-	  
     expect(codeSlideNode.querySelector('#code_output').value).toBe("CODE TO ADD");	  
 
   });	  
   
-  it("should NOT display code to add if in last run", function() {
+  it("should NOT display code to add in code editor", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
     spyOn(CodeSlide.prototype, 'lastSend').andReturn(SEPARATOR + "puts 'CODE TO ADD'");
 
     var slide = new CodeSlide(codeSlideNode);
 	  
+    expect(codeSlideNode.querySelector('#code_input').value).toBe("");	  
+	  
     slide.updateEditorAndExecuteCode();	  
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
 
   });  
-  
-  it("should NOT run code if no last run, no code to display and no code to add", function() {
 
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper' id='code_helper_1'></div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section><div>");
-    spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
-	  
-    var slide = new CodeSlide(codeSlideNode);
-         
-    spyOn(CodeSlide.prototype, 'executeCode');       
-    spyOn(CodeSlide.prototype, 'updateEditor');       
-         
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
-
-    slide.updateEditorAndExecuteCode();
-
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
-
-    expect(CodeSlide.prototype.executeCode).not.toHaveBeenCalled();          
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0); 
-	  
-    expect(CodeSlide.prototype.updateEditor).not.toHaveBeenCalled();          
-    expect(CodeSlide.prototype.updateEditor.calls.length).toBe(0);	  
-
-  });	  
   
   it("should esacape html caracters in code to add", function() { 
 
@@ -234,15 +241,7 @@ describe("IDE with code to add", function() {
 	  
   });
   
-  it("should esacape html caracters in code to display", function() { 
-
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'><<<>>>&&&'''\"\"\"</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
-
-    var slide = new CodeSlide(codeSlideNode);
-	  
-    expect(slide.codeToDisplay()).toBe("<<<>>>&&&'''\"\"\"");
-	  
-  });  
+ 
   
 });
 
