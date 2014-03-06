@@ -70,6 +70,25 @@ describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
     
   end
   
+  it 'should ONLY show attendee CURRENT SLIDE last send' do   
+
+    visit teacher_coding_presentation
+    
+    find(:css, 'div.presentation').native.send_key(:arrow_down)    
+    
+    expect(page).to have_field 'code_input', :with => ""
+    expect(page).to have_field 'code_output', :with => ""
+    
+    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    
+    find(:css, 'div.presentation').native.send_key(:arrow_right)
+    find(:css, 'div.presentation').native.send_key(:space)
+    
+    expect(page).to have_field 'code_input', :with => ''
+    expect(page).to have_field 'code_output', :with => ''
+
+  end
+  
   after(:each) do
     $db.execute_sql("delete from run_events") 
     $db.execute_sql("delete from teacher_current_slide")    
@@ -101,8 +120,7 @@ describe 'NAVIGATION in teacher IDE slide', :type => :feature, :js => true do
     expect(page).to have_field 'code_input', :with => ''
     expect(page).to have_field 'code_output', :with => '' # no send on this slide
     
-    find(:css, 'div.presentation').native.send_key(:arrow_left) 
-
+    find(:css, 'div.presentation').native.send_key(:arrow_left)
     find(:css, 'div.presentation').native.send_key(:space)
     
     expect(page).to have_field 'code_input', :with => 'print "attendee send"'
@@ -120,10 +138,6 @@ describe 'NAVIGATION in teacher IDE slide', :type => :feature, :js => true do
     
   end  
   
-
-
-
-
   after(:each) do
     $db.execute_sql("delete from run_events") 
     $db.execute_sql("delete from teacher_current_slide")    
