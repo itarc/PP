@@ -107,8 +107,8 @@ CodeSlide.prototype = {
     this._node.querySelector('#code_input').addEventListener('keydown',
       function(e) { 
 	if ( e.altKey ) { 
-	  if (e.which == R) { _t.executeCode(_t._codeHelper_current_index); }
-	  if (e.which == S) { _t.executeAndSendCode(_t._codeHelper_current_index); }
+	  if (e.which == R) { _t.executeCode(); }
+	  if (e.which == S) { _t.executeAndSendCode(); }
 	} else {
 	  e.stopPropagation()
 	} 
@@ -128,9 +128,7 @@ CodeSlide.prototype = {
   },
   
   codeToExecute: function() {
-    editorContent = this._node.querySelector('#code_input').value;
-    if (typeof ace != 'undefined') { editorContent = this.code_editor.getValue() }
-    return editorContent + this.codeToAdd();
+    return this.editorContent() + this.codeToAdd();
   },	  
 
   executeCode: function() {
@@ -152,7 +150,13 @@ CodeSlide.prototype = {
     this._clearCodeHelpers();
     this._codeHelpers[slide_index].className = 'code_helper current';
     this._codeHelper_current_index = slide_index;    	  
-  },   
+  }, 
+
+  editorContent: function() {
+    editorContent = this._node.querySelector('#code_input').value;
+    if (typeof ace != 'undefined') { editorContent = this.code_editor.getValue() }
+    return editorContent;
+  },	  
 
   updateEditor: function(code) {
     this._node.querySelector('#code_input').value = code;
