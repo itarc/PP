@@ -27,14 +27,14 @@ end
 ## SINATRA CONTROLLER (END)
 ## -------------------------------------------------------
 
-describe 'Alt-R, Alt-S behaviour', :type => :feature, :js => true do
+describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
 
   before(:each) do
     $db.execute_sql("delete from run_events") 
     $db.execute_sql("delete from teacher_current_slide")    
   end
   
-  it 'should NOT show current slide last run (from any attendee) when space pressed' do   
+  it 'should NOT show attendee last run' do   
 
     visit teacher_coding_presentation
     
@@ -50,9 +50,9 @@ describe 'Alt-R, Alt-S behaviour', :type => :feature, :js => true do
     expect(page).to have_field 'code_input', :with => ""
     expect(page).to have_field 'code_output', :with => ""
     
-  end   
+  end 
   
-  it 'should show current slide last send (from any attendee) when space pressed' do   
+  it 'should show attendee last send of current slide' do   
 
     visit teacher_coding_presentation
     
@@ -68,9 +68,22 @@ describe 'Alt-R, Alt-S behaviour', :type => :feature, :js => true do
     expect(page).to have_field 'code_input', :with => 'print "attendee send"'
     expect(page).to have_field 'code_output', :with => 'attendee send'
     
-  end 
-
+  end
   
+  after(:each) do
+    $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
+  end    
+	
+end
+
+describe 'NAVIGATION in teacher IDE slide', :type => :feature, :js => true do
+
+  before(:each) do
+    $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
+  end
+
   it 'should NOT show current slide last send when space pressed and no last send for current slide' do   
 
     visit teacher_coding_presentation
@@ -83,11 +96,10 @@ describe 'Alt-R, Alt-S behaviour', :type => :feature, :js => true do
     run_ruby "send", 'print "attendee send"', "attendee 1", "0"
     
     find(:css, 'div.presentation').native.send_key(:arrow_right)
-
     find(:css, 'div.presentation').native.send_key(:space)
     
     expect(page).to have_field 'code_input', :with => ''
-    expect(page).to have_field 'code_output', :with => '' # no run on this slide
+    expect(page).to have_field 'code_output', :with => '' # no send on this slide
     
     find(:css, 'div.presentation').native.send_key(:arrow_left) 
 
@@ -108,41 +120,9 @@ describe 'Alt-R, Alt-S behaviour', :type => :feature, :js => true do
     
   end  
   
-  it 'should NOT show current slide last run (from any attendee) when attendee RUN code and then teacher space pressed' do   
 
-    visit teacher_coding_presentation
-    
-    find(:css, 'div.presentation').native.send_key(:arrow_down)    
-    
-    expect(page).to have_field 'code_input', :with => ""
-    expect(page).to have_field 'code_output', :with => ""
-    
-    run_ruby "run", 'print "attendee run"', "attendee 1", "0"
 
-    find(:css, 'div.presentation').native.send_key(:space)
-    
-    expect(page).to have_field 'code_input', :with => ""
-    expect(page).to have_field 'code_output', :with => ""
-    
-  end  
 
-  it 'should show current slide last send (from any attendee) when attendee SEND code and then teacher space pressed' do   
-
-    visit teacher_coding_presentation
-    
-    find(:css, 'div.presentation').native.send_key(:arrow_down)    
-    
-    expect(page).to have_field 'code_input', :with => ""
-    expect(page).to have_field 'code_output', :with => ""
-    
-    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
-
-    find(:css, 'div.presentation').native.send_key(:space)
-    
-    expect(page).to have_field 'code_input', :with => 'print "attendee send"'
-    expect(page).to have_field 'code_output', :with => 'attendee send'
-    
-  end
 
   after(:each) do
     $db.execute_sql("delete from run_events") 
