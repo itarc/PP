@@ -103,7 +103,7 @@ describe 'NAVIGATION in teacher IDE slide', :type => :feature, :js => true do
     $db.execute_sql("delete from teacher_current_slide")    
   end
 
-  it 'should NOT show current slide last send when space pressed and no last send for current slide' do   
+  it 'should keep last send when navigating right' do   
 
     visit teacher_coding_presentation
     
@@ -115,24 +115,17 @@ describe 'NAVIGATION in teacher IDE slide', :type => :feature, :js => true do
     run_ruby "send", 'print "attendee send"', "attendee 1", "0"
     
     find(:css, 'div.presentation').native.send_key(:arrow_right)
-    find(:css, 'div.presentation').native.send_key(:space)
     
     expect(page).to have_field 'code_input', :with => ''
-    expect(page).to have_field 'code_output', :with => '' # no send on this slide
+    expect(page).to have_field 'code_output', :with => ''     
     
     find(:css, 'div.presentation').native.send_key(:arrow_left)
-    find(:css, 'div.presentation').native.send_key(:space)
     
     expect(page).to have_field 'code_input', :with => 'print "attendee send"'
     expect(page).to have_field 'code_output', :with => 'attendee send'
 
     find(:css, 'div.presentation').native.send_key(:arrow_right)
 
-    expect(page).to have_field 'code_input', :with => 'print "attendee send"'
-    expect(page).to have_field 'code_output', :with => 'attendee send'
-
-    find(:css, 'div.presentation').native.send_key(:space)
-    
     expect(page).to have_field 'code_input', :with => 'print "attendee send"'
     expect(page).to have_field 'code_output', :with => 'attendee send'    
     
