@@ -19,7 +19,6 @@ describe("TeacherSlideShow Navigation with 1 Slide", function() {
 
     var teacherSlideShow = new TeacherSlideShow([]);
 
-    expect(TeacherSlideShow.prototype._postCurrentIndexOnServer).toHaveBeenCalled();
     expect(TeacherSlideShow.prototype._postCurrentIndexOnServer.call.length).toBe(1);
 
   });
@@ -178,38 +177,38 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
 	  
   });
   
-  it("should NOT show current slide when teacher shows coding slide", function() {
+  it("should NOT show current slide when teacher shows IDE", function() {
 	  
    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='send_code'><div id='code_output'></div></div>")	  
-   spyOn(SlideShow.prototype, '_show_current_slide');
+   spyOn(TeacherSlideShow.prototype, '_show_current_slide');
    spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
 	  
-    var slideShow = new SlideShow(queryAll('.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
 
-    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
+    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(1);
 
-    slideShow.down();
+    teacherSlideShow.down();
 
-    slideShow.next(); 
-    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
+    teacherSlideShow.next(); 
+    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(1);
 
-    slideShow.prev(); 
-    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);
+    teacherSlideShow.prev(); 
+    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(1);
 
-    slideShow.synchronise();  
-    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(1);    
+    teacherSlideShow.synchronise();  
+    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(1);    
 
-    slideShow.up();
-    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(2);	  
+    teacherSlideShow.up();
+    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(2);	  
 	  
-    slideShow.next(); 
-    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(3);
+    teacherSlideShow.next(); 
+    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(3);
 
-    slideShow.prev();  
-    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(4);
+    teacherSlideShow.prev();  
+    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(4);
 
-    slideShow.synchronise();  
-    expect(SlideShow.prototype._show_current_slide.calls.length).toBe(4); // same slide as current slide
+    teacherSlideShow.synchronise();  
+    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(4); // same slide as current slide
 
   });  
   
