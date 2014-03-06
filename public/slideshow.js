@@ -12,7 +12,9 @@ var HOME = 36;
 var SYNCHRONOUS = false;
 var ASYNCHRONOUS = true;
 
-var ALT = true 
+var ALT = 18
+var CTRL = 17
+var F5 = 116
 var R = 82
 var S = 83
 

@@ -1,4 +1,4 @@
-function __triggerKeyboardEvent(element, keyCode, alt = false)
+function __triggerKeyboardEvent(element, keyCode, controlKey = false)
 {
 
   var eventObj = document.createEvent("Events");
@@ -6,7 +6,7 @@ function __triggerKeyboardEvent(element, keyCode, alt = false)
   eventObj.initEvent("keydown", true, true);
   eventObj.keyCode = keyCode;
 	
-  if (alt) { eventObj.altKey = true; eventObj.which = keyCode }
+  if (controlKey == ALT) { eventObj.altKey = true; eventObj.which = keyCode }
   
   element.dispatchEvent(eventObj);
   
