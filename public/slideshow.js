@@ -227,7 +227,7 @@ SlideShow.prototype = {
   _currentSlide : undefined, 
   _currentServerIndex : 0,
   _numberOfSlides : 0,
-  _isUp : true,
+  _showIDE : false,
 
 
   _clear: function() {
@@ -271,10 +271,10 @@ SlideShow.prototype = {
   
   _refresh: function() {
     if (this._slides.length == 0) return
-    if (this._isUp) 
-	  this._show_current_slide();
+    if (this._showIDE) 
+      this._show_teacher_coding_slide();
     else
-	this._show_teacher_coding_slide();
+      this._show_current_slide();
     this._update_poll_slide();
     this._currentSlide._update(this._currentIndex);
     window.console && window.console.log("Refreshed with this._currentIndex = " + this._currentIndex);
@@ -296,12 +296,12 @@ SlideShow.prototype = {
   },
   
   down: function() {
-    this._isUp = false;
+    this._showIDE = true;
     this._refresh();  
   },
   
   up: function() {  
-    this._isUp = true;	  
+    this._showIDE = false;	  
     this._refresh();
   },
   
