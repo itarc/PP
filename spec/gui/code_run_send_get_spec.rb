@@ -27,6 +27,10 @@ end
 ## SINATRA CONTROLLER (END)
 ## -------------------------------------------------------
 
+def go_down
+  find(:css, 'div.presentation').native.send_key(:arrow_down)
+end
+
 describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
 
   before(:each) do
@@ -37,8 +41,8 @@ describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
   it 'should NOT show attendee last run' do   
 
     visit teacher_coding_presentation
-    
-    find(:css, 'div.presentation').native.send_key(:arrow_down)    
+     
+    go_down
     
     expect(page).to have_field 'code_input', :with => ""
     expect(page).to have_field 'code_output', :with => ""
@@ -56,7 +60,7 @@ describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
 
     visit teacher_coding_presentation
     
-    find(:css, 'div.presentation').native.send_key(:arrow_down)    
+    go_down 
     
     expect(page).to have_field 'code_input', :with => ""
     expect(page).to have_field 'code_output', :with => ""
@@ -74,7 +78,7 @@ describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
 
     visit teacher_coding_presentation
     
-    find(:css, 'div.presentation').native.send_key(:arrow_down)    
+    go_down   
     
     expect(page).to have_field 'code_input', :with => ""
     expect(page).to have_field 'code_output', :with => ""
@@ -107,7 +111,7 @@ describe 'NAVIGATION in teacher IDE slide', :type => :feature, :js => true do
 
     visit teacher_coding_presentation
     
-    find(:css, 'div.presentation').native.send_key(:arrow_down)    
+    go_down   
     
     expect(page).to have_field 'code_input', :with => ""
     expect(page).to have_field 'code_output', :with => ""
