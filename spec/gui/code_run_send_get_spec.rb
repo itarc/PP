@@ -1,7 +1,9 @@
 require 'rspec'
 require 'capybara/rspec'
 
+## -------------------------------------------------------
 ## SINATRA CONTROLLER (BEGIN)
+## -------------------------------------------------------
 
 require_relative '../../controllers/slideshow.rb'
 
@@ -10,18 +12,20 @@ Capybara.app = Sinatra::Application.new
 set :public_folder, 'fixtures'
 set :logging, false
 
-TEACHER_CODING_PRESENTATION_3 = '/teacher/coding_presentation'
-ATTENDEE_CODING_SLIDE_WITH_ALT_R_AND_ALTS = '/attendee/coding_slide_with_NO_code_to_display'
+teacher_coding_presentation = '/teacher/coding_presentation'
+attendee_coding_slide_with_ALT_R_and_ALT_S = '/attendee/coding_slide_with_NO_code_to_display'
 
-get '/attendee/coding_slide_with_NO_code_to_display' do
-  redirect "coding_slide_with_NO_code_to_display-attendee.html"
-end
-
-get '/teacher/coding_presentation' do	
+get teacher_coding_presentation do	
   redirect "coding_presentation-teacher.html"
 end
 
+get attendee_coding_slide_with_ALT_R_and_ALT_S do
+  redirect "coding_slide_with_NO_code_to_display-attendee.html"
+end
+
+## -------------------------------------------------------
 ## SINATRA CONTROLLER (END)
+## -------------------------------------------------------
 
 describe 'Alt-R, Alt-S behaviour', :type => :feature, :js => true do
 
@@ -32,7 +36,7 @@ describe 'Alt-R, Alt-S behaviour', :type => :feature, :js => true do
   
   it 'should NOT show current slide last run (from any attendee) when space pressed' do   
 
-    visit TEACHER_CODING_PRESENTATION_3
+    visit teacher_coding_presentation
     
     find(:css, 'div.presentation').native.send_key(:arrow_down)    
     
@@ -50,7 +54,7 @@ describe 'Alt-R, Alt-S behaviour', :type => :feature, :js => true do
   
   it 'should show current slide last send (from any attendee) when space pressed' do   
 
-    visit TEACHER_CODING_PRESENTATION_3
+    visit teacher_coding_presentation
     
     find(:css, 'div.presentation').native.send_key(:arrow_down)    
     
@@ -69,7 +73,7 @@ describe 'Alt-R, Alt-S behaviour', :type => :feature, :js => true do
   
   it 'should NOT show current slide last send when space pressed and no last send for current slide' do   
 
-    visit TEACHER_CODING_PRESENTATION_3
+    visit teacher_coding_presentation
     
     find(:css, 'div.presentation').native.send_key(:arrow_down)    
     
@@ -106,7 +110,7 @@ describe 'Alt-R, Alt-S behaviour', :type => :feature, :js => true do
   
   it 'should NOT show current slide last run (from any attendee) when attendee RUN code and then teacher space pressed' do   
 
-    visit TEACHER_CODING_PRESENTATION_3
+    visit teacher_coding_presentation
     
     find(:css, 'div.presentation').native.send_key(:arrow_down)    
     
@@ -124,7 +128,7 @@ describe 'Alt-R, Alt-S behaviour', :type => :feature, :js => true do
 
   it 'should show current slide last send (from any attendee) when attendee SEND code and then teacher space pressed' do   
 
-    visit TEACHER_CODING_PRESENTATION_3
+    visit teacher_coding_presentation
     
     find(:css, 'div.presentation').native.send_key(:arrow_down)    
     
