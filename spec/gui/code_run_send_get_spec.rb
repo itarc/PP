@@ -47,13 +47,13 @@ def go_left
   find(:css, 'div.presentation').native.send_key(:arrow_left)
 end
 
-def expect_ide_to_have(code_input, code_output)
+def expect_IDE_to_have(code_input, code_output)
   expect(page).to have_field 'code_input', :with => code_input
   expect(page).to have_field 'code_output', :with => code_output
 end
 
-def expect_ide_be_empty
-  expect_ide_to_have(code_input = '', code_output = '')
+def expect_IDE_to_be_empty
+  expect_IDE_to_have(code_input = '', code_output = '')
 end
 
 ## -------------------------------------------------------
@@ -72,12 +72,13 @@ describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
     visit teacher_coding_presentation
     go_down
     
-    expect_ide_be_empty
+    expect_IDE_to_be_empty
     
     run_ruby "run", 'print "attendee run"', "attendee 1", "0"
+    
     press_space
     
-    expect_ide_be_empty
+    expect_IDE_to_be_empty
     
   end 
   
@@ -86,27 +87,29 @@ describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
     visit teacher_coding_presentation
     go_down 
     
-    expect_ide_be_empty
+    expect_IDE_to_be_empty
     
     run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    
     press_space
     
-    expect_ide_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
     
   end
   
-  it 'should ONLY show attendee CURRENT SLIDE last send' do   
+  it 'should ONLY show CURRENT SLIDE attendee last send' do   
 
     visit teacher_coding_presentation
     go_down   
     
-    expect_ide_be_empty
+    expect_IDE_to_be_empty
     
     run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    
     go_right
     press_space
     
-    expect_ide_be_empty
+    expect_IDE_to_be_empty
 
   end
   
@@ -129,20 +132,21 @@ describe 'NAVIGATION in teacher IDE slide', :type => :feature, :js => true do
     visit teacher_coding_presentation
     go_down
     
-    expect_ide_be_empty
+    expect_IDE_to_be_empty
     
     run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    
     go_right
     
-    expect_ide_be_empty   
+    expect_IDE_to_be_empty   
     
     go_left
     
-    expect_ide_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
     
     go_right
 
-    expect_ide_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')   
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')   
     
   end  
   
