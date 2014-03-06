@@ -31,6 +31,18 @@ def go_down
   find(:css, 'div.presentation').native.send_key(:arrow_down)
 end
 
+def press_space
+  find(:css, 'div.presentation').native.send_key(:space)
+end
+
+def go_right
+  find(:css, 'div.presentation').native.send_key(:arrow_right)
+end
+
+def go_left
+  find(:css, 'div.presentation').native.send_key(:arrow_left)
+end
+
 describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
 
   before(:each) do
@@ -49,7 +61,7 @@ describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
     
     run_ruby "run", 'print "attendee run"', "attendee 1", "0"
 
-    find(:css, 'div.presentation').native.send_key(:space)
+    press_space
     
     expect(page).to have_field 'code_input', :with => ""
     expect(page).to have_field 'code_output', :with => ""
@@ -67,7 +79,7 @@ describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
     
     run_ruby "send", 'print "attendee send"', "attendee 1", "0"
 
-    find(:css, 'div.presentation').native.send_key(:space)
+    press_space
     
     expect(page).to have_field 'code_input', :with => 'print "attendee send"'
     expect(page).to have_field 'code_output', :with => 'attendee send'
@@ -85,8 +97,8 @@ describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
     
     run_ruby "send", 'print "attendee send"', "attendee 1", "0"
     
-    find(:css, 'div.presentation').native.send_key(:arrow_right)
-    find(:css, 'div.presentation').native.send_key(:space)
+    go_right
+    press_space
     
     expect(page).to have_field 'code_input', :with => ''
     expect(page).to have_field 'code_output', :with => ''
@@ -118,17 +130,17 @@ describe 'NAVIGATION in teacher IDE slide', :type => :feature, :js => true do
     
     run_ruby "send", 'print "attendee send"', "attendee 1", "0"
     
-    find(:css, 'div.presentation').native.send_key(:arrow_right)
+    go_right
     
     expect(page).to have_field 'code_input', :with => ''
     expect(page).to have_field 'code_output', :with => ''     
     
-    find(:css, 'div.presentation').native.send_key(:arrow_left)
+    go_left
     
     expect(page).to have_field 'code_input', :with => 'print "attendee send"'
     expect(page).to have_field 'code_output', :with => 'attendee send'
 
-    find(:css, 'div.presentation').native.send_key(:arrow_right)
+    go_right
 
     expect(page).to have_field 'code_input', :with => 'print "attendee send"'
     expect(page).to have_field 'code_output', :with => 'attendee send'    
