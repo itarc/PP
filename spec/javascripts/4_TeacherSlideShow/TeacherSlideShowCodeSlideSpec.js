@@ -50,6 +50,35 @@ describe("TeacherSlideShow IDE", function() {
     expect(CodeSlide.prototype._update.calls.length).toBe(1);  // should be 0 (to review)
 
   });   
-	
   
+  it("should NOT run code when ALT-R button disabled", function() {
+
+   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute' disabled><input type='button' id='send_code'><textarea id='code_output'></textarea></section></div></div>");
+   spyOn(CodeSlide.prototype, 'executeCode');  
+
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
+	  
+    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));
+
+    __triggerKeyboardEvent(teacherSlideShow._slides[1]._node.querySelector('#code_input'), R, ALT);
+
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);  
+	
+  });  
+  
+  it("should send code when ALT-S pressed", function() {
+
+   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute' disabled><input type='button' id='send_code'><textarea id='code_output'></textarea></section></div></div>");
+    spyOn(CodeSlide.prototype, 'executeAndSendCode');  
+
+    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);
+	  
+    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));
+	  
+    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), S, ALT);
+
+    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(1);  
+
+  });    
+
 });

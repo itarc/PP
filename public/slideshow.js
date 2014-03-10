@@ -107,7 +107,7 @@ CodeSlide.prototype = {
     this._node.querySelector('#code_input').addEventListener('keydown',
       function(e) { 
 	if ( e.altKey ) { 
-	  if (e.which == R) { _t.executeCode(); }
+	  if (e.which == R) { if ( ! _t._node.querySelector('#execute').disabled == true ) { _t.executeCode(); } }
 	  if (e.which == S) { _t.executeAndSendCode(); }
 	} else {
 	  e.stopPropagation()

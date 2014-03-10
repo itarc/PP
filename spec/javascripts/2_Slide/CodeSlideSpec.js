@@ -240,8 +240,6 @@ describe("IDE with code to add", function() {
     expect(slide.codeToAdd()).toBe(SEPARATOR + "<<<>>>&&&'''\"\"\"");
 	  
   });
-  
- 
-  
+
 });
 
