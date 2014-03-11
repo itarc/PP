@@ -80,6 +80,23 @@ Slide.prototype = {
 
 };
 
+
+// ----------------------------------
+// EDITOR
+// ----------------------------------
+var Editor = function(node) {
+  this._node = node;
+}
+
+Editor.prototype = {
+  content: function() {
+    return this._node.value;
+  },
+  updateEditor: function(code) {
+    this._node.value = code;  
+  },
+}
+
 // ----------------------------------
 // CODE SLIDE EXTENDS SLIDE CLASS
 // ----------------------------------
@@ -87,8 +104,8 @@ var CodeSlide = function(node) {
   Slide.call(this, node);
   this._codeHelpers = this._node.querySelectorAll('.code_helper');
   this._codeHelper_current_index = 0;
-  this._declareEditor();
   this._declareEvents();
+  this._editor = new Editor(this._node.querySelector('#code_input'));
 };
 
 CodeSlide.prototype = {
@@ -96,11 +113,7 @@ CodeSlide.prototype = {
 	
   _isCodingSlide: function() {
     return this._node.querySelector('#execute') != null;
-  },  
-
-  _declareEditor: function() {
-    if (typeof ace != 'undefined') { this.code_editor = ace.edit(this._node.querySelector('#code_input')); }
-  }, 
+  },
   
   _declareEvents: function() {  
     var _t = this;	  
@@ -128,7 +141,7 @@ CodeSlide.prototype = {
   },
   
   codeToExecute: function() {
-    return this.editorContent() + this.codeToAdd();
+    return this._editor.content() + this.codeToAdd();
   },	  
 
   executeCode: function() {
@@ -152,18 +165,12 @@ CodeSlide.prototype = {
     this._clearCodeHelpers();
     this._codeHelpers[slide_index].className = 'code_helper current';
     this._codeHelper_current_index = slide_index;    	  
-  }, 
-
-  editorContent: function() {
-    editorContent = this._node.querySelector('#code_input').value;
-    if (typeof ace != 'undefined') { editorContent = this.code_editor.getValue() }
-    return editorContent;
   },	  
 
-  updateEditor: function(code) {
-    this._node.querySelector('#code_input').value = code;
-    if (typeof ace != 'undefined') { this.code_editor.setValue(code, 1); }	  
-  },	 
+  //~ updateEditor: function(code) {
+    //~ this._node.querySelector('#code_input').value = code;
+    //~ if (typeof ace != 'undefined') { this.code_editor.setValue(code, 1); }	  
+  //~ },	 
 
   codeToDisplay: function() {
     code = '';
@@ -187,7 +194,7 @@ CodeSlide.prototype = {
     codeForEditor = this.lastSend().split(SEPARATOR)[0];
     if (codeForEditor == '' ) codeForEditor = this.codeToDisplay();
     if (codeForEditor == '' && this.codeToAdd() == '') return;
-    this.updateEditor(codeForEditor);
+    this._editor.updateEditor(codeForEditor);
     this.executeCode();	  
   }, 
   

@@ -29,7 +29,7 @@ describe("IDE with NO code to display or add", function() {
 	  
    expect(codeSlideNode.querySelector('#code_input').value).toBe('');
 
-   slide.updateEditor("print 'editor updated'");
+   slide._editor.updateEditor("print 'editor updated'");
 	  
    expect(codeSlideNode.querySelector('#code_input').value).toBe("print 'editor updated'");
     
@@ -39,7 +39,7 @@ describe("IDE with NO code to display or add", function() {
   
     postResource = jasmine.createSpy('postResource').andReturn('1');  
 	  
-    slide.updateEditor('puts 1');
+    slide._editor.updateEditor('puts 1');
 	  
     expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 1');
     expect(codeSlideNode.querySelector('#code_output').value).toBe('');
@@ -70,7 +70,7 @@ describe("IDE with NO code to display or add", function() {
   
     postResource = jasmine.createSpy('postResource');
 	  
-    slide.updateEditor('puts 1');	  
+    slide._editor.updateEditor('puts 1');	  
 	  
     codeSlideNode.querySelector('#execute').click();
 
@@ -98,7 +98,7 @@ describe("IDE with NO code to display or add", function() {
 
     postResource = jasmine.createSpy('postResource');
 	  
-    slide.updateEditor('puts 1');
+    slide._editor.updateEditor('puts 1');
 	  
     codeSlideNode.querySelector('#send_code').click();
 
@@ -148,7 +148,7 @@ describe("IDE with NO code to display or add", function() {
     spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
          
     spyOn(CodeSlide.prototype, 'executeCode');       
-    spyOn(CodeSlide.prototype, 'updateEditor');       
+    spyOn(Editor.prototype, 'updateEditor');       
          
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
 
@@ -156,7 +156,7 @@ describe("IDE with NO code to display or add", function() {
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
-    expect(CodeSlide.prototype.updateEditor.calls.length).toBe(0);  
+    expect(Editor.prototype.updateEditor.calls.length).toBe(0);  
 
   });  
   
