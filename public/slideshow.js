@@ -115,17 +115,19 @@ CodeSlide.prototype = {
     return this._node.querySelector('#execute') != null;
   },
   
+  _keyHandling: function(e) {
+	if ( e.altKey ) { 
+	  if (e.which == R) { if ( ! this._node.querySelector('#execute').disabled == true ) { this.executeCode(); } }
+	  if (e.which == S) { this.executeAndSendCode(); }
+	} else {
+	  e.stopPropagation()
+	}    
+  },
+  
   _declareEvents: function() {  
     var _t = this;	  
     this._node.querySelector('#code_input').addEventListener('keydown',
-      function(e) { 
-	if ( e.altKey ) { 
-	  if (e.which == R) { if ( ! _t._node.querySelector('#execute').disabled == true ) { _t.executeCode(); } }
-	  if (e.which == S) { _t.executeAndSendCode(); }
-	} else {
-	  e.stopPropagation()
-	} 
-      }, false
+      function(e) { _t._keyHandling(e) }, false
     );
     this._node.querySelector('#execute').addEventListener('click',
       function(e) { _t.executeCode(); }, false
