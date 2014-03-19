@@ -1,7 +1,7 @@
 def insert_method_undef(original_code)
   undef_string = "undef :exec\nundef :system\nundef :`\n"
   code_first_line = original_code.split("\n")[0]
-  if code_first_line && code_first_line.start_with?("#encoding") then
+  if code_first_line && code_first_line.strip.start_with?("#encoding") then
     code_after_encoding = original_code.sub(/^#{code_first_line}\n/, '')
     code_first_line + "\n" + undef_string + code_after_encoding
   else

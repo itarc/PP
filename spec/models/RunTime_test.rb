@@ -207,10 +207,15 @@ class TestRunTime_insert_method_undef < Test::Unit::TestCase
     assert_equal "#encoding yyy\n"+@method_undef+"original_code", insert_method_undef("#encoding yyy\noriginal_code")
   end
   
-  def test05_insert_method_undef_after_encoding
+  def test05_insert_method_undef_after_encoding_with_multiline_code
     assert_equal "#encoding xxx\n"+@method_undef+"original_code_line_1\noriginal_code_line_2\n", insert_method_undef("#encoding xxx\noriginal_code_line_1\noriginal_code_line_2\n")
   end  
 
+  def test06_insert_method_undef_after_encoding_with_space_before
+    assert_equal " #encoding xxx\n"+@method_undef+"original_code", insert_method_undef(" #encoding xxx\noriginal_code")
+    assert_equal "  #encoding xxx\n"+@method_undef+"original_code", insert_method_undef("  #encoding xxx\noriginal_code")
+  end
+  
 end
 
 class TestRunTime_do_not_run_system_commands < Test::Unit::TestCase
