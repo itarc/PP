@@ -1,7 +1,19 @@
+def insert_method_undef(original_code)
+  undef_string = "undef :exec\nundef :system\nundef :`\n"
+  code_first_line = original_code.split("\n")[0]
+  if code_first_line && code_first_line.start_with?("#encoding") then
+    code_after_encoding = original_code.sub(/^#{code_first_line}\n/, '')
+    code_first_line + "\n" + undef_string + code_after_encoding
+  else
+     undef_string + original_code
+  end
+end
+  
 def run_ruby(type, ruby_code, user, slide_index)
   file_name = "ruby_file_to_run.#{Time.now.to_f}.rb"
   file = File.new(file_name, 'w')
-  file << ruby_code
+  ruby_code_with_method_undef = insert_method_undef(ruby_code)
+  file << ruby_code_with_method_undef
   file.close
   result = `ruby #{file_name} 2>&1`
   File.delete(file)
