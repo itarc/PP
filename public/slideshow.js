@@ -167,12 +167,7 @@ CodeSlide.prototype = {
     this._clearCodeHelpers();
     this._codeHelpers[slide_index].className = 'code_helper current';
     this._codeHelper_current_index = slide_index;    	  
-  },	  
-
-  //~ updateEditor: function(code) {
-    //~ this._node.querySelector('#code_input').value = code;
-    //~ if (typeof ace != 'undefined') { this.code_editor.setValue(code, 1); }	  
-  //~ },	 
+  },
 
   codeToDisplay: function() {
     code = '';
