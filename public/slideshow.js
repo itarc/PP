@@ -212,11 +212,16 @@ CodeSlide.prototype = {
     return getResource('/code_last_send' + '/' + this._codeHelper_current_index);
   },
   
-  updateEditorAndExecuteCode: function() {
+  lastSendOrCodeToDisplay: function() {
     codeForEditor = this.lastSend().split(SEPARATOR)[0];
     if (codeForEditor == '') codeForEditor = this._currentCodeHelper().codeToDisplay();
-    if (codeForEditor == '' && this._currentCodeHelper().codeToAdd() == '') return;
-    this._editor.updateEditor(codeForEditor);
+    return codeForEditor;
+  },
+  
+  updateEditorAndExecuteCode: function() {
+    lastSendOrCodeToDisplay = this.lastSendOrCodeToDisplay();
+    if (lastSendOrCodeToDisplay == '' && this._currentCodeHelper().codeToAdd() == '') return;
+    this._editor.updateEditor(lastSendOrCodeToDisplay);
     this.executeCode();	  
   }, 
   
