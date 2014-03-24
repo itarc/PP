@@ -213,9 +213,9 @@ CodeSlide.prototype = {
   },
   
   lastSendOrCodeToDisplay: function() {
-    codeForEditor = this.lastSend().split(SEPARATOR)[0];
-    if (codeForEditor == '') codeForEditor = this._currentCodeHelper().codeToDisplay();
-    return codeForEditor;
+    lastSend = this.lastSend().split(SEPARATOR)[0];
+    if (lastSend != '') { return lastSend }
+    return this._currentCodeHelper().codeToDisplay();
   },
   
   updateEditorAndExecuteCode: function() {
