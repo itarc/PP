@@ -177,20 +177,6 @@ CodeSlide.prototype = {
     this.updateEditorAndExecuteCode();
   },
   
-  codeToExecute: function() {
-    return this._editor.content() + this._codeHelpers[this._codeHelper_current_index].codeToAdd();
-  },	  
-
-  executeCode: function() {
-    run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
-    this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);
-  },
-  
-  executeAndSendCode: function() {
-    send_url = "/code_send_result" + "/" + this._codeHelper_current_index;
-    this._node.querySelector('#code_output').value = postResource(send_url, this.codeToExecute(), SYNCHRONOUS);
-  },  
-
   _clearCodeHelpers: function() {
     for (var i=0; i<this._codeHelpers.length; i++) {
       this._codeHelpers[i].setState('');
@@ -206,7 +192,21 @@ CodeSlide.prototype = {
     this._clearCodeHelpers();
     this._codeHelpers[slide_index].setState('current');
     this._codeHelper_current_index = slide_index;    	  
+  },  
+  
+  codeToExecute: function() {
+    return this._editor.content() + this._currentCodeHelper().codeToAdd();
+  },	  
+
+  executeCode: function() {
+    run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
+    this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);
   },
+  
+  executeAndSendCode: function() {
+    send_url = "/code_send_result" + "/" + this._codeHelper_current_index;
+    this._node.querySelector('#code_output').value = postResource(send_url, this.codeToExecute(), SYNCHRONOUS);
+  }, 
   
   lastSend: function() {
     return getResource('/code_last_send' + '/' + this._codeHelper_current_index);
