@@ -25,6 +25,12 @@ var queryAll = function(query) {
   return Array.prototype.slice.call(nodeList, 0);
 };
 
+var queryNodeAll = function(node, query) {
+  nodeList = node.querySelectorAll(query);
+  return Array.prototype.slice.call(nodeList, 0);
+};
+
+
 var postResource = function(path, params, synchronous_asynchronous) {
   var xmlhttp = new XMLHttpRequest();	
   xmlhttp.open("POST", path, synchronous_asynchronous);
@@ -98,11 +104,40 @@ Editor.prototype = {
 }
 
 // ----------------------------------
+// CODE HELPER (MINI-SLIDE)
+// ----------------------------------
+var CodeHelper = function(node) {
+  this._node = node;
+}
+
+CodeHelper.prototype = {
+  setState: function(state) {
+    this._node.className = 'code_helper' + ((state != '') ? (' ' + state) : '');
+  },  
+  codeToAdd: function() {
+    code = '';
+    if (this._node.querySelector('.code_to_add') ) 
+      code = SEPARATOR + this._node.querySelector('.code_to_add').innerHTML;
+    return code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+  }, 
+  codeToDisplay: function() {
+    code = '';
+    if (this._node.querySelector('.code_to_display') ) 
+      code = this._node.querySelector('.code_to_display').innerHTML;
+    return code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+  },  
+}
+
+// ----------------------------------
 // CODE SLIDE EXTENDS SLIDE CLASS
 // ----------------------------------
 var CodeSlide = function(node) {
   Slide.call(this, node);
-  this._codeHelpers = this._node.querySelectorAll('.code_helper');
+  
+  this._codeHelpers = (queryNodeAll(node, '.code_helper')).map(function(element) {
+    return new CodeHelper(element); 
+  });
+  
   this._codeHelper_current_index = 0;
   this._declareEvents();
   this._editor = new Editor(this._node.querySelector('#code_input'));
@@ -116,12 +151,12 @@ CodeSlide.prototype = {
   },
   
   _keyHandling: function(e) {
-	if ( e.altKey ) { 
-	  if (e.which == R) { if ( ! this._node.querySelector('#execute').disabled == true ) { this.executeCode(); } }
-	  if (e.which == S) { this.executeAndSendCode(); }
-	} else {
-	  e.stopPropagation()
-	}    
+    if ( e.altKey ) { 
+      if (e.which == R) { if ( ! this._node.querySelector('#execute').disabled == true ) { this.executeCode(); } }
+      if (e.which == S) { this.executeAndSendCode(); }
+    } else {
+      e.stopPropagation()
+    }    
   },
   
   _declareEvents: function() {  
@@ -143,7 +178,7 @@ CodeSlide.prototype = {
   },
   
   codeToExecute: function() {
-    return this._editor.content() + this.codeToAdd();
+    return this._editor.content() + this._codeHelpers[this._codeHelper_current_index].codeToAdd();
   },	  
 
   executeCode: function() {
@@ -158,29 +193,19 @@ CodeSlide.prototype = {
 
   _clearCodeHelpers: function() {
     for (var i=0; i<this._codeHelpers.length; i++) {
-      this._codeHelpers[i].className = 'code_helper';
+      this._codeHelpers[i].setState('');
     }
-  },  
+  }, 
+
+  _currentCodeHelper: function() {
+    return this._codeHelpers[this._codeHelper_current_index]
+  },   
   
   showCurrentCodeHelper: function(slide_index) {
     if (this._codeHelpers.length == 0) return;
     this._clearCodeHelpers();
-    this._codeHelpers[slide_index].className = 'code_helper current';
+    this._codeHelpers[slide_index].setState('current');
     this._codeHelper_current_index = slide_index;    	  
-  },
-
-  codeToDisplay: function() {
-    code = '';
-    if (this._codeHelpers[this._codeHelper_current_index] && this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_display') ) 
-      code = this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_display').innerHTML;
-    return code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-  },
-
-  codeToAdd: function() {
-    code = '';
-    if (this._codeHelpers[this._codeHelper_current_index] && this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_add') ) 
-      code = SEPARATOR + this._codeHelpers[this._codeHelper_current_index].querySelector('.code_to_add').innerHTML;
-    return code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
   },
   
   lastSend: function() {
@@ -189,8 +214,8 @@ CodeSlide.prototype = {
   
   updateEditorAndExecuteCode: function() {
     codeForEditor = this.lastSend().split(SEPARATOR)[0];
-    if (codeForEditor == '' ) codeForEditor = this.codeToDisplay();
-    if (codeForEditor == '' && this.codeToAdd() == '') return;
+    if (codeForEditor == '') codeForEditor = this._currentCodeHelper().codeToDisplay();
+    if (codeForEditor == '' && this._currentCodeHelper().codeToAdd() == '') return;
     this._editor.updateEditor(codeForEditor);
     this.executeCode();	  
   }, 

@@ -2,13 +2,16 @@ describe("IDE with NO code to display or add", function() {
 	
   beforeEach(function () {
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea><input type='button' id='execute'><input type='button' id='send_code'/><textarea id='code_output'></textarea></section><div>");
-    slide = new CodeSlide(codeSlideNode);	  
+    slide = new CodeSlide(codeSlideNode);  
   });	
 
   it("should show current code_helper", function() {
-
+    
+    expect(codeSlideNode.querySelector('#code_helper_1').className).toBe('code_helper');
+    expect(codeSlideNode.querySelector('#code_helper_2').className).toBe('code_helper');   
+    
     slide.showCurrentCodeHelper(0);
-	  
+
     expect(codeSlideNode.querySelector('#code_helper_1').className).toBe('code_helper current');
     expect(codeSlideNode.querySelector('#code_helper_2').className).toBe('code_helper');
 	  
@@ -151,7 +154,7 @@ describe("IDE with NO code to display or add", function() {
     spyOn(Editor.prototype, 'updateEditor');       
          
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
-
+    
     slide.updateEditorAndExecuteCode();
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
@@ -181,16 +184,6 @@ describe("IDE with code to display", function() {
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', "puts 'CODE TO DISPLAY'", SYNCHRONOUS);	  
 
   });
-  
-  it("should esacape html caracters in code to display", function() { 
-
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'><<<>>>&&&'''\"\"\"</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
-
-    var slide = new CodeSlide(codeSlideNode);
-	  
-    expect(slide.codeToDisplay()).toBe("<<<>>>&&&'''\"\"\"");
-	  
-  });   
 
 });
   
@@ -228,17 +221,6 @@ describe("IDE with code to add", function() {
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
 
-  });  
-
-  
-  it("should esacape html caracters in code to add", function() { 
-
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'><<<>>>&&&'''\"\"\"</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
-
-    var slide = new CodeSlide(codeSlideNode);
-	  
-    expect(slide.codeToAdd()).toBe(SEPARATOR + "<<<>>>&&&'''\"\"\"");
-	  
   });
 
 });
