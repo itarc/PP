@@ -4,7 +4,7 @@ describe("Common slide list", function() {
 	  
     setFixtures("<div class='slide'></div>")
 
-    var slideList = queryAll('.slide')
+    var slideList = queryAll(document, '.slide')
 	  
     expect(Object.prototype.toString.apply(slideList)).toBe('[object Array]')
     expect(slideList.length).toBe(1)
@@ -18,7 +18,7 @@ describe("Common slide list", function() {
 	  
     setFixtures("<div class='slide'></div><div class='slide'></div>")
 	  
-    var slideList = queryAll('.slide')
+    var slideList = queryAll(document, '.slide')
 
     expect(Object.prototype.toString.apply(slideList)).toBe('[object Array]')
     expect(slideList.length).toBe(2)

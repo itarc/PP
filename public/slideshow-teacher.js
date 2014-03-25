@@ -41,5 +41,5 @@ for(key in SlideShow.prototype) {
 // ----------------------------------
 // INITIALIZE SLIDESHOW
 // ----------------------------------  
-var teacherSlideshow = new TeacherSlideShow(queryAll('.slide'));
+var teacherSlideshow = new TeacherSlideShow(queryAll(document, '.slide'));
 

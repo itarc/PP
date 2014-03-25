@@ -5,7 +5,7 @@ describe("SlideShow Poll Slide", function() {
     setFixtures("<div class='slides'><div class='slide'><span id='poll_rate_1' class='poll_response_rate'></span></div></div>")
     spyOn(Slide.prototype, 'updatePoll');
 	  
-    var slideShow = new SlideShow(queryAll('.slide'))
+    var slideShow = new SlideShow(queryAll(document, '.slide'))
 
     expect(Slide.prototype.updatePoll).toHaveBeenCalled();
 

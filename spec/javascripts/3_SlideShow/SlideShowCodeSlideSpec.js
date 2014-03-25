@@ -5,7 +5,7 @@ describe("SlideShow IDE", function() {
     setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='send_code'><div id='code_output'><div class='slide'/></div>")	  
     spyOn(CodeSlide.prototype, '_update');
 
-    var slideShow = new SlideShow(queryAll('.slide'))
+    var slideShow = new SlideShow(queryAll(document, '.slide'))
 
     expect(CodeSlide.prototype._update.calls.length).toBe(1);     	  
 
@@ -17,7 +17,7 @@ describe("SlideShow IDE", function() {
     spyOn(CodeSlide.prototype, '_update');
     getResource = jasmine.createSpy('getResource').andReturn('11');
   
-    var slideShow = new SlideShow(queryAll('.slide'))
+    var slideShow = new SlideShow(queryAll(document, '.slide'))
     slideShow._currentIndex = 0
 
     expect(CodeSlide.prototype._update.calls.length).toBe(1);    
@@ -35,7 +35,7 @@ describe("SlideShow IDE", function() {
     spyOn(CodeSlide.prototype, '_update');
     getResource = jasmine.createSpy('getResource').andReturn('0');
 
-    var slideShow = new SlideShow(queryAll('.slide'))
+    var slideShow = new SlideShow(queryAll(document, '.slide'))
 
     expect(CodeSlide.prototype._update.calls.length).toBe(1);    
     expect(slideShow._currentIndex).toBe(0);     

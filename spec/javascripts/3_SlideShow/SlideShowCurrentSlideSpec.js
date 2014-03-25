@@ -65,7 +65,7 @@ describe("SlideShow Current Slide", function() {
   it("should be visible when slideshow initialized", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
-    var slideShow = new SlideShow(queryAll('.slide'))
+    var slideShow = new SlideShow(queryAll(document, '.slide'))
 
     expect(slideShow._slides[0]._node.className).toBe('slide current');
 
@@ -74,7 +74,7 @@ describe("SlideShow Current Slide", function() {
   it("should not change if new index is unknown", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
-    var slideShow = new SlideShow(queryAll('.slide'))
+    var slideShow = new SlideShow(queryAll(document, '.slide'))
 
     expect(slideShow._slides[0]._node.className).toBe('slide current');
 	  

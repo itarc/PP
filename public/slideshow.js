@@ -20,16 +20,10 @@ var S = 83
 
 var SEPARATOR = '\n#{SEP}#\n'
 
-var queryAll = function(query) {
-  nodeList = document.querySelectorAll(query);
-  return Array.prototype.slice.call(nodeList, 0);
-};
-
-var queryNodeAll = function(node, query) {
+var queryAll = function(node, query) {
   nodeList = node.querySelectorAll(query);
   return Array.prototype.slice.call(nodeList, 0);
 };
-
 
 var postResource = function(path, params, synchronous_asynchronous) {
   var xmlhttp = new XMLHttpRequest();	
@@ -134,7 +128,7 @@ CodeHelper.prototype = {
 var CodeSlide = function(node) {
   Slide.call(this, node);
   
-  this._codeHelpers = (queryNodeAll(node, '.code_helper')).map(function(element) {
+  this._codeHelpers = (queryAll(node, '.code_helper')).map(function(element) {
     return new CodeHelper(element); 
   });
   

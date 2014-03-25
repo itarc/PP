@@ -5,7 +5,7 @@ describe("TeacherSlideShow IDE", function() {
     setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><div id='code_input'/><div id='execute'/><div id='send_code'/><div id='code_output'/></div></div>")	  
     spyOn(CodeSlide.prototype, '_update');
 
-    var slideShow = new SlideShow(queryAll('.slide'))
+    var slideShow = new SlideShow(queryAll(document, '.slide'))
 	  
     slideShow.down();	
 	  
@@ -20,7 +20,7 @@ describe("TeacherSlideShow IDE", function() {
 
     expect(CodeSlide.prototype._update.calls.length).toBe(0);
 	  
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
 	  
     expect(CodeSlide.prototype._update.calls.length).toBe(0); 	  
 
@@ -41,7 +41,7 @@ describe("TeacherSlideShow IDE", function() {
 
     expect(CodeSlide.prototype._update.calls.length).toBe(0);
 	  
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
 	  
     expect(CodeSlide.prototype._update.calls.length).toBe(0);	  
 	  
@@ -58,7 +58,7 @@ describe("TeacherSlideShow IDE", function() {
 
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
 	  
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
 
     __triggerKeyboardEvent(teacherSlideShow._slides[1]._node.querySelector('#code_input'), R, ALT);
 
@@ -73,7 +73,7 @@ describe("TeacherSlideShow IDE", function() {
 
     expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);
 	  
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
 	  
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), S, ALT);
 

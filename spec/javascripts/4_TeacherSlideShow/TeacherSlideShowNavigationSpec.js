@@ -3,7 +3,7 @@ describe("TeacherSlideShow Navigation with 1 Slide", function() {
   it("should have one current slide", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'></div></div>");
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'));
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
 
     expect(teacherSlideShow._slides.length).toBe(1);	  
     expect(teacherSlideShow._slides[0] instanceof Slide).toBe(true);
@@ -30,7 +30,7 @@ describe("TeacherSlideShow Navigation with 2 Slides", function() {
   it("should open on first slide", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'><div class='slide'></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 
     expect(teacherSlideShow._slides.length).toBe(2);	  
     expect(teacherSlideShow._slides[0] instanceof Slide).toBe(true)
@@ -46,7 +46,7 @@ describe("TeacherSlideShow Navigation with 2 Slides", function() {
   it("should go to second slide", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'><div class='slide'></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 
     __triggerKeyboardEvent(document, RIGHT_ARROW)
 	  
@@ -60,7 +60,7 @@ describe("TeacherSlideShow Navigation with 2 Slides", function() {
   it("should go to second slide and go back to first slide", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'><div class='slide'></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 
     __triggerKeyboardEvent(document, RIGHT_ARROW)
     __triggerKeyboardEvent(document, LEFT_ARROW)
@@ -75,7 +75,7 @@ describe("TeacherSlideShow Navigation with 2 Slides", function() {
   it("should show first slide when home pressed", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div class='slide'></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 
     __triggerKeyboardEvent(document, RIGHT_ARROW)
     __triggerKeyboardEvent(document, HOME)	  
@@ -92,7 +92,7 @@ describe("TeacherSlideShow Navigation with 3 Slides", function() {
   it("should open on first slide", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'><div class='slide'><div class='slide'></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 	  
     expect(teacherSlideShow._slides.length).toBe(3);	  
 
@@ -105,7 +105,7 @@ describe("TeacherSlideShow Navigation with 3 Slides", function() {
   it("should go to second slide", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'><div class='slide'><div class='slide'></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 
     __triggerKeyboardEvent(document, RIGHT_ARROW)
 	  
@@ -118,7 +118,7 @@ describe("TeacherSlideShow Navigation with 3 Slides", function() {
   it("should go to third slide", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div class='slide'><div class='slide'></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 
     __triggerKeyboardEvent(document, RIGHT_ARROW)
     __triggerKeyboardEvent(document, RIGHT_ARROW)
@@ -132,7 +132,7 @@ describe("TeacherSlideShow Navigation with 3 Slides", function() {
   it("should go back to second slide", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div class='slide'><div class='slide'></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 
     __triggerKeyboardEvent(document, RIGHT_ARROW)
     __triggerKeyboardEvent(document, RIGHT_ARROW)
@@ -147,7 +147,7 @@ describe("TeacherSlideShow Navigation with 3 Slides", function() {
   it("should go back to first slide", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div class='slide'><div class='slide'></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 
     __triggerKeyboardEvent(document, RIGHT_ARROW)
     __triggerKeyboardEvent(document, RIGHT_ARROW)
@@ -167,7 +167,7 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
   it("should not go beyond penultimate slide", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 	  
     expect(teacherSlideShow._currentIndex).toBe(0)	  
 	  
@@ -183,7 +183,7 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
    spyOn(TeacherSlideShow.prototype, '_show_current_slide');
    spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
 	  
-    var teacherSlideShow = new TeacherSlideShow(queryAll('.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 
     expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(1);
 
