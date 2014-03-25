@@ -177,6 +177,56 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
 	  
   });
   
+  it("should show last slide if coding slide and arrow down pressed", function() {
+    
+    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
+	  
+    expect(teacherSlideShow._last_slide()._node.className).toBe('slide')  
+	  
+    __triggerKeyboardEvent(document, DOWN_ARROW)
+	  
+    expect(teacherSlideShow._last_slide()._node.className).toBe('slide current')    
+    
+  });  
+  
+  it("should show current slide if coding slide and arrow up pressed", function() {
+    
+    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
+	  
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
+	  
+    __triggerKeyboardEvent(document, DOWN_ARROW)
+    
+    expect(teacherSlideShow._last_slide()._node.className).toBe('slide current') 
+    
+    __triggerKeyboardEvent(document, UP_ARROW)
+	  
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
+    
+  });   
+  
+  it("should NOT show last slide if NOT coding slide and arrow down pressed", function() {
+    
+    setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
+	  
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
+    expect(teacherSlideShow._showIDE).toBe(false) 
+	  
+    __triggerKeyboardEvent(document, DOWN_ARROW)
+    
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current')  
+    expect(teacherSlideShow._showIDE).toBe(false)     
+    
+    __triggerKeyboardEvent(document, UP_ARROW)
+	  
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
+    expect(teacherSlideShow._showIDE).toBe(false)     
+    
+  });
+  
   it("should NOT show current slide when teacher shows IDE", function() {
 	  
    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='send_code'><div id='code_output'></div></div>")	  

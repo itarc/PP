@@ -281,20 +281,14 @@ SlideShow.prototype = {
     this._currentSlide.setState('current');
   },
 
-  _teacher_coding_slide:function() {
+  _last_slide:function() {
     return this._slides[this._numberOfSlides-1]
   },  
   
   _show_teacher_coding_slide: function() {
     this._clear();
-    this._currentSlide = this._teacher_coding_slide();	  
+    this._currentSlide = this._last_slide();	  
     this._currentSlide.setState('current');
-  },	  
-  
-  _update_poll_slide: function() {
-    if (this._currentSlide && this._currentSlide._isPollResultSlide()) {
-      this._currentSlide.updatePoll();
-    }
   },
 
   _is_a_number: function(index) {
@@ -336,11 +330,12 @@ SlideShow.prototype = {
   },
   
   down: function() {
+    if (! this._last_slide()._isCodingSlide()) return;    
     this._showIDE = true;
     this._refresh();  
   },
   
-  up: function() {  
+  up: function() {
     this._showIDE = false;	  
     this._refresh();
   },
