@@ -1,12 +1,12 @@
 describe("SlideShow Current Slide", function() {
 
-  it("should current server slide when slideshow is initialized", function() {
-	  
-    spyOn(SlideShow.prototype, '_getCurrentIndexOnServer');
+  it("should be current server slide when slideshow is initialized", function() {
+    
+    getResource = jasmine.createSpy('getResource').andReturn('121');
 
     var slideShow = new SlideShow([]);
-
-    expect(SlideShow.prototype._getCurrentIndexOnServer.calls.length).toBe(1); 
+    
+    expect(slideShow._currentIndex).toBe(121); 
 
   });  
 	

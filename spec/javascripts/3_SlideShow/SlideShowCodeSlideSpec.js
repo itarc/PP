@@ -1,9 +1,10 @@
 describe("SlideShow IDE", function() {  
 
-  it("should be updated when first slide and slideshow is initialized", function() {
+  it("should be updated when first slide in fixture and on server and slideshow is initialized", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='send_code'><div id='code_output'><div class='slide'/></div>")	  
     spyOn(CodeSlide.prototype, '_update');
+    getResource = jasmine.createSpy('getResource').andReturn('0');    
 
     var slideShow = new SlideShow(queryAll(document, '.slide'))
 

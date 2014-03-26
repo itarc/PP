@@ -13,16 +13,6 @@ describe("TeacherSlideShow Navigation with 1 Slide", function() {
 
   });
   
-   it("should init server with currentIndex when teacher slideshow is intialized", function() {
-
-    spyOn(TeacherSlideShow.prototype, '_postCurrentIndexOnServer');
-
-    var teacherSlideShow = new TeacherSlideShow([]);
-
-    expect(TeacherSlideShow.prototype._postCurrentIndexOnServer.call.length).toBe(1);
-
-  });
-  
 });
 
 describe("TeacherSlideShow Navigation with 2 Slides", function() {

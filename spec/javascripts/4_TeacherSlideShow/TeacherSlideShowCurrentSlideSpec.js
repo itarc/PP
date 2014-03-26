@@ -1,22 +1,8 @@
 describe("TeacherSlideShow Current Slide", function() {
-	
-  it("should post current slide index on server", function() {
-
-    postResource = jasmine.createSpy('postResource');
-	  
-    var slideShow = new SlideShow([]);
-
-    slideShow._postCurrentIndexOnServer();
-	  
-    expect(postResource).toHaveBeenCalled();
-    expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + slideShow._currentIndex, ASYNCHRONOUS);
-
-  });	
 
   it("should be sent to server when when next slide is called", function() {
 
-    spyOn(SlideShow.prototype, '_postCurrentIndexOnServer');
+    postResource = jasmine.createSpy('getResource');
 	  
     var slideShow = new SlideShow([]);	  
 	  
@@ -25,15 +11,14 @@ describe("TeacherSlideShow Current Slide", function() {
 
     slideShow.next();
 	  
-    expect(SlideShow.prototype._postCurrentIndexOnServer).toHaveBeenCalled();
-    expect(SlideShow.prototype._postCurrentIndexOnServer.calls.length).toBe(1);
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=2', true);
 
   });
 
   
   it("should be sent to server when previous slide is called", function() {
 
-    spyOn(SlideShow.prototype, '_postCurrentIndexOnServer');
+    postResource = jasmine.createSpy('getResource');
 	  
     var slideShow = new SlideShow([]);	  
 	  
@@ -42,8 +27,7 @@ describe("TeacherSlideShow Current Slide", function() {
 
     slideShow.prev();
 	  
-    expect(SlideShow.prototype._postCurrentIndexOnServer).toHaveBeenCalled();
-    expect(SlideShow.prototype._postCurrentIndexOnServer.calls.length).toBe(1);
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=1', true);
 
   });
 
@@ -74,29 +58,29 @@ describe("TeacherSlideShow Current Slide", function() {
 
   });
     
-  it("should be server current index enven if server returns a string format ", function() {
+  //~ it("should be server current index enven if server returns a string format ", function() {
     
-    var slideShow = new SlideShow([]);
-    expect(slideShow._currentIndex).toBe(0)	  
+    //~ var slideShow = new SlideShow([]);
+    //~ expect(slideShow._currentIndex).toBe(0)	  
 
-    getResource = jasmine.createSpy('getResource').andReturn('1'); 	  
-    slideShow._getCurrentIndexOnServer();
+    //~ getResource = jasmine.createSpy('getResource').andReturn('1'); 	  
+    //~ slideShow._getCurrentIndexOnServer();
 	  
-    expect(getResource).toHaveBeenCalled();
-    expect(slideShow._currentIndex).toBe(1);    
+    //~ expect(getResource).toHaveBeenCalled();
+    //~ expect(slideShow._currentIndex).toBe(1);    
 
-  });   
+  //~ });   
 
-  it("should get current index on server", function() {
+  //~ it("should get current index on server", function() {
     
-    var slideShow = new SlideShow([]);
-    slideShow._currentIndex = 1;	  
+    //~ var slideShow = new SlideShow([]);
+    //~ slideShow._currentIndex = 1;	  
 
-    getResource = jasmine.createSpy('getResource').andReturn(0);	  
-    slideShow._getCurrentIndexOnServer();
+    //~ getResource = jasmine.createSpy('getResource').andReturn(0);	  
+    //~ slideShow._getCurrentIndexOnServer();
 
-    expect(slideShow._currentIndex).toBe(0);    
+    //~ expect(slideShow._currentIndex).toBe(0);    
 
-  });  
+  //~ });  
   
 });
