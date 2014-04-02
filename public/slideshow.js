@@ -12,7 +12,6 @@ SlideShowServer.prototype = {
     serverData = getResource('/teacher_current_slide');
     if (serverData) {
       serverIndex = parseInt(serverData.split(';')[0]);
-      
       if ( is_a_number(serverIndex) ) {
         this._currentServerIndex = serverIndex;
         serverIDEDisplayed = serverData.split(';')[1]
