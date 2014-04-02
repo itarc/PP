@@ -53,7 +53,7 @@ describe("IDE RUN", function() {
     slide = new CodeSlide(codeSlideNode);  
   });	  
   
-  it("should display run result on standard output", function() {
+  it("should display attendee run result on standard output", function() {
   
     postResource = jasmine.createSpy('postResource').andReturn('1');  
 	  
@@ -72,7 +72,7 @@ describe("IDE RUN", function() {
     
   });  
 
-  it("should run code when run button clicked", function() {
+  it("should run attendee code when run button clicked", function() {
   
     postResource = jasmine.createSpy('postResource');
 	  
@@ -84,7 +84,7 @@ describe("IDE RUN", function() {
     
   });
   
-  it("should run code when ALT-R pressed", function() {
+  it("should run attendee code when ALT-R pressed", function() {
 
     postResource = jasmine.createSpy('postResource');
 
@@ -100,7 +100,7 @@ describe("IDE RUN", function() {
 	  
   });   
 
-  it("should run and send code when send button clicked", function() {
+  it("should run and send attendee code when send button clicked", function() {
 
     postResource = jasmine.createSpy('postResource');
 	  
@@ -112,7 +112,7 @@ describe("IDE RUN", function() {
     
   });
   
-  it("should run and send code when ALT-S pressed", function() {
+  it("should run and send attendee code when ALT-S pressed", function() {
 
     postResource = jasmine.createSpy('postResource');
 
@@ -128,7 +128,7 @@ describe("IDE RUN", function() {
 	  
   });  
   
-  it("should get and run last send if exist", function() {
+  it("should get and run last user send if exist", function() {
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe('');
     expect(codeSlideNode.querySelector('#code_output').value).toBe('');
@@ -170,7 +170,7 @@ describe("IDE RUN", function() {
 
 describe("IDE RUN with code to DISPLAY in Code Helper", function() {
 	
-  it("should run code to display if no last send", function() {
+  it("should run code to display if attendee has no last send", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
     spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
@@ -188,7 +188,7 @@ describe("IDE RUN with code to DISPLAY in Code Helper", function() {
 
   });
   
-  it("should run last send if last send exists", function() {
+  it("should run attendee last send if last send exists", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
     spyOn(CodeSlide.prototype, 'lastSend').andReturn('code in last send');
