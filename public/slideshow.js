@@ -12,11 +12,13 @@ SlideShowServer.prototype = {
     serverData = getResource('/teacher_current_slide');
     if (serverData) {
       serverIndex = parseInt(serverData.split(';')[0]);
+      
       if ( is_a_number(serverIndex) ) {
         this._currentServerIndex = serverIndex;
-        if (serverData.split(';')[1]) {
-          if (serverData.split(';')[1] == 'true') this._IDEDisplayed = true;
-          if (serverData.split(';')[1] == 'false') this._IDEDisplayed = false;
+        serverIDEDisplayed = serverData.split(';')[1]
+        if (serverIDEDisplayed) {
+          if (serverIDEDisplayed == 'true') this._IDEDisplayed = true;
+          if (serverIDEDisplayed == 'false') this._IDEDisplayed = false;
         }
       }
     }
@@ -121,12 +123,13 @@ SlideShow.prototype = {
   },
   
   synchronise: function() {
-    previous_index = this._currentIndex
-    previous_showIDE = this._showIDE;
+    previous_index = this._currentIndex; previous_showIDE = this._showIDE;
     this._SlideShowServer._synchronise();
-    this._currentIndex = this._SlideShowServer._currentServerIndex;
-    this._showIDE = this._SlideShowServer._IDEDisplayed;   
-    if (this._currentIndex != previous_index  || this._showIDE != previous_showIDE) this._refresh();  
+    if (this._SlideShowServer._currentServerIndex != previous_index  || this._SlideShowServer._IDEDisplayed != previous_showIDE) {
+      this._currentIndex = this._SlideShowServer._currentServerIndex;
+      this._showIDE = this._SlideShowServer._IDEDisplayed;       
+      this._refresh();
+    }
    },
   
 };
