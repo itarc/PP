@@ -26,16 +26,16 @@ class TestTeacherCurrentSlide < Test::Unit::TestCase
   end  
   
   def test03_should_be_value_when_created
-    post '/teacher_current_slide', {:index => '1'}
+    post '/teacher_current_slide', {:index => '1', :ide_displayed => false}
     get '/teacher_current_slide'    
-    assert_equal "1", last_response.body
+    assert_equal "1;false", last_response.body
   end   
 
   def test04_should_be_value_when_updated
-    post '/teacher_current_slide', {:index => '1'} # create
-    post '/teacher_current_slide', {:index => '2'} # update
+    post '/teacher_current_slide', {:index => '1', :ide_displayed => false} # create
+    post '/teacher_current_slide', {:index => '2', :ide_displayed => true} # update
     get '/teacher_current_slide'    
-    assert_equal "2", last_response.body
+    assert_equal "2;true", last_response.body
   end 
 
   def teardown	  

@@ -150,54 +150,7 @@ describe("TeacherSlideShow Navigation with 3 Slides", function() {
     
   })
   
-});
-
-describe("TeacherSlideShow Navigation With a Coding Slide At The End", function() {
-
-  it("should not go beyond penultimate slide", function() {
-	  
-    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
-	  
-    expect(teacherSlideShow._currentIndex).toBe(0)	  
-	  
-    __triggerKeyboardEvent(document, RIGHT_ARROW)
-	  
-    expect(teacherSlideShow._currentIndex).toBe(0)
-	  
-  });
-  
-  it("should show last slide if coding slide and arrow down pressed", function() {
-    
-    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
-	  
-    expect(teacherSlideShow._last_slide()._node.className).toBe('slide')  
-	  
-    __triggerKeyboardEvent(document, DOWN_ARROW)
-	  
-    expect(teacherSlideShow._last_slide()._node.className).toBe('slide current')    
-    
-  });  
-  
-  it("should show current slide if coding slide and arrow up pressed", function() {
-    
-    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
-    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
-	  
-    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
-	  
-    __triggerKeyboardEvent(document, DOWN_ARROW)
-    
-    expect(teacherSlideShow._last_slide()._node.className).toBe('slide current') 
-    
-    __triggerKeyboardEvent(document, UP_ARROW)
-	  
-    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
-    
-  });   
-  
-  it("should NOT show last slide if NOT coding slide and arrow down pressed", function() {
+  it("should NOT show last slide when arrow down pressed", function() {
     
     setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
     var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
@@ -215,6 +168,53 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
     expect(teacherSlideShow._showIDE).toBe(false)     
     
+  });  
+  
+});
+
+describe("TeacherSlideShow Navigation With an IDE Slide", function() {
+
+  it("should not go beyond penultimate slide", function() {
+	  
+    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
+	  
+    expect(teacherSlideShow._currentIndex).toBe(0)	  
+	  
+    __triggerKeyboardEvent(document, RIGHT_ARROW)
+	  
+    expect(teacherSlideShow._currentIndex).toBe(0)
+	  
+  });
+  
+  it("should show last slide (IDE Slide) when arrow down pressed", function() {
+    
+    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
+	  
+    expect(teacherSlideShow._last_slide()._node.className).toBe('slide')  
+	  
+    __triggerKeyboardEvent(document, DOWN_ARROW)
+	  
+    expect(teacherSlideShow._last_slide()._node.className).toBe('slide current')    
+    
+  });  
+  
+  it("should show current slide when arrow up pressed", function() {
+    
+    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
+	  
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
+	  
+    __triggerKeyboardEvent(document, DOWN_ARROW)
+    
+    expect(teacherSlideShow._last_slide()._node.className).toBe('slide current') 
+    
+    __triggerKeyboardEvent(document, UP_ARROW)
+	  
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
+    
   });
   
   it("should NOT show current slide when teacher shows IDE", function() {
@@ -223,11 +223,12 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
    spyOn(TeacherSlideShow.prototype, '_show_current_slide');
    spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
 	  
-    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
 
     expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(1);
 
     teacherSlideShow.down();
+    getResource = jasmine.createSpy('getResource').andReturn('0;true');
 
     teacherSlideShow.next(); 
     expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(1);
@@ -239,6 +240,7 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
     expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(1);    
 
     teacherSlideShow.up();
+    getResource = jasmine.createSpy('getResource').andReturn('0;false');    
     expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(2);	  
 	  
     teacherSlideShow.next(); 
@@ -249,6 +251,40 @@ describe("TeacherSlideShow Navigation With a Coding Slide At The End", function(
 
     teacherSlideShow.synchronise();  
     expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(4); // same slide as current slide
+
+  });  
+  
+  it("should update slideshow server", function() {
+	  
+   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='send_code'><div id='code_output'></div></div>")	  
+
+
+    getResource = jasmine.createSpy('getResource').andReturn('0');
+	  
+    postResource = jasmine.createSpy('postResource');
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
+    
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=false', ASYNCHRONOUS); 
+    
+    postResource = jasmine.createSpy('postResource');
+    teacherSlideShow.next(); 
+    
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '1' + '&' + 'ide_displayed=false', ASYNCHRONOUS);    
+
+    postResource = jasmine.createSpy('postResource');
+    teacherSlideShow.down();
+    
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '1' + '&' + 'ide_displayed=true', ASYNCHRONOUS);        
+
+    postResource = jasmine.createSpy('postResource');
+    teacherSlideShow.prev(); 
+    
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=true', ASYNCHRONOUS);     
+
+    postResource = jasmine.createSpy('postResource');
+    teacherSlideShow.up();
+     
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=false', ASYNCHRONOUS);      
 
   });  
   

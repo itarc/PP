@@ -18,6 +18,10 @@ get '/' do
   send_file "views/slideshow-attendee.html"
 end
 
+get '/blackboard' do
+  send_file "views/blackboard.html"
+end
+
 get '/teacher-x1973' do
   session[:user_id] = 0
   send_file "views/slideshow-teacher.1973x.html"
@@ -48,7 +52,7 @@ end
 # ---------
 
 post '/teacher_current_slide' do
-  update_current_slide_id params[:index]
+  update_current_slide_id params[:index] + ';' + params[:ide_displayed] 
 end
 
 post '/poll_response_*_to_*' do

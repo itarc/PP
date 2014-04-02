@@ -1,6 +1,6 @@
-describe("SlideShow IDE", function() {  
+describe("SlideShow with an IDE Slide", function() {  
 
-  it("should be updated when first slide in fixture and on server and slideshow is initialized", function() {
+  it("should be updated when first slide", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='send_code'><div id='code_output'><div class='slide'/></div>")	  
     spyOn(CodeSlide.prototype, '_update');
@@ -12,7 +12,7 @@ describe("SlideShow IDE", function() {
 
   });
 
-  it("should be updated when synchronised with server and server index different from current index", function() {
+  it("should be updated when synchronised", function() {
  
     setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='send_code'><div id='code_output'><div class='slide'/></div>")        
     spyOn(CodeSlide.prototype, '_update');
@@ -30,7 +30,7 @@ describe("SlideShow IDE", function() {
  
    });
 
-  it("should NOT be updated when synchronised with server when server index equals current index", function() {
+  it("should NOT be updated when synchronised but nothing changed", function() {
 
     setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='send_code'><div id='code_output'><div class='slide'/></div>")        
     spyOn(CodeSlide.prototype, '_update');
@@ -40,7 +40,7 @@ describe("SlideShow IDE", function() {
 
     expect(CodeSlide.prototype._update.calls.length).toBe(1);    
     expect(slideShow._currentIndex).toBe(0);     
-         
+
     slideShow.synchronise();
 
     expect(CodeSlide.prototype._update.calls.length).toBe(1);

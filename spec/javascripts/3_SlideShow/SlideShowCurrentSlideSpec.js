@@ -2,13 +2,50 @@ describe("SlideShow Current Slide", function() {
 
   it("should be current server slide when slideshow is initialized", function() {
     
-    getResource = jasmine.createSpy('getResource').andReturn('121');
+    getResource = jasmine.createSpy('getResource').andReturn('121;true');
 
     var slideShow = new SlideShow([]);
     
-    expect(slideShow._currentIndex).toBe(121); 
+    expect(slideShow._currentIndex).toBe(121);
+    expect(slideShow._showIDE).toBe(true);
+
+  });
+  
+  it("should be current server slide when slideshow is synchronized", function() {
+    
+    getResource = jasmine.createSpy('getResource').andReturn('0;false');
+
+    var slideShow = new SlideShow([]);
+    
+    expect(slideShow._currentIndex).toBe(0);
+    expect(slideShow._showIDE).toBe(false);    
+    
+    getResource = jasmine.createSpy('getResource').andReturn('212;true');
+    
+    slideShow.synchronise();
+    
+    expect(slideShow._currentIndex).toBe(212);
+    expect(slideShow._showIDE).toBe(true);
 
   });  
+  
+  it("should change even if only showIDE state change", function() {
+    
+    getResource = jasmine.createSpy('getResource').andReturn('0;false');
+    
+    spyOn(SlideShow.prototype, '_refresh');
+
+    var slideShow = new SlideShow([]);
+    
+    expect(SlideShow.prototype._refresh.calls.length).toBe(1);    
+    
+    getResource = jasmine.createSpy('getResource').andReturn('0;true');
+    
+    slideShow.synchronise();
+    
+    expect(SlideShow.prototype._refresh.calls.length).toBe(2);
+
+  });   
 	
   it("should be next slide when next slide is called", function() {
 
@@ -65,24 +102,27 @@ describe("SlideShow Current Slide", function() {
   it("should be visible when slideshow initialized", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
+    
+    getResource = jasmine.createSpy('getResource').andReturn('0;false');
+    
     var slideShow = new SlideShow(queryAll(document, '.slide'))
 
-    expect(slideShow._slides[0]._node.className).toBe('slide current');
+    expect(slideShow._slides[slideShow._currentIndex]._node.className).toBe('slide current');
 
   });		
 
-  it("should not change if new index is unknown", function() {
+  //~ it("should not change if new index is unknown", function() {
 	  
-    setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
-    var slideShow = new SlideShow(queryAll(document, '.slide'))
+    //~ setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
+    //~ var slideShow = new SlideShow(queryAll(document, '.slide'))
 
-    expect(slideShow._slides[0]._node.className).toBe('slide current');
+    //~ expect(slideShow._slides[0]._node.className).toBe('slide current');
 	  
-    slideShow._currentIndex = 'UNKNOWN';
-    slideShow._show_current_slide();
+    //~ slideShow._currentIndex = 'UNKNOWN';
+    //~ slideShow._show_current_slide();
 	  
-    expect(slideShow._slides[0]._node.className).toBe('slide current');
+    //~ expect(slideShow._slides[0]._node.className).toBe('slide current');
 
-  });	  
+  //~ });	  
   
 });

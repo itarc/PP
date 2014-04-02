@@ -1,4 +1,4 @@
-describe("TeacherSlideShow IDE", function() { 	
+describe("TeacherSlideShow with and IDE", function() { 	
 	
   it("should be updated when teacher shows it", function() {
 
@@ -27,6 +27,8 @@ describe("TeacherSlideShow IDE", function() {
     teacherSlideShow.down();
 	  
     expect(CodeSlide.prototype._update.calls.length).toBe(1); 
+    
+    getResource = jasmine.createSpy('getResource').andReturn('0;true');    
 
     __triggerKeyboardEvent(document, SPACE);
 
@@ -54,11 +56,14 @@ describe("TeacherSlideShow IDE", function() {
   it("should NOT run code when ALT-R button disabled", function() {
 
    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute' disabled><input type='button' id='send_code'><textarea id='code_output'></textarea></section></div></div>");
-   spyOn(CodeSlide.prototype, 'executeCode');  
+   spyOn(CodeSlide.prototype, 'executeCode');
+   getResource = jasmine.createSpy('getResource').andReturn('');    
 
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
 	  
     var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
+    
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);      
 
     __triggerKeyboardEvent(teacherSlideShow._slides[1]._node.querySelector('#code_input'), R, ALT);
 

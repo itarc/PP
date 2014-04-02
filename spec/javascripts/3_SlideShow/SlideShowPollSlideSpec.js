@@ -1,6 +1,6 @@
-describe("SlideShow Poll Slide", function() {
+describe("SlideShow with a Poll Slide", function() {
   
-  it("should be updated when slideshow is initialized and first slide is a poll result slide", function() {
+  it("should be updated when first slide", function() {
 	  
     setFixtures("<div class='slides'><div class='slide'><span id='poll_rate_1' class='poll_response_rate'></span></div></div>")
     spyOn(PollSlide.prototype, '_update');
