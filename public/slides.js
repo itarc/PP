@@ -119,8 +119,8 @@ CodeSlide.prototype = {
   
   _keyHandling: function(e) {
     if ( e.altKey ) { 
-      if (e.which == R) { if ( ! this._node.querySelector('#execute').disabled == true ) { this.executeCode(); } }
-      if (e.which == S) { this.executeAndSendCode(); }
+      if (e.which == R) { if ( ! this._node.querySelector('#execute').disabled == true ) this.executeCode(); }
+      if (e.which == S) { if ( ! this._node.querySelector('#send_code').disabled == true ) this.executeAndSendCode(); }
     } else {
       e.stopPropagation()
     }    

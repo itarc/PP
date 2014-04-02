@@ -84,6 +84,21 @@ describe("TeacherSlideShow with and IDE", function() {
 
     expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(1);  
 
-  });    
+  });  
+
+  it("should NOT send code when ALT-S button disabled", function() {
+
+   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code' disabled><textarea id='code_output'></textarea></section></div></div>");
+    spyOn(CodeSlide.prototype, 'executeAndSendCode');  
+
+    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);
+	  
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
+	  
+    __triggerKeyboardEvent(teacherSlideShow._slides[1]._node.querySelector('#code_input'), S, ALT);
+
+    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);  
+
+  });  
 
 });
