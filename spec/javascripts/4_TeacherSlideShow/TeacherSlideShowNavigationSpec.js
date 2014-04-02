@@ -220,37 +220,37 @@ describe("TeacherSlideShow Navigation With an IDE Slide", function() {
   it("should NOT show current slide when teacher shows IDE", function() {
 	  
    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='send_code'><div id='code_output'></div></div>")	  
-   spyOn(TeacherSlideShow.prototype, '_show_current_slide');
+   spyOn(TeacherSlideShow.prototype, '_showCurrentSlide');
    spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
 	  
     var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
 
-    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(1);
+    expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
 
     teacherSlideShow.down();
     getResource = jasmine.createSpy('getResource').andReturn('0;true');
 
     teacherSlideShow.next(); 
-    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(1);
+    expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
 
     teacherSlideShow.prev(); 
-    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(1);
+    expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
 
     teacherSlideShow.synchronise();  
-    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(1);    
+    expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);    
 
     teacherSlideShow.up();
     getResource = jasmine.createSpy('getResource').andReturn('0;false');    
-    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(2);	  
+    expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(2);	  
 	  
     teacherSlideShow.next(); 
-    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(3);
+    expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(3);
 
     teacherSlideShow.prev();  
-    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(4);
+    expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(4);
 
     teacherSlideShow.synchronise();  
-    expect(TeacherSlideShow.prototype._show_current_slide.calls.length).toBe(4); // same slide as current slide
+    expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(4); // same slide as current slide
 
   });  
   

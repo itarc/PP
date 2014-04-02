@@ -66,7 +66,7 @@ SlideShow.prototype = {
     for(var slideIndex in this._slides) { this._slides[slideIndex].setState('') }
   },
   
-  _show_current_slide: function() {
+  _showCurrentSlide: function() {
     if (this._slides[this._currentIndex]) this._currentSlide = this._slides[this._currentIndex];
     this._clear();	    
     this._currentSlide.setState('current');
@@ -76,7 +76,7 @@ SlideShow.prototype = {
     return this._slides[this._numberOfSlides-1]
   },  
   
-  _show_teacher_coding_slide: function() {
+  _showIDESlide: function() {
     this._clear();
     this._currentSlide = this._last_slide();	  
     this._currentSlide.setState('current');
@@ -85,9 +85,9 @@ SlideShow.prototype = {
   _refresh: function() { 
     if (this._slides.length == 0) return;
     if (this._showIDE) 
-      this._show_teacher_coding_slide();
+      this._showIDESlide();
     else
-      this._show_current_slide();
+      this._showCurrentSlide();
     this._currentSlide._update(this._currentIndex);
     window.console && window.console.log("Refreshed with this._currentIndex = " + this._currentIndex + " and this._showIDE = " + this._showIDE);
   }, 
