@@ -158,7 +158,7 @@ describe("IDE RUN", function() {
 
   it("should NOT run code if no last send, no code to display and no code to add", function() {
 
-    spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
     
     postResource = jasmine.createSpy('postResource');
@@ -176,7 +176,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
   it("should run code to display if attendee has no last send", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
-    spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
 	  
     var slide = new CodeSlide(codeSlideNode);
 
@@ -194,7 +194,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
   it("should run attendee last send if last send exists", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
-    spyOn(CodeSlide.prototype, 'lastSend').andReturn('code in last send');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('code in last send');
 	  
     var slide = new CodeSlide(codeSlideNode);
 
@@ -216,7 +216,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   it("should run code to add even if last send is empty", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
-    spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
 
     var slide = new CodeSlide(codeSlideNode);
 
@@ -235,7 +235,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   it("should NOT display code to add in code editor", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
-    spyOn(CodeSlide.prototype, 'lastSend').andReturn(SEPARATOR + "puts 'CODE TO ADD'");
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn(SEPARATOR + "puts 'CODE TO ADD'");
 
     var slide = new CodeSlide(codeSlideNode);
 	  

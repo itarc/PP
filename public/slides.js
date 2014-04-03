@@ -145,8 +145,12 @@ CodeSlide.prototype = {
     this.executeCode();
   },
   
+  lastExecution: function() {
+    return getResource('/code_last_send' + '/' + this._codeHelper_current_index);
+  },  
+  
   _updateEditor: function() {
-    code = this.lastSend().split(SEPARATOR)[0];
+    code = this.lastExecution().split(SEPARATOR)[0];
     if (code == '') code = this._currentCodeHelper().codeToDisplay();
     if (code != '') this._editor.updateEditor(code);
   },
@@ -183,10 +187,6 @@ CodeSlide.prototype = {
     send_url = "/code_send_result" + "/" + this._codeHelper_current_index;
     this._node.querySelector('#code_output').value = postResource(send_url, this.codeToExecute(), SYNCHRONOUS);
   }, 
-  
-  lastSend: function() {
-    return getResource('/code_last_send' + '/' + this._codeHelper_current_index);
-  },
   
 };
 

@@ -227,7 +227,7 @@ describe("TeacherSlideShow Navigation With an IDE Slide", function() {
   it("should NOT show current slide when teacher shows IDE", function() {
 	  
    spyOn(TeacherSlideShow.prototype, '_showCurrentSlide');
-   spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
+   spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
 	  
     var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
 
