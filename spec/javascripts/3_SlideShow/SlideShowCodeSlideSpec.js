@@ -1,9 +1,14 @@
 describe("SlideShow with an IDE Slide", function() {  
+  
+  beforeEach(function() {
+
+    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	  
+    spyOn(CodeSlide.prototype, '_update');    
+    
+  });  
 
   it("should be updated when first slide", function() {
 
-    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='send_code'><div id='code_output'><div class='slide'/></div>")	  
-    spyOn(CodeSlide.prototype, '_update');
     getResource = jasmine.createSpy('getResource').andReturn('0');    
 
     var slideShow = new SlideShow(queryAll(document, '.slide'))
@@ -14,8 +19,6 @@ describe("SlideShow with an IDE Slide", function() {
 
   it("should be updated when synchronised", function() {
  
-    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='send_code'><div id='code_output'><div class='slide'/></div>")        
-    spyOn(CodeSlide.prototype, '_update');
     getResource = jasmine.createSpy('getResource').andReturn('11');
   
     var slideShow = new SlideShow(queryAll(document, '.slide'))
@@ -32,8 +35,6 @@ describe("SlideShow with an IDE Slide", function() {
 
   it("should NOT be updated when synchronised but nothing changed", function() {
 
-    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='send_code'><div id='code_output'><div class='slide'/></div>")        
-    spyOn(CodeSlide.prototype, '_update');
     getResource = jasmine.createSpy('getResource').andReturn('0');
 
     var slideShow = new SlideShow(queryAll(document, '.slide'))
