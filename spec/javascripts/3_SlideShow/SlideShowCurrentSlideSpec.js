@@ -109,20 +109,6 @@ describe("SlideShow Current Slide", function() {
 
     expect(slideShow._slides[slideShow._currentIndex]._node.className).toBe('slide current');
 
-  });		
-
-  //~ it("should not change if new index is unknown", function() {
-	  
-    //~ setFixtures("<div class='slides'><div class='slide'/><div class='slide'/></div>")
-    //~ var slideShow = new SlideShow(queryAll(document, '.slide'))
-
-    //~ expect(slideShow._slides[0]._node.className).toBe('slide current');
-	  
-    //~ slideShow._currentIndex = 'UNKNOWN';
-    //~ slideShow._show_current_slide();
-	  
-    //~ expect(slideShow._slides[0]._node.className).toBe('slide current');
-
-  //~ });	  
+  }); 
   
 });
