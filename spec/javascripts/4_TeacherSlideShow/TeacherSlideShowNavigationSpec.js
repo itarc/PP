@@ -173,23 +173,31 @@ describe("TeacherSlideShow Navigation with 3 Slides", function() {
 });
 
 describe("TeacherSlideShow Navigation With an IDE Slide", function() {
+  
+  beforeEach(function() {
+    
+   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='send_code'><div id='code_output'></div></div>")	  
+
+  });  
 
   it("should not go beyond penultimate slide", function() {
 	  
-    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
     var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 	  
     expect(teacherSlideShow._currentIndex).toBe(0)	  
 	  
     __triggerKeyboardEvent(document, RIGHT_ARROW)
 	  
-    expect(teacherSlideShow._currentIndex).toBe(0)
+    expect(teacherSlideShow._currentIndex).toBe(1)
+    
+    __triggerKeyboardEvent(document, RIGHT_ARROW)
+
+    expect(teacherSlideShow._currentIndex).toBe(1)    
 	  
   });
   
-  it("should show last slide (IDE Slide) when arrow down pressed", function() {
+  it("should show IDE Slide when arrow down pressed", function() {
     
-    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
     var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 	  
     expect(teacherSlideShow._last_slide()._node.className).toBe('slide')  
@@ -200,9 +208,8 @@ describe("TeacherSlideShow Navigation With an IDE Slide", function() {
     
   });  
   
-  it("should show current slide when arrow up pressed", function() {
+  it("should show return to current slide when arrow up pressed", function() {
     
-    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><textarea id='code_input'>puts 1</textarea><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></div></div>")
     var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 	  
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
@@ -219,7 +226,6 @@ describe("TeacherSlideShow Navigation With an IDE Slide", function() {
   
   it("should NOT show current slide when teacher shows IDE", function() {
 	  
-   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='send_code'><div id='code_output'></div></div>")	  
    spyOn(TeacherSlideShow.prototype, '_showCurrentSlide');
    spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
 	  
@@ -256,12 +262,9 @@ describe("TeacherSlideShow Navigation With an IDE Slide", function() {
   
   it("should update slideshow server", function() {
 	  
-   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='send_code'><div id='code_output'></div></div>")	  
-
-
     getResource = jasmine.createSpy('getResource').andReturn('0');
-	  
     postResource = jasmine.createSpy('postResource');
+    
     var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
     
     expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=false', ASYNCHRONOUS); 
