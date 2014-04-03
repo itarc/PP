@@ -9,6 +9,6 @@ spec_files:
   - '1_Common/*[sS]pec.js'
   - '2_Slides/*[sS]pec.js'
   - '3_SlideShow/*[sS]pec.js'
-  - '4_TeacherSlideShow/TeacherKeyBoardHandlingSpec.js'
-  - '4_TeacherSlideShow/*[sS]pec.js'
+  - '4_Teacher/Teacher_KeyHandling_Spec.js'
+  - '4_Teacher/*[sS]pec.js'
   - '5_AttendeeSlideShow/*[sS]pec.js'
