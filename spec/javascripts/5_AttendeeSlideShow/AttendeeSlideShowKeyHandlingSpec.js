@@ -8,7 +8,6 @@ describe("AttendeeSlideShow KeyHandling", function() {
 
     __triggerKeyboardEvent(document, RIGHT_ARROW);
 
-    expect(AttendeeSlideShow.prototype.handleKeys).toHaveBeenCalled();
     expect(AttendeeSlideShow.prototype.handleKeys.calls.length).toBe(1);
 
   });	
@@ -21,7 +20,7 @@ describe("AttendeeSlideShow KeyHandling", function() {
 
     __triggerKeyboardEvent(document, RIGHT_ARROW);
 
-    expect(AttendeeSlideShow.prototype.next).not.toHaveBeenCalled();
+    expect(AttendeeSlideShow.prototype.next.calls.length).toBe(0);
   
 
   });  
@@ -34,7 +33,7 @@ describe("AttendeeSlideShow KeyHandling", function() {
 	  
     __triggerKeyboardEvent(document, LEFT_ARROW);
 
-    expect(AttendeeSlideShow.prototype.prev).not.toHaveBeenCalled();
+    expect(AttendeeSlideShow.prototype.prev.calls.length).toBe(0);
 
   }); 
 
@@ -46,9 +45,7 @@ describe("AttendeeSlideShow KeyHandling", function() {
 	  
     __triggerKeyboardEvent(document, SPACE);
 
-    expect(AttendeeSlideShow.prototype.synchronise).toHaveBeenCalled();
-    expect(AttendeeSlideShow.prototype.synchronise.calls.length).toBe(1);
-    expect(AttendeeSlideShow.prototype.synchronise).toHaveBeenCalledWith();    
+    expect(AttendeeSlideShow.prototype.synchronise.calls.length).toBe(1);    
 
   });
   
