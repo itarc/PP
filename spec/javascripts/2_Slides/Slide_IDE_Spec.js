@@ -1,4 +1,4 @@
-describe("IDE", function() {
+describe("IDE UPDATE", function() {
 	
   beforeEach(function () {
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea><input type='button' id='execute'><input type='button' id='send_code'/><textarea id='code_output'></textarea></section><div>");
@@ -32,15 +32,18 @@ describe("IDE", function() {
     
   });
   
-  it("should show current helper and run current code when updated", function() {
+  it("should run last attendee send when updated", function() {
 	  
     spyOn(CodeSlide.prototype, 'showCurrentCodeHelper');	  
-    spyOn(CodeSlide.prototype, 'updateEditorAndExecuteCode');
+    spyOn(CodeSlide.prototype, '_updateEditor');
+    slide._editor.updateEditor("last attendee send");
+    spyOn(CodeSlide.prototype, 'executeCode');
 	  
-    slide._update();
+    slide._update(0);
 	  
     expect(CodeSlide.prototype.showCurrentCodeHelper.calls.length).toBe(1);
-    expect(CodeSlide.prototype.updateEditorAndExecuteCode.calls.length).toBe(1);
+    expect(CodeSlide.prototype._updateEditor.calls.length).toBe(1);
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
 	  
   });
   
@@ -136,7 +139,7 @@ describe("IDE RUN", function() {
     getResource = jasmine.createSpy('getResource').andReturn('puts 2');
     postResource = jasmine.createSpy('postResource').andReturn('2');
 
-    slide.updateEditorAndExecuteCode();
+    slide._update(0);
    
     expect(getResource.calls.length).toBe(1);
     expect(getResource).toHaveBeenCalledWith('/code_last_send/0');	 
@@ -158,7 +161,7 @@ describe("IDE RUN", function() {
          
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
     
-    slide.updateEditorAndExecuteCode();
+    slide._update(0);
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
@@ -168,7 +171,7 @@ describe("IDE RUN", function() {
 
 });
 
-describe("IDE RUN with code to DISPLAY in Code Helper", function() {
+describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 	
   it("should run code to display if attendee has no last send", function() {
 
@@ -181,7 +184,7 @@ describe("IDE RUN with code to DISPLAY in Code Helper", function() {
          
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
 
-    slide.updateEditorAndExecuteCode();
+    slide._update(0);
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', "puts 'CODE TO DISPLAY'", SYNCHRONOUS);	  
@@ -199,7 +202,7 @@ describe("IDE RUN with code to DISPLAY in Code Helper", function() {
          
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
 
-    slide.updateEditorAndExecuteCode();
+    slide._update(0);
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe("code in last send");
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', "code in last send", SYNCHRONOUS);	  
@@ -208,9 +211,9 @@ describe("IDE RUN with code to DISPLAY in Code Helper", function() {
 
 });
   
-describe("IDE RUN with code to ADD in Code Helper", function() {  
+describe("IDE UPDATE with code to ADD in Code Helper", function() {  
   
-  it("should run code in editor + code to add", function() {
+  it("should run code to add even if last send is empty", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
     spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
@@ -221,7 +224,7 @@ describe("IDE RUN with code to ADD in Code Helper", function() {
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
 	  
-    slide.updateEditorAndExecuteCode();
+    slide._update(0);
 	  
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");	  
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', SEPARATOR + "puts 'CODE TO ADD'", SYNCHRONOUS);
@@ -238,7 +241,7 @@ describe("IDE RUN with code to ADD in Code Helper", function() {
 	  
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");	  
 	  
-    slide.updateEditorAndExecuteCode();	  
+    slide._update(0);	  
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
 

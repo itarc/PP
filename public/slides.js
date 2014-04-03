@@ -141,7 +141,14 @@ CodeSlide.prototype = {
 
   _update: function(slide_index) {
     this.showCurrentCodeHelper(slide_index);
-    this.updateEditorAndExecuteCode();
+    this._updateEditor();
+    if (this._editor.content() != '' || this._currentCodeHelper().codeToAdd() != '') this.executeCode();
+  },
+  
+  _updateEditor: function(slide_index) {
+    code = this.lastSend().split(SEPARATOR)[0];
+    if (code == '') code = this._currentCodeHelper().codeToDisplay();
+    if (code != '') this._editor.updateEditor(code);
   },
   
   _clearCodeHelpers: function() {
@@ -178,19 +185,6 @@ CodeSlide.prototype = {
   lastSend: function() {
     return getResource('/code_last_send' + '/' + this._codeHelper_current_index);
   },
-  
-  lastSendOrCodeToDisplay: function() {
-    lastSend = this.lastSend().split(SEPARATOR)[0];
-    if (lastSend != '') { return lastSend }
-    return this._currentCodeHelper().codeToDisplay();
-  },
-  
-  updateEditorAndExecuteCode: function() {
-    lastSendOrCodeToDisplay = this.lastSendOrCodeToDisplay();
-    if (lastSendOrCodeToDisplay == '' && this._currentCodeHelper().codeToAdd() == '') return;
-    this._editor.updateEditor(lastSendOrCodeToDisplay);
-    this.executeCode();	  
-  }, 
   
 };
 
