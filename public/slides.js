@@ -142,10 +142,10 @@ CodeSlide.prototype = {
   _update: function(slide_index) {
     this.showCurrentCodeHelper(slide_index);
     this._updateEditor();
-    if (this._editor.content() != '' || this._currentCodeHelper().codeToAdd() != '') this.executeCode();
+    this.executeCode();
   },
   
-  _updateEditor: function(slide_index) {
+  _updateEditor: function() {
     code = this.lastSend().split(SEPARATOR)[0];
     if (code == '') code = this._currentCodeHelper().codeToDisplay();
     if (code != '') this._editor.updateEditor(code);
@@ -173,11 +173,13 @@ CodeSlide.prototype = {
   },	  
 
   executeCode: function() {
+    if (this.codeToExecute() == '' ) return;
     run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
     this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);
   },
   
   executeAndSendCode: function() {
+    if (this.codeToExecute() == '' ) return;    
     send_url = "/code_send_result" + "/" + this._codeHelper_current_index;
     this._node.querySelector('#code_output').value = postResource(send_url, this.codeToExecute(), SYNCHRONOUS);
   }, 

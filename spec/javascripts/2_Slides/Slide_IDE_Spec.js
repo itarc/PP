@@ -88,18 +88,20 @@ describe("IDE RUN", function() {
   });
   
   it("should run attendee code when ALT-R pressed", function() {
+    
+    slide._editor.updateEditor('code to run');    
 
     postResource = jasmine.createSpy('postResource');
 
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), R, ALT);
 	  
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', '', SYNCHRONOUS);		  
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'code to run', SYNCHRONOUS);		  
 	  
     slide.showCurrentCodeHelper(1);
 	  
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), R, ALT);	  
 
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/1', '', SYNCHRONOUS);		  
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/1', 'code to run', SYNCHRONOUS);		  
 	  
   });   
 
@@ -107,27 +109,29 @@ describe("IDE RUN", function() {
 
     postResource = jasmine.createSpy('postResource');
 	  
-    slide._editor.updateEditor('puts 1');
+    slide._editor.updateEditor('code to send');
 	  
     codeSlideNode.querySelector('#send_code').click();
 
-    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'puts 1', SYNCHRONOUS);	  
+    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'code to send', SYNCHRONOUS);	  
     
   });
   
   it("should run and send attendee code when ALT-S pressed", function() {
+    
+    slide._editor.updateEditor('code to send');     
 
     postResource = jasmine.createSpy('postResource');
 
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), S, ALT);
 	  
-    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', '', SYNCHRONOUS);		  
+    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'code to send', SYNCHRONOUS);		  
 	  
     slide.showCurrentCodeHelper(1);
 	  
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), S, ALT);	  
 
-    expect(postResource).toHaveBeenCalledWith('/code_send_result/1', '', SYNCHRONOUS);		  
+    expect(postResource).toHaveBeenCalledWith('/code_send_result/1', 'code to send', SYNCHRONOUS);		  
 	  
   });  
   
@@ -152,20 +156,16 @@ describe("IDE RUN", function() {
     
   }); 
 
-  it("should NOT run code if no last run, no code to display and no code to add", function() {
+  it("should NOT run code if no last send, no code to display and no code to add", function() {
 
     spyOn(CodeSlide.prototype, 'lastSend').andReturn('');
-         
-    spyOn(CodeSlide.prototype, 'executeCode');       
-    spyOn(Editor.prototype, 'updateEditor');       
-         
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
     
+    postResource = jasmine.createSpy('postResource');
+    
     slide._update(0);
-
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
-    expect(Editor.prototype.updateEditor.calls.length).toBe(0);  
+    
+    expect(postResource.calls.length).toBe(0); 
 
   });  
 
