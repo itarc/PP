@@ -11,4 +11,4 @@ spec_files:
   - '3_SlideShow/*[sS]pec.js'
   - '4_Teacher/Teacher_KeyHandling_Spec.js'
   - '4_Teacher/*[sS]pec.js'
-  - '5_AttendeeSlideShow/*[sS]pec.js'
+  - '5_Attendee/*[sS]pec.js'
