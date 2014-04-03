@@ -14,10 +14,10 @@ describe("SlideShow Server", function() {
   });  
 
   it("should post slideshow current position", function() {
-
-    postResource = jasmine.createSpy('postResource');
 	  
     var slideShowServer = new SlideShowServer();
+    
+    postResource = jasmine.createSpy('postResource');    
 
     slideShowServer.postCurrentIndex(5, SlideShow.prototype._showIDE);
 	  
