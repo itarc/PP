@@ -146,7 +146,7 @@ CodeSlide.prototype = {
   },
   
   lastExecution: function() {
-    return getResource('/code_last_send' + '/' + this._codeHelper_current_index);
+    return getResource('/code_last_execution' + '/' + this._codeHelper_current_index);
   },  
   
   _updateEditor: function() {

@@ -16,12 +16,12 @@ teacher_coding_presentation = '/teacher/coding_presentation'
 attendee_IDE_with_code_to_display = '/attendee/coding_slide_with_code_to_display'
 
 get teacher_coding_presentation do
-  session[:user_id] = 0	
+  session[:user_id] = '0'
   redirect "coding_presentation-teacher.html"
 end
 
 get attendee_IDE_with_code_to_display do
-  session[:user_id] = 1	
+  session[:user_id] = '1'	
   redirect "coding_slide_with_code_to_display-attendee.html"
 end
 

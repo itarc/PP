@@ -23,7 +23,7 @@ get '/blackboard' do
 end
 
 get '/teacher-x1973' do
-  session[:user_id] = 0
+  session[:user_id] = '0'
   send_file "views/slideshow-teacher.1973x.html"
 end
 
@@ -35,16 +35,10 @@ get '/poll_response_*_rate_to_*' do
   PollQuestion.new(question_id).rate_for(answer).to_s
 end
 
-get '/code_last_run/*' do
-  last_runtime_event = RunTimeEvent.find_last(slide_index, session[:user_id])
-  return "" if last_runtime_event == nil
-  last_runtime_event.code_input
-end
-
-get '/code_last_send/*' do
-  last_send = RunTimeEvent.find_last_send(slide_index, session[:user_id])
-  return "" if last_send == nil
-  last_send.code_input
+get '/code_last_execution/*' do
+  last_execution = RunTimeEvent.find_last_user_execution_on_slide(session[:user_id], slide_index)
+  return "" if last_execution == nil
+  last_execution.code_input
 end
 
 # ---------

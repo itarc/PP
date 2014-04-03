@@ -50,7 +50,8 @@ class TestCodeRun < Test::Unit::TestCase
   
 end
 
-class TestLastRun < Test::Unit::TestCase
+
+class TestLastExecution_in_attendee_slide < Test::Unit::TestCase
   
   include Rack::Test::Methods
 
@@ -62,38 +63,22 @@ class TestLastRun < Test::Unit::TestCase
     $db.execute_sql("delete from run_events")	  
   end
   
-  def test01_should_return_empty_last_run_for_slide_0
-    get '/code_last_run/0'
+  def test01_should_be_empty_when_empty_database
+    get '/code_last_execution/0'
     assert_equal "", last_response.body
   end
 
-  def test02_should_return_last_run_for_slide_0_only
-    post '/code_run_result/0', "print 3"
-    get '/code_last_run/0'
-    assert_equal "print 3", last_response.body
-    get '/code_last_run/1'
-    assert_equal "", last_response.body    
-  end
-
-  def test03_should_return_last_run_for_slide_0_only_and_for_any_user
-    post '/code_run_result/0', "print 3", 'rack.session' => {:user_id => 'user_1'}
-    get '/code_last_run/0'
-    assert_equal "print 3", last_response.body
-    get '/code_last_run/0', 'rack.session' => {:user_id => 0}
-    assert_equal "print 3", last_response.body    
+  def test02_should_return_last_send
+    post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'user_1'}
+    get '/code_last_execution/0', {}, 'rack.session' => {:user_id => 'user_1'}
+    assert_equal "code sent", last_response.body    
   end
   
-  def test04_should_return_last_run_for_slide_0_only_and_user_1_only   
-    post '/code_run_result/0', "print 3", 'rack.session' => {:user_id => 'user_1'}
-    get '/code_last_run/0', {}, 'rack.session' => {:user_id => 'user_1'}
-
-    assert_equal "print 3", last_response.body
-    
-    session = {:user_id => 'user_x'}
-    get '/code_last_run/0', {}, 'rack.session' => {:user_id => 'user_x'}
-    
-    assert_equal "", last_response.body    
-  end  
+  def test03_should_return_last_run 
+    post '/code_run_result/0', "code run", 'rack.session' => {:user_id => 'user_1'}
+    get '/code_last_execution/0', {}, 'rack.session' => {:user_id => 'user_1'}
+    assert_equal "code run", last_response.body    
+  end
   
   def teardown
     $db.execute_sql("delete from run_events")	  
@@ -101,7 +86,7 @@ class TestLastRun < Test::Unit::TestCase
   
 end
 
-class TestLastSend < Test::Unit::TestCase
+class TestLastExecution_in_teacher_slide < Test::Unit::TestCase
   
   include Rack::Test::Methods
 
@@ -112,42 +97,15 @@ class TestLastSend < Test::Unit::TestCase
   def setup
     $db.execute_sql("delete from run_events")	  
   end
-  
-  def test01_should_return_empty_last_run_for_slide_0
-    get '/code_last_send/0'
-    assert_equal "", last_response.body
-  end
 
-  def test02_should_return_last_run_for_slide_0_only
-    post '/code_send_result/0', "print 4"
-    get '/code_last_send/0'
-    assert_equal "print 4", last_response.body
-    get '/code_last_send/1'
-    assert_equal "", last_response.body    
+  def test01_should_return_last_attendee_send
+    post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'user_1'}
+    get '/code_last_execution/0', {}, 'rack.session' => {:user_id => '0' }
+    assert_equal "code sent", last_response.body    
   end
-
-  def test03_should_return_last_run_for_slide_0_only_and_for_any_user
-    post '/code_send_result/0', "print 4", 'rack.session' => {:user_id => 'user_1'}
-    get '/code_last_send/0'
-    assert_equal "print 4", last_response.body
-    get '/code_last_send/0', 'rack.session' => {:user_id => 0}
-    assert_equal "print 4", last_response.body    
-  end
-  
-  def test04_should_return_last_run_for_slide_0_only_and_user_1_only   
-    post '/code_send_result/0', "print 4", 'rack.session' => {:user_id => 'user_1'}
-    get '/code_last_send/0', {}, 'rack.session' => {:user_id => 'user_1'}
-
-    assert_equal "print 4", last_response.body
-    
-    session = {:user_id => 'user_x'}
-    get '/code_last_send/0', {}, 'rack.session' => {:user_id => 'user_x'}
-    
-    assert_equal "", last_response.body    
-  end  
   
   def teardown
     $db.execute_sql("delete from run_events")	  
-  end
+  end  
   
 end

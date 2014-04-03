@@ -135,7 +135,7 @@ describe("IDE RUN", function() {
 	  
   });  
   
-  it("should get and run last user send if exist", function() {
+  it("should get last execution when updated", function() {
 
     expect(codeSlideNode.querySelector('#code_input').value).toBe('');
     expect(codeSlideNode.querySelector('#code_output').value).toBe('');
@@ -146,7 +146,7 @@ describe("IDE RUN", function() {
     slide._update(0);
    
     expect(getResource.calls.length).toBe(1);
-    expect(getResource).toHaveBeenCalledWith('/code_last_send/0');	 
+    expect(getResource).toHaveBeenCalledWith('/code_last_execution/0');	 
 
     expect(postResource.calls.length).toBe(1);
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 2', SYNCHRONOUS);		 

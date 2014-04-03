@@ -17,11 +17,13 @@ set :logging, false
 teacher_coding_presentation = '/teacher/coding_presentation'
 blackboard = '/attendee/blackboard'
 
-get teacher_coding_presentation do	
+get teacher_coding_presentation do
+  session[:user_id] = '0'	
   redirect "coding_presentation-teacher.html"
 end
 
 get blackboard do
+  session[:user_id] = '1'  
   redirect "coding_presentation-blackboard.html"
 end
 

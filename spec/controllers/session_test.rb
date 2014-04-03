@@ -9,7 +9,7 @@ class TestSlideShowHelper_next_user_id < Test::Unit::TestCase
 
   def test01 
     $db.execute_sql("update compteur set identifiant = 0")
-    assert_equal 1, next_user_id
+    assert_equal '1', next_user_id
   end
 
 end
@@ -31,7 +31,7 @@ class TestSession < Test::Unit::TestCase
     session = {}
     
     get '/', {}, 'rack.session' => session
-    assert_equal 1, session[:user_id]
+    assert_equal '1', session[:user_id]
     
   end
   
@@ -40,10 +40,10 @@ class TestSession < Test::Unit::TestCase
     session = {}
     
     get '/', {}, 'rack.session' => session
-    assert_equal 1, session[:user_id]
+    assert_equal '1', session[:user_id]
     
     get '/', {}, 'rack.session' => session
-    assert_equal 1, session[:user_id]    
+    assert_equal '1', session[:user_id]    
     
   end  
   
@@ -52,12 +52,12 @@ class TestSession < Test::Unit::TestCase
     session = {}
     
     get '/', {}, 'rack.session' => session
-    assert_equal 1, session[:user_id]
+    assert_equal '1', session[:user_id]
     
     session = {}    
     
     get '/', {}, 'rack.session' => session
-    assert_equal 2, session[:user_id]    
+    assert_equal '2', session[:user_id]    
     
   end  
   

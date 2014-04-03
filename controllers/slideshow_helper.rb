@@ -21,7 +21,7 @@ end
 
 def next_user_id
   $db.execute_sql("update compteur set identifiant = identifiant + 1")
-  $db.execute_sql("select identifiant from compteur").to_a[0]['identifiant'].to_i
+  $db.execute_sql("select identifiant from compteur").to_a[0]['identifiant']
 end
 
 def current_slide_id
