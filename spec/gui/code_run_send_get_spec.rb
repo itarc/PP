@@ -49,6 +49,10 @@ def go_left
   find(:css, 'div.presentation').native.send_key(:arrow_left)
 end
 
+def fill_IDE_with(code_input)
+  fill_in 'code_input', :with => code_input
+end
+
 def expect_IDE_to_have(code_input, code_output)
   expect(page).to have_field 'code_input', :with => code_input
   expect(page).to have_field 'code_output', :with => code_output
@@ -115,11 +119,140 @@ describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
 
   end
   
+  it 'should NOT show last execution when slide moves and no execution on this slide' do
+    
+    visit teacher_coding_presentation
+    go_down
+    
+    expect_IDE_to_be_empty    
+    
+    fill_IDE_with("print 'code to run'")
+    
+    click_on 'execute'
+    
+    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
+    
+    go_right
+    
+    visit teacher_coding_presentation
+    go_down
+    
+    expect_IDE_to_be_empty     
+
+  end  
+  
   after(:each) do
     $db.execute_sql("delete from run_events") 
     $db.execute_sql("delete from teacher_current_slide")    
   end    
 	
+end
+
+describe 'SYNCHRO of attendee IDE Slide', :type => :feature, :js => true do
+
+  before(:each) do
+    $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
+  end
+  
+  it 'should show attendee last run' do   
+
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    
+    expect_IDE_to_be_empty
+    
+    fill_IDE_with("print 'code to run'")
+    
+    click_on 'execute'
+    
+    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
+    
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    
+    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
+    
+    press_space
+    
+    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
+    
+  end
+
+  it 'should show attendee last send' do   
+
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    
+    expect_IDE_to_be_empty
+    
+    fill_IDE_with("print 'code to send'")
+    
+    click_on 'send_code'
+    
+    expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
+    
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    
+    expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
+    
+    press_space
+    
+    expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
+    
+  end
+  
+  it 'should show attendee last execution when slide moves' do   
+
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    
+    expect_IDE_to_be_empty    
+    
+    fill_IDE_with("print 'code to run'")
+    
+    click_on 'execute'
+    
+    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
+    
+    
+    visit teacher_coding_presentation
+    
+    go_right
+    
+
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    
+    expect_IDE_to_be_empty    
+    
+    fill_IDE_with("print 'code to send'")    
+    
+    click_on 'send_code'  
+
+    expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
+    
+
+    visit teacher_coding_presentation
+    
+    go_left
+    
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    
+    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
+    
+    
+    visit teacher_coding_presentation
+    
+    go_right
+    
+    
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S    
+    
+    expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
+    
+  end
+
+  after(:each) do
+    $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
+  end
+  
 end
 
 describe 'NAVIGATION in teacher IDE slide', :type => :feature, :js => true do

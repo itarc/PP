@@ -33,19 +33,32 @@ describe("IDE UPDATE", function() {
   });
   
   it("should run last attendee send when updated", function() {
+
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('last send');
 	  
     spyOn(CodeSlide.prototype, 'showCurrentCodeHelper');	  
-    spyOn(CodeSlide.prototype, '_updateEditor');
-    slide._editor.updateEditor("last attendee send");
     spyOn(CodeSlide.prototype, 'executeCode');
 	  
     slide._update(0);
 	  
     expect(CodeSlide.prototype.showCurrentCodeHelper.calls.length).toBe(1);
-    expect(CodeSlide.prototype._updateEditor.calls.length).toBe(1);
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
 	  
   });
+  
+  it("should NOT run code if code in code editor but no last send, no code to display and no code to add", function() {
+
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
+    
+    slide._editor.updateEditor("print 'code remaining from previous slide'");
+    
+    postResource = jasmine.createSpy('postResource');
+    
+    slide._update(0);
+    
+    expect(postResource.calls.length).toBe(0); 
+
+  });  
   
 });  
 
@@ -154,19 +167,6 @@ describe("IDE RUN", function() {
     expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 2');
     expect(codeSlideNode.querySelector('#code_output').value).toBe('2');
     
-  }); 
-
-  it("should NOT run code if no last send, no code to display and no code to add", function() {
-
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
-    
-    postResource = jasmine.createSpy('postResource');
-    
-    slide._update(0);
-    
-    expect(postResource.calls.length).toBe(0); 
-
   });  
 
 });
@@ -235,7 +235,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   it("should NOT display code to add in code editor", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><textarea id='code_output'></textarea></section></div>");
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn(SEPARATOR + "puts 'CODE TO ADD'");
+    getResource = jasmine.createSpy('getResource').andReturn(SEPARATOR + "puts 'CODE TO ADD'");
 
     var slide = new CodeSlide(codeSlideNode);
 	  

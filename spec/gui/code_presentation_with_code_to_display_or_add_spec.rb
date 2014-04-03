@@ -78,7 +78,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     
     fill_in 'code_input', :with => "puts 'TEACHER CODE'" 
    
-    click_button 'send_code'  
+    click_button 'execute'  
        
     visit attendee_IDE_with_code_to_display
     

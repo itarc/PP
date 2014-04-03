@@ -98,7 +98,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     find(:css, 'div.presentation').native.send_key(:arrow_down)    
     
     fill_in 'code_input', :with => 'print "something"'
-    click_on 'send_code'
+    click_on 'execute'
     
     expect(page).to have_field 'code_output', :with => 'something'
     
@@ -111,12 +111,12 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     find(:css, 'div.presentation').native.send_key(:arrow_down)    
     
     fill_in 'code_input', :with => 'print "éèêàâùï"'
-    click_on 'send_code'
+    click_on 'execute'
     
     expect(find_field('code_output').value).to have_content 'invalid multibyte char (US-ASCII)'
     
     fill_in 'code_input', :with => "#encoding: utf-8" + "\n" + 'print "éèêàâùï"'
-    click_on 'send_code'
+    click_on 'execute'
     
     expect(page).to have_field 'code_output', :with => 'éèêàâùï'
     

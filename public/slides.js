@@ -141,18 +141,16 @@ CodeSlide.prototype = {
 
   _update: function(slide_index) {
     this.showCurrentCodeHelper(slide_index);
-    this._updateEditor();
-    this.executeCode();
+    code = this.lastExecution();
+    if (code != '') { this._editor.updateEditor(code); this.executeCode(); return; }
+    code = this._currentCodeHelper().codeToDisplay();
+    if (code != '') { this._editor.updateEditor(code); this.executeCode(); return; }
+    code = this._currentCodeHelper().codeToAdd();
+    if (code != '') { this.executeCode(); return; }
   },
   
   lastExecution: function() {
-    return getResource('/code_last_execution' + '/' + this._codeHelper_current_index);
-  },  
-  
-  _updateEditor: function() {
-    code = this.lastExecution().split(SEPARATOR)[0];
-    if (code == '') code = this._currentCodeHelper().codeToDisplay();
-    if (code != '') this._editor.updateEditor(code);
+    return getResource('/code_last_execution' + '/' + this._codeHelper_current_index).split(SEPARATOR)[0];
   },
   
   _clearCodeHelpers: function() {

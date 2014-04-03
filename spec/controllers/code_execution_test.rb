@@ -80,6 +80,12 @@ class TestLastExecution_in_attendee_slide < Test::Unit::TestCase
     assert_equal "code run", last_response.body    
   end
   
+  def test04_should_return_empty_if_not_the_right_slide
+    post '/code_run_result/0', "code run", 'rack.session' => {:user_id => 'user_1'}
+    get '/code_last_execution/1', {}, 'rack.session' => {:user_id => 'user_1'}
+    assert_equal "", last_response.body    
+  end
+  
   def teardown
     $db.execute_sql("delete from run_events")	  
   end
