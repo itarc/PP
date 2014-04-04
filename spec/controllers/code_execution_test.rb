@@ -115,3 +115,27 @@ class TestLastExecution_in_teacher_slide < Test::Unit::TestCase
   end  
   
 end
+
+class TestLastTeacher_run_in_attendee_slide < Test::Unit::TestCase
+  
+  include Rack::Test::Methods
+
+  def app
+    Sinatra::Application
+  end
+  
+  def setup
+    $db.execute_sql("delete from run_events")	  
+  end
+
+  def test01_should_get_last_teacher_run
+    post '/code_run_result/0', "teacher run", 'rack.session' => {:user_id => '0'}
+    get '/code_get_last_teacher_run/0', {}, 'rack.session' => {:user_id => 'user_1' }
+    assert_equal "teacher run", last_response.body    
+  end
+  
+  def teardown
+    $db.execute_sql("delete from run_events")	  
+  end  
+  
+end

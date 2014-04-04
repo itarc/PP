@@ -2,7 +2,7 @@ describe("TeacherSlideShow with and IDE", function() {
   
   beforeEach(function() {
     
-    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><div id='code_input'/><div class='code_helper'/><div id='execute'/><div id='send_code'/><div id='code_output'/></div></div>")	  
+    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><div id='code_input'/><div class='code_helper'/><div id='execute'/><div id='send_code'/><div id='get_code'/><div id='code_output'/></div></div>")	  
 
   });
 	
@@ -79,7 +79,7 @@ describe("TeacherSlideShow with and IDE (specific behaviour)", function() {
 
   it("should NOT run code when ALT-R button disabled", function() {
 
-   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute' disabled><input type='button' id='send_code'><textarea id='code_output'></textarea></section></div></div>");
+   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute' disabled><input type='button' id='send_code'><input type='button' id='get_code'><textarea id='code_output'></textarea></section></div></div>");
    spyOn(CodeSlide.prototype, 'executeCode');
    getResource = jasmine.createSpy('getResource').andReturn('');    
 
@@ -97,7 +97,7 @@ describe("TeacherSlideShow with and IDE (specific behaviour)", function() {
 
   it("should NOT send code when ALT-S button disabled", function() {
 
-    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code' disabled><textarea id='code_output'></textarea></section></div></div>");
+    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code' disabled><input type='button' id='get_code'><textarea id='code_output'></textarea></section></div></div>");
     spyOn(CodeSlide.prototype, 'executeAndSendCode');  
 
     expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);
@@ -105,6 +105,21 @@ describe("TeacherSlideShow with and IDE (specific behaviour)", function() {
     var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
 	  
     __triggerKeyboardEvent(teacherSlideShow._slides[1]._node.querySelector('#code_input'), S, ALT);
+
+    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);  
+
+  });  
+  
+  it("should NOT getcode when ALT-G button disabled", function() {
+
+    setFixtures("<div class='slides'><div class='slide'></div><div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code'><input type='button' id='get_code' disabled><textarea id='code_output'></textarea></section></div></div>");
+    spyOn(CodeSlide.prototype, 'executeAndSendCode');  
+
+    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);
+	  
+    var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
+	  
+    __triggerKeyboardEvent(teacherSlideShow._slides[1]._node.querySelector('#code_input'), G, ALT);
 
     expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);  
 

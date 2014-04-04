@@ -41,6 +41,12 @@ get '/code_last_execution/*' do
   last_execution.code_input
 end
 
+get '/code_get_last_teacher_run/*' do
+  last_teacher_run = RunTimeEvent.find_last_teacher_run(slide_index)
+  return "" if last_teacher_run == nil
+  last_teacher_run.code_input  
+end
+
 # ---------
 # POSTs
 # ---------

@@ -53,6 +53,10 @@ class RunTimeEvent
     end
   end
   
+  def RunTimeEvent.find_last_teacher_run(slide_index)
+    (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index && event.user == '0' && event.type == 'run' }).last
+  end
+  
   def to_s
     ([@user, @type, @slide_index, @code_input, @code_output]).inspect
   end

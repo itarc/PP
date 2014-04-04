@@ -121,6 +121,7 @@ CodeSlide.prototype = {
     if ( e.altKey ) { 
       if (e.which == R) { if ( ! this._node.querySelector('#execute').disabled == true ) this.executeCode(); }
       if (e.which == S) { if ( ! this._node.querySelector('#send_code').disabled == true ) this.executeAndSendCode(); }
+      if (e.which == G) { if ( ! this._node.querySelector('#get_code').disabled == true ) this.getAndExecuteCode(); }
     } else {
       e.stopPropagation()
     }    
@@ -136,7 +137,10 @@ CodeSlide.prototype = {
     );     
     this._node.querySelector('#send_code').addEventListener('click',
       function(e) { _t.executeAndSendCode(); }, false
-    );       
+    );     
+    this._node.querySelector('#get_code').addEventListener('click',
+      function(e) { _t.getAndExecuteCode(); }, false
+    );        
   },  
 
   _update: function(slide_index) {
@@ -184,7 +188,14 @@ CodeSlide.prototype = {
     if (this.codeToExecute() == '' ) return;    
     send_url = "/code_send_result" + "/" + this._codeHelper_current_index;
     this._node.querySelector('#code_output').value = postResource(send_url, this.codeToExecute(), SYNCHRONOUS);
-  }, 
+  },
+
+  getAndExecuteCode: function() {  
+    get_url = "/code_get_last_teacher_run" + "/" + this._codeHelper_current_index;
+    code = getResource(get_url);
+    this._editor.updateEditor(code);
+    this.executeCode();
+  },  
   
 };
 

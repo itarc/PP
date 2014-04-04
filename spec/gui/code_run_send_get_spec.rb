@@ -13,14 +13,14 @@ set :public_folder, 'fixtures'
 set :logging, false
 
 teacher_coding_presentation = '/teacher/coding_presentation'
-attendee_coding_slide_with_ALT_R_and_ALT_S = '/attendee/coding_slide_with_NO_code_to_display'
+attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G = '/attendee/coding_slide_with_NO_code_to_display'
 
 get teacher_coding_presentation do
   session[:user_id] = '0'		
   redirect "coding_presentation-teacher.html"
 end
 
-get attendee_coding_slide_with_ALT_R_and_ALT_S do
+get attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G do
   session[:user_id] = '1'
   redirect "coding_slide_with_NO_code_to_display-attendee.html"
 end
@@ -180,7 +180,7 @@ describe 'SYNCHRO of attendee IDE Slide', :type => :feature, :js => true do
   
   it 'should show attendee last run' do   
 
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
     
     expect_IDE_to_be_empty
     
@@ -190,7 +190,7 @@ describe 'SYNCHRO of attendee IDE Slide', :type => :feature, :js => true do
     
     expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
     
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
     
     expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
     
@@ -202,7 +202,7 @@ describe 'SYNCHRO of attendee IDE Slide', :type => :feature, :js => true do
 
   it 'should show attendee last send' do   
 
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
     
     expect_IDE_to_be_empty
     
@@ -212,7 +212,7 @@ describe 'SYNCHRO of attendee IDE Slide', :type => :feature, :js => true do
     
     expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
     
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
     
     expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
     
@@ -224,7 +224,7 @@ describe 'SYNCHRO of attendee IDE Slide', :type => :feature, :js => true do
   
   it 'should show attendee last execution when slide moves' do   
 
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
     
     expect_IDE_to_be_empty    
     
@@ -240,7 +240,7 @@ describe 'SYNCHRO of attendee IDE Slide', :type => :feature, :js => true do
     go_right
     
 
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
     
     expect_IDE_to_be_empty    
     
@@ -255,7 +255,7 @@ describe 'SYNCHRO of attendee IDE Slide', :type => :feature, :js => true do
     
     go_left
     
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
     
     expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
     
@@ -265,11 +265,32 @@ describe 'SYNCHRO of attendee IDE Slide', :type => :feature, :js => true do
     go_right
     
     
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S    
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G    
     
     expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
     
   end
+  
+  it 'should show teacher last run' do 
+
+    visit teacher_coding_presentation
+    go_down 
+    
+    expect_IDE_to_be_empty
+    
+    fill_IDE_with("print 'teacher run'")
+    
+    click_on 'execute'
+
+    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
+    
+    expect_IDE_to_be_empty
+    
+    click_on 'get_code'
+    
+    expect_IDE_to_have(code_input = "print 'teacher run'", code_output = 'teacher run')
+    
+  end  
 
   after(:each) do
     $db.execute_sql("delete from run_events") 

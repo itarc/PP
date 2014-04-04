@@ -196,6 +196,11 @@ input[type=button]#send_code {
   margin: 1%;  
 }
 
+input[type=button]#get_code {
+  font-size: 0.5em;
+  margin: 1%;  
+}
+
 /* ------------------------------------------------------------------------ */
 /* CAN BE MODIFIED FOR EACH PRESENTATION */
 /* ------------------------------------------------------------------------ */

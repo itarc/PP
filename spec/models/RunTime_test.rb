@@ -134,6 +134,10 @@ class TestRunTimeEvent_find_last_execution_in_teacher_slide < Test::Unit::TestCa
     $db.execute_sql("delete from run_events")
   end
   
+  def test01_should_find_nil_when_no_execution_in_database
+    assert_equal nil, RunTimeEvent.find_last_user_execution_on_slide("0", "slide_0")
+  end     
+  
   def test01_should_find_last_attendee_send
     RunTimeEvent.new("user", type="run", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '1').save
     RunTimeEvent.new("user", type="run", slide_index = "slide_0" ,code_input = "print 2", code_output = "2", timestamp = '2').save
@@ -159,3 +163,36 @@ class TestRunTimeEvent_find_last_execution_in_teacher_slide < Test::Unit::TestCa
   end
   
 end  
+
+
+class TestRunTimeEvent_find_last_teacher_run < Test::Unit::TestCase 
+
+  def setup
+    $db.execute_sql("delete from run_events")
+  end
+  
+  def test01_should_find_nil_when_no_execution_in_database
+    assert_equal nil, RunTimeEvent.find_last_teacher_run("slide_0")
+  end   
+  
+  def test01_should_find_last_teacher_run
+    RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '1').save
+    RunTimeEvent.new("0", type="run", slide_index = "slide_0" ,code_input = "print 2", code_output = "2", timestamp = '2').save
+    runtime_events = RunTimeEvent.find_last_teacher_run("slide_0")
+    assert_equal (["0", "run", "slide_0", "print 2", "2"]).inspect, runtime_events.inspect
+  end  
+  
+  def test02_should_find_last_teacher_run_again
+    RunTimeEvent.new("0", type="run", slide_index = "slide_0" ,code_input = "print 2", code_output = "2", timestamp = '1').save    
+    RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '2').save
+    runtime_events = RunTimeEvent.find_last_teacher_run("slide_0")
+    assert_equal (["0", "run", "slide_0", "print 2", "2"]).inspect, runtime_events.inspect
+  end
+
+
+  
+  def teardown
+    $db.execute_sql("delete from run_events")
+  end
+  
+end
