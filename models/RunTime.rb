@@ -49,7 +49,7 @@ class RunTimeEvent
     if user_id != "0" then
       (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index && event.user == user_id && (event.type == 'run' ||  event.type == 'send') }).last
     else
-      (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index && event.type == 'send' }).last
+      (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index && (event.type == 'send' || (event.type == 'run' &&  event.user == '0') ) }).last
     end
   end
   

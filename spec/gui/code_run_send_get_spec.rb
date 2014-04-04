@@ -103,6 +103,29 @@ describe 'SYNCHRO of teacher IDE Slide', :type => :feature, :js => true do
     
   end
   
+  it 'should show teacher last run after teacher got attendee last send' do   
+
+    visit teacher_coding_presentation
+    go_down 
+    
+    expect_IDE_to_be_empty
+    
+    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    
+    press_space
+    
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    
+    fill_IDE_with('print "new code to run"')
+    
+    click_on 'execute'
+    
+    press_space
+    
+    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run')
+    
+  end  
+  
   it 'should ONLY show CURRENT SLIDE attendee last send' do   
 
     visit teacher_coding_presentation
