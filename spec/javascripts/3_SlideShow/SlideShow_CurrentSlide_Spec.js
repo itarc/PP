@@ -1,62 +1,51 @@
 describe("SlideShow Current Slide", function() {
+  
+  beforeEach(function () {
+    
+    setFixtures("<div class='slides'><div class='slide'/><div class='slide'/><div class='slide'/></div>")	  
+    
+    
+  });
 
   it("should be current server slide when slideshow is initialized", function() {
     
     getResource = jasmine.createSpy('getResource').andReturn('121;true');
 
-    var slideShow = new SlideShow([]);
+    var slideShow = new SlideShow(queryAll(document, '.slide'));
     
-    expect(slideShow._currentIndex).toBe(121);
-    expect(slideShow._showIDE).toBe(true);
+    expect(slideShow.position._currentIndex).toBe(121);
+    expect(slideShow.position._IDEDisplayed).toBe(true);
 
   });
   
-  it("should be current server slide when slideshow is synchronized", function() {
+  it("should be current server slide when position is refreshed", function() {
     
     getResource = jasmine.createSpy('getResource').andReturn('0;false');
 
-    var slideShow = new SlideShow([]);
+    var slideShow = new SlideShow(queryAll(document, '.slide'));
     
-    expect(slideShow._currentIndex).toBe(0);
-    expect(slideShow._showIDE).toBe(false);    
+    expect(slideShow.position._currentIndex).toBe(0);
+    expect(slideShow.position._IDEDisplayed).toBe(false);    
     
     getResource = jasmine.createSpy('getResource').andReturn('212;true');
     
-    slideShow.synchronise();
+    slideShow._refreshPosition();
     
-    expect(slideShow._currentIndex).toBe(212);
-    expect(slideShow._showIDE).toBe(true);
+    expect(slideShow.position._currentIndex).toBe(212);
+    expect(slideShow.position._IDEDisplayed).toBe(true);
 
-  });  
-  
-  it("should change even if only showIDE state change", function() {
-    
-    getResource = jasmine.createSpy('getResource').andReturn('0;false');
-    
-    spyOn(SlideShow.prototype, '_refresh');
-
-    var slideShow = new SlideShow([]);
-    
-    expect(SlideShow.prototype._refresh.calls.length).toBe(1);    
-    
-    getResource = jasmine.createSpy('getResource').andReturn('0;true');
-    
-    slideShow.synchronise();
-    
-    expect(SlideShow.prototype._refresh.calls.length).toBe(2);
-
-  });   
+  });
 	
   it("should be next slide when next slide is called", function() {
 
-    var slideShow = new SlideShow([]);
+    var slideShow = new SlideShow(queryAll(document, '.slide'));
 	  
-    slideShow._currentIndex = 1;
+    slideShow.position._currentIndex = 1;
     slideShow._numberOfSlides = 3;	  
 
     slideShow.next();
 
-    expect(slideShow._currentIndex).toBe(2)
+    expect(slideShow.position._currentIndex).toBe(2)
 
   });
   
@@ -64,12 +53,12 @@ describe("SlideShow Current Slide", function() {
 
     var slideShow = new SlideShow([]);
 	  
-    slideShow._currentIndex = 2;
+    slideShow.position._currentIndex = 2;
     slideShow._numberOfSlides = 3;	  
 
     slideShow.prev()
 
-    expect(slideShow._currentIndex).toBe(1)
+    expect(slideShow.position._currentIndex).toBe(1)
 
   });
 
@@ -77,12 +66,12 @@ describe("SlideShow Current Slide", function() {
 
     var slideShow = new SlideShow([]);
 	  
-    slideShow._currentIndex = 2;
+    slideShow.position._currentIndex = 2;
     slideShow._numberOfSlides = 3;
 
     slideShow.next()
 
-    expect(slideShow._currentIndex).toBe(2)
+    expect(slideShow.position._currentIndex).toBe(2)
 
   });
   
@@ -90,12 +79,12 @@ describe("SlideShow Current Slide", function() {
 
     var slideShow = new SlideShow([]);
 	  
-    slideShow._currentIndex = 0;
+    slideShow.position._currentIndex = 0;
     slideShow._numberOfSlides = 3;
 
     slideShow.prev()
 
-    expect(slideShow._currentIndex).toBe(0)
+    expect(slideShow.position._currentIndex).toBe(0)
 
   });
   
@@ -107,7 +96,7 @@ describe("SlideShow Current Slide", function() {
     
     var slideShow = new SlideShow(queryAll(document, '.slide'))
 
-    expect(slideShow._slides[slideShow._currentIndex]._node.className).toBe('slide current');
+    expect(slideShow._slides[slideShow.position._currentIndex]._node.className).toBe('slide current');
 
   }); 
   

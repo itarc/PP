@@ -1,58 +1,112 @@
 describe("SlideShow Server", function() {
   
+  it("should leave default values if current position unknown", function() {
+	  
+    var position = new Position();
+
+    expect(position._currentIndex).toBe(0);
+    expect(position._IDEDisplayed).toBe(false);    
+    
+    getResource = jasmine.createSpy('getResource').andReturn('UNKNOWN');
+    
+    position._synchronise();
+
+    expect(position._currentIndex).toBe(0);
+    expect(position._IDEDisplayed).toBe(false);
+
+  });
+  
+  it("should tell if position has changed", function() {
+	  
+    var position = new Position(); 
+    
+    expect(position._currentIndex).toBe(0);
+    expect(position._IDEDisplayed).toBe(false);
+    
+    expect(position.hasChanged()).toBe(true);   
+
+    getResource = jasmine.createSpy('getResource').andReturn('0;false');
+    
+    position._synchronise();
+
+    expect(position.hasChanged()).toBe(false);    
+    
+    getResource = jasmine.createSpy('getResource').andReturn('1;false');
+    
+    position._synchronise();
+
+    expect(position.hasChanged()).toBe(true);
+    
+    getResource = jasmine.createSpy('getResource').andReturn('0;true');
+    
+    position._synchronise();
+
+    expect(position.hasChanged()).toBe(true);    
+    
+    getResource = jasmine.createSpy('getResource').andReturn('0;false');
+    
+    position._synchronise();
+
+    expect(position.hasChanged()).toBe(true);     
+
+  });  
+  
   it("should get teacher current position when synchronised", function() {
 	  
-    var slideShowServer = new SlideShowServer();
+    var position = new Position();
 
     getResource = jasmine.createSpy('getResource').andReturn('1;false');  
     
-    slideShowServer._synchronise();
+    position._synchronise();
 
-    expect(slideShowServer._currentServerIndex).toBe(1);
-    expect(slideShowServer._IDEDisplayed).toBe(false);
+    expect(position._currentIndex).toBe(1);
+    expect(position._IDEDisplayed).toBe(false);
 
   });  
 
   it("should post slideshow current position", function() {
 	  
-    var slideShowServer = new SlideShowServer();
+    var position = new Position();
     
-    postResource = jasmine.createSpy('postResource');    
+    postResource = jasmine.createSpy('postResource');  
 
-    slideShowServer.postCurrentIndex(5, SlideShow.prototype._showIDE);
+    position._currentIndex = 5;
+    position._IDEDisplayed = true     
+
+    position.postCurrentIndex();
 	  
     expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '5' + '&' + 'ide_displayed=' + SlideShow.prototype._showIDE, ASYNCHRONOUS);
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '5' + '&' + 'ide_displayed=' + true, ASYNCHRONOUS);
 
   });  
   
   it("should NOT return current teacher position when position is unknown", function() {
 	  
-    var slideShowServer = new SlideShowServer();
+    var position = new Position();
     
-    expect(slideShowServer._currentServerIndex).toBe(0);
-    expect(slideShowServer._IDEDisplayed).toBe(false);
+    expect(position._currentIndex).toBe(0);
+    expect(position._IDEDisplayed).toBe(false);
 
     getResource = jasmine.createSpy('getResource').andReturn('UNKNOWN;UNKNOWN');
     
-    slideShowServer._synchronise();    
+    position._synchronise();    
 
-    expect(slideShowServer._currentServerIndex).toBe(0);
-    expect(slideShowServer._IDEDisplayed).toBe(false);
+    expect(position._currentIndex).toBe(0);
+    expect(position._IDEDisplayed).toBe(false);
     
     getResource = jasmine.createSpy('getResource').andReturn('UNKNOWN;true');
     
-    slideShowServer._synchronise();    
+    position._synchronise();    
 
-    expect(slideShowServer._currentServerIndex).toBe(0);
-    expect(slideShowServer._IDEDisplayed).toBe(false); 
+    expect(position._currentIndex).toBe(0);
+    expect(position._IDEDisplayed).toBe(false); 
 
     getResource = jasmine.createSpy('getResource').andReturn('0;UNKNOWN');
     
-    slideShowServer._synchronise();    
+    position._synchronise();    
 
-    expect(slideShowServer._currentServerIndex).toBe(0);
-    expect(slideShowServer._IDEDisplayed).toBe(false);    
+    expect(position._currentIndex).toBe(0);
+    expect(position._IDEDisplayed).toBe(false);    
 
   });
 

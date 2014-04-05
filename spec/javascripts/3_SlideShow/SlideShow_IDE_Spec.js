@@ -19,30 +19,30 @@ describe("SlideShow with an IDE Slide", function() {
 
   it("should be updated when synchronised", function() {
  
-    getResource = jasmine.createSpy('getResource').andReturn('11');
-  
     var slideShow = new SlideShow(queryAll(document, '.slide'))
-    slideShow._currentIndex = 0
 
     expect(CodeSlide.prototype._update.calls.length).toBe(1);    
-    expect(slideShow._currentIndex).toBe(0);     
+    expect(slideShow.position._currentIndex).toBe(0);     
          
-     slideShow.synchronise();
+    getResource = jasmine.createSpy('getResource').andReturn('11');
+    
+    slideShow._refreshPosition();
+    slideShow._showCurrentSlide();
    
     expect(CodeSlide.prototype._update.calls.length).toBe(2);
  
    });
 
-  it("should NOT be updated when synchronised but nothing changed", function() {
+  it("should NOT be updated when refreshed but nothing changed", function() {
 
-    getResource = jasmine.createSpy('getResource').andReturn('0');
+    getResource = jasmine.createSpy('getResource').andReturn('0;false');
 
-    var slideShow = new SlideShow(queryAll(document, '.slide'))
+    var slideShow = new SlideShow(queryAll(document, '.slide'))     
 
     expect(CodeSlide.prototype._update.calls.length).toBe(1);    
-    expect(slideShow._currentIndex).toBe(0);     
-
-    slideShow.synchronise();
+    expect(slideShow.position._currentIndex).toBe(0);
+    
+    slideShow._refresh();
 
     expect(CodeSlide.prototype._update.calls.length).toBe(1);
 

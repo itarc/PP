@@ -82,17 +82,18 @@ describe("TeacherSlideShow KeyHandling", function() {
 
   });  
 
-  it("should call synchronise when space pressed", function() {
+  it("should refresh position and show current slide (F5) when space pressed", function() {
 
-    spyOn(TeacherSlideShow.prototype, 'synchronise');
+    spyOn(TeacherSlideShow.prototype, '_refreshPosition');
+    spyOn(TeacherSlideShow.prototype, '_showCurrentSlide');
 
-    expect(TeacherSlideShow.prototype.synchronise.calls.length).toBe(0);
+    expect(TeacherSlideShow.prototype._refreshPosition.calls.length).toBe(0);
+    expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(0);
 	  
     __triggerKeyboardEvent(document, SPACE);
 
-    expect(TeacherSlideShow.prototype.synchronise).toHaveBeenCalled();
-    expect(TeacherSlideShow.prototype.synchronise.calls.length).toBe(1);
-    expect(TeacherSlideShow.prototype.synchronise).toHaveBeenCalledWith();    
+    expect(TeacherSlideShow.prototype._refreshPosition.calls.length).toBe(1);
+    expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
 
   });
   

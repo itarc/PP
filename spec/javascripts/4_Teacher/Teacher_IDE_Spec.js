@@ -73,7 +73,7 @@ describe("TeacherSlideShow with and IDE (specific behaviour)", function() {
 	  
     __triggerKeyboardEvent(document, SPACE);
 
-    expect(CodeSlide.prototype._update.calls.length).toBe(2);  // should be 0 (to review or put in another file)
+    expect(CodeSlide.prototype._update.calls.length).toBe(2); // SHOULD BE 0 => To Review
 
   });   
 

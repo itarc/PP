@@ -37,28 +37,28 @@ describe("AttendeeSlideShow KeyHandling", function() {
 
   }); 
 
-  it("should call synchronise when space pressed", function() {
+  it("should refresh when space pressed", function() {
 
-    spyOn(AttendeeSlideShow.prototype, 'synchronise');
+    spyOn(AttendeeSlideShow.prototype, '_refresh');
 
-    expect(AttendeeSlideShow.prototype.synchronise.calls.length).toBe(0);
+    expect(AttendeeSlideShow.prototype._refresh.calls.length).toBe(0);
 	  
     __triggerKeyboardEvent(document, SPACE);
 
-    expect(AttendeeSlideShow.prototype.synchronise.calls.length).toBe(1);    
-
+    expect(AttendeeSlideShow.prototype._refresh.calls.length).toBe(1); 
+ 
   });
   
-  it("should get current slide index on server every second", function() {
+  it("should refresh position every second", function() {
 	  
-    spyOn(AttendeeSlideShow.prototype, 'synchronise');
+    spyOn(AttendeeSlideShow.prototype, '_refresh');
     jasmine.Clock.useMock();
 
-    setInterval( function(){ attendeeSlideshow.synchronise(); },1000); // Mandatory even if it is already done in the javascript
+    setInterval( function(){ attendeeSlideshow._refresh(); },1000); // Mandatory even if it is already done in the javascript
 
-    expect(AttendeeSlideShow.prototype.synchronise).not.toHaveBeenCalled();
+    expect(AttendeeSlideShow.prototype._refresh.callCount).toEqual(0);
     jasmine.Clock.tick(1001);
-    expect(AttendeeSlideShow.prototype.synchronise.callCount).toEqual(1);
+    expect(AttendeeSlideShow.prototype._refresh.callCount).toEqual(1);
     
     expect(slideshowTimer).toBeDefined(); // Test if timer is javascript
 
