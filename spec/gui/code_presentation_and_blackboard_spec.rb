@@ -29,7 +29,7 @@ get attendee_coding_presentation do
 end
 
 get blackboard do
-  session[:user_id] = '1'  
+  session[:user_id] = 'blackboard'  
   redirect "coding_presentation-blackboard.html"
 end
 
@@ -74,83 +74,83 @@ end
 ## HELPERS (END)
 ## -------------------------------------------------------
   
-#~ describe 'Blackboard Navigation', :type => :feature, :js => true do  
+describe 'Blackboard Navigation', :type => :feature, :js => true do  
 	
-  #~ before(:all) do
-    #~ $db.execute_sql("delete from run_events") 
-    #~ $db.execute_sql("delete from teacher_current_slide") 
-  #~ end
+  before(:all) do
+    $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide") 
+  end
 
-  #~ it 'should be on first slide' do
+  it 'should be on first slide' do
 
-    #~ visit teacher_coding_presentation
+    visit teacher_coding_presentation
     
-    #~ expect(page).to have_content 'CODING EXERCISE - 1'
+    expect(page).to have_content 'CODING EXERCISE - 1'
   
-    #~ visit blackboard
+    visit blackboard
         
-    #~ expect(page).to have_content 'CODING EXERCISE - 1'   
+    expect(page).to have_content 'CODING EXERCISE - 1'   
 
-  #~ end
+  end
   
-  #~ it 'should be on second slide' do
+  it 'should be on second slide' do
     
-    #~ visit teacher_coding_presentation
-    #~ find(:css, 'div.presentation').native.send_key(:arrow_right)    
+    visit teacher_coding_presentation
+    find(:css, 'div.presentation').native.send_key(:arrow_right)    
     
-    #~ expect(page).to have_content 'CODING EXERCISE - 2'
+    expect(page).to have_content 'CODING EXERCISE - 2'
   
-    #~ visit blackboard
+    visit blackboard
         
-    #~ expect(page).to have_content 'CODING EXERCISE - 2'  
+    expect(page).to have_content 'CODING EXERCISE - 2'  
 
-  #~ end
+  end
 
-  #~ it 'should be on IDE with code helper 2' do
+  it 'should be on IDE with code helper 2' do
     
-    #~ visit teacher_coding_presentation
-    #~ find(:css, 'div.presentation').native.send_key(:arrow_down)    
+    visit teacher_coding_presentation
+    find(:css, 'div.presentation').native.send_key(:arrow_down)    
     
-    #~ expect(page).to have_content 'HELPER 2'
+    expect(page).to have_content 'HELPER 2'
   
-    #~ visit blackboard
+    visit blackboard
         
-    #~ expect(page).to have_content 'HELPER 2'       
+    expect(page).to have_content 'HELPER 2'       
 
-  #~ end
+  end
   
-  #~ it 'should be on IDE with code helper 1' do
+  it 'should be on IDE with code helper 1' do
     
-    #~ visit teacher_coding_presentation
-    #~ find(:css, 'div.presentation').native.send_key(:arrow_left)    
+    visit teacher_coding_presentation
+    find(:css, 'div.presentation').native.send_key(:arrow_left)    
     
-    #~ expect(page).to have_content 'HELPER 1'
+    expect(page).to have_content 'HELPER 1'
   
-    #~ visit blackboard
+    visit blackboard
         
-    #~ expect(page).to have_content 'HELPER 1'       
+    expect(page).to have_content 'HELPER 1'       
 
-  #~ end  
+  end  
 
-  #~ it 'should be back on first slide' do
+  it 'should be back on first slide' do
     
-    #~ visit teacher_coding_presentation
-    #~ find(:css, 'div.presentation').native.send_key(:arrow_up)    
+    visit teacher_coding_presentation
+    find(:css, 'div.presentation').native.send_key(:arrow_up)    
     
-    #~ expect(page).to have_content 'CODING EXERCISE - 1'
+    expect(page).to have_content 'CODING EXERCISE - 1'
   
-    #~ visit blackboard
+    visit blackboard
         
-    #~ expect(page).to have_content 'CODING EXERCISE - 1'       
+    expect(page).to have_content 'CODING EXERCISE - 1'       
 
-  #~ end
+  end
   
-  #~ after(:all) do
-    #~ $db.execute_sql("delete from run_events") 
-    #~ $db.execute_sql("delete from teacher_current_slide")    
-  #~ end   
+  after(:all) do
+    $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
+  end   
 
-#~ end
+end
 
 describe 'Blackboard Navigation', :type => :feature, :js => true do  
 	
@@ -176,21 +176,55 @@ describe 'Blackboard Navigation', :type => :feature, :js => true do
     
     visit blackboard
     
-    expect_IDE_to_be_empty    
+    expect_IDE_to_be_empty   
+
+    visit attendee_coding_presentation
     
-    #~ visit teacher_coding_presentation
-    #~ go_down
+    fill_IDE_with("print 'attendee send'")
+    
+    click_on "send_code"
+    
+    expect_IDE_to_have(code_input = "print 'attendee send'", code_output = "attendee send")   
+
+    visit blackboard
+    
+    expect_IDE_to_be_empty 
+    
+    visit teacher_coding_presentation
+    go_down
+
+    press_space
+    
+    expect_IDE_to_have(code_input = "print 'attendee send'", code_output = "attendee send") 
+
+    visit blackboard
+
+    expect_IDE_to_have(code_input = "print 'attendee send'", code_output = "attendee send")
+
+    visit teacher_coding_presentation
+    go_down
+    
+    fill_IDE_with("print 'teacher run'")
+    
+    click_on "execute"
+    
+    visit blackboard
+
+    expect_IDE_to_have(code_input = "print 'teacher run'", code_output = "teacher run")    
+    
+    run_ruby "run", "print 'teacher run 2'", "0", "0"
+    
+    press_space
   
-    #~ visit blackboard
-        
-    #~ expect(page).to have_content 'CODING EXERCISE - 1'       
+    expect_IDE_to_have(code_input = "print 'teacher run 2'", code_output = "teacher run 2")   
+    
 
   end
   
   
   after(:all) do
-    #~ $db.execute_sql("delete from run_events") 
-    #~ $db.execute_sql("delete from teacher_current_slide")    
+    $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
   end   
 
 end  

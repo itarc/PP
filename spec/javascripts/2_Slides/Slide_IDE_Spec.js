@@ -32,9 +32,20 @@ describe("IDE UPDATE", function() {
     
   });
   
-  it("should run last attendee send when updated", function() {
+  it("should show current code helper when updated", function() {
+	  
+    spyOn(CodeSlide.prototype, 'showCurrentCodeHelper');	  
+	  
+    slide._update(0);
+	  
+    expect(CodeSlide.prototype.showCurrentCodeHelper.calls.length).toBe(1);
+    expect(CodeSlide.prototype.showCurrentCodeHelper).toHaveBeenCalledWith(0);
+	  
+  });  
+  
+  it("should run last execution when updated", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('last send');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('last execution');
 	  
     spyOn(CodeSlide.prototype, 'showCurrentCodeHelper');	  
     spyOn(CodeSlide.prototype, 'executeCode');
@@ -45,6 +56,20 @@ describe("IDE UPDATE", function() {
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
 	  
   });
+  
+  it("should NOT run last execution when updated but the same that in code editor", function() {
+
+    slide._editor.updateEditor('last execution');
+    
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('last execution');
+	  
+    spyOn(CodeSlide.prototype, 'executeCode');
+	  
+    slide._update(0);
+	  
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
+	  
+  });  
   
   it("should NOT run code if code in code editor but no last send, no code to display and no code to add", function() {
 

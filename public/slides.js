@@ -146,7 +146,7 @@ CodeSlide.prototype = {
   _update: function(slide_index) {
     this.showCurrentCodeHelper(slide_index);
     code = this.lastExecution();
-    if (code != '') { this._editor.updateEditor(code); this.executeCode(); return; }
+    if (code != '' && code != this._editor.content()) { this._editor.updateEditor(code); this.executeCode(); return; }
     code = this._currentCodeHelper().codeToDisplay();
     if (code != '') { this._editor.updateEditor(code); this.executeCode(); return; }
     code = this._currentCodeHelper().codeToAdd();

@@ -55,6 +55,7 @@ var SlideShow = function(slides) {
   this.position = new Position();
   this._refreshPosition();
   this._showCurrentSlide();
+  this._updateCurrentSlide();  
 
 };
 
@@ -96,23 +97,24 @@ SlideShow.prototype = {
       this._showIDESlide();
     else
       this._showClassicSlide();
-    this._updateCurrentSlide();
     window.console && window.console.log("Refreshed with this._currentIndex = " + this.position._currentIndex + " and this._showIDE = " + this.position._IDEDisplayed);
   },
+
+  _updateCurrentSlide: function() {  
+    if (this._slides.length == 0) return; 
+    this._currentSlide._update(this.position._currentIndex);
+  },  
   
   _refresh: function() {
     this._refreshPosition();  
-    if (this.position.hasChanged()) { this._showCurrentSlide(); }
+    if (this.position.hasChanged()) { this._showCurrentSlide(); this._updateCurrentSlide();}
   },
-  
-  _updateCurrentSlide: function() {  
-    this._currentSlide._update(this.position._currentIndex);
-  },
-  
+
   prev: function() {
     if (this.position._currentIndex <= 0) return;
     this.position._currentIndex -= 1;
-    this._showCurrentSlide();	  
+    this._showCurrentSlide();	 
+    this._updateCurrentSlide();    
     this.position.postCurrentIndex();
   },
 
@@ -121,6 +123,7 @@ SlideShow.prototype = {
     if (this._slides[this.position._currentIndex+1] && this._slides[this.position._currentIndex+1]._isCodingSlide()) return;		  
     this.position._currentIndex += 1;		  
     this._showCurrentSlide();
+    this._updateCurrentSlide();    
     this.position.postCurrentIndex();    
   },
   
@@ -128,12 +131,14 @@ SlideShow.prototype = {
     if (! this._last_slide()._isCodingSlide()) return;    
     this.position._IDEDisplayed = true;
     this._showCurrentSlide(); 
+    this._updateCurrentSlide();    
     this.position.postCurrentIndex();
   },
   
   up: function() {
     this.position._IDEDisplayed = false;	  
     this._showCurrentSlide();
+    this._updateCurrentSlide();    
     this.position.postCurrentIndex();     
   },
   

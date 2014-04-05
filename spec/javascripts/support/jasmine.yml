@@ -12,3 +12,4 @@ spec_files:
   - '4_Teacher/Teacher_KeyHandling_Spec.js'
   - '4_Teacher/*[sS]pec.js'
   - '5_Attendee/*[sS]pec.js'
+  - '6_Blackboard/*[sS]pec.js'

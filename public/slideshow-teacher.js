@@ -23,11 +23,13 @@ TeacherSlideShow.prototype = {
       break;	    
       case SPACE:
         this._refreshPosition();       
-        this._showCurrentSlide();       
+        this._showCurrentSlide(); 
+        this._updateCurrentSlide();      
       break;	
       case HOME:  
         this.position._currentIndex = 0;
         this._showCurrentSlide();
+        this._updateCurrentSlide();
         this.position.postCurrentIndex();      
       break;		    
     }

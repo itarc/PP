@@ -19,6 +19,7 @@ get '/' do
 end
 
 get '/blackboard' do
+  session[:user_id] = 'blackboard'  
   send_file "views/blackboard.html"
 end
 

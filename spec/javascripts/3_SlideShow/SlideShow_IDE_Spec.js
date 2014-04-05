@@ -17,7 +17,7 @@ describe("SlideShow with an IDE Slide", function() {
 
   });
 
-  it("should be updated when synchronised", function() {
+  it("should be updated when refreshed", function() {
  
     var slideShow = new SlideShow(queryAll(document, '.slide'))
 
@@ -26,8 +26,7 @@ describe("SlideShow with an IDE Slide", function() {
          
     getResource = jasmine.createSpy('getResource').andReturn('11');
     
-    slideShow._refreshPosition();
-    slideShow._showCurrentSlide();
+    slideShow._refresh();
    
     expect(CodeSlide.prototype._update.calls.length).toBe(2);
  
