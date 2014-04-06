@@ -230,7 +230,7 @@ describe("IDE RUN", function() {
 
 describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 	
-  it("should run code to display if attendee has no last send", function() {
+  it("should run code to display if attendee has no last execution", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
@@ -248,10 +248,10 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 
   });
   
-  it("should run attendee last send if last send exists", function() {
+  it("should run attendee last execution if exists", function() {
 
     codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('code in last send');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('code in last execution');
 	  
     var slide = new CodeSlide(codeSlideNode);
 
@@ -261,10 +261,35 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 
     slide._update(0);
 
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("code in last send");
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', "code in last send", SYNCHRONOUS);	  
+    expect(codeSlideNode.querySelector('#code_input').value).toBe("code in last execution");
+    expect(postResource.calls.length).toBe(1);	  
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', "code in last execution", SYNCHRONOUS);
 
   });  
+  
+	
+  it("should run code to display once when updated twice", function() {
+
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
+	  
+    var slide = new CodeSlide(codeSlideNode);
+
+    postResource = jasmine.createSpy('postResource'); 		  
+         
+    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
+
+    slide._update(0);
+
+    expect(codeSlideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");
+    expect(postResource.calls.length).toBe(1);
+
+    slide._update(0);
+
+    expect(codeSlideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");    
+    expect(postResource.calls.length).toBe(1);
+
+  }); 
 
 });
   
@@ -288,6 +313,40 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
     expect(codeSlideNode.querySelector('#code_output').value).toBe("CODE TO ADD");	  
 
   });	  
+  
+  it("should NOT run code if last execution exists with code to execute", function() {
+
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
+    getResource = jasmine.createSpy('getResource').andReturn('code to execute' + SEPARATOR + "puts 'CODE TO ADD'");
+
+    var slide = new CodeSlide(codeSlideNode);
+    
+    slide._editor.updateEditor('code to execute');
+
+    postResource = jasmine.createSpy('postResource');
+	  
+    slide._update(0);
+	  
+    expect(postResource.calls.length).toBe(0);
+
+  });  
+  
+  it("should NOT run code if last execution exists and code to execute is empty", function() {
+
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
+    getResource = jasmine.createSpy('getResource').andReturn('' + SEPARATOR + "puts 'CODE TO ADD'");
+
+    var slide = new CodeSlide(codeSlideNode);
+    
+    slide._editor.updateEditor('');
+
+    postResource = jasmine.createSpy('postResource');
+	  
+    slide._update(0);
+	  
+    expect(postResource.calls.length).toBe(0);
+
+  });   
   
   it("should NOT display code to add in code editor", function() {
 
