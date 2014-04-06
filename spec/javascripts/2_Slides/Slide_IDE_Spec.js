@@ -362,5 +362,20 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
     expect(codeSlideNode.querySelector('#code_input').value).toBe("");
 
   });
+  
+  it("should get last teacher run without code to add", function() {
+
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
+    getResource = jasmine.createSpy('getResource').andReturn('teacher run' + SEPARATOR + "puts 'CODE TO ADD'");
+
+    var slide = new CodeSlide(codeSlideNode);
+	  
+    expect(codeSlideNode.querySelector('#code_input').value).toBe("");	  
+    
+    slide.getAndExecuteCode()
+
+    expect(codeSlideNode.querySelector('#code_input').value).toBe("teacher run");
+
+  });  
 
 });

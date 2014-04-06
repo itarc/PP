@@ -178,7 +178,7 @@ CodeSlide.prototype = {
 
   getAndExecuteCode: function() {  
     get_url = "/code_get_last_teacher_run" + "/" + this._codeHelper_current_index;
-    code = getResource(get_url);
+    code = getResource(get_url).split(SEPARATOR)[0];
     this._editor.updateEditor(code);
     this.executeCode();
   }, 
