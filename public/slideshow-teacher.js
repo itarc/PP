@@ -2,8 +2,9 @@
 // TEACHER SLIDESHOW CLASS / EXTENDS SLIDESHOW
 // ----------------------------------
 var TeacherSlideShow = function(slides) {
-  SlideShow.call(this, slides);
-  this.position.postCurrentIndex();  
+  SlideShow.call(this, slides); 
+  this.position.postCurrentIndex();
+  this._updateCurrentSlide();  
 };
 
 TeacherSlideShow.prototype = {

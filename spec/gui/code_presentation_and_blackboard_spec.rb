@@ -28,8 +28,7 @@ get attendee_coding_presentation do
   redirect "coding_slide_with_NO_code_to_display-attendee.html"
 end
 
-get blackboard do
-  session[:user_id] = 'blackboard'  
+get blackboard do  
   redirect "coding_presentation-blackboard.html"
 end
 

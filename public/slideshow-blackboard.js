@@ -3,13 +3,14 @@
 // ----------------------------------
 var BlackboardSlideShow = function(slides) {
   SlideShow.call(this, slides);
+  this.position.context = 'blackboard';
+  this._updateCurrentSlide();  
 };
 
 BlackboardSlideShow.prototype = {
   
   _refresh: function() {
-    this._refreshPosition();  
-    //~ this._showCurrentSlide();
+    this._refreshPosition();
     if (this.position.hasChanged()) { this._showCurrentSlide(); };
     this._updateCurrentSlide();
   },  

@@ -3,6 +3,7 @@
 // ----------------------------------
 var AttendeeSlideShow = function(slides) {
   SlideShow.call(this, slides);
+  this._updateCurrentSlide();    
 };
 
 AttendeeSlideShow.prototype = {

@@ -158,20 +158,6 @@ class TestRunTimeEvent_find_last_execution_in_teacher_slide < Test::Unit::TestCa
     assert_equal (["0", "run", "slide_0", "print 4", "4"]).inspect, runtime_events.inspect
   end
   
-  def test03_should_find_last_teacher_run_for_blackboard
-    RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '1').save
-    RunTimeEvent.new("0", type="run", slide_index = "slide_0" ,code_input = "print 2", code_output = "2", timestamp = '2').save
-    runtime_events = RunTimeEvent.find_last_user_execution_on_slide("blackboard", "slide_0")
-    assert_equal (["0", "run", "slide_0", "print 2", "2"]).inspect, runtime_events.inspect
-  end  
-  
-  def test04_should_find_last_teacher_run_for_blackboard_again
-    RunTimeEvent.new("0", type="run", slide_index = "slide_0" ,code_input = "print 2", code_output = "2", timestamp = '1').save    
-    RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '2').save
-    runtime_events = RunTimeEvent.find_last_user_execution_on_slide("blackboard", "slide_0")
-    assert_equal (["0", "run", "slide_0", "print 2", "2"]).inspect, runtime_events.inspect
-  end  
-  
   def teardown
     $db.execute_sql("delete from run_events")
   end

@@ -49,9 +49,6 @@ class RunTimeEvent
     if user_id == "0" then
       return (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index && (event.type == 'send' || (event.type == 'run' &&  event.user == '0') ) }).last
     end
-    if user_id == "blackboard" then
-      return RunTimeEvent.find_last_teacher_run(slide_index)
-    end
     (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index && event.user == user_id && (event.type == 'run' ||  event.type == 'send') }).last
   end
   
