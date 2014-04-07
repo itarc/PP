@@ -159,7 +159,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     
     go_down    
     
-    fill_IDE_with(print "éèêàâùï")
+    fill_IDE_with('print "éèêàâùï"')
     
     execute
     
@@ -169,7 +169,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     
     execute
     
-    expect_IDE_to_have(code_input = 'print "éèêàâùï"', code_output = 'éèêàâùï')    
+    expect_IDE_to_have(code_input = "#encoding: utf-8" + "\n" + 'print "éèêàâùï"', code_output = 'éèêàâùï')    
     
   end  
 
