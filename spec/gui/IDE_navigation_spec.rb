@@ -16,6 +16,7 @@ set :logging, false
 
 teacher_coding_presentation = '/teacher/coding_presentation'
 attendee_IDE_with_NO_code_to_display = '/attendee/coding_slide_with_NO_code_to_display'
+attendee_IDE_with_code_to_display = '/attendee/coding_slide_with_code_to_display'
 
 get teacher_coding_presentation do
   session[:user_id] = '0'
@@ -25,6 +26,11 @@ end
 get attendee_IDE_with_NO_code_to_display do
   session[:user_id] = '1'
   redirect "coding_slide_with_NO_code_to_display-attendee.html"
+end
+
+get attendee_IDE_with_code_to_display do
+  session[:user_id] = '1'	
+  redirect "coding_slide_with_code_to_display-attendee.html"
 end
 
 ## -------------------------------------------------------
@@ -262,6 +268,64 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     $db.execute_sql("delete from run_events") 
     $db.execute_sql("delete from teacher_current_slide")    
   end  
+
+end
+
+describe 'Attendee IDE with code to display', :type => :feature, :js => true do
+	
+  before(:each) do
+    $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")        
+  end	
+
+  it 'should run code to display' do
+
+    visit attendee_IDE_with_code_to_display
+    
+    expect(page).to have_content "HELPER 1"
+    expect(page).to have_no_content "print 'DISPLAYED CODE'"
+
+    expect_IDE_to_have(code_input = "print 'DISPLAYED CODE'", code_output = "DISPLAYED CODE")
+
+  end  
+  
+  it 'should run code to add without displaying it' do
+	  
+    visit teacher_coding_presentation
+
+    go_right
+       
+    visit attendee_IDE_with_code_to_display
+    
+    press_space
+    
+    expect(page).to have_content "HELPER 2"
+    expect(page).to have_content "print 'ADDED CODE'"   
+    
+    expect_IDE_to_have(code_input = "", code_output = "ADDED CODE")    
+
+  end  
+  
+  it 'should run last attendee code (not teacher code)' do
+	  
+    visit teacher_coding_presentation
+
+    go_down
+     
+    fill_IDE_with("puts 'TEACHER CODE'" )
+   
+    execute
+       
+    visit attendee_IDE_with_code_to_display
+    
+    expect_IDE_to_have(code_input = "print 'DISPLAYED CODE'", code_output = "DISPLAYED CODE")    
+
+  end    
+  
+  after(:each) do
+    $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")        
+  end    
 
 end
 
