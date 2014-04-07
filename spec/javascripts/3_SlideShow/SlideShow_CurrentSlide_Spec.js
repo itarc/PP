@@ -3,11 +3,10 @@ describe("SlideShow Current Slide", function() {
   beforeEach(function () {
     
     setFixtures("<div class='slides'><div class='slide'/><div class='slide'/><div class='slide'/></div>")	  
-    
-    
+  
   });
 
-  it("should be current server slide when slideshow is initialized", function() {
+  it("should be current position when slideshow is initialized", function() {
     
     getResource = jasmine.createSpy('getResource').andReturn('121;true');
 
@@ -18,7 +17,7 @@ describe("SlideShow Current Slide", function() {
 
   });
   
-  it("should be current server slide when position is refreshed", function() {
+  it("should be current position when position is refreshed", function() {
     
     getResource = jasmine.createSpy('getResource').andReturn('0;false');
 
@@ -38,7 +37,7 @@ describe("SlideShow Current Slide", function() {
 	
   it("should be next slide when next slide is called", function() {
 
-    var slideShow = new SlideShow(queryAll(document, '.slide'));
+    var slideShow = new SlideShow([]);
 	  
     slideShow.position._currentIndex = 1;
     slideShow._numberOfSlides = 3;	  
