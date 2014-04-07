@@ -64,6 +64,10 @@ def execute
   click_on "execute"
 end
 
+def send_code
+  click_on "send_code"
+end
+
 def fill_IDE_with(code_input)
   fill_in 'code_input', :with => code_input
 end
@@ -193,7 +197,7 @@ describe 'Blackboard Refresh', :type => :feature, :js => true do
     
     fill_IDE_with("print 'attendee send'")
     
-    click_on "send_code"
+    send_code
     
     expect_IDE_to_have(code_input = "print 'attendee send'", code_output = "attendee send")   
 
@@ -217,7 +221,7 @@ describe 'Blackboard Refresh', :type => :feature, :js => true do
     
     fill_IDE_with("print 'teacher run'")
     
-    click_on "execute"
+    execute
     
     visit blackboard
 
