@@ -141,7 +141,22 @@ describe("IDE RUN", function() {
 
     expect(postResource).toHaveBeenCalledWith('/code_run_result/1', 'code to run', SYNCHRONOUS);		  
 	  
-  });   
+  });  
+
+  it("should NOT run code when ALT-R disabled", function() {
+   
+    codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute' disabled><input type='button' id='send_code'><input type='button' id='get_code'><textarea id='code_output'></textarea></section></div>");
+    slide = new CodeSlide(codeSlideNode);  
+    
+    spyOn(CodeSlide.prototype, 'executeCode');      
+
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
+	  
+    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), R, ALT);
+
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);  
+
+  });  
 
   it("should run and send code when send button clicked", function() {
 
@@ -171,7 +186,22 @@ describe("IDE RUN", function() {
 
     expect(postResource).toHaveBeenCalledWith('/code_send_result/1', 'code to send', SYNCHRONOUS);		  
 	  
-  });  
+  }); 
+
+  it("should NOT send code when ALT-S button disabled", function() {
+   
+    codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code' disabled><input type='button' id='get_code'><textarea id='code_output'></textarea></section></div>");
+    slide = new CodeSlide(codeSlideNode);  
+    
+    spyOn(CodeSlide.prototype, 'executeAndSendCode');      
+
+    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);
+	  
+    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), S, ALT);
+
+    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);  
+
+  });
   
   it("should get and run last teacher run when get button clicked", function() {
 
@@ -204,6 +234,21 @@ describe("IDE RUN", function() {
     expect(slide._editor.content()).toBe('last teacher run code');  
 	  
   });    
+  
+  it("should NOT get and run code when ALT-G disabled", function() {
+   
+    codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code'><input type='button' id='get_code' disabled><textarea id='code_output'></textarea></section></div>");
+    slide = new CodeSlide(codeSlideNode);  
+    
+    spyOn(CodeSlide.prototype, 'getAndExecuteCode');      
+
+    expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(0);
+	  
+    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), G, ALT);
+
+    expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(0);  
+
+  });  
   
   it("should get last execution when updated", function() {
 
