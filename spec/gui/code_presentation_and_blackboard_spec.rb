@@ -40,10 +40,6 @@ end
 ## HELPERS (BEGIN)
 ## -------------------------------------------------------
 
-def go_down
-  find(:css, 'div.presentation').native.send_key(:arrow_down)
-end
-
 def press_space
   find(:css, 'div.presentation').native.send_key(:space)
 end
@@ -54,6 +50,14 @@ end
 
 def go_left
   find(:css, 'div.presentation').native.send_key(:arrow_left)
+end
+
+def go_down
+  find(:css, 'div.presentation').native.send_key(:arrow_down)
+end
+
+def go_up
+  find(:css, 'div.presentation').native.send_key(:arrow_up)
 end
 
 def fill_IDE_with(code_input)
@@ -95,7 +99,8 @@ describe 'Blackboard Navigation', :type => :feature, :js => true do
   it 'should be on second slide' do
     
     visit teacher_coding_presentation
-    find(:css, 'div.presentation').native.send_key(:arrow_right)    
+    
+    go_right
     
     expect(page).to have_content 'CODING EXERCISE - 2'
   
@@ -108,7 +113,8 @@ describe 'Blackboard Navigation', :type => :feature, :js => true do
   it 'should be on IDE with code helper 2' do
     
     visit teacher_coding_presentation
-    find(:css, 'div.presentation').native.send_key(:arrow_down)    
+    
+    go_down    
     
     expect(page).to have_content 'HELPER 2'
   
@@ -121,7 +127,8 @@ describe 'Blackboard Navigation', :type => :feature, :js => true do
   it 'should be on IDE with code helper 1' do
     
     visit teacher_coding_presentation
-    find(:css, 'div.presentation').native.send_key(:arrow_left)    
+    
+    go_left
     
     expect(page).to have_content 'HELPER 1'
   
@@ -134,7 +141,8 @@ describe 'Blackboard Navigation', :type => :feature, :js => true do
   it 'should be back on first slide' do
     
     visit teacher_coding_presentation
-    find(:css, 'div.presentation').native.send_key(:arrow_up)    
+    
+    go_up
     
     expect(page).to have_content 'CODING EXERCISE - 1'
   
@@ -151,14 +159,14 @@ describe 'Blackboard Navigation', :type => :feature, :js => true do
 
 end
 
-describe 'Blackboard Navigation', :type => :feature, :js => true do  
+describe 'Blackboard Refresh', :type => :feature, :js => true do  
 	
   before(:all) do
     $db.execute_sql("delete from run_events") 
     $db.execute_sql("delete from teacher_current_slide") 
   end
 
-  it 'should synchronise code execution with teacher IDE' do
+  it 'should always get last teacher run' do
     
     visit teacher_coding_presentation
     go_down
