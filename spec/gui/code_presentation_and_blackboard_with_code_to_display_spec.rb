@@ -34,10 +34,6 @@ end
 ## HELPERS (BEGIN)
 ## -------------------------------------------------------
 
-def go_down
-  find(:css, 'div.presentation').native.send_key(:arrow_down)
-end
-
 def press_space
   find(:css, 'div.presentation').native.send_key(:space)
 end
@@ -48,6 +44,22 @@ end
 
 def go_left
   find(:css, 'div.presentation').native.send_key(:arrow_left)
+end
+
+def go_down
+  find(:css, 'div.presentation').native.send_key(:arrow_down)
+end
+
+def go_up
+  find(:css, 'div.presentation').native.send_key(:arrow_up)
+end
+
+def execute
+  click_on "execute"
+end
+
+def send_code
+  click_on "send_code"
 end
 
 def fill_IDE_with(code_input)
@@ -88,7 +100,7 @@ describe 'Blackboard Navigation with code to display', :type => :feature, :js =>
 
     fill_IDE_with("print 'teacher run'")
     
-    click_on 'execute'
+    execute
 
     expect_IDE_to_have(code_input = "print 'teacher run'", code_output = "teacher run") 
     
