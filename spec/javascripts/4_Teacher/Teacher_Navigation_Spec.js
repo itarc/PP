@@ -224,44 +224,7 @@ describe("TeacherSlideShow Navigation With an IDE Slide", function() {
     
   });
   
-  //~ it("should NOT show current slide when teacher shows IDE", function() {
-
-   //~ getResource = jasmine.createSpy('getResource').andReturn('0;false');	  
-   //~ spyOn(TeacherSlideShow.prototype, '_showCurrentSlide');
-   //~ spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
-	  
-    //~ var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
-
-    //~ expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
-
-    //~ teacherSlideShow.down();
-    //~ getResource = jasmine.createSpy('getResource').andReturn('0;true');
-
-    //~ teacherSlideShow.next(); 
-    //~ expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
-
-    //~ teacherSlideShow.prev(); 
-    //~ expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
-
-    //~ teacherSlideShow.synchronise();  
-    //~ expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);    
-
-    //~ teacherSlideShow.up();
-    //~ getResource = jasmine.createSpy('getResource').andReturn('0;false');    
-    //~ expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(2);	  
-	  
-    //~ teacherSlideShow.next(); 
-    //~ expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(3);
-
-    //~ teacherSlideShow.prev();  
-    //~ expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(4);
-
-    //~ teacherSlideShow.synchronise();  
-    //~ expect(TeacherSlideShow.prototype._showCurrentSlide.calls.length).toBe(4); // same slide as current slide
-
-  //~ });  
-  
-  it("should update slideshow server", function() {
+  it("should update position on server", function() {
 	  
     getResource = jasmine.createSpy('getResource').andReturn('0;false');
     postResource = jasmine.createSpy('postResource');
