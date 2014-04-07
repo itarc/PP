@@ -1,16 +1,12 @@
-require 'pg'
-require 'uri'
+require_relative '../Accesseur'
+db = Accesseur.new
 
-# CONNEXION
-dev_database_url = 'postgres://postgres:postgres@localhost:5432/powerprez'
-db = URI.parse(ENV["DATABASE_URL"] || dev_database_url)
 
-connection = PG.connect( db.host, db.port, '', '', db.path[1..-1], db.user, db.password)
 
 # LECTURE
 
 puts '----- CURRENT SLIDE'
-read = connection.exec('select * from teacher_current_slide')
+read = db.execute_sql('select * from teacher_current_slide')
 p read.fields
 
 read.values.each do |row|
@@ -18,7 +14,7 @@ read.values.each do |row|
 end
 
 puts '----- COMPTEUR'
-read = connection.exec('select * from compteur')
+read = db.execute_sql('select * from compteur')
 p read.fields
 
 read.values.each do |row|
@@ -26,7 +22,7 @@ read.values.each do |row|
 end
 
 puts '----- POLLS_SAVE'
-read = connection.exec('select * from polls_save')
+read = db.execute_sql('select * from polls_save')
 p read.fields
 
 read.values.each do |row|
@@ -34,7 +30,7 @@ read.values.each do |row|
 end
 
 puts '----- POLLS'
-read = connection.exec('select * from polls order by timestamp desc')
+read = db.execute_sql('select * from polls order by timestamp desc')
 p read.fields
 
 read.values.each do |row|
@@ -42,7 +38,7 @@ read.values.each do |row|
 end
 
 puts '----- RUN EVENTS SAVE'
-read = connection.exec('select * from run_events_save order by timestamp desc')
+read = db.execute_sql('select * from run_events_save order by timestamp desc')
 p read.fields
 
 read.values.each do |row|
@@ -50,7 +46,7 @@ read.values.each do |row|
 end
 
 puts '----- RUN EVENTS'
-read = connection.exec('select * from run_events order by timestamp desc')
+read = db.execute_sql('select * from run_events order by timestamp desc')
 p read.fields
 
 read.values.each do |row|
