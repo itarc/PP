@@ -7,7 +7,7 @@ describe("TeacherSlideShow with a Poll Slide", function() {
 	  
     var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 
-    expect(PollSlide.prototype._update).toHaveBeenCalled();
+    expect(PollSlide.prototype._update.calls.length).toBe(1);
 
   });	  
 
