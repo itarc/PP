@@ -60,6 +60,10 @@ def go_up
   find(:css, 'div.presentation').native.send_key(:arrow_up)
 end
 
+def execute
+  click_on "execute"
+end
+
 def fill_IDE_with(code_input)
   fill_in 'code_input', :with => code_input
 end
@@ -177,7 +181,7 @@ describe 'Blackboard Refresh', :type => :feature, :js => true do
     
     fill_IDE_with("print 'attendee run'")
     
-    click_on "execute"
+    execute
     
     expect_IDE_to_have(code_input = "print 'attendee run'", code_output = "attendee run")    
     
@@ -225,10 +229,8 @@ describe 'Blackboard Refresh', :type => :feature, :js => true do
   
     expect_IDE_to_have(code_input = "print 'teacher run 2'", code_output = "teacher run 2")   
     
-
   end
-  
-  
+
   after(:all) do
     $db.execute_sql("delete from run_events") 
     $db.execute_sql("delete from teacher_current_slide")    
