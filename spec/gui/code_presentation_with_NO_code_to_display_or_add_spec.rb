@@ -91,13 +91,11 @@ describe 'Teacher Presentation', :type => :feature, :js => true do
 
     visit teacher_coding_presentation
     
-    expect(page).to have_no_field 'code_input', :with => "", :visible => true
-    expect(page).to have_no_field 'code_output', :with => "", :visible => true
+    expect(page).to have_content 'EXERCISE - 1'
     
     go_down
 
-    expect(page).to have_field 'code_input', :with => "", :visible => true
-    expect(page).to have_field 'code_output', :with => "", :visible => true
+    expect_IDE_to_be_empty
     
   end
 
@@ -107,9 +105,9 @@ describe 'Teacher Presentation', :type => :feature, :js => true do
 
     expect(page).to have_content 'EXERCISE - 1'
 
-    find(:css, 'div.presentation').native.send_key(:arrow_down)
-    find(:css, 'div.presentation').native.send_key(:arrow_right)   
-    find(:css, 'div.presentation').native.send_key(:arrow_up)    
+    go_down
+    go_right 
+    go_up
 
     expect(page).to have_content 'EXERCISE - 2'
     
@@ -133,10 +131,9 @@ describe 'Teacher IDE', :type => :feature, :js => true do
 
     visit teacher_coding_presentation
     
-    find(:css, 'div.presentation').native.send_key(:arrow_down)
+    go_down
     
-    expect(page).to have_field 'code_input', :with => "", :visible => true
-    expect(page).to have_field 'code_output', :with => "", :visible => true
+    expect_IDE_to_be_empty
     
   end
   
@@ -144,12 +141,15 @@ describe 'Teacher IDE', :type => :feature, :js => true do
 
     visit teacher_coding_presentation
     
-    find(:css, 'div.presentation').native.send_key(:arrow_down)    
+    go_down
     
     fill_in 'code_input', :with => 'print "something"'
-    click_on 'execute'
     
-    expect(page).to have_field 'code_output', :with => 'something'
+    fill_IDE_with('print "something"')
+    
+    execute
+
+    expect_IDE_to_have(code_input = 'print "something"', code_output = 'something')
     
   end  
 
@@ -157,17 +157,19 @@ describe 'Teacher IDE', :type => :feature, :js => true do
 
     visit teacher_coding_presentation
     
-    find(:css, 'div.presentation').native.send_key(:arrow_down)    
+    go_down    
     
-    fill_in 'code_input', :with => 'print "éèêàâùï"'
-    click_on 'execute'
+    fill_IDE_with(print "éèêàâùï")
+    
+    execute
     
     expect(find_field('code_output').value).to have_content 'invalid multibyte char (US-ASCII)'
     
-    fill_in 'code_input', :with => "#encoding: utf-8" + "\n" + 'print "éèêàâùï"'
-    click_on 'execute'
+    fill_IDE_with("#encoding: utf-8" + "\n" + 'print "éèêàâùï"')    
     
-    expect(page).to have_field 'code_output', :with => 'éèêàâùï'
+    execute
+    
+    expect_IDE_to_have(code_input = 'print "éèêàâùï"', code_output = 'éèêàâùï')    
     
   end  
 
@@ -175,15 +177,15 @@ describe 'Teacher IDE', :type => :feature, :js => true do
 	  
     visit teacher_coding_presentation
 
-    find(:css, 'div.presentation').native.send_key(:arrow_down)
+   go_down
 
     expect(page).to have_content 'HELPER 1'	  
 
-    find(:css, 'div.presentation').native.send_key(:arrow_right)
+    go_right
 
     expect(page).to have_content 'HELPER 2'
 
-    find(:css, 'div.presentation').native.send_key(:arrow_left)
+    go_left
 
     expect(page).to have_content 'HELPER 1'
 	  
@@ -208,8 +210,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
 
     visit attendee_IDE_with_NO_code_to_display
     
-    expect(page).to have_field 'code_input', :with => "", :visible => true
-    expect(page).to have_field 'code_output', :with => "", :visible => true
+    expect_IDE_to_be_empty
     
   end 
   
@@ -217,10 +218,11 @@ describe 'Attendee IDE', :type => :feature, :js => true do
 
     visit attendee_IDE_with_NO_code_to_display
     
-    fill_in 'code_input', :with => 'print "something"'
-    click_on 'execute'
+    fill_IDE_with('print "something"')
     
-    expect(page).to have_field 'code_output', :with => 'something'
+    execute
+    
+    expect_IDE_to_have(code_input = 'print "something"', code_output = 'something')
     
   end  
 
@@ -235,18 +237,22 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     expect(page).to have_content 'HELPER 1'
 
     visit teacher_coding_presentation
-    find(:css, 'div.presentation').native.send_key(:arrow_right)
+    
+    go_right
     
     visit attendee_IDE_with_NO_code_to_display
-    find(:css, 'div.presentation').native.send_key(:space)     
+
+    press_space
 
     expect(page).to have_content 'HELPER 2'
 
     visit teacher_coding_presentation
-    find(:css, 'div.presentation').native.send_key(:arrow_left)
+
+    go_left
     
     visit attendee_IDE_with_NO_code_to_display
-    find(:css, 'div.presentation').native.send_key(:space)     
+
+    press_space
 
     expect(page).to have_content 'HELPER 1'
     
