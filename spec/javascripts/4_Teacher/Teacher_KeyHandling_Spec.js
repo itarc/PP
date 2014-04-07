@@ -8,7 +8,6 @@ describe("TeacherSlideShow KeyHandling", function() {
 
     __triggerKeyboardEvent(document, RIGHT_ARROW);
 
-    expect(TeacherSlideShow.prototype.handleKeys).toHaveBeenCalled();
     expect(TeacherSlideShow.prototype.handleKeys.calls.length).toBe(1);
 
   });	
@@ -21,7 +20,6 @@ describe("TeacherSlideShow KeyHandling", function() {
 
     __triggerKeyboardEvent(document, R, ALT);
 
-    expect(TeacherSlideShow.prototype.handleKeys).toHaveBeenCalled();
     expect(TeacherSlideShow.prototype.handleKeys.calls.length).toBe(1);
 
   });	  
@@ -34,9 +32,7 @@ describe("TeacherSlideShow KeyHandling", function() {
 
     __triggerKeyboardEvent(document, RIGHT_ARROW);
 
-    expect(TeacherSlideShow.prototype.next).toHaveBeenCalled();
-    expect(TeacherSlideShow.prototype.next.calls.length).toBe(1);
-    expect(TeacherSlideShow.prototype.next).toHaveBeenCalledWith();    
+    expect(TeacherSlideShow.prototype.next.calls.length).toBe(1);   
 
   });  
   
@@ -47,10 +43,8 @@ describe("TeacherSlideShow KeyHandling", function() {
     expect(TeacherSlideShow.prototype.prev.calls.length).toBe(0);
 	  
     __triggerKeyboardEvent(document, LEFT_ARROW);
-
-    expect(TeacherSlideShow.prototype.prev).toHaveBeenCalled();
-    expect(TeacherSlideShow.prototype.prev.calls.length).toBe(1);
-    expect(TeacherSlideShow.prototype.prev).toHaveBeenCalledWith();    
+    
+    expect(TeacherSlideShow.prototype.prev.calls.length).toBe(1);    
 
   }); 
   
@@ -62,9 +56,7 @@ describe("TeacherSlideShow KeyHandling", function() {
 	  
     __triggerKeyboardEvent(document, DOWN_ARROW);
 
-    expect(TeacherSlideShow.prototype.down).toHaveBeenCalled();
     expect(TeacherSlideShow.prototype.down.calls.length).toBe(1);
-    expect(TeacherSlideShow.prototype.down).toHaveBeenCalledWith();    
 
   });   
   
@@ -76,9 +68,7 @@ describe("TeacherSlideShow KeyHandling", function() {
 	  
     __triggerKeyboardEvent(document, UP_ARROW);
 
-    expect(TeacherSlideShow.prototype.up).toHaveBeenCalled();
-    expect(TeacherSlideShow.prototype.up.calls.length).toBe(1);
-    expect(TeacherSlideShow.prototype.up).toHaveBeenCalledWith();    
+    expect(TeacherSlideShow.prototype.up.calls.length).toBe(1);    
 
   });  
 
