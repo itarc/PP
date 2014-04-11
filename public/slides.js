@@ -166,21 +166,28 @@ CodeSlide.prototype = {
 
   executeCode: function() {
     if (this.codeToExecute() == '' ) return;
+    this._node.querySelector('#execute').style.background = "red";    
     run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
     this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);
+    this._node.querySelector('#execute').style.background = "";    
   },
   
   executeAndSendCode: function() {
-    if (this.codeToExecute() == '' ) return;    
+    if (this.codeToExecute() == '' ) return;   
+    this._node.querySelector('#send_code').style.background = "red";     
     send_url = "/code_send_result" + "/" + this._codeHelper_current_index;
     this._node.querySelector('#code_output').value = postResource(send_url, this.codeToExecute(), SYNCHRONOUS);
+    this._node.querySelector('#send_code').style.background = "";    
   },
 
   getAndExecuteCode: function() {  
+    this._node.querySelector('#get_code').style.background = "red";       
     get_url = "/code_get_last_teacher_run" + "/" + this._codeHelper_current_index;
     code = getResource(get_url).split(SEPARATOR)[0];
     this._editor.updateEditor(code);
-    this.executeCode();
+    run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
+    this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);    
+    this._node.querySelector('#get_code').style.background = "";    
   }, 
 
   lastExecution: function(context) {
