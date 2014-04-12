@@ -119,9 +119,9 @@ CodeSlide.prototype = {
   
   _keyHandling: function(e) {
     if ( e.altKey ) { 
-      if (e.which == R) { if ( ! this._node.querySelector('#execute').disabled == true ) this.executeCode(); }
-      if (e.which == S) { if ( ! this._node.querySelector('#send_code').disabled == true ) this.executeAndSendCode(); }
-      if (e.which == G) { if ( ! this._node.querySelector('#get_code').disabled == true ) this.getAndExecuteCode(); }
+      if (e.which == R) { this._node.querySelector('#execute').click(); }
+      if (e.which == S) { this._node.querySelector('#send_code').click(); }
+      if (e.which == G) { this._node.querySelector('#get_code').click(); }
     } else {
       e.stopPropagation()
     }    
@@ -130,16 +130,25 @@ CodeSlide.prototype = {
   _declareEvents: function() {  
     var _t = this;	  
     this._node.querySelector('#code_input').addEventListener('keydown',
-      function(e) { _t._keyHandling(e) }, false
+      function(e) { _t._keyHandling(e); }, false
     );
     this._node.querySelector('#execute').addEventListener('click',
-      function(e) { _t.executeCode(); }, false
+      function(e) { 
+        _t._node.querySelector('#execute').style.background = "red"; 
+        _t.executeCode(); 
+        _t._node.querySelector('#execute').style.background = "";}, false
     );     
     this._node.querySelector('#send_code').addEventListener('click',
-      function(e) { _t.executeAndSendCode(); }, false
+      function(e) { 
+        _t._node.querySelector('#send_code').style.background = "red";  
+        _t.executeAndSendCode(); 
+        _t._node.querySelector('#send_code').style.background = ""; }, false
     );     
     this._node.querySelector('#get_code').addEventListener('click',
-      function(e) { _t.getAndExecuteCode(); }, false
+      function(e) {
+        _t._node.querySelector('#get_code').style.background = "red";
+        _t.getAndExecuteCode(); 
+        _t._node.querySelector('#get_code').style.background = "";}, false
     );        
   },
   
@@ -166,28 +175,21 @@ CodeSlide.prototype = {
 
   executeCode: function() {
     if (this.codeToExecute() == '' ) return;
-    this._node.querySelector('#execute').style.background = "red";    
     run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
-    this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);
-    this._node.querySelector('#execute').style.background = "";    
+    this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS); 
   },
   
   executeAndSendCode: function() {
-    if (this.codeToExecute() == '' ) return;   
-    this._node.querySelector('#send_code').style.background = "red";     
+    if (this.codeToExecute() == '' ) return;      
     send_url = "/code_send_result" + "/" + this._codeHelper_current_index;
-    this._node.querySelector('#code_output').value = postResource(send_url, this.codeToExecute(), SYNCHRONOUS);
-    this._node.querySelector('#send_code').style.background = "";    
+    this._node.querySelector('#code_output').value = postResource(send_url, this.codeToExecute(), SYNCHRONOUS);   
   },
 
-  getAndExecuteCode: function() {  
-    this._node.querySelector('#get_code').style.background = "red";       
+  getAndExecuteCode: function() {         
     get_url = "/code_get_last_teacher_run" + "/" + this._codeHelper_current_index;
     code = getResource(get_url).split(SEPARATOR)[0];
     this._editor.updateEditor(code);
-    run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
-    this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);    
-    this._node.querySelector('#get_code').style.background = "";    
+    this.executeCode();
   }, 
 
   lastExecution: function(context) {
