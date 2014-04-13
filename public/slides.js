@@ -118,6 +118,9 @@ CodeSlide.prototype = {
   },
   
   _keyHandling: function(e) {
+    
+    preventDefaultKeys(e);
+    
     if ( e.altKey ) { 
       if (e.which == R) { this._node.querySelector('#execute').click(); }
       if (e.which == S) { this._node.querySelector('#send_code').click(); }

@@ -16,6 +16,9 @@ BlackboardSlideShow.prototype = {
   },  
   
   handleKeys: function(e) {
+    
+    SlideShow.prototype.handleKeys.call(this, e);
+    
     switch (e.keyCode) {
       case SPACE:  
         this._refresh();

@@ -9,6 +9,9 @@ var TeacherSlideShow = function(slides) {
 
 TeacherSlideShow.prototype = {
   handleKeys: function(e) {
+    
+    SlideShow.prototype.handleKeys.call(this, e);
+    
     switch (e.keyCode) {
       case LEFT_ARROW: 
         this.prev(); 
@@ -38,7 +41,7 @@ TeacherSlideShow.prototype = {
 };
 
 for(key in SlideShow.prototype) {
-  TeacherSlideShow.prototype[key] = SlideShow.prototype[key];
+  if (! TeacherSlideShow.prototype[key]) TeacherSlideShow.prototype[key] = SlideShow.prototype[key];
 }
 
 // ----------------------------------

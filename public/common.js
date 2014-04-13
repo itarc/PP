@@ -9,12 +9,15 @@ var UP_ARROW = 38;
 var SPACE = 32;
 var HOME = 36;
 
+var BACK_SPACE = 8;
+
 var SYNCHRONOUS = false;
 var ASYNCHRONOUS = true;
 
 var ALT = 18
 var CTRL = 17
 var F5 = 116
+var BS = 8
 var G = 71
 var R = 82
 var S = 83
@@ -44,5 +47,7 @@ var getResource = function(path) {
   xmlhttp.send();
   return xmlhttp.responseText;
 };
+
+var preventDefaultKeys = function(e) {};
 
 

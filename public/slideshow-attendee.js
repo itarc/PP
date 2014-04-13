@@ -8,6 +8,9 @@ var AttendeeSlideShow = function(slides) {
 
 AttendeeSlideShow.prototype = {
   handleKeys: function(e) {
+    
+    SlideShow.prototype.handleKeys.call(this, e);
+    
     switch (e.keyCode) {
       case SPACE:  
         this._refresh()
@@ -17,7 +20,7 @@ AttendeeSlideShow.prototype = {
 };
 
 for(key in SlideShow.prototype) {
-  AttendeeSlideShow.prototype[key] = SlideShow.prototype[key];
+  if (! AttendeeSlideShow.prototype[key]) AttendeeSlideShow.prototype[key] = SlideShow.prototype[key];
 }
 
 // ----------------------------------

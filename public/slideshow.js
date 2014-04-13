@@ -67,6 +67,10 @@ SlideShow.prototype = {
   _numberOfSlides : 0,
 
 
+  handleKeys: function(e) {
+    preventDefaultKeys(e);
+  },
+  
   _clear: function() {
     for(var slideIndex in this._slides) { this._slides[slideIndex].setState('') }
   },

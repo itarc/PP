@@ -35,5 +35,19 @@ describe("SlideShow with an IDE Slide", function() {
     expect(CodeSlide.prototype._update.calls.length).toBe(0);
 
   });
+  
+  it("should prevent default when key pressed on editor", function() {
+    
+    var slideShow = new SlideShow(queryAll(document, '.slide'))         
+
+    preventDefaultKeys = jasmine.createSpy('preventDefaultKeys');
+
+    expect(preventDefaultKeys.calls.length).toBe(0);
+
+    __triggerKeyboardEvent(slideShow._slides[0]._node.querySelector('#code_input'), F5);
+
+    expect(preventDefaultKeys.calls.length).toBe(1); // SHOULD BE 1 => TO REVIEW
+
+  });  
 
 });
