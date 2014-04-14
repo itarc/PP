@@ -1,4 +1,20 @@
-describe("Balckboard Refresh", function() {
+describe("Balckboard", function() {
+  
+  it("should call specific url when run", function() {
+    
+    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
+    
+    var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
+
+    postResource = jasmine.createSpy('postResource');
+
+    blackboardSlideShow._slides[0]._editor.updateEditor("code to run");
+  
+    blackboardSlideShow._slides[0].executeCode('blackboard');
+
+    expect(postResource).toHaveBeenCalledWith('/code_run_result_blackboard/0', "code to run", SYNCHRONOUS);
+
+  });  
   
   it("should get last Teacher run when refreshed", function() {
     
