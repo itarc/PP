@@ -22,12 +22,17 @@ get '/blackboard' do
   send_file "views/blackboard.html"
 end
 
+get '/blackboard_hangout.xml' do
+  send_file "views/blackboard_hangout.xml"
+end
+
 get '/teacher-x1973' do
   session[:user_id] = '0'
   send_file "views/slideshow-teacher.1973x.html"
 end
 
 get '/teacher_current_slide' do
+  response.headers['Access-Control-Allow-Origin'] = '*'  
   current_slide_id
 end
 
