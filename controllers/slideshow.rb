@@ -47,6 +47,7 @@ get '/code_last_execution/*' do
 end
 
 get '/code_get_last_teacher_run/*' do
+  response.headers['Access-Control-Allow-Origin'] = '*'    
   last_teacher_run = RunTimeEvent.find_last_teacher_run(slide_index)
   return "" if last_teacher_run == nil
   last_teacher_run.code_input  
@@ -78,6 +79,7 @@ post '/code_run_result/*' do
 end
 
 post '/code_run_result_blackboard/*' do
+  response.headers['Access-Control-Allow-Origin'] = '*'    
   code = request.env["rack.input"].read
   run_ruby("run", code.force_encoding("UTF-8"), 'blackboard', slide_index)
 end

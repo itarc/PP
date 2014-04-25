@@ -24,6 +24,8 @@ var S = 83
 
 var SEPARATOR = '\n#{SEP}#\n'
 
+var SERVER_PATH = ''
+
 var is_a_number = function(variable) {
     return  !( isNaN(variable) );
 };
@@ -35,7 +37,7 @@ var queryAll = function(node, query) {
 
 var postResource = function(path, params, synchronous_asynchronous) {
   var xmlhttp = new XMLHttpRequest();	
-  xmlhttp.open("POST", path, synchronous_asynchronous);
+  xmlhttp.open("POST", SERVER_PATH + path, synchronous_asynchronous);
   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
   xmlhttp.send(params);	
   return xmlhttp.responseText;
@@ -43,7 +45,7 @@ var postResource = function(path, params, synchronous_asynchronous) {
 
 var getResource = function(path) {
   var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", path, false);
+  xmlhttp.open("GET", SERVER_PATH + path, false);
   xmlhttp.send();
   return xmlhttp.responseText;
 };

@@ -97,5 +97,22 @@ describe("Common post and get", function() {
     expect(postResponse).not.toBeUndefined()	  
 	  
   });	  
+  
+  it("should get and post with global variable SERVER_PATH", function() {
+
+    spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
+    spyOn(XMLHttpRequest.prototype, 'send')	     
+    
+    SERVER_PATH = '//serveur'
+    
+    getResponse = getResource('/teacher_current_slide')
+    expect(XMLHttpRequest.prototype.open).toHaveBeenCalledWith('GET', SERVER_PATH + '/teacher_current_slide', SYNCHRONOUS)    
+    
+    postResponse = postResource('/teacher_current_slide', "", SYNCHRONOUS)
+    expect(XMLHttpRequest.prototype.open).toHaveBeenCalledWith('POST', SERVER_PATH + '/teacher_current_slide', SYNCHRONOUS)      
+    
+    SERVER_PATH = ''    
+    
+  });  
 
 });
