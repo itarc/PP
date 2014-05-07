@@ -186,6 +186,15 @@ video {
   resize: none;
 }
 
+.code_author {
+  background: black; 
+  color: red; 
+  font-weight: bold;
+  font-size: 16px; 
+  text-align: right; 
+  width: 60%
+}
+
 input[type=button]#execute {
   font-size: 0.5em;
   margin: 1%;  
