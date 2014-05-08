@@ -46,6 +46,12 @@ get '/code_last_execution/*' do
   last_execution.code_input
 end
 
+get '/code_attendees_last_send/*' do
+  last_execution = RunTimeEvent.find_attendees_last_send_on_slide(session[:user_id], slide_index)
+  return "" if last_execution == nil
+  last_execution.code_input
+end
+
 get '/code_get_last_teacher_run/*' do
   response.headers['Access-Control-Allow-Origin'] = '*'    
   last_teacher_run = RunTimeEvent.find_last_teacher_run(slide_index)

@@ -144,7 +144,7 @@ class TestRunTimeEvent_find_last_execution_in_teacher_slide < Test::Unit::TestCa
     RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 3", code_output = "3", timestamp = '3').save
     RunTimeEvent.new("0", type="run", slide_index = "slide_0" ,code_input = "print 5", code_output = "5", timestamp = '4').save    
     RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 4", code_output = "4", timestamp = '4').save
-    runtime_events = RunTimeEvent.find_last_user_execution_on_slide("0", "slide_0")
+    runtime_events = RunTimeEvent.find_attendees_last_send_on_slide("0", "slide_0")
     assert_equal (["user", "send", "slide_0", "print 4", "4"]).inspect, runtime_events.inspect
   end
 

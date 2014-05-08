@@ -201,9 +201,19 @@ CodeSlide.prototype = {
     if (slideShowType == 'blackboard') { url = '/code_get_last_teacher_run'; }
     return getResource(url + '/' + this._codeHelper_current_index);
   },  
+
+  attendeesLastSend: function(slideShowType) {
+    url = '/code_attendees_last_send'
+    return getResource(url + '/' + this._codeHelper_current_index);
+  },    
   
   _updateEditorAndExecuteCode: function(slideShowType) {
-    lastexecution = this.lastExecution(slideShowType); 
+    if (slideShowType == 'teacher') {
+      lastexecution = this.attendeesLastSend(slideShowType);
+      if (lastexecution == '') { lastexecution = this.lastExecution(slideShowType); }
+    } else {
+      lastexecution = this.lastExecution(slideShowType);
+    }
     if (lastexecution != '') { 
       if (lastexecution.split(SEPARATOR)[0] != this._editor.content()) { 
         this._editor.updateEditor(lastexecution.split(SEPARATOR)[0]); 

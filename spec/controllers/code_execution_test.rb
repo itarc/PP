@@ -111,7 +111,7 @@ class TestLastExecution_in_teacher_slide < Test::Unit::TestCase
 
   def test01_should_return_last_attendee_send
     post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'user_1'}
-    get '/code_last_execution/0', {}, 'rack.session' => {:user_id => '0' }
+    get '/code_attendees_last_send/0', {}, 'rack.session' => {:user_id => '0' }
     assert_equal "code sent", last_response.body    
   end
   

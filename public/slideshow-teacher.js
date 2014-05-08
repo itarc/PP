@@ -3,6 +3,7 @@
 // ----------------------------------
 var TeacherSlideShow = function(slides) {
   SlideShow.call(this, slides); 
+  this.position.slideShowType = 'teacher';  
   this.position.postCurrentIndex();
   this._updateCurrentSlide();  
 };
