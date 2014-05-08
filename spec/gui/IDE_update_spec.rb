@@ -65,13 +65,17 @@ def fill_IDE_with(code_input)
   fill_in 'code_input', :with => code_input
 end
 
-def expect_IDE_to_have(code_input, code_output)
+def expect_IDE_to_have(code_input, code_output, author = nil)
   expect(page).to have_field 'code_input', :with => code_input
   expect(page).to have_field 'code_output', :with => code_output
+  within "#author_name" do
+    #~ expect(page).to have_content author if author != nil 
+    expect(page.text).to eq author if author != nil
+  end
 end
 
 def expect_IDE_to_be_empty
-  expect_IDE_to_have(code_input = '', code_output = '')
+  expect_IDE_to_have(code_input = '', code_output = '', author = '')
 end
 
 ## -------------------------------------------------------
@@ -100,7 +104,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
   end 
   
-  it 'should show attendee last send' do   
+  it 'should show attendee last send with author name' do   
 
     visit teacher_coding_presentation
     go_down 
@@ -111,7 +115,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     press_space
     
-    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send', author = 'attendee 1')
     
   end
   
@@ -131,7 +135,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
 
   end  
   
-  it 'should always show teacher last run after' do   
+  it 'should always show teacher last run if it happened after last send' do   
 
     visit teacher_coding_presentation
     go_down 
@@ -142,7 +146,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     press_space
     
-    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send', author = 'attendee 1')
     
     fill_IDE_with('print "new code to run"')
     
@@ -150,7 +154,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     press_space
     
-    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run')
+    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run', author = '')
     
   end  
 
@@ -165,7 +169,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     execute
     
-    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
+    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run', author = '')
     
     go_right
     
@@ -191,11 +195,11 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     go_left
     
-    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send', author = 'attendee 1')
     
     go_right
 
-    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')   
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send', author = 'attendee 1')   
     
   end    
   

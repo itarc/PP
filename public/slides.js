@@ -108,6 +108,8 @@ var CodeSlide = function(node) {
   this._codeHelper_current_index = 0;
   this._declareEvents();
   this._editor = new Editor(this._node.querySelector('#code_input'));
+  this._author = '';
+  
 };
 
 CodeSlide.prototype = {
@@ -138,6 +140,7 @@ CodeSlide.prototype = {
     this._node.querySelector('#execute').addEventListener('click',
       function(e) { 
         _t._node.querySelector('#execute').style.background = "red"; 
+        _t._author = '';
         _t.executeCode(); 
         _t._node.querySelector('#execute').style.background = "";}, false
     );     
@@ -180,7 +183,8 @@ CodeSlide.prototype = {
     if (this.codeToExecute() == '' ) return;
     run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
     if (slideShowType == 'blackboard') { run_url = '/code_run_result_blackboard' + "/" + this._codeHelper_current_index; }    
-    this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS); 
+    this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);
+    this._node.querySelector('#author_name').innerHTML = this._author;    
   },
   
   executeAndSendCode: function() {
@@ -209,14 +213,21 @@ CodeSlide.prototype = {
   
   _updateEditorAndExecuteCode: function(slideShowType) {
     if (slideShowType == 'teacher') {
-      lastexecution = this.attendeesLastSend(slideShowType);
-      if (lastexecution == '') { lastexecution = this.lastExecution(slideShowType); }
+      attendeeLastSend = this.attendeesLastSend(slideShowType);
+      if (attendeeLastSend == '') {
+        this._author = '';
+        lastexecution = this.lastExecution(slideShowType); 
+      } else {
+        this._author = attendeeLastSend.split('#|||||#')[0];
+        lastexecution = attendeeLastSend.split('#|||||#')[1];
+      }
     } else {
+      this._author = '';      
       lastexecution = this.lastExecution(slideShowType);
     }
     if (lastexecution != '') { 
       if (lastexecution.split(SEPARATOR)[0] != this._editor.content()) { 
-        this._editor.updateEditor(lastexecution.split(SEPARATOR)[0]); 
+        this._editor.updateEditor(lastexecution.split(SEPARATOR)[0]);        
         this.executeCode(slideShowType);
       };
       return;

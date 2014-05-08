@@ -1,7 +1,7 @@
 describe("IDE UPDATE", function() {
 	
   beforeEach(function () {
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea><input type='button' id='execute'><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section><div>");
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><input type='button' id='execute'><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section><div>");
     slide = new CodeSlide(codeSlideNode);  
   });	
 
@@ -90,7 +90,7 @@ describe("IDE UPDATE", function() {
 describe("IDE RUN", function() {
   
   beforeEach(function () {
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea><input type='button' id='execute'><input type='button' id='send_code'/><input type='button' id='get_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section><div>");
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><input type='button' id='execute'><input type='button' id='send_code'/><input type='button' id='get_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section><div>");
     slide = new CodeSlide(codeSlideNode);  
   });	  
   
@@ -276,7 +276,7 @@ describe("IDE RUN", function() {
 describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
   
   beforeEach(function () {
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
   });  
 	
   it("should run code to display if no last execution", function() {
@@ -342,7 +342,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 describe("IDE UPDATE with code to ADD in Code Helper", function() {  
   
   beforeEach(function () {
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
+    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><div class='code_author'>AUTHOR: <span id='author_name'>author</span><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
    });	  
   
   it("should run code to add", function() {

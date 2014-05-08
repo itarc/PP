@@ -2,7 +2,7 @@ describe("Balckboard", function() {
   
   it("should call specific url when run", function() {
     
-    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
+    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
     
     var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
 
@@ -18,7 +18,7 @@ describe("Balckboard", function() {
   
   it("should get last Teacher run when refreshed", function() {
     
-    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
+    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
     
     var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
 
@@ -38,7 +38,7 @@ describe("Balckboard", function() {
   
   it("should NOT refresh when last execution equals code in code editor", function() {
     
-    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
+    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
     
     var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
 
@@ -61,7 +61,7 @@ describe("Balckboard", function() {
   
   it("should NOT show current slide if no change", function() {
     
-    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
+    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
     
     var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
 
