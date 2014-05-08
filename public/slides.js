@@ -176,10 +176,10 @@ CodeSlide.prototype = {
     return this._editor.content() + this._currentCodeHelper().codeToAdd();
   },	  
 
-  executeCode: function(context) {
+  executeCode: function(slideShowType) {
     if (this.codeToExecute() == '' ) return;
     run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
-    if (context == 'blackboard') { run_url = '/code_run_result_blackboard' + "/" + this._codeHelper_current_index; }    
+    if (slideShowType == 'blackboard') { run_url = '/code_run_result_blackboard' + "/" + this._codeHelper_current_index; }    
     this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS); 
   },
   
@@ -196,18 +196,18 @@ CodeSlide.prototype = {
     this.executeCode();
   }, 
 
-  lastExecution: function(context) {
+  lastExecution: function(slideShowType) {
     url = '/code_last_execution'
-    if (context == 'blackboard') { url = '/code_get_last_teacher_run'; }
+    if (slideShowType == 'blackboard') { url = '/code_get_last_teacher_run'; }
     return getResource(url + '/' + this._codeHelper_current_index);
   },  
   
-  _updateEditorAndExecuteCode: function(context) {
-    lastexecution = this.lastExecution(context); 
+  _updateEditorAndExecuteCode: function(slideShowType) {
+    lastexecution = this.lastExecution(slideShowType); 
     if (lastexecution != '') { 
       if (lastexecution.split(SEPARATOR)[0] != this._editor.content()) { 
         this._editor.updateEditor(lastexecution.split(SEPARATOR)[0]); 
-        this.executeCode(context);
+        this.executeCode(slideShowType);
       };
       return;
     }
@@ -215,20 +215,20 @@ CodeSlide.prototype = {
     if (codeToDisplay != '') { 
       if (codeToDisplay != this._editor.content()) { 
         this._editor.updateEditor(codeToDisplay); 
-        this.executeCode(context);
+        this.executeCode(slideShowType);
         };
       return;
     }
     codeToAdd = this._currentCodeHelper().codeToAdd();
     if (codeToAdd != '') {
       this._editor.updateEditor(''); 
-      this.executeCode(context);
+      this.executeCode(slideShowType);
     }
   },
   
-  _update: function(slide_index, context) {
+  _update: function(slide_index, slideShowType) {
     this.showCurrentCodeHelper(slide_index);
-    this._updateEditorAndExecuteCode(context);
+    this._updateEditorAndExecuteCode(slideShowType);
   },
   
 };

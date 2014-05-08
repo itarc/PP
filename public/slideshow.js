@@ -6,7 +6,7 @@ var Position = function() {
   this._IDEDisplayed  = false;
   this._previousIndex = undefined;
   this._previousIDEDisplayed = undefined;
-  this.context = undefined;
+  this.slideShowType = undefined;
 };
 
 Position.prototype = {
@@ -106,7 +106,7 @@ SlideShow.prototype = {
 
   _updateCurrentSlide: function() {  
     if (this._slides.length == 0) return; 
-    this._currentSlide._update(this.position._currentIndex, this.position.context);
+    this._currentSlide._update(this.position._currentIndex, this.position.slideShowType);
   },  
   
   _refresh: function() {
