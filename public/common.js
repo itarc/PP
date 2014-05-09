@@ -16,6 +16,7 @@ var ASYNCHRONOUS = true;
 
 var ALT = 18
 var CTRL = 17
+var RETURN = 13
 var F5 = 116
 var BS = 8
 var G = 71

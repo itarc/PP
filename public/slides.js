@@ -73,8 +73,18 @@ Editor.prototype = {
 // ----------------------------------
 // CODE HELPER (MINI-SLIDE)
 // ----------------------------------
-var CodeHelper = function(node) {
+var CodeHelper = function(node, slideNode) {
   this._node = node;
+  //~ if (this._node.querySelector('#attendee_name')) {
+    //~ var _t = this;
+    //~ var _s = slideNode;
+    //~ this._node.querySelector('#attendee_name').addEventListener('keydown',
+      //~ function(e) { if (e.keyCode == 13) { 
+        //~ _s._author = _t._node.querySelector('#attendee_name').value;  
+        //~ _s._node.querySelector('#author_name').innerHTML = _s._author; 
+        //~ _t._node.querySelector('#attendee_name').value = '' } }, false
+    //~ ); 
+  //~ }
 }
 
 CodeHelper.prototype = {
@@ -92,7 +102,7 @@ CodeHelper.prototype = {
     if (this._node.querySelector('.code_to_display') ) 
       code = this._node.querySelector('.code_to_display').innerHTML;
     return code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-  },  
+  },
 }
 
 // ----------------------------------
@@ -101,8 +111,10 @@ CodeHelper.prototype = {
 var CodeSlide = function(node) {
   Slide.call(this, node);
   
+  var _s = this;
+  
   this._codeHelpers = (queryAll(node, '.code_helper')).map(function(element) {
-    return new CodeHelper(element); 
+    return new CodeHelper(element, _s); 
   });
   
   this._codeHelper_current_index = 0;
@@ -133,7 +145,16 @@ CodeSlide.prototype = {
   },
   
   _declareEvents: function() {  
-    var _t = this;	  
+    var _t = this;   
+    if (_t._node.querySelector('#attendee_name')) {
+      _attendee_name = this._node.querySelector('#attendee_name')
+      _attendee_name.addEventListener('keydown',
+        function(e) { if (e.keyCode == RETURN) { 
+          _t._author = _attendee_name.value;  
+          _t._node.querySelector('#author_name').innerHTML = _t._author; 
+          _attendee_name.value = '' } }, false
+      );
+    }
     this._node.querySelector('#code_input').addEventListener('keydown',
       function(e) { _t._keyHandling(e); }, false
     );

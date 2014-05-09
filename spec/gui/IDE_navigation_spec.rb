@@ -45,6 +45,10 @@ def press_space
   find(:css, 'div.presentation').native.send_key(:space)
 end
 
+def press_enter
+  find(:css, 'div.presentation').native.send_key(:enter)
+end
+
 def go_right
   find(:css, 'div.presentation').native.send_key(:arrow_right)
 end
@@ -262,7 +266,29 @@ describe 'Attendee IDE', :type => :feature, :js => true do
 
     expect(page).to have_content 'HELPER 1'
     
-  end  
+  end
+
+  it 'should ask an author name' do
+    
+    visit attendee_IDE_with_NO_code_to_display
+    
+    expect(page).to have_content 'AUTHOR:'
+
+    expect(page).to have_field 'attendee_name', :with => ''
+
+    expect(page).to have_content 'AUTHOR NAME?'
+    
+    fill_in 'attendee_name', :with => "a name"
+    
+    expect(page).to have_field 'attendee_name', :with => 'a name'
+    
+    find('#attendee_name').native.send_key(:return)
+
+    expect(page).to have_field 'attendee_name', :with => ''
+    
+    expect(page).to have_content 'AUTHOR: a name'
+    
+  end
   
   after(:each) do
     $db.execute_sql("delete from run_events") 
