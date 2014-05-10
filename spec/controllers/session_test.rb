@@ -61,6 +61,54 @@ class TestSession < Test::Unit::TestCase
     
   end  
   
+  def test03_should_always_return_0_for_teacher_session_id
+    
+    session = {}
+    
+    get '/teacher-x1973', {}, 'rack.session' => session
+    assert_equal '0', session[:user_id]    
+    
+  end
+  
+  def teardown
+    $db.execute_sql("update compteur set identifiant = 0")	  
+  end  
+  
+end
+
+
+class TestAttendee_name < Test::Unit::TestCase
+  
+  include Rack::Test::Methods
+
+  def app
+    Sinatra::Application
+  end
+  
+  def setup
+    $db.execute_sql("update compteur set identifiant = 0")
+  end  
+  
+  def test01_should_create_an_attendee_name_session_id
+
+    session = {}
+    
+    get '/', {}, 'rack.session' => session
+    assert_equal '1', session[:user_id]
+    
+    get '/session_id', {}, 'rack.session' => session
+    assert_equal '1', last_response.body  
+    
+    post '/session_id', {:attendee_name => 'a name'}, 'rack.session' => session
+    
+    get '/', {}, 'rack.session' => session
+    assert_equal 'a name', session[:user_id]
+    
+    get '/session_id', {}, 'rack.session' => session
+    assert_equal 'a name', last_response.body
+    
+  end
+  
   def teardown
     $db.execute_sql("update compteur set identifiant = 0")	  
   end  

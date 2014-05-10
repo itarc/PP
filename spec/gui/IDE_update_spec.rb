@@ -69,13 +69,12 @@ def expect_IDE_to_have(code_input, code_output, author = nil)
   expect(page).to have_field 'code_input', :with => code_input
   expect(page).to have_field 'code_output', :with => code_output
   within "#author_name" do
-    #~ expect(page).to have_content author if author != nil 
     expect(page.text).to eq author if author != nil
   end
 end
 
 def expect_IDE_to_be_empty
-  expect_IDE_to_have(code_input = '', code_output = '', author = '')
+  expect_IDE_to_have(code_input = '', code_output = '', author = nil)
 end
 
 ## -------------------------------------------------------
@@ -152,9 +151,11 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     execute
     
+    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run', author = '0')    
+    
     press_space
     
-    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run', author = '')
+    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run', author = '0')
     
   end  
 
@@ -169,7 +170,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     execute
     
-    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run', author = '')
+    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run', author = '0')
     
     go_right
     

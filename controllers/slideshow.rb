@@ -59,6 +59,10 @@ get '/code_get_last_teacher_run/*' do
   last_teacher_run.code_input  
 end
 
+get '/session_id' do
+  session[:user_id]
+end
+
 # ---------
 # POSTs
 # ---------
@@ -95,3 +99,6 @@ post '/code_send_result/*' do
   run_ruby("send", code.force_encoding("UTF-8"), user_id, slide_index)
 end
 
+post '/session_id' do
+  session[:user_id] = params[:attendee_name]
+end

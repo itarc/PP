@@ -29,7 +29,7 @@ get attendee_IDE_with_NO_code_to_display do
 end
 
 get attendee_IDE_with_code_to_display do
-  session[:user_id] = '1'	
+  session[:user_id] = '1'
   redirect "coding_slide_with_code_to_display-attendee.html"
 end
 
@@ -272,11 +272,15 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     
     visit attendee_IDE_with_NO_code_to_display
     
-    expect(page).to have_content 'AUTHOR:'
+    expect(page).to have_content 'AUTHOR: 1'
 
     expect(page).to have_field 'attendee_name', :with => ''
 
     expect(page).to have_content 'AUTHOR NAME?'
+    
+    find('#attendee_name').native.send_key(:return)
+
+    expect(page).to have_content 'AUTHOR: 1'
     
     fill_in 'attendee_name', :with => "a name"
     
@@ -289,6 +293,34 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     expect(page).to have_content 'AUTHOR: a name'
     
   end
+  
+  it 'should keep author name after a run' do
+    
+    visit attendee_IDE_with_NO_code_to_display
+    
+    expect(page).to have_content 'HELPER 1'    
+    
+    fill_in 'attendee_name', :with => "a name"
+    
+    find('#attendee_name').native.send_key(:return)
+    
+    expect(page).to have_content 'AUTHOR: a name'
+    
+    fill_IDE_with('print "something"')
+    
+    execute
+
+    expect(page).to have_content 'AUTHOR: a name'
+    
+    $db.execute_sql("update teacher_current_slide set current_slide_id = '1'")    
+    
+    press_space
+    
+    expect(page).to have_content 'HELPER 2'    
+    
+    expect(page).to have_content 'AUTHOR: a name'
+
+  end  
   
   after(:each) do
     $db.execute_sql("delete from run_events") 
