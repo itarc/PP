@@ -8,7 +8,7 @@ describe("Balckboard", function() {
 
     postResource = jasmine.createSpy('postResource');
 
-    blackboardSlideShow._slides[0]._editor.updateEditor("code to run");
+    blackboardSlideShow._slides[0]._editor.updateWith("code to run");
   
     blackboardSlideShow._slides[0].executeCode('blackboard');
 
@@ -25,7 +25,7 @@ describe("Balckboard", function() {
     spyOn(CodeSlide.prototype, 'executeCode');
     getResource = jasmine.createSpy('getResource').andReturn('last teacher run');
 
-    blackboardSlideShow._slides[0]._editor.updateEditor("");
+    blackboardSlideShow._slides[0]._editor.updateWith("");
   
     blackboardSlideShow._refresh();
 
@@ -45,13 +45,13 @@ describe("Balckboard", function() {
     spyOn(CodeSlide.prototype, 'executeCode');      
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn('last execution');
 
-    blackboardSlideShow._slides[0]._editor.updateEditor("");
+    blackboardSlideShow._slides[0]._editor.updateWith("");
   
     blackboardSlideShow._refresh();
     
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
     
-    blackboardSlideShow._slides[0]._editor.updateEditor("last execution");
+    blackboardSlideShow._slides[0]._editor.updateWith("last execution");
     
     blackboardSlideShow._refresh();
     

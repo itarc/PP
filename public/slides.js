@@ -65,7 +65,7 @@ Editor.prototype = {
   content: function() {
     return this._node.value;
   },
-  updateEditor: function(code) {
+  updateWith: function(code) {
     this._node.value = code;  
   },
 }
@@ -238,7 +238,7 @@ CodeSlide.prototype = {
   getAndExecuteCode: function() {         
     get_url = "/code_get_last_teacher_run" + "/" + this._codeHelper_current_index;
     code = getResource(get_url).split(SEPARATOR)[0];
-    this._editor.updateEditor(code);
+    this._editor.updateWith(code);
     this.executeCode();
   }, 
 
@@ -268,7 +268,7 @@ CodeSlide.prototype = {
     }
     if (lastexecution != '') { 
       if (lastexecution.split(SEPARATOR)[0] != this._editor.content()) { 
-        this._editor.updateEditor(lastexecution.split(SEPARATOR)[0]);        
+        this._editor.updateWith(lastexecution.split(SEPARATOR)[0]);        
         this.executeCode(slideShowType);
         this._authorBar.updateWith(local_author);
       };
@@ -277,15 +277,16 @@ CodeSlide.prototype = {
     codeToDisplay = this._currentCodeHelper().codeToDisplay(); 
     if (codeToDisplay != '') { 
       if (codeToDisplay != this._editor.content()) { 
-        this._editor.updateEditor(codeToDisplay); 
+        this._editor.updateWith(codeToDisplay); 
         this.executeCode(slideShowType);
         };
       return;
     }
     codeToAdd = this._currentCodeHelper().codeToAdd();
     if (codeToAdd != '') {
-      this._editor.updateEditor(''); 
+      this._editor.updateWith(''); 
       this.executeCode(slideShowType);
+      return;
     }
   },
   
