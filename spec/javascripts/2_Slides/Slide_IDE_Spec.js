@@ -442,7 +442,7 @@ describe("IDE UPDATE with attendee name to type in", function() {
 
   });
   
-  it("should display new name and save new session id when user type a new name", function() {
+  it("should display new name and save new session id when user types a new name", function() {
 
     getResource = jasmine.createSpy('getResource').andReturn('a name');
     postResource = jasmine.createSpy('postResource')
@@ -459,7 +459,7 @@ describe("IDE UPDATE with attendee name to type in", function() {
 
   });
   
-  it("should display current session id when user execute code", function() {
+  it("should display current session id when teacher execute code", function() {
 
     getResource = jasmine.createSpy('getResource').andReturn('a name');
     postResource = jasmine.createSpy('postResource')
@@ -468,11 +468,36 @@ describe("IDE UPDATE with attendee name to type in", function() {
     
     expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a name");
     
-    codeSlideNode.querySelector('#author_name').value = 'a name to replace'
+    codeSlideNode.querySelector('#author_name').innerHTML = 'a name to replace';
+    
+    slide._editor.updateEditor("code to execute");    
     
     codeSlideNode.querySelector('#execute').click();
     
     expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a name");    
+
+  }); 
+  
+  it("should keep new session id when attendee execute code", function() {
+
+    getResource = jasmine.createSpy('getResource').andReturn('a name');
+    postResource = jasmine.createSpy('postResource')
+
+    var slide = new CodeSlide(codeSlideNode);
+    
+    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a name");      
+    
+    codeSlideNode.querySelector('#attendee_name').value = 'a new name';
+    
+    __triggerKeyboardEvent(codeSlideNode.querySelector('#attendee_name'), RETURN);
+    
+    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a new name");  
+
+    slide._editor.updateEditor("code to execute");    
+    
+    codeSlideNode.querySelector('#execute').click();
+    
+    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a new name");    
 
   }); 
 
