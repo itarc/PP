@@ -110,9 +110,9 @@ var CodeSlide = function(node) {
   this._codeHelper_current_index = 0;
   this._declareEvents();
   this._editor = new Editor(this._node.querySelector('#code_input'));
-  this._author = getResource('/session_id');
-  if (this._node.querySelector('#author_name')) this._node.querySelector('#author_name').innerHTML = this._author;  
-  
+  this._author = getResource('/session_id'); 
+  this._updateAuthorWith(this._author);
+
 };
 
 CodeSlide.prototype = {
@@ -144,7 +144,7 @@ CodeSlide.prototype = {
           if (_attendee_name.value == '') return;
           _t._author = _attendee_name.value;            
           postResource('session_id', 'attendee_name=' + _t._author, SYNCHRONOUS)
-          _t._node.querySelector('#author_name').innerHTML = _t._author; 
+          _t._updateAuthorWith(_t._author);
           _attendee_name.value = '' } }, false
       );
     }
@@ -154,7 +154,6 @@ CodeSlide.prototype = {
     this._node.querySelector('#execute').addEventListener('click',
       function(e) { 
         _t._node.querySelector('#execute').style.background = "red"; 
-        //~ _t._author = '';
         _t.executeCode(); 
         _t._node.querySelector('#execute').style.background = "";}, false
     );     
@@ -171,6 +170,10 @@ CodeSlide.prototype = {
         _t._node.querySelector('#get_code').style.background = "";}, false
     );        
   },
+  
+  _updateAuthorWith: function(author) {
+    if (this._node.querySelector('#author_name')) this._node.querySelector('#author_name').innerHTML = author;  
+  },  
   
   _clearCodeHelpers: function() {
     for (var i=0; i<this._codeHelpers.length; i++) {
@@ -198,7 +201,7 @@ CodeSlide.prototype = {
     run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
     if (slideShowType == 'blackboard') { run_url = '/code_run_result_blackboard' + "/" + this._codeHelper_current_index; }    
     this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);
-    this._node.querySelector('#author_name').innerHTML = this._author;    
+    this._updateAuthorWith(this._author);
   },
   
   executeAndSendCode: function() {
@@ -242,7 +245,7 @@ CodeSlide.prototype = {
       if (lastexecution.split(SEPARATOR)[0] != this._editor.content()) { 
         this._editor.updateEditor(lastexecution.split(SEPARATOR)[0]);        
         this.executeCode(slideShowType);
-        this._node.querySelector('#author_name').innerHTML = local_author;
+        this._updateAuthorWith(local_author);
       };
       return;
     }
