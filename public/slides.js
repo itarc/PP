@@ -251,11 +251,9 @@ CodeSlide.prototype = {
   attendeesLastSend: function(slideShowType) {
     url = '/code_attendees_last_send'
     return getResource(url + '/' + this._codeHelper_current_index);
-  },    
-  
-  _updateEditorAndExecuteCode: function(slideShowType) {
-    var local_author = this._authorBar._author;
-    if (slideShowType == 'teacher') {
+  }, 
+
+  _updateEditorWithLastSendAndExecute: function(slideShowType) {
       attendeeLastSend = this.attendeesLastSend(slideShowType);
       if (attendeeLastSend != '') {
         if (attendeeLastSend.split('#|||||#')[1] != '') { 
@@ -264,32 +262,49 @@ CodeSlide.prototype = {
             this.executeCode(slideShowType);
             this._authorBar.updateWith(attendeeLastSend.split('#|||||#')[0]);
           };
-          return;          
         };        
+        return true;     
       };
-    };
+  },
+  
+  _updateEditorWithLastUserRunAndExecute: function(slideShowType) {
     lastexecution = this.lastExecution(slideShowType);
-    if (lastexecution != '') { 
+    if (lastexecution != '') {
       if (lastexecution.split(SEPARATOR)[0] != this._editor.content()) { 
         this._editor.updateWith(lastexecution.split(SEPARATOR)[0]);        
         this.executeCode(slideShowType);
       };
-      return;
-    }
+      return true;
+    };
+  },
+  
+  _updateEditorWithCodeToDisplayAndExecute: function(slideShowType) {
     codeToDisplay = this._currentCodeHelper().codeToDisplay(); 
     if (codeToDisplay != '') { 
       if (codeToDisplay != this._editor.content()) { 
         this._editor.updateWith(codeToDisplay); 
         this.executeCode(slideShowType);
         };
-      return;
-    }
+      return true;
+    };
+  },
+  
+  _updateEditorWithCodeToAddAndExecute: function(slideShowType) {
     codeToAdd = this._currentCodeHelper().codeToAdd();
     if (codeToAdd != '') {
       this._editor.updateWith(''); 
       this.executeCode(slideShowType);
-      return;
+      return  true;
     }
+  },
+  
+  _updateEditorAndExecuteCode: function(slideShowType) {
+    if (slideShowType == 'teacher') {
+      if (this._updateEditorWithLastSendAndExecute(slideShowType)) return;
+    };
+    if (this._updateEditorWithLastUserRunAndExecute(slideShowType)) return;
+    if (this._updateEditorWithCodeToDisplayAndExecute(slideShowType)) return;
+    if (this._updateEditorWithCodeToAddAndExecute(slideShowType)) return;
   },
   
   _update: function(slide_index, slideShowType) {
