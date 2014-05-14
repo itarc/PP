@@ -257,11 +257,9 @@ CodeSlide.prototype = {
       attendeeLastSend = this.attendeesLastSend(slideShowType);
       if (attendeeLastSend != '') {
         if (attendeeLastSend.split('#|||||#')[1] != '') { 
-          if (attendeeLastSend.split('#|||||#')[1].split(SEPARATOR)[0] != this._editor.content()) { 
-            this._editor.updateWith(attendeeLastSend.split('#|||||#')[1].split(SEPARATOR)[0]);        
-            this.executeCode(slideShowType);
-            this._authorBar.updateWith(attendeeLastSend.split('#|||||#')[0]);
-          };
+          this._editor.updateWith(attendeeLastSend.split('#|||||#')[1].split(SEPARATOR)[0]);        
+          this.executeCode(slideShowType);
+          this._authorBar.updateWith(attendeeLastSend.split('#|||||#')[0]);
         };        
         return true;     
       };

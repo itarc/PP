@@ -531,5 +531,24 @@ describe("IDE UPDATE with attendee name to type in", function() {
     expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("attendee id");    
 
   });
+  
+  it("should display author id when teacher display last send even if last send is the same in editor", function() {
+
+    getResource = jasmine.createSpy('getResource').andReturn('a name');
+    postResource = jasmine.createSpy('postResource')
+    
+    spyOn(CodeSlide.prototype ,"attendeesLastSend").andReturn("attendee id#|||||#code sent");
+
+    var slide = new CodeSlide(codeSlideNode);
+    
+    codeSlideNode.querySelector('#code_input').value = "code sent"
+    
+    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a name");
+    
+    slide._updateEditorAndExecuteCode('teacher')
+    
+    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("attendee id");    
+
+  });  
 
 });   
