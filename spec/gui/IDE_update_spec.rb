@@ -151,11 +151,11 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     execute
     
-    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run', author = '0')    
+    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run', author = '#')    
     
     press_space
     
-    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run', author = '0')
+    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run', author = '#')
     
   end  
 
@@ -170,7 +170,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     execute
     
-    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run', author = '0')
+    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run', author = '#')
     
     go_right
     

@@ -91,6 +91,7 @@ AuthorBar.prototype = {
   },
   
   updateWith: function(author) {
+    if (is_a_number(author)) author = '#';
     if (this._node) this._node.innerHTML = author;
   },
   
