@@ -257,20 +257,22 @@ CodeSlide.prototype = {
     var local_author = this._authorBar._author;
     if (slideShowType == 'teacher') {
       attendeeLastSend = this.attendeesLastSend(slideShowType);
-      if (attendeeLastSend == '') {
-        lastexecution = this.lastExecution(slideShowType); 
-      } else {
-        local_author = attendeeLastSend.split('#|||||#')[0];
-        lastexecution = attendeeLastSend.split('#|||||#')[1];
-      }
-    } else {   
-      lastexecution = this.lastExecution(slideShowType);
-    }
+      if (attendeeLastSend != '') {
+        if (attendeeLastSend.split('#|||||#')[1] != '') { 
+          if (attendeeLastSend.split('#|||||#')[1].split(SEPARATOR)[0] != this._editor.content()) { 
+            this._editor.updateWith(attendeeLastSend.split('#|||||#')[1].split(SEPARATOR)[0]);        
+            this.executeCode(slideShowType);
+            this._authorBar.updateWith(attendeeLastSend.split('#|||||#')[0]);
+          };
+          return;          
+        };        
+      };
+    };
+    lastexecution = this.lastExecution(slideShowType);
     if (lastexecution != '') { 
       if (lastexecution.split(SEPARATOR)[0] != this._editor.content()) { 
         this._editor.updateWith(lastexecution.split(SEPARATOR)[0]);        
         this.executeCode(slideShowType);
-        this._authorBar.updateWith(local_author);
       };
       return;
     }

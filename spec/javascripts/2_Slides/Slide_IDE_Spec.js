@@ -409,6 +409,20 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
   });
   
+  it("should NOT display code to add in Teacher code editor when get attendee last Send", function() {
+
+    getResource = jasmine.createSpy('getResource').andReturn('attendee name'+ '#|||||#'+ 'attendee code' +SEPARATOR + "puts 'CODE TO ADD'");
+
+    var slide = new CodeSlide(codeSlideNode);
+	  
+    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
+	  
+    slide._update(0, 'teacher');	  
+
+    expect(codeSlideNode.querySelector('#code_input').value).toBe("attendee code");
+
+  });  
+  
   it("should get last teacher run without code to add", function() {
 
     getResource = jasmine.createSpy('getResource').andReturn('teacher run' + SEPARATOR + "puts 'CODE TO ADD'");
