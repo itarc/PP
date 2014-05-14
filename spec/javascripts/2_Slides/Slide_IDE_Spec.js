@@ -26,7 +26,7 @@ describe("IDE UPDATE", function() {
 	  
    expect(codeSlideNode.querySelector('#code_input').value).toBe('');
 
-   slide._editor.updateWith("print 'editor updated'");
+   slide._editor.updateEditor("print 'editor updated'");
 	  
    expect(codeSlideNode.querySelector('#code_input').value).toBe("print 'editor updated'");
     
@@ -59,7 +59,7 @@ describe("IDE UPDATE", function() {
   
   it("should NOT run last execution when updated but the same that in code editor", function() {
 
-    slide._editor.updateWith('last execution');
+    slide._editor.updateEditor('last execution');
     
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn('last execution');
 	  
@@ -75,7 +75,7 @@ describe("IDE UPDATE", function() {
 
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
     
-    slide._editor.updateWith("print 'code remaining from previous slide'");
+    slide._editor.updateEditor("print 'code remaining from previous slide'");
     
     postResource = jasmine.createSpy('postResource');
     
@@ -98,7 +98,7 @@ describe("IDE RUN", function() {
   
     postResource = jasmine.createSpy('postResource').andReturn('1');  
 	  
-    slide._editor.updateWith('puts 1');
+    slide._editor.updateEditor('puts 1');
 	  
     expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 1');
     expect(codeSlideNode.querySelector('#code_output').value).toBe('');
@@ -117,7 +117,7 @@ describe("IDE RUN", function() {
   
     postResource = jasmine.createSpy('postResource');
 	  
-    slide._editor.updateWith('puts 1');	  
+    slide._editor.updateEditor('puts 1');	  
 	  
     codeSlideNode.querySelector('#execute').click();
 
@@ -127,7 +127,7 @@ describe("IDE RUN", function() {
   
   it("should run code when ALT-R pressed", function() {
     
-    slide._editor.updateWith('code to run');    
+    slide._editor.updateEditor('code to run');    
 
     postResource = jasmine.createSpy('postResource');
 
@@ -162,7 +162,7 @@ describe("IDE RUN", function() {
 
     postResource = jasmine.createSpy('postResource');
 	  
-    slide._editor.updateWith('code to send');
+    slide._editor.updateEditor('code to send');
 	  
     codeSlideNode.querySelector('#send_code').click();
 
@@ -172,7 +172,7 @@ describe("IDE RUN", function() {
   
   it("should run and send code when ALT-S pressed", function() {
     
-    slide._editor.updateWith('code to send');     
+    slide._editor.updateEditor('code to send');     
 
     postResource = jasmine.createSpy('postResource');
 
@@ -208,7 +208,7 @@ describe("IDE RUN", function() {
     getResource = jasmine.createSpy('getResource').andReturn('last teacher run code');
     postResource = jasmine.createSpy('postResource');
 	  
-    slide._editor.updateWith('');
+    slide._editor.updateEditor('');
 	  
     codeSlideNode.querySelector('#get_code').click();
 
@@ -224,7 +224,7 @@ describe("IDE RUN", function() {
     getResource = jasmine.createSpy('getResource').andReturn('last teacher run code');
     postResource = jasmine.createSpy('postResource');
 	  
-    slide._editor.updateWith('');
+    slide._editor.updateEditor('');
 	  
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), G, ALT);
 
@@ -369,7 +369,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
     var slide = new CodeSlide(codeSlideNode);
     
-    slide._editor.updateWith('code to execute');
+    slide._editor.updateEditor('code to execute');
 
     postResource = jasmine.createSpy('postResource');
 	  
@@ -385,7 +385,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
     var slide = new CodeSlide(codeSlideNode);
     
-    slide._editor.updateWith('');
+    slide._editor.updateEditor('');
 
     postResource = jasmine.createSpy('postResource');
 	  
@@ -484,7 +484,7 @@ describe("IDE UPDATE with attendee name to type in", function() {
     
     codeSlideNode.querySelector('#author_name').innerHTML = 'a name to replace';
     
-    slide._editor.updateWith("code to execute");    
+    slide._editor.updateEditor("code to execute");    
     
     codeSlideNode.querySelector('#execute').click();
     
@@ -507,7 +507,7 @@ describe("IDE UPDATE with attendee name to type in", function() {
     
     expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a new name");  
 
-    slide._editor.updateWith("code to execute");    
+    slide._editor.updateEditor("code to execute");    
     
     codeSlideNode.querySelector('#execute').click();
     

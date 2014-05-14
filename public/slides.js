@@ -65,7 +65,7 @@ Editor.prototype = {
   content: function() {
     return this._node.value;
   },
-  updateWith: function(code) {
+  updateEditor: function(code) {
     this._node.value = code;  
   },
 }
@@ -239,7 +239,7 @@ CodeSlide.prototype = {
   getAndExecuteCode: function() {         
     get_url = "/code_get_last_teacher_run" + "/" + this._codeHelper_current_index;
     code = getResource(get_url).split(SEPARATOR)[0];
-    this._editor.updateWith(code);
+    this._editor.updateEditor(code);
     this.executeCode();
   }, 
 
@@ -258,7 +258,7 @@ CodeSlide.prototype = {
       attendeeLastSend = this.attendeesLastSend(slideShowType);
       if (attendeeLastSend != '') {
         if (attendeeLastSend.split('#|||||#')[1] != '') { 
-          this._editor.updateWith(attendeeLastSend.split('#|||||#')[1].split(SEPARATOR)[0]);        
+          this._editor.updateEditor(attendeeLastSend.split('#|||||#')[1].split(SEPARATOR)[0]);        
           this.executeCode(slideShowType);
           this._authorBar.updateWith(attendeeLastSend.split('#|||||#')[0]);
         };        
@@ -270,7 +270,7 @@ CodeSlide.prototype = {
     lastexecution = this.lastExecution(slideShowType);
     if (lastexecution != '') {
       if (lastexecution.split(SEPARATOR)[0] != this._editor.content()) { 
-        this._editor.updateWith(lastexecution.split(SEPARATOR)[0]);        
+        this._editor.updateEditor(lastexecution.split(SEPARATOR)[0]);        
         this.executeCode(slideShowType);
       };
       return true;
@@ -281,7 +281,7 @@ CodeSlide.prototype = {
     codeToDisplay = this._currentCodeHelper().codeToDisplay(); 
     if (codeToDisplay != '') { 
       if (codeToDisplay != this._editor.content()) { 
-        this._editor.updateWith(codeToDisplay); 
+        this._editor.updateEditor(codeToDisplay); 
         this.executeCode(slideShowType);
         };
       return true;
@@ -291,7 +291,7 @@ CodeSlide.prototype = {
   _updateEditorWithCodeToAddAndExecute: function(slideShowType) {
     codeToAdd = this._currentCodeHelper().codeToAdd();
     if (codeToAdd != '') {
-      this._editor.updateWith(''); 
+      this._editor.updateEditor(''); 
       this.executeCode(slideShowType);
       return  true;
     }
