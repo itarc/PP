@@ -467,7 +467,7 @@ describe("IDE UPDATE with attendee name to type in", function() {
     
     __triggerKeyboardEvent(codeSlideNode.querySelector('#attendee_name'), RETURN);
     
-    expect(postResource).toHaveBeenCalledWith("session_id", "attendee_name=a new name", SYNCHRONOUS);     
+    expect(postResource).toHaveBeenCalledWith("session_id/attendee_name", "attendee_name=a new name", SYNCHRONOUS);     
     
     expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a new name");    
 

@@ -16,6 +16,7 @@ set :logging, false
 
 teacher_coding_presentation = '/teacher/coding_presentation'
 attendee_IDE_with_NO_code_to_display = '/attendee/coding_slide_with_NO_code_to_display'
+attendee_IDE_with_NO_code_to_display_no_session = '/attendee/coding_slide_with_NO_code_to_display_no_session'
 attendee_IDE_with_code_to_display = '/attendee/coding_slide_with_code_to_display'
 
 get teacher_coding_presentation do
@@ -30,6 +31,10 @@ end
 
 get attendee_IDE_with_code_to_display do
   session[:user_id] = '1'
+  redirect "coding_slide_with_code_to_display-attendee.html"
+end
+
+get attendee_IDE_with_NO_code_to_display_no_session do
   redirect "coding_slide_with_code_to_display-attendee.html"
 end
 
@@ -289,6 +294,10 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     find('#attendee_name').native.send_key(:return)
 
     expect(page).to have_field 'attendee_name', :with => ''
+    
+    expect(page).to have_content 'AUTHOR: a name'
+    
+    visit attendee_IDE_with_NO_code_to_display_no_session    
     
     expect(page).to have_content 'AUTHOR: a name'
     

@@ -99,13 +99,13 @@ class TestAttendee_name < Test::Unit::TestCase
     get '/session_id', {}, 'rack.session' => session
     assert_equal '1', last_response.body  
     
-    post '/session_id', {:attendee_name => 'a name'}, 'rack.session' => session
+    post '/session_id/attendee_name', {:attendee_name => 'a name'}, 'rack.session' => session
     
     get '/', {}, 'rack.session' => session
-    assert_equal 'a name', session[:user_id]
+    assert_equal '1_a name', session[:user_id]
     
     get '/session_id', {}, 'rack.session' => session
-    assert_equal 'a name', last_response.body
+    assert_equal '1_a name', last_response.body
     
   end
   

@@ -86,13 +86,16 @@ AuthorBar.prototype = {
   },
   
   sendNewAuthor: function(newAuthor) {
-    postResource('session_id', 'attendee_name=' + newAuthor, SYNCHRONOUS);
+    postResource('session_id/attendee_name', 'attendee_name=' + newAuthor, SYNCHRONOUS);
     this._author = newAuthor;
   },
   
   updateWith: function(author) {
     if (is_a_number(author)) author = '#';
-    if (this._node) this._node.innerHTML = author;
+    if (this._node) { 
+      if (author.split('_')[1]) author = author.split('_')[1];
+      this._node.innerHTML = author;
+    };
   },
   
   refresh: function() {

@@ -60,6 +60,7 @@ get '/code_get_last_teacher_run/*' do
 end
 
 get '/session_id' do
+  response.headers['Access-Control-Allow-Origin'] = '*'  
   session[:user_id]
 end
 
@@ -99,6 +100,6 @@ post '/code_send_result/*' do
   run_ruby("send", code.force_encoding("UTF-8"), user_id, slide_index)
 end
 
-post '/session_id' do
-  session[:user_id] = params[:attendee_name]
+post '/session_id/attendee_name' do
+  session[:user_id] = session[:user_id].split('_')[0] + '_' + params[:attendee_name]
 end
