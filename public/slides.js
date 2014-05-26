@@ -186,18 +186,21 @@ CodeSlide.prototype = {
     );
     this._node.querySelector('#execute').addEventListener('click',
       function(e) { 
+        _t._node.querySelector('#code_output').value = '';
         _t._node.querySelector('#execute').style.background = "red"; 
         _t.executeCode(); 
         _t._node.querySelector('#execute').style.background = "";}, false
     );     
     this._node.querySelector('#send_code').addEventListener('click',
       function(e) { 
+        _t._node.querySelector('#code_output').value = '';        
         _t._node.querySelector('#send_code').style.background = "red";  
         _t.executeAndSendCode(); 
         _t._node.querySelector('#send_code').style.background = ""; }, false
     );     
     this._node.querySelector('#get_code').addEventListener('click',
       function(e) {
+        _t._node.querySelector('#code_output').value = '' ;      
         _t._node.querySelector('#get_code').style.background = "red";
         _t.getAndExecuteCode(); 
         _t._node.querySelector('#get_code').style.background = "";}, false
