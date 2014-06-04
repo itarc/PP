@@ -195,7 +195,9 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     press_space
     
-    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send', author = 'attendee 1')
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    
+    expect_AuthorBar_to_have(author='attendee 1')
     
   end
   
@@ -210,21 +212,27 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     press_space
     
-    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send', author = 'attendee 1')
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    
+    expect_AuthorBar_to_have(author='attendee 1')    
     
     fill_IDE_with('print "new code to run"')
     
     execute
     
-    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run', author = '#')    
+    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run')    
+    
+    expect_AuthorBar_to_have(author='#')
     
     press_space
     
-    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run', author = '#')
+    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run')
+    
+    expect_AuthorBar_to_have(author='#')    
     
   end  
   
-  it 'should NOT show attendee last send when attendee last sen is on another slide' do   
+  it 'should NOT show attendee last send when attendee last send is on another slide' do   
 
     visit teacher_presentation
     go_down   
@@ -251,7 +259,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     execute
     
-    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run', author = '#')
+    expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
     
     go_right
     
@@ -277,11 +285,15 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     go_left
     
-    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send', author = 'attendee 1')
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    
+    expect_AuthorBar_to_have(author='attendee 1')    
     
     go_right
 
-    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send', author = 'attendee 1')   
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send') 
+
+    expect_AuthorBar_to_have(author='attendee 1')
     
   end    
   

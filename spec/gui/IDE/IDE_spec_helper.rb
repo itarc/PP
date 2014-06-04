@@ -30,14 +30,17 @@ def fill_IDE_with(code_input)
   fill_in 'code_input', :with => code_input
 end
 
-def expect_IDE_to_have(code_input, code_output, author = nil)
+def expect_IDE_to_have(code_input, code_output)
   expect(page).to have_field 'code_input', :with => code_input
   expect(page).to have_field 'code_output', :with => code_output
-  within "#author_name" do
-    expect(page.text).to eq author if author != nil
-  end
 end
 
 def expect_IDE_to_be_empty
-  expect_IDE_to_have(code_input = '', code_output = '', author = nil)
+  expect_IDE_to_have(code_input = '', code_output = '')
+end
+
+def expect_AuthorBar_to_have(author)
+  within "#author_name" do
+    expect(page.text).to eq author
+  end
 end
