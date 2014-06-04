@@ -15,18 +15,18 @@ Capybara.app = Sinatra::Application.new
 set :public_folder, 'fixtures'
 set :logging, false
 
-teacher_coding_presentation = '/teacher/coding_presentation'
-attendee_IDE_with_NO_code_to_display = '/attendee/coding_slide_with_NO_code_to_display'
-attendee_IDE_with_NO_code_to_display_no_session = '/attendee/coding_slide_with_NO_code_to_display_no_session'
-attendee_IDE_with_code_to_display = '/attendee/coding_slide_with_code_to_display'
-attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G = '/attendee/coding_slide_with_NO_code_to_display'
+teacher_presentation = '/teacher/presentation'
+attendee_IDE = '/attendee/IDE'
+attendee_IDE_with_code_to_display = '/attendee/IDE_with_code_to_display'
 
-get teacher_coding_presentation do
+attendee_IDE_no_session = '/attendee/IDE_no_session'
+
+get teacher_presentation do
   session[:user_id] = '0'
   redirect "coding_presentation-teacher.html"
 end
 
-get attendee_IDE_with_NO_code_to_display do
+get attendee_IDE do
   session[:user_id] = '1'
   redirect "coding_slide_with_NO_code_to_display-attendee.html"
 end
@@ -36,13 +36,8 @@ get attendee_IDE_with_code_to_display do
   redirect "coding_slide_with_code_to_display-attendee.html"
 end
 
-get attendee_IDE_with_NO_code_to_display_no_session do
+get attendee_IDE_no_session do
   redirect "coding_slide_with_code_to_display-attendee.html"
-end
-
-get attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G do
-  session[:user_id] = '1'
-  redirect "coding_slide_with_NO_code_to_display-attendee.html"
 end
 
 ## -------------------------------------------------------
@@ -58,7 +53,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
   
   it 'should be empty when initialized' do
 
-    visit attendee_IDE_with_NO_code_to_display
+    visit attendee_IDE
     
     expect_IDE_to_be_empty
     
@@ -66,7 +61,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
   
   it 'should display result when code is executed' do
 
-    visit attendee_IDE_with_NO_code_to_display
+    visit attendee_IDE
     
     fill_IDE_with('print "something"')
     
@@ -78,29 +73,29 @@ describe 'Attendee IDE', :type => :feature, :js => true do
 
   it 'should display current code_helper' do
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
 
     expect(page).to have_content 'EXERCISE - 1'
     
-    visit attendee_IDE_with_NO_code_to_display
+    visit attendee_IDE
 
     expect(page).to have_content 'HELPER 1'
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
     
     go_right
     
-    visit attendee_IDE_with_NO_code_to_display
+    visit attendee_IDE
 
     press_space
 
     expect(page).to have_content 'HELPER 2'
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
 
     go_left
     
-    visit attendee_IDE_with_NO_code_to_display
+    visit attendee_IDE
 
     press_space
 
@@ -110,7 +105,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
 
   it 'should ask an author name' do
     
-    visit attendee_IDE_with_NO_code_to_display
+    visit attendee_IDE
     
     expect(page).to have_content 'AUTHOR: #'
 
@@ -132,7 +127,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     
     expect(page).to have_content 'AUTHOR: a name'
     
-    visit attendee_IDE_with_NO_code_to_display_no_session    
+    visit attendee_IDE_no_session    
     
     expect(page).to have_content 'AUTHOR: a name'
     
@@ -140,7 +135,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
   
   it 'should keep author name after a run' do
     
-    visit attendee_IDE_with_NO_code_to_display
+    visit attendee_IDE
     
     expect(page).to have_content 'HELPER 1'    
     
@@ -182,7 +177,7 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
   
   it 'should show attendee last run' do   
 
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
+    visit attendee_IDE
     
     expect_IDE_to_be_empty
     
@@ -192,7 +187,7 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
     
     expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
     
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
+    visit attendee_IDE
     
     expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
     
@@ -204,7 +199,7 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
 
   it 'should show attendee last send' do   
 
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
+    visit attendee_IDE
     
     expect_IDE_to_be_empty
     
@@ -214,7 +209,7 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
     
     expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
     
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
+    visit attendee_IDE
     
     expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
     
@@ -226,7 +221,7 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
   
   it 'should show teacher last run' do 
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
     go_down 
     
     expect_IDE_to_be_empty
@@ -235,7 +230,7 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
     
     execute
 
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
+    visit attendee_IDE
     
     expect_IDE_to_be_empty
     
@@ -247,7 +242,7 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
   
   it 'should show attendee last execution when slide moves' do   
 
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
+    visit attendee_IDE
     
     expect_IDE_to_be_empty    
     
@@ -258,12 +253,12 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
     expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
     
   
-    visit teacher_coding_presentation
+    visit teacher_presentation
     
     go_right
     
 
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
+    visit attendee_IDE
     
     expect_IDE_to_be_empty    
     
@@ -274,21 +269,21 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
     expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
     
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
     
     go_left
     
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G
+    visit attendee_IDE
     
     expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
     
     
-    visit teacher_coding_presentation
+    visit teacher_presentation
     
     go_right
     
     
-    visit attendee_coding_slide_with_ALT_R_and_ALT_S_and_ALT_G    
+    visit attendee_IDE    
     
     expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
     
@@ -321,7 +316,7 @@ describe 'Attendee IDE with code to display', :type => :feature, :js => true do
   
   it 'should run code to add without displaying it' do
 	  
-    visit teacher_coding_presentation
+    visit teacher_presentation
 
     go_right
        
@@ -338,7 +333,7 @@ describe 'Attendee IDE with code to display', :type => :feature, :js => true do
   
   it 'should run last attendee code (not teacher code)' do
 	  
-    visit teacher_coding_presentation
+    visit teacher_presentation
 
     go_down
      

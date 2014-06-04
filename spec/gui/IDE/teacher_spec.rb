@@ -15,17 +15,18 @@ Capybara.app = Sinatra::Application.new
 set :public_folder, 'fixtures'
 set :logging, false
 
-teacher_coding_presentation = '/teacher/coding_presentation'
-attendee_IDE_with_NO_code_to_display = '/attendee/coding_slide_with_NO_code_to_display'
-attendee_IDE_with_NO_code_to_display_no_session = '/attendee/coding_slide_with_NO_code_to_display_no_session'
-attendee_IDE_with_code_to_display = '/attendee/coding_slide_with_code_to_display'
+teacher_presentation = '/teacher/presentation'
+attendee_IDE = '/attendee/IDE'
+attendee_IDE_with_code_to_display = '/attendee/IDE_with_code_to_display'
 
-get teacher_coding_presentation do
+attendee_IDE_no_session = '/attendee/IDE_no_session'
+
+get teacher_presentation do
   session[:user_id] = '0'
   redirect "coding_presentation-teacher.html"
 end
 
-get attendee_IDE_with_NO_code_to_display do
+get attendee_IDE do
   session[:user_id] = '1'
   redirect "coding_slide_with_NO_code_to_display-attendee.html"
 end
@@ -35,7 +36,7 @@ get attendee_IDE_with_code_to_display do
   redirect "coding_slide_with_code_to_display-attendee.html"
 end
 
-get attendee_IDE_with_NO_code_to_display_no_session do
+get attendee_IDE_no_session do
   redirect "coding_slide_with_code_to_display-attendee.html"
 end
 
@@ -52,7 +53,7 @@ describe 'Teacher Presentation', :type => :feature, :js => true do
   
   it 'should show IDE when down arrow is pressed' do
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
     
     expect(page).to have_content 'EXERCISE - 1'
     
@@ -64,7 +65,7 @@ describe 'Teacher Presentation', :type => :feature, :js => true do
 
   it 'should show current slide when up arrow is pressed' do
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
 
     expect(page).to have_content 'EXERCISE - 1'
 
@@ -92,7 +93,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
 
   it 'should be empty when initialized' do
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
     
     go_down
     
@@ -102,7 +103,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
   
   it 'should display result when code is ran' do
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
     
     go_down
     
@@ -118,7 +119,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
 
   it 'should display result when code with utf-8 characters is ran' do
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
     
     go_down    
     
@@ -138,7 +139,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
 
   it 'should show current code_helper' do
 	  
-    visit teacher_coding_presentation
+    visit teacher_presentation
 
    go_down
 
@@ -170,7 +171,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
   
   it 'should NOT show attendee last run' do   
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
     go_down
     
     expect_IDE_to_be_empty
@@ -185,7 +186,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
   
   it 'should show attendee last send with author name' do   
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
     go_down 
     
     expect_IDE_to_be_empty
@@ -200,7 +201,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
   
   it 'should NOT show attendee last send if not on right slide' do   
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
     go_down   
     
     expect_IDE_to_be_empty
@@ -216,7 +217,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
   
   it 'should always show teacher last run if it happened after last send' do   
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
     go_down 
     
     expect_IDE_to_be_empty
@@ -241,7 +242,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
 
   it 'should NOT show last run if not on the current slide' do
     
-    visit teacher_coding_presentation
+    visit teacher_presentation
     go_down
     
     expect_IDE_to_be_empty    
@@ -254,7 +255,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     go_right
     
-    visit teacher_coding_presentation
+    visit teacher_presentation
     go_down    
     
     expect_IDE_to_be_empty
@@ -263,7 +264,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
   
   it 'should keep last atendee send when navigating right' do   
 
-    visit teacher_coding_presentation
+    visit teacher_presentation
     go_down
     
     expect_IDE_to_be_empty
