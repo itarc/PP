@@ -12,7 +12,7 @@ require_relative 'IDE_spec_helper.rb'
 
 Capybara.app = Sinatra::Application.new
 
-set :public_folder, 'fixtures/IDE'
+set :public_folder, 'fixtures'
 set :logging, false
 
 teacher_presentation = '/teacher/presentation'
