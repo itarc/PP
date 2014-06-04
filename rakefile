@@ -9,8 +9,9 @@ namespace :test do
     FileList['./spec/models/*_test.rb'].each { |file| ruby file }
   end
 
-  task :acceptance do
-    sh "cd spec/gui; rspec *_spec.rb"
+  task :acceptance, [:category,:subcategory] do |task, args|
+    specs = "#{ args[:category] || '*' }/#{ args[:subcategory] || '*' }_spec.rb"
+    sh "cd spec/gui; rspec #{ specs }"
   end
 end 
 
@@ -25,4 +26,3 @@ end
 task :init do
  ruby "db/init/init-db.rb"
 end
-

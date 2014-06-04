@@ -1,6 +1,6 @@
 #encoding:UTF-8
 
-require_relative '../../controllers/slideshow'
+require_relative '../../../controllers/slideshow'
 
 require 'sinatra'
 
