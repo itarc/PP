@@ -42,14 +42,14 @@ end
 ## SINATRA CONTROLLER (END)
 ## -------------------------------------------------------
 
-describe 'Blackboard Navigation', :type => :feature, :js => true do  
+describe 'Blackboard Presentation', :type => :feature, :js => true do  
 	
   before(:all) do
     $db.execute_sql("delete from run_events") 
     $db.execute_sql("delete from teacher_current_slide") 
   end
 
-  it 'should be on first slide' do
+  it 'should be on first slide when teacher is on first slide' do
 
     visit teacher_coding_presentation
     
@@ -61,7 +61,7 @@ describe 'Blackboard Navigation', :type => :feature, :js => true do
 
   end
   
-  it 'should be on second slide' do
+  it 'should be on second slide when teacher is on second slide' do
     
     visit teacher_coding_presentation
     
@@ -75,7 +75,7 @@ describe 'Blackboard Navigation', :type => :feature, :js => true do
 
   end
 
-  it 'should be on IDE with code helper 2' do
+  it 'should be on IDE with code helper 2 when teacher is on IDE with code helper 2' do
     
     visit teacher_coding_presentation
     
@@ -89,7 +89,7 @@ describe 'Blackboard Navigation', :type => :feature, :js => true do
 
   end
   
-  it 'should be on IDE with code helper 1' do
+  it 'should be on IDE with code helper 1 when teacher is on IDE with code helper 1' do
     
     visit teacher_coding_presentation
     
@@ -124,7 +124,7 @@ describe 'Blackboard Navigation', :type => :feature, :js => true do
 
 end
 
-describe 'Blackboard Refresh', :type => :feature, :js => true do  
+describe 'Blackboard Update', :type => :feature, :js => true do  
 	
   before(:all) do
     $db.execute_sql("delete from run_events") 
