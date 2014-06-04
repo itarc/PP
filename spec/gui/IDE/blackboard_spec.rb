@@ -127,12 +127,40 @@ end
 
 describe 'Blackboard Update', :type => :feature, :js => true do  
 	
-  before(:all) do
+  before(:each) do
     $db.execute_sql("delete from run_events") 
     $db.execute_sql("delete from teacher_current_slide") 
   end
+  
+  it 'should display teacher last run' do
+    
+    visit blackboard_presentation
 
-  it 'should always get last teacher run' do
+    expect_IDE_to_be_empty
+    
+    visit teacher_presentation; go_down
+    
+    fill_IDE_with("print 'teacher run'")
+    
+    execute
+    
+    visit blackboard_presentation
+
+    expect_IDE_to_have(code_input = "print 'teacher run'", code_output = "teacher run")
+    
+    visit teacher_presentation; go_down
+    
+    fill_IDE_with("print 'teacher run 2'")
+    
+    execute
+    
+    visit blackboard_presentation
+
+    expect_IDE_to_have(code_input = "print 'teacher run 2'", code_output = "teacher run 2")    
+    
+  end  
+
+  it 'should NOT display attendee run' do
     
     visit teacher_presentation
     go_down
@@ -150,6 +178,10 @@ describe 'Blackboard Update', :type => :feature, :js => true do
     visit blackboard_presentation
     
     expect_IDE_to_be_empty   
+  
+  end
+    
+  it 'should NOT display attendee send when teacher does not allow it' do    
 
     visit attendee_IDE
     
@@ -162,9 +194,18 @@ describe 'Blackboard Update', :type => :feature, :js => true do
     visit blackboard_presentation
     
     expect_IDE_to_be_empty 
+  
+  end
+
+  it 'should NOT display attendee send when teacher allows it' do   
+
+    visit attendee_IDE
     
-    visit teacher_presentation
-    go_down
+    fill_IDE_with("print 'attendee send'")
+    
+    send_code
+    
+    visit teacher_presentation; go_down
 
     press_space
     
@@ -173,27 +214,10 @@ describe 'Blackboard Update', :type => :feature, :js => true do
     visit blackboard_presentation
 
     expect_IDE_to_have(code_input = "print 'attendee send'", code_output = "attendee send")
-
-    visit teacher_presentation
-    go_down
-    
-    fill_IDE_with("print 'teacher run'")
-    
-    execute
-    
-    visit blackboard_presentation
-
-    expect_IDE_to_have(code_input = "print 'teacher run'", code_output = "teacher run")    
-    
-    run_ruby "run", "print 'teacher run 2'", "0", "0"
-    
-    press_space
-  
-    expect_IDE_to_have(code_input = "print 'teacher run 2'", code_output = "teacher run 2")   
     
   end
 
-  after(:all) do
+  after(:each) do
     $db.execute_sql("delete from run_events") 
     $db.execute_sql("delete from teacher_current_slide")    
   end   
