@@ -1,20 +1,18 @@
 require 'jasmine'
 load 'jasmine/tasks/jasmine.rake'
 
-# require 'rspec/core/rake_task'
-# RSpec::Core::RakeTask.new(:spec) # :spec is the spec directory
+task :default => [:'jasmine:ci', :'test:unit', :'test:acceptance']
 
-task :default => [:'jasmine:ci', :unit_tests, :acceptance_tests]
+namespace :test do
+  task :unit do
+    FileList['./spec/controllers/*_test.rb'].each { |file| ruby file }
+    FileList['./spec/models/*_test.rb'].each { |file| ruby file }
+  end
 
-task :unit_tests do
-  FileList['./spec/controllers/*_test.rb'].each { |file| ruby file }
-  FileList['./spec/models/*_test.rb'].each { |file| ruby file }
-end
-
-task :acceptance_tests do
-  # Rake::Task[:spec].invoke # Does not work : relative directory problem
-  sh "cd spec/gui; rspec *_spec.rb"
-end
+  task :acceptance do
+    sh "cd spec/gui; rspec *_spec.rb"
+  end
+end 
 
 task :watch do
   sh "watchr watchr_script"
