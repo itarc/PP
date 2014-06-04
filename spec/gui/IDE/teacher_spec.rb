@@ -184,7 +184,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
   end 
   
-  it 'should show attendee last send with author name' do   
+  it 'should show attendee last send with attendee name' do   
 
     visit teacher_presentation
     go_down 
@@ -199,23 +199,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
   end
   
-  it 'should NOT show attendee last send if not on right slide' do   
-
-    visit teacher_presentation
-    go_down   
-    
-    expect_IDE_to_be_empty
-    
-    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
-    
-    go_right
-    press_space
-    
-    expect_IDE_to_be_empty
-
-  end  
-  
-  it 'should always show teacher last run if it happened after last send' do   
+  it 'should show teacher last run when teacher last run is fresher than attendee last send' do   
 
     visit teacher_presentation
     go_down 
@@ -239,8 +223,24 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run', author = '#')
     
   end  
+  
+  it 'should NOT show attendee last send when attendee last sen is on another slide' do   
 
-  it 'should NOT show last run if not on the current slide' do
+    visit teacher_presentation
+    go_down   
+    
+    expect_IDE_to_be_empty
+    
+    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    
+    go_right
+    press_space
+    
+    expect_IDE_to_be_empty
+
+  end  
+
+  it 'should NOT show teacher last run when teacher last run on another slide' do
     
     visit teacher_presentation
     go_down
@@ -262,7 +262,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
 
   end  
   
-  it 'should keep last atendee send when navigating right' do   
+  it 'should keep showing last atendee send when navigating right' do   
 
     visit teacher_presentation
     go_down
