@@ -12,7 +12,7 @@ require_relative 'IDE_spec_helper.rb'
 
 Capybara.app = Sinatra::Application.new
 
-set :public_folder, 'fixtures'
+set :public_folder, 'fixtures/IDE'
 set :logging, false
 
 teacher_presentation = '/teacher/presentation'
@@ -23,20 +23,20 @@ blackboard_with_code_to_display = '/blackboard_with_code_to_display'
 
 get teacher_presentation do
   session[:user_id] = '0'	
-  redirect "coding_presentation-teacher.html"
+  redirect "teacher_presentation.html"
 end
 
 get attendee_IDE do
   session[:user_id] = '1'
-  redirect "coding_slide_with_NO_code_to_display-attendee.html"
+  redirect "attendee_IDE.html"
 end
 
 get blackboard_presentation do  
-  redirect "coding_presentation-blackboard.html"
+  redirect "blackboard_presentation.html"
 end
 
 get blackboard_with_code_to_display do  
-  redirect "coding_presentation_with_code_to_display-blackboard.html"
+  redirect "blackboard_with_code_to_display.html"
 end
 
 ## -------------------------------------------------------
