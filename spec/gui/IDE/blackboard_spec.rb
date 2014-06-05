@@ -12,7 +12,7 @@ require_relative 'IDE_spec_helper.rb'
 
 Capybara.app = Sinatra::Application.new
 
-set :public_folder, 'fixtures/IDE'
+set :public_folder, 'fixtures'
 set :logging, false
 
 teacher_presentation = '/teacher/presentation'
@@ -197,7 +197,7 @@ describe 'Blackboard Update', :type => :feature, :js => true do
   
   end
 
-  it 'should NOT display attendee send when teacher allows it' do   
+  it 'should display attendee send when teacher allows it' do   
 
     visit attendee_IDE
     
@@ -207,7 +207,7 @@ describe 'Blackboard Update', :type => :feature, :js => true do
     
     visit teacher_presentation; go_down
 
-    press_space
+    click_on "get_last_send"
     
     expect_IDE_to_have(code_input = "print 'attendee send'", code_output = "attendee send") 
 

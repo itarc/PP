@@ -101,7 +101,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     
   end
   
-  it 'should display result when code is ran' do
+  it 'should show result when teacher run code' do
 
     visit teacher_presentation
     
@@ -117,7 +117,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     
   end  
 
-  it 'should display result when code with utf-8 characters is ran' do
+  it 'should show result when teacher run code with utf-8 characters' do
 
     visit teacher_presentation
     
@@ -134,6 +134,25 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     execute
     
     expect_IDE_to_have(code_input = "#encoding: utf-8" + "\n" + 'print "éèêàâùï"', code_output = 'éèêàâùï')    
+    
+  end
+  
+  it 'should show attendee last send with attendee name' do
+
+    visit teacher_presentation
+    go_down 
+    
+    expect_IDE_to_be_empty
+    
+    expect_AuthorBar_to_have(author = '#', last_send_attendee_name = '')
+    
+    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    
+    click_on "get_last_send"
+    
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    
+    expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = '')
     
   end  
 
@@ -153,6 +172,36 @@ describe 'Teacher IDE', :type => :feature, :js => true do
 
     expect(page).to have_content 'HELPER 1'
 	  
+  end
+  
+  it 'should show attendee last send with attendee name' do   
+
+    visit teacher_presentation; go_down 
+    
+    expect_IDE_to_be_empty
+    
+    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    
+    click_on 'get_last_send'
+    
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    
+    expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = '')  
+    
+    fill_IDE_with('print "new code to run"')
+    
+    execute
+    
+    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run')    
+    
+    expect_AuthorBar_to_have(author = '#', last_send_attendee_name = '')
+    
+    click_on 'get_last_send'
+    
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    
+    expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = '')
+    
   end
   
   after(:each) do
@@ -184,7 +233,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
   end 
   
-  it 'should show attendee last send with attendee name' do   
+  it 'should show attendee name of last send' do
 
     visit teacher_presentation
     go_down 
@@ -195,42 +244,11 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     press_space
     
-    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    expect_IDE_to_be_empty
     
-    expect_AuthorBar_to_have(author='attendee 1')
+    expect_AuthorBar_to_have(author = '#', last_send_attendee_name = 'attendee 1 >>')
     
   end
-  
-  it 'should show teacher last run when teacher last run is fresher than attendee last send' do   
-
-    visit teacher_presentation
-    go_down 
-    
-    expect_IDE_to_be_empty
-    
-    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
-    
-    press_space
-    
-    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
-    
-    expect_AuthorBar_to_have(author='attendee 1')    
-    
-    fill_IDE_with('print "new code to run"')
-    
-    execute
-    
-    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run')    
-    
-    expect_AuthorBar_to_have(author='#')
-    
-    press_space
-    
-    expect_IDE_to_have(code_input = 'print "new code to run"', code_output = 'new code to run')
-    
-    expect_AuthorBar_to_have(author='#')    
-    
-  end  
   
   it 'should NOT show attendee last send when attendee last send is on another slide' do   
 
@@ -270,7 +288,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
 
   end  
   
-  it 'should keep showing last atendee send when navigating right' do   
+  it 'should keep showing last attendee send when navigating right' do   
 
     visit teacher_presentation
     go_down
@@ -279,21 +297,17 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     run_ruby "send", 'print "attendee send"', "attendee 1", "0"
     
-    go_right
+    click_on 'get_last_send'
     
-    expect_IDE_to_be_empty   
-    
-    go_left
-    
-    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
-    
-    expect_AuthorBar_to_have(author='attendee 1')    
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send') 
+
+    expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = '')
     
     go_right
 
     expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send') 
 
-    expect_AuthorBar_to_have(author='attendee 1')
+    expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = '')
     
   end    
   

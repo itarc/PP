@@ -210,6 +210,11 @@ input[type=button]#get_code {
   margin: 1%;  
 }
 
+input[type=button]#get_last_send {
+  font-size: 0.5em;
+  margin: 0.2%;  
+}
+
 /* ------------------------------------------------------------------------ */
 /* CAN BE MODIFIED FOR EACH PRESENTATION */
 /* ------------------------------------------------------------------------ */

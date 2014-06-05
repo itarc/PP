@@ -39,8 +39,11 @@ def expect_IDE_to_be_empty
   expect_IDE_to_have(code_input = '', code_output = '')
 end
 
-def expect_AuthorBar_to_have(author)
+def expect_AuthorBar_to_have(author, last_send_attendee_name)
   within "#author_name" do
     expect(page.text).to eq author
   end
+  within "#last_send_attendee_name" do
+    expect(page.text).to eq last_send_attendee_name
+  end  
 end

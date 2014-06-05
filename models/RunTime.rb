@@ -50,7 +50,7 @@ class RunTimeEvent
   end
   
   def RunTimeEvent.find_attendees_last_send_on_slide(user_id, slide_index)
-    (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index &&  ( event.type == 'send' || (event.user == "0" && event.type == 'run') ) }).last 
+    (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index &&  ( event.type == 'send' ) }).last 
   end    
   
   def RunTimeEvent.find_last_teacher_run(slide_index)

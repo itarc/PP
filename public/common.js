@@ -20,6 +20,7 @@ var RETURN = 13
 var F5 = 116
 var BS = 8
 var G = 71
+var N = 78
 var R = 82
 var S = 83
 

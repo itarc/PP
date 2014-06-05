@@ -115,6 +115,20 @@ class TestLastExecution_in_teacher_slide < Test::Unit::TestCase
     assert_equal "attendee_1#|||||#code sent", last_response.body    
   end
   
+  def test02_should_return_last_attendee_send_even_if_a_run_is_fresher
+    post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'attendee_1'}
+    post '/code_run_result/0', "code run", 'rack.session' => {:user_id => 'attendee_1'}
+    get '/code_attendees_last_send/0', {}, 'rack.session' => {:user_id => '0' }
+    assert_equal "attendee_1#|||||#code sent", last_response.body    
+  end  
+  
+  def test03_should_return_last_attendee_send_even_if_teacher_made_a_run
+    post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'attendee_1'}
+    post '/code_run_result/0', "code run", 'rack.session' => {:user_id => '0'}
+    get '/code_attendees_last_send/0', {}, 'rack.session' => {:user_id => '0' }
+    assert_equal "attendee_1#|||||#code sent", last_response.body    
+  end    
+  
   def teardown
     $db.execute_sql("delete from run_events")	  
   end  

@@ -147,8 +147,19 @@ class TestRunTimeEvent_find_last_execution_in_teacher_slide < Test::Unit::TestCa
     runtime_events = RunTimeEvent.find_attendees_last_send_on_slide("0", "slide_0")
     assert_equal (["user", "send", "slide_0", "print 4", "4"]).inspect, runtime_events.inspect
   end
+  
+  def test02_should_find_last_attendee_send_even_if_a_teacher_run_is_fresher
+    RunTimeEvent.new("user", type="run", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '1').save
+    RunTimeEvent.new("user", type="run", slide_index = "slide_0" ,code_input = "print 2", code_output = "2", timestamp = '2').save
+    RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 3", code_output = "3", timestamp = '3').save
+    RunTimeEvent.new("0", type="run", slide_index = "slide_0" ,code_input = "print 5", code_output = "5", timestamp = '4').save    
+    RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 4", code_output = "4", timestamp = '5').save
+    RunTimeEvent.new("0", type="run", slide_index = "slide_0" ,code_input = "print 6", code_output = "6", timestamp = '6').save      
+    runtime_events = RunTimeEvent.find_attendees_last_send_on_slide("0", "slide_0")
+    assert_equal (["user", "send", "slide_0", "print 4", "4"]).inspect, runtime_events.inspect
+  end  
 
-  def test02_should_find_last_teacher_run
+  def test03_should_find_last_teacher_run
     RunTimeEvent.new("user", type="run", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '1').save
     RunTimeEvent.new("user", type="run", slide_index = "slide_0" ,code_input = "print 2", code_output = "2", timestamp = '2').save
     RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 3", code_output = "3", timestamp = '3').save

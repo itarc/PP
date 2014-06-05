@@ -163,6 +163,7 @@ CodeSlide.prototype = {
       if (e.which == R) { this._node.querySelector('#execute').click(); }
       if (e.which == S) { this._node.querySelector('#send_code').click(); }
       if (e.which == G) { this._node.querySelector('#get_code').click(); }
+      if (e.which == N) { this._node.querySelector('#get_last_send').click();}
     } else {
       e.stopPropagation()
     }    
@@ -204,7 +205,16 @@ CodeSlide.prototype = {
         _t._node.querySelector('#get_code').style.background = "red";
         _t.getAndExecuteCode(); 
         _t._node.querySelector('#get_code').style.background = "";}, false
-    );        
+    );
+    if (this._node.querySelector('#get_last_send')) {
+    this._node.querySelector('#get_last_send').addEventListener('click',
+      function(e) {
+        _t._node.querySelector('#code_output').value = '' ;      
+        _t._node.querySelector('#get_last_send').style.background = "red";
+        _t._updateEditorWithLastSendAndExecute(); 
+        _t._node.querySelector('#get_last_send').style.background = "";}, false
+    );
+    };
   },
   
   _clearCodeHelpers: function() {
@@ -304,9 +314,6 @@ CodeSlide.prototype = {
   },
   
   _updateEditorAndExecuteCode: function(slideShowType) {
-    if (slideShowType == 'teacher') {
-      if (this._updateEditorWithLastSendAndExecute(slideShowType)) return;
-    };
     if (this._updateEditorWithLastUserRunAndExecute(slideShowType)) return;
     if (this._updateEditorWithCodeToDisplayAndExecute(slideShowType)) return;
     if (this._updateEditorWithCodeToAddAndExecute(slideShowType)) return;
@@ -314,6 +321,12 @@ CodeSlide.prototype = {
   
   _update: function(slide_index, slideShowType) {
     this.showCurrentCodeHelper(slide_index);
+    if ( this._node.querySelector('#last_send_attendee_name') ) {
+      attendee_name =  this.attendeesLastSend().split('#|||||#')[0]
+      if (attendee_name.split('_')[1]) attendee_name = attendee_name.split('_')[1];
+      if (attendee_name != '' ) attendee_name = attendee_name + ' >> ';
+      this._node.querySelector('#last_send_attendee_name').innerHTML = attendee_name;
+    }
     this._updateEditorAndExecuteCode(slideShowType);
   },
   
