@@ -319,14 +319,18 @@ CodeSlide.prototype = {
     if (this._updateEditorWithCodeToAddAndExecute(slideShowType)) return;
   },
   
-  _update: function(slide_index, slideShowType) {
-    this.showCurrentCodeHelper(slide_index);
+  _updateLastSendAttendeeName: function(slide_index, slideShowType) {
     if ( this._node.querySelector('#last_send_attendee_name') ) {
       attendee_name =  this.attendeesLastSend().split('#|||||#')[0]
       if (attendee_name.split('_')[1]) attendee_name = attendee_name.split('_')[1];
       if (attendee_name != '' ) attendee_name = attendee_name + ' >> ';
       this._node.querySelector('#last_send_attendee_name').innerHTML = attendee_name;
     }
+  },
+  
+  _update: function(slide_index, slideShowType) {
+    this.showCurrentCodeHelper(slide_index);
+    this._updateLastSendAttendeeName();
     this._updateEditorAndExecuteCode(slideShowType);
   },
   

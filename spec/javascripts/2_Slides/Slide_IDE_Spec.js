@@ -85,6 +85,16 @@ describe("IDE UPDATE", function() {
 
   });  
   
+  it("should update last send attendee name when updated", function() {
+	  
+    spyOn(CodeSlide.prototype, '_updateLastSendAttendeeName');	  
+	  
+    slide._update(0);
+	  
+    expect(CodeSlide.prototype._updateLastSendAttendeeName.calls.length).toBe(1);
+	  
+  });  
+  
 });  
 
 describe("IDE RUN", function() {

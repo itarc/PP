@@ -104,7 +104,7 @@ SlideShow.prototype = {
     window.console && window.console.log("Refreshed with this._currentIndex = " + this.position._currentIndex + " and this._showIDE = " + this.position._IDEDisplayed);
   },
 
-  _updateCurrentSlide: function() {  
+  _updateCurrentSlide: function() {
     if (this._slides.length == 0) return; 
     this._currentSlide._update(this.position._currentIndex, this.position.slideShowType);
   },  

@@ -11,7 +11,7 @@ var TeacherSlideShow = function(slides) {
 TeacherSlideShow.prototype = {
   
   _refresh: function() {
-    this._updateCurrentSlide();
+    this._last_slide()._updateLastSendAttendeeName();
   },  
   
   handleKeys: function(e) {
@@ -54,4 +54,4 @@ for(key in SlideShow.prototype) {
 // INITIALIZE SLIDESHOW
 // ----------------------------------  
 var teacherSlideshow = new TeacherSlideShow(queryAll(document, '.slide'));
-var slideshowTimer = setInterval( function(){ teacherSlideshow._refresh(); },1000);
+var slideshowTimer = setInterval( function(){ teacherSlideshow._refresh(); },2000);
