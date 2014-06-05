@@ -99,4 +99,19 @@ describe("TeacherSlideShow KeyHandling", function() {
 
   });
   
+  it("should refresh last send attendee name every second", function() {
+	  
+    spyOn(TeacherSlideShow.prototype, '_refresh');
+    jasmine.Clock.useMock();
+
+    setInterval( function(){ teacherSlideshow._refresh(); },1000); // Mandatory even if it is already done in the javascript
+
+    expect(TeacherSlideShow.prototype._refresh.callCount).toEqual(0);
+    jasmine.Clock.tick(1001);
+    expect(TeacherSlideShow.prototype._refresh.callCount).toEqual(1);
+    
+    expect(slideshowTimer).toBeDefined(); // Test if timer is javascript
+
+  });  
+  
 });

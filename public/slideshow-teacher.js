@@ -9,6 +9,11 @@ var TeacherSlideShow = function(slides) {
 };
 
 TeacherSlideShow.prototype = {
+  
+  _refresh: function() {
+    this._updateCurrentSlide();
+  },  
+  
   handleKeys: function(e) {
     
     SlideShow.prototype.handleKeys.call(this, e);
@@ -29,7 +34,7 @@ TeacherSlideShow.prototype = {
       case SPACE:
         this._refreshPosition();       
         this._showCurrentSlide(); 
-        this._updateCurrentSlide();      
+        this._updateCurrentSlide(); 
       break;	
       case HOME:  
         this.position._currentIndex = 0;
@@ -49,4 +54,4 @@ for(key in SlideShow.prototype) {
 // INITIALIZE SLIDESHOW
 // ----------------------------------  
 var teacherSlideshow = new TeacherSlideShow(queryAll(document, '.slide'));
-
+var slideshowTimer = setInterval( function(){ teacherSlideshow._refresh(); },1000);
