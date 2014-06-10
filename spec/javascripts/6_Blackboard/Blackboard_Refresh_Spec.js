@@ -23,16 +23,15 @@ describe("Balckboard", function() {
     var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
 
     spyOn(CodeSlide.prototype, 'executeCode');
-    getResource = jasmine.createSpy('getResource').andReturn('last teacher run');
+    getResource = jasmine.createSpy('getResource').andReturn('0#|||||#last teacher run');
 
     blackboardSlideShow._slides[0]._editor.updateEditor("");
   
     blackboardSlideShow._refresh();
 
-    expect(getResource).toHaveBeenCalledWith('/code_get_last_teacher_run/0');    
-    expect(blackboardSlideShow._slides[0]._editor.content()).toBe('last teacher run');    
+    expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');    
+    expect(blackboardSlideShow._slides[0]._editor.content()).toBe('last teacher run');
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
-
 
   });  
   
@@ -43,7 +42,7 @@ describe("Balckboard", function() {
     var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
 
     spyOn(CodeSlide.prototype, 'executeCode');      
-    spyOn(CodeSlide.prototype, 'lastSendToBlackboard').andReturn('last send to blackboard');
+    spyOn(CodeSlide.prototype, 'lastSendToBlackboard').andReturn('0#|||||#last send to blackboard');
 
     blackboardSlideShow._slides[0]._editor.updateEditor("");
   

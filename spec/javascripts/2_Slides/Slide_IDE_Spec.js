@@ -194,15 +194,15 @@ describe("IDE GET & RUN", function() {
   
   it("should get and run last teacher run when get button clicked", function() {
 
-    getResource = jasmine.createSpy('getResource').andReturn('last teacher run code');
+    getResource = jasmine.createSpy('getResource').andReturn('0#|||||#last teacher run code');
     postResource = jasmine.createSpy('postResource');
 	  
     slide._editor.updateEditor('');
 	  
     codeSlideNode.querySelector('#get_code').click();
 
-    expect(getResource).toHaveBeenCalledWith('/code_get_last_teacher_run/0');	  
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'last teacher run code', SYNCHRONOUS);	  
+    expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'last teacher run code', SYNCHRONOUS);
     
     expect(slide._editor.content()).toBe('last teacher run code');	  
     
@@ -210,14 +210,14 @@ describe("IDE GET & RUN", function() {
   
   it("should get and run last teacher run when ALT-G pressed", function() {
     
-    getResource = jasmine.createSpy('getResource').andReturn('last teacher run code');
+    getResource = jasmine.createSpy('getResource').andReturn('0#|||||#last teacher run code');
     postResource = jasmine.createSpy('postResource');
 	  
     slide._editor.updateEditor('');
 	  
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), G, ALT);
 
-    expect(getResource).toHaveBeenCalledWith('/code_get_last_teacher_run/0');	  
+    expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');	  
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'last teacher run code', SYNCHRONOUS);	  
     
     expect(slide._editor.content()).toBe('last teacher run code');  
@@ -264,7 +264,7 @@ describe("IDE LAST SEND", function() {
     __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), N, ALT);
 
     expect(getResource).toHaveBeenCalledWith('/code_attendees_last_send/0');
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'last attendee send code', SYNCHRONOUS);	  
+    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'last attendee send code', SYNCHRONOUS);	  
     
     expect(slide._editor.content()).toBe('last attendee send code'); 
 	  
@@ -537,7 +537,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should get last teacher run without code to add", function() {
 
-    getResource = jasmine.createSpy('getResource').andReturn('teacher run' + SEPARATOR + "puts 'CODE TO ADD'");
+    getResource = jasmine.createSpy('getResource').andReturn('0#|||||#teacher run' + SEPARATOR + "puts 'CODE TO ADD'");
 
     var slide = new CodeSlide(codeSlideNode);
 	  

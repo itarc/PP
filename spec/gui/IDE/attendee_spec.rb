@@ -107,7 +107,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     
     visit attendee_IDE
     
-    expect(page).to have_content 'AUTHOR: #'
+    expect(page).to have_content 'AUTHOR: ?'
 
     expect(page).to have_field 'attendee_name', :with => ''
 
@@ -115,7 +115,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     
     find('#attendee_name').native.send_key(:return)
 
-    expect(page).to have_content 'AUTHOR: #'
+    expect(page).to have_content 'AUTHOR: ?'
     
     fill_in 'attendee_name', :with => "a name"
     

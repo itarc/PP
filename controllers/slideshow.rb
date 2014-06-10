@@ -52,11 +52,11 @@ get '/code_attendees_last_send/*' do
   last_send.user + "#|||||#" + last_send.code_input
 end
 
-get '/code_get_last_teacher_run/*' do
+get '/code_get_last_send_to_blackboard/*' do
   response.headers['Access-Control-Allow-Origin'] = '*'    
-  last_teacher_run = RunTimeEvent.find_last_teacher_run(slide_index)
+  last_teacher_run = RunTimeEvent.find_last_send_to_blackboard(slide_index)
   return "" if last_teacher_run == nil
-  last_teacher_run.code_input  
+  last_teacher_run.user + "#|||||#" + last_teacher_run.code_input  
 end
 
 get '/session_id' do

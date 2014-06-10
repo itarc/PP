@@ -91,7 +91,9 @@ AuthorBar.prototype = {
   },
   
   updateWith: function(author) {
-    if (is_a_number(author)) author = '#';
+    if (is_a_number(author)) {
+      if (author == '0') { author = '#'; } else { author = '?'; }
+    }
     if (this._node) { 
       if (author.split('_')[1]) author = author.split('_')[1];
       this._node.innerHTML = author;
@@ -253,10 +255,13 @@ CodeSlide.prototype = {
   },
 
   getAndExecuteCode: function() {         
-    get_url = "/code_get_last_teacher_run" + "/" + this._codeHelper_current_index;
-    code = getResource(get_url).split(SEPARATOR)[0];
-    this._editor.updateEditor(code);
-    this.executeCode();
+    get_url = "/code_get_last_send_to_blackboard" + "/" + this._codeHelper_current_index;
+    code = getResource(get_url)
+    if (code.split('#|||||#')[1]) {
+      code = code.split('#|||||#')[1].split(SEPARATOR)[0];
+      this._editor.updateEditor(code);
+      this.executeCode();
+    }
   }, 
 
   lastExecution: function(slideShowType) {
@@ -274,7 +279,7 @@ CodeSlide.prototype = {
       if (attendeeLastSend != '') {
         if (attendeeLastSend.split('#|||||#')[1] != '') { 
           this._editor.updateEditor(attendeeLastSend.split('#|||||#')[1].split(SEPARATOR)[0]);        
-          this.executeCode(slideShowType);
+          this.executeAndSendCode(slideShowType);
           this._authorBar.updateWith(attendeeLastSend.split('#|||||#')[0]);
         };        
         return true;     
@@ -313,18 +318,21 @@ CodeSlide.prototype = {
   },
   
   lastSendToBlackboard: function(slideShowType) {
-    url = '/code_get_last_teacher_run';
+    url = '/code_get_last_send_to_blackboard';
     return getResource(url + '/' + this._codeHelper_current_index);
   },    
   
   _updateEditorWithLastSendToBlackboardAndExecute: function(slideShowType) {
     lastSendToBlackboard = this.lastSendToBlackboard(slideShowType);
     if (lastSendToBlackboard != '') {
-      if (lastSendToBlackboard.split(SEPARATOR)[0] != this._editor.content()) { 
-        this._editor.updateEditor(lastSendToBlackboard.split(SEPARATOR)[0]);        
-        this.executeCode(slideShowType);
+      if (lastSendToBlackboard.split('#|||||#')[1]) {
+        if (lastSendToBlackboard.split('#|||||#')[1].split(SEPARATOR)[0] != this._editor.content()) { 
+          this._editor.updateEditor(lastSendToBlackboard.split('#|||||#')[1].split(SEPARATOR)[0]);        
+          this.executeCode(slideShowType);
+          this._authorBar.updateWith(lastSendToBlackboard.split('#|||||#')[0]);        
+        };
+        return true;
       };
-      return true;
     };
   },  
   

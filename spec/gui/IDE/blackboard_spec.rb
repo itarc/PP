@@ -148,6 +148,8 @@ describe 'Blackboard Update', :type => :feature, :js => true do
 
     expect_IDE_to_have(code_input = "print 'teacher run'", code_output = "teacher run")
     
+    expect_AuthorBar_to_have(author = '#', last_send_attendee_name = '')      
+    
     visit teacher_presentation; go_down
     
     fill_IDE_with("print 'teacher run 2'")
@@ -157,6 +159,8 @@ describe 'Blackboard Update', :type => :feature, :js => true do
     visit blackboard_presentation
 
     expect_IDE_to_have(code_input = "print 'teacher run 2'", code_output = "teacher run 2")    
+    
+    expect_AuthorBar_to_have(author = '#', last_send_attendee_name = '')      
     
   end  
 
@@ -197,23 +201,29 @@ describe 'Blackboard Update', :type => :feature, :js => true do
   
   end
 
-  it 'should display attendee send when teacher allows it' do   
+  it 'should display attendee send when teacher allows it with its name' do   
 
-    visit attendee_IDE
+    #~ visit attendee_IDE
     
-    fill_IDE_with("print 'attendee send'")
+    #~ fill_IDE_with("print 'attendee send'")
     
-    send_code
+    #~ send_code
     
-    visit teacher_presentation; go_down
+    visit teacher_presentation; go_down    
 
+    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    
     click_on "get_last_send"
     
-    expect_IDE_to_have(code_input = "print 'attendee send'", code_output = "attendee send") 
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = "attendee send") 
+
+    expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = '')
 
     visit blackboard_presentation
 
-    expect_IDE_to_have(code_input = "print 'attendee send'", code_output = "attendee send")
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = "attendee send")
+    
+    expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = 'attendee 1 >>')
     
   end
 

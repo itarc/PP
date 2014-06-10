@@ -158,8 +158,19 @@ class TestRunTimeEvent_find_last_execution_in_teacher_slide < Test::Unit::TestCa
     runtime_events = RunTimeEvent.find_attendees_last_send_on_slide("0", "slide_0")
     assert_equal (["user", "send", "slide_0", "print 4", "4"]).inspect, runtime_events.inspect
   end  
+  
+  def test03_should_find_last_attendee_send_even_if_a_teacher_run_is_fresher
+    RunTimeEvent.new("user", type="run", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '1').save
+    RunTimeEvent.new("user", type="run", slide_index = "slide_0" ,code_input = "print 2", code_output = "2", timestamp = '2').save
+    RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 3", code_output = "3", timestamp = '3').save
+    RunTimeEvent.new("0", type="run", slide_index = "slide_0" ,code_input = "print 5", code_output = "5", timestamp = '4').save    
+    RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 4", code_output = "4", timestamp = '5').save
+    RunTimeEvent.new("0", type="send", slide_index = "slide_0" ,code_input = "print 6", code_output = "6", timestamp = '6').save      
+    runtime_events = RunTimeEvent.find_attendees_last_send_on_slide("0", "slide_0")
+    assert_equal (["user", "send", "slide_0", "print 4", "4"]).inspect, runtime_events.inspect
+  end  
 
-  def test03_should_find_last_teacher_run
+  def test04_should_find_last_teacher_run
     RunTimeEvent.new("user", type="run", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '1').save
     RunTimeEvent.new("user", type="run", slide_index = "slide_0" ,code_input = "print 2", code_output = "2", timestamp = '2').save
     RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 3", code_output = "3", timestamp = '3').save
@@ -176,29 +187,44 @@ class TestRunTimeEvent_find_last_execution_in_teacher_slide < Test::Unit::TestCa
 end  
 
 
-class TestRunTimeEvent_find_last_teacher_run < Test::Unit::TestCase 
+class TestRunTimeEvent_find_last_send_to_blackboard < Test::Unit::TestCase 
 
   def setup
     $db.execute_sql("delete from run_events")
   end
   
   def test01_should_find_nil_when_no_execution_in_database
-    assert_equal nil, RunTimeEvent.find_last_teacher_run("slide_0")
+    assert_equal nil, RunTimeEvent.find_last_send_to_blackboard("slide_0")
   end   
   
-  def test01_should_find_last_teacher_run
+  def test01_should_find_last_send_to_blackboard_with_teacher_last_run
     RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '1').save
     RunTimeEvent.new("0", type="run", slide_index = "slide_0" ,code_input = "print 2", code_output = "2", timestamp = '2').save
-    runtime_events = RunTimeEvent.find_last_teacher_run("slide_0")
+    runtime_events = RunTimeEvent.find_last_send_to_blackboard("slide_0")
     assert_equal (["0", "run", "slide_0", "print 2", "2"]).inspect, runtime_events.inspect
   end  
   
-  def test02_should_find_last_teacher_run_again
+  def test02_should_find_last_send_to_blackboard_with_attendee_last_send
     RunTimeEvent.new("0", type="run", slide_index = "slide_0" ,code_input = "print 2", code_output = "2", timestamp = '1').save    
     RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '2').save
-    runtime_events = RunTimeEvent.find_last_teacher_run("slide_0")
+    runtime_events = RunTimeEvent.find_last_send_to_blackboard("slide_0")
     assert_equal (["0", "run", "slide_0", "print 2", "2"]).inspect, runtime_events.inspect
   end
+  
+  def test03_should_find_last_send_to_blackboard_by_attendee
+    RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '1').save
+    RunTimeEvent.new("0", type="send", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '2').save
+    runtime_events = RunTimeEvent.find_last_send_to_blackboard("slide_0")
+    assert_equal (["user", "send", "slide_0", "print 1", "1"]).inspect, runtime_events.inspect
+  end  
+  
+  def test04_should_find_last_send_to_blackboard_with_
+    RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 1", code_output = "1", timestamp = '1').save
+    RunTimeEvent.new("0", type="send", slide_index = "slide_0" ,code_input = "print 2", code_output = "2", timestamp = '2').save
+    RunTimeEvent.new("user", type="send", slide_index = "slide_0" ,code_input = "print 3", code_output = "3", timestamp = '3').save    
+    runtime_events = RunTimeEvent.find_last_send_to_blackboard("slide_0")
+    assert_equal (["user", "send", "slide_0", "print 1", "1"]).inspect, runtime_events.inspect
+  end  
 
   def teardown
     $db.execute_sql("delete from run_events")

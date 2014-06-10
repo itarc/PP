@@ -50,11 +50,16 @@ class RunTimeEvent
   end
   
   def RunTimeEvent.find_attendees_last_send_on_slide(user_id, slide_index)
-    (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index &&  ( event.type == 'send' ) }).last 
+    (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index && event.user != '0' &&  ( event.type == 'send' ) }).last
   end    
   
-  def RunTimeEvent.find_last_teacher_run(slide_index)
-    (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index && event.user == '0' && event.type == 'run' }).last
+  def RunTimeEvent.find_last_send_to_blackboard(slide_index)
+    last_teacher_run_or_send_on_blackboard = (RunTimeEvent.find_all.select { |event|  event.slide_index == slide_index && event.user == '0' && (event.type == 'run' || event.type == 'send')}).last
+    if last_teacher_run_or_send_on_blackboard == nil then return nil end
+    if last_teacher_run_or_send_on_blackboard.type == 'run' then return last_teacher_run_or_send_on_blackboard end
+    if last_teacher_run_or_send_on_blackboard.type == 'send' then 
+      return (RunTimeEvent.find_all.select { |event| event.slide_index == slide_index && event.user != '0' && event.type == 'send' && event.timestamp < last_teacher_run_or_send_on_blackboard.timestamp }).last
+    end
   end
   
   def to_s

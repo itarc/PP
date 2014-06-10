@@ -135,7 +135,7 @@ class TestLastExecution_in_teacher_slide < Test::Unit::TestCase
   
 end
 
-class TestLastTeacher_run_in_attendee_slide < Test::Unit::TestCase
+class TestLastSendToBlackBoard < Test::Unit::TestCase
   
   include Rack::Test::Methods
 
@@ -147,10 +147,10 @@ class TestLastTeacher_run_in_attendee_slide < Test::Unit::TestCase
     $db.execute_sql("delete from run_events")	  
   end
 
-  def test01_should_get_last_teacher_run
+  def test01_should_get_last_send_to_blackboard
     post '/code_run_result/0', "teacher run", 'rack.session' => {:user_id => '0'}
-    get '/code_get_last_teacher_run/0', {}, 'rack.session' => {:user_id => 'user_1' }
-    assert_equal "teacher run", last_response.body    
+    get '/code_get_last_send_to_blackboard/0', {}, 'rack.session' => {:user_id => 'user_1' }
+    assert_equal "0#|||||#teacher run", last_response.body    
   end
   
   def teardown
