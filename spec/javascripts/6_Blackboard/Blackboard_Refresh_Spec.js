@@ -43,7 +43,7 @@ describe("Balckboard", function() {
     var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
 
     spyOn(CodeSlide.prototype, 'executeCode');      
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('last execution');
+    spyOn(CodeSlide.prototype, 'lastSendToBlackboard').andReturn('last send to blackboard');
 
     blackboardSlideShow._slides[0]._editor.updateEditor("");
   
@@ -51,7 +51,7 @@ describe("Balckboard", function() {
     
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
     
-    blackboardSlideShow._slides[0]._editor.updateEditor("last execution");
+    blackboardSlideShow._slides[0]._editor.updateEditor("last send to blackboard");
     
     blackboardSlideShow._refresh();
     

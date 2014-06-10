@@ -261,7 +261,6 @@ CodeSlide.prototype = {
 
   lastExecution: function(slideShowType) {
     url = '/code_last_execution'
-    if (slideShowType == 'blackboard') { url = '/code_get_last_teacher_run'; }
     return getResource(url + '/' + this._codeHelper_current_index);
   },  
 
@@ -313,8 +312,28 @@ CodeSlide.prototype = {
     }
   },
   
+  lastSendToBlackboard: function(slideShowType) {
+    url = '/code_get_last_teacher_run';
+    return getResource(url + '/' + this._codeHelper_current_index);
+  },    
+  
+  _updateEditorWithLastSendToBlackboardAndExecute: function(slideShowType) {
+    lastSendToBlackboard = this.lastSendToBlackboard(slideShowType);
+    if (lastSendToBlackboard != '') {
+      if (lastSendToBlackboard.split(SEPARATOR)[0] != this._editor.content()) { 
+        this._editor.updateEditor(lastSendToBlackboard.split(SEPARATOR)[0]);        
+        this.executeCode(slideShowType);
+      };
+      return true;
+    };
+  },  
+  
   _updateEditorAndExecuteCode: function(slideShowType) {
-    if (this._updateEditorWithLastUserRunAndExecute(slideShowType)) return;
+    if (slideShowType == 'blackboard') {
+      if (this._updateEditorWithLastSendToBlackboardAndExecute(slideShowType)) return;
+    } else {
+      if (this._updateEditorWithLastUserRunAndExecute(slideShowType)) return;
+    }
     if (this._updateEditorWithCodeToDisplayAndExecute(slideShowType)) return;
     if (this._updateEditorWithCodeToAddAndExecute(slideShowType)) return;
   },
