@@ -1,40 +1,47 @@
+IDE_slide_html = "" +
+"<div class='slide'/><section>"+
+  "<textarea id='code_input'></textarea>" +
+  "<textarea id='code_output'></textarea>"+  
+  "<div class='code_helper' id='code_helper_1'></div>"+
+  "<div class='code_helper' id='code_helper_2'></div>" +
+  "<div class='code_author'><span id='author_name'>author</span></div>" +
+  "<input type='button' id='execute'>"+
+  "<input type='button' id='send_code'/>"+
+  "<input type='button' id='get_code'/>" +
+  "<input type='button' id='get_last_send'/>"+
+"</section><div>"
+    
 describe("IDE", function() {
 
   beforeEach(function () {
-    code_input = "<textarea id='code_input'></textarea>"
-    code_helpers = "<textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea>"
-    author_bar = "<div class='code_author'>AUTHOR: <span id='author_name'>author</span></div>"
-    buttons = "<input type='button' id='execute'><input type='button' id='send_code'/><input type='button' id='get_code'/>"
-    code_output = "<textarea id='code_output'></textarea>"
-    
-    codeSlideNode = sandbox("<div class='slide'/><section>" + code_input +  code_helpers + author_bar + buttons + code_output + "</section><div>");
-    slide = new CodeSlide(codeSlideNode);  
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new CodeSlide(slideNode);  
   });	
   
-  it("should update code editor", function() {
+  it("should update editor", function() {
 	  
-   expect(codeSlideNode.querySelector('#code_input').value).toBe('');
+   expect(slideNode.querySelector('#code_input').value).toBe('');
 
-   slide._editor.updateEditor("print 'editor updated'");
+   IDESlide.updateEditor("print 'editor updated'");
 	  
-   expect(codeSlideNode.querySelector('#code_input').value).toBe("print 'editor updated'");
+   expect(slideNode.querySelector('#code_input').value).toBe("print 'editor updated'");
     
   });  
 
-  it("should show current code_helper", function() {
+  it("should show code helper", function() {
     
-    expect(codeSlideNode.querySelector('#code_helper_1').className).toBe('code_helper');
-    expect(codeSlideNode.querySelector('#code_helper_2').className).toBe('code_helper');   
+    expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper');
+    expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper');   
     
-    slide.showCurrentCodeHelper(0);
+    IDESlide.showCodeHelper(0);
 
-    expect(codeSlideNode.querySelector('#code_helper_1').className).toBe('code_helper current');
-    expect(codeSlideNode.querySelector('#code_helper_2').className).toBe('code_helper');
+    expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper current');
+    expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper');
 	  
-    slide.showCurrentCodeHelper(1);	
+    IDESlide.showCodeHelper(1);	
 
-    expect(codeSlideNode.querySelector('#code_helper_1').className).toBe('code_helper');
-    expect(codeSlideNode.querySelector('#code_helper_2').className).toBe('code_helper current');  
+    expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper');
+    expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper current');  
 
   });
   
@@ -43,14 +50,8 @@ describe("IDE", function() {
 describe("IDE RUN", function() {
   
   beforeEach(function () {
-    code_input = "<textarea id='code_input'></textarea>"
-    code_helpers = "<textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea>"
-    author_bar = "<div class='code_author'>AUTHOR: <span id='author_name'>author</span></div>"
-    buttons = "<input type='button' id='execute'><input type='button' id='send_code'/><input type='button' id='get_code'/><input type='button' id='get_last_send'/>"
-    code_output = "<textarea id='code_output'></textarea>"
-    
-    codeSlideNode = sandbox("<div class='slide'/><section>"+code_input+code_helpers+author_bar+buttons+code_output+"</section><div>");
-    slide = new CodeSlide(codeSlideNode);  
+    slideNode = sandbox(IDE_slide_html);
+    slide = new CodeSlide(slideNode);  
   });	  
   
   it("should show result on standard output", function() {
@@ -59,16 +60,16 @@ describe("IDE RUN", function() {
 	  
     slide._editor.updateEditor('puts 1');
 	  
-    expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 1');
-    expect(codeSlideNode.querySelector('#code_output').value).toBe('');
+    expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
+    expect(slideNode.querySelector('#code_output').value).toBe('');
     expect(postResource.calls.length).toBe(0);	  
 
     slide.executeCode();
 	  
     expect(postResource.calls.length).toBe(1);
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);
-    expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 1');
-    expect(codeSlideNode.querySelector('#code_output').value).toBe('1');
+    expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
+    expect(slideNode.querySelector('#code_output').value).toBe('1');
     
   });  
 
@@ -78,7 +79,7 @@ describe("IDE RUN", function() {
 	  
     slide._editor.updateEditor('puts 1');	  
 	  
-    codeSlideNode.querySelector('#execute').click();
+    slideNode.querySelector('#execute').click();
 
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);	  
     
@@ -90,13 +91,13 @@ describe("IDE RUN", function() {
 
     postResource = jasmine.createSpy('postResource');
 
-    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), R, ALT);
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 	  
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'code to run', SYNCHRONOUS);		  
 	  
-    slide.showCurrentCodeHelper(1);
+    slide.showCodeHelper(1);
 	  
-    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), R, ALT);	  
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);	  
 
     expect(postResource).toHaveBeenCalledWith('/code_run_result/1', 'code to run', SYNCHRONOUS);		  
 	  
@@ -104,14 +105,14 @@ describe("IDE RUN", function() {
 
   it("should NOT run code when ALT-R disabled", function() {
    
-    codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute' disabled><input type='button' id='send_code'><input type='button' id='get_code'><textarea id='code_output'></textarea></section></div>");
-    slide = new CodeSlide(codeSlideNode);  
+    slideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute' disabled><input type='button' id='send_code'><input type='button' id='get_code'><textarea id='code_output'></textarea></section></div>");
+    slide = new CodeSlide(slideNode);  
     
     spyOn(CodeSlide.prototype, 'executeCode');      
 
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
 	  
-    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), R, ALT);
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);  
 
@@ -122,14 +123,8 @@ describe("IDE RUN", function() {
 describe("IDE RUN & SEND", function() {  
   
   beforeEach(function () {
-    code_input = "<textarea id='code_input'></textarea>"
-    code_helpers = "<textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea>"
-    author_bar = "<div class='code_author'>AUTHOR: <span id='author_name'>author</span></div>"
-    buttons = "<input type='button' id='execute'><input type='button' id='send_code'/><input type='button' id='get_code'/><input type='button' id='get_last_send'/>"
-    code_output = "<textarea id='code_output'></textarea>"
-    
-    codeSlideNode = sandbox("<div class='slide'/><section>"+code_input+code_helpers+author_bar+buttons+code_output+"</section><div>");
-    slide = new CodeSlide(codeSlideNode);  
+    slideNode = sandbox(IDE_slide_html);    
+    slide = new CodeSlide(slideNode);  
   });	  
 
   it("should run and send code when send button clicked", function() {
@@ -138,7 +133,7 @@ describe("IDE RUN & SEND", function() {
 	  
     slide._editor.updateEditor('code to send');
 	  
-    codeSlideNode.querySelector('#send_code').click();
+    slideNode.querySelector('#send_code').click();
 
     expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'code to send', SYNCHRONOUS);	  
     
@@ -150,13 +145,13 @@ describe("IDE RUN & SEND", function() {
 
     postResource = jasmine.createSpy('postResource');
 
-    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), S, ALT);
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
 	  
     expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'code to send', SYNCHRONOUS);		  
 	  
-    slide.showCurrentCodeHelper(1);
+    slide.showCodeHelper(1);
 	  
-    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), S, ALT);	  
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);	  
 
     expect(postResource).toHaveBeenCalledWith('/code_send_result/1', 'code to send', SYNCHRONOUS);		  
 	  
@@ -164,14 +159,14 @@ describe("IDE RUN & SEND", function() {
 
   it("should NOT send code when ALT-S button disabled", function() {
    
-    codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code' disabled><input type='button' id='get_code'><textarea id='code_output'></textarea></section></div>");
-    slide = new CodeSlide(codeSlideNode);  
+    slideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code' disabled><input type='button' id='get_code'><textarea id='code_output'></textarea></section></div>");
+    slide = new CodeSlide(slideNode);  
     
     spyOn(CodeSlide.prototype, 'executeAndSendCode');      
 
     expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);
 	  
-    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), S, ALT);
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
 
     expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);  
 
@@ -182,14 +177,8 @@ describe("IDE RUN & SEND", function() {
 describe("IDE GET & RUN", function() {   
   
   beforeEach(function () {
-    code_input = "<textarea id='code_input'></textarea>"
-    code_helpers = "<textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea>"
-    author_bar = "<div class='code_author'>AUTHOR: <span id='author_name'>author</span></div>"
-    buttons = "<input type='button' id='execute'><input type='button' id='send_code'/><input type='button' id='get_code'/><input type='button' id='get_last_send'/>"
-    code_output = "<textarea id='code_output'></textarea>"
-    
-    codeSlideNode = sandbox("<div class='slide'/><section>"+code_input+code_helpers+author_bar+buttons+code_output+"</section><div>");
-    slide = new CodeSlide(codeSlideNode);  
+    slideNode = sandbox(IDE_slide_html);    
+    slide = new CodeSlide(slideNode);  
   });  
   
   it("should get and run last teacher run when get button clicked", function() {
@@ -199,7 +188,7 @@ describe("IDE GET & RUN", function() {
 	  
     slide._editor.updateEditor('');
 	  
-    codeSlideNode.querySelector('#get_code').click();
+    slideNode.querySelector('#get_code').click();
 
     expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'last teacher run code', SYNCHRONOUS);
@@ -215,7 +204,7 @@ describe("IDE GET & RUN", function() {
 	  
     slide._editor.updateEditor('');
 	  
-    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), G, ALT);
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
     expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');	  
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'last teacher run code', SYNCHRONOUS);	  
@@ -226,14 +215,14 @@ describe("IDE GET & RUN", function() {
   
   it("should NOT get and run code when ALT-G disabled", function() {
    
-    codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code'><input type='button' id='get_code' disabled><textarea id='code_output'></textarea></section></div>");
-    slide = new CodeSlide(codeSlideNode);  
+    slideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code'><input type='button' id='get_code' disabled><textarea id='code_output'></textarea></section></div>");
+    slide = new CodeSlide(slideNode);  
     
     spyOn(CodeSlide.prototype, 'getAndExecuteCode');      
 
     expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(0);
 	  
-    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), G, ALT);
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
     expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(0);  
 
@@ -244,14 +233,8 @@ describe("IDE GET & RUN", function() {
 describe("IDE LAST SEND", function() {   
   
   beforeEach(function () {
-    code_input = "<textarea id='code_input'></textarea>"
-    code_helpers = "<textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea>"
-    author_bar = "<div class='code_author'>AUTHOR: <span id='author_name'>author</span></div>"
-    buttons = "<input type='button' id='execute'><input type='button' id='send_code'/><input type='button' id='get_code'/><input type='button' id='get_last_send'/>"
-    code_output = "<textarea id='code_output'></textarea>"
-    
-    codeSlideNode = sandbox("<div class='slide'/><section>"+code_input+code_helpers+author_bar+buttons+code_output+"</section><div>");
-    slide = new CodeSlide(codeSlideNode);  
+    slideNode = sandbox(IDE_slide_html);    
+    slide = new CodeSlide(slideNode);  
   });   
   
   it("should get and run last attendee send when ALT-N pressed", function() {
@@ -261,7 +244,7 @@ describe("IDE LAST SEND", function() {
 	  
     slide._editor.updateEditor('');
 	  
-    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), N, ALT);
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
 
     expect(getResource).toHaveBeenCalledWith('/code_attendees_last_send/0');
     expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'last attendee send code', SYNCHRONOUS);	  
@@ -272,14 +255,14 @@ describe("IDE LAST SEND", function() {
   
   it("should NOT get and run last attendee send when ALT-N button not present", function() {
    
-    codeSlideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code'><input type='button' id='get_code' disabled><textarea id='code_output'></textarea></section></div>");
-    slide = new CodeSlide(codeSlideNode);  
+    slideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code'><input type='button' id='get_code' disabled><textarea id='code_output'></textarea></section></div>");
+    slide = new CodeSlide(slideNode);  
     
     spyOn(CodeSlide.prototype, '_updateEditorWithLastSendAndExecute');      
 
     expect(CodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(0);
 	  
-    __triggerKeyboardEvent(codeSlideNode.querySelector('#code_input'), N, ALT);
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
 
     expect(CodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(0);  
 
@@ -290,24 +273,18 @@ describe("IDE LAST SEND", function() {
 describe("IDE UPDATE", function() {
 	
   beforeEach(function () {
-    code_input = "<textarea id='code_input'></textarea>"
-    code_helpers = "<textarea class='code_helper' id='code_helper_1'></textarea><textarea class='code_helper' id='code_helper_2'></textarea>"
-    author_bar = "<div class='code_author'>AUTHOR: <span id='author_name'>author</span></div>"
-    buttons = "<input type='button' id='execute'><input type='button' id='send_code'/><input type='button' id='get_code'/>"
-    code_output = "<textarea id='code_output'></textarea>"
-    
-    codeSlideNode = sandbox("<div class='slide'/><section>" + code_input +  code_helpers + author_bar + buttons + code_output + "</section><div>");
-    slide = new CodeSlide(codeSlideNode);  
+    slideNode = sandbox(IDE_slide_html); 
+    slide = new CodeSlide(slideNode);  
   });
   
   it("should show current code helper", function() {
 	  
-    spyOn(CodeSlide.prototype, 'showCurrentCodeHelper');	  
+    spyOn(CodeSlide.prototype, 'showCodeHelper');	  
 	  
     slide._update(0);
 	  
-    expect(CodeSlide.prototype.showCurrentCodeHelper.calls.length).toBe(1);
-    expect(CodeSlide.prototype.showCurrentCodeHelper).toHaveBeenCalledWith(0);
+    expect(CodeSlide.prototype.showCodeHelper.calls.length).toBe(1);
+    expect(CodeSlide.prototype.showCodeHelper).toHaveBeenCalledWith(0);
 	  
   });  
   
@@ -315,12 +292,12 @@ describe("IDE UPDATE", function() {
 
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn('last execution');
 	  
-    spyOn(CodeSlide.prototype, 'showCurrentCodeHelper');	  
+    spyOn(CodeSlide.prototype, 'showCodeHelper');	  
     spyOn(CodeSlide.prototype, 'executeCode');
 	  
     slide._update(0);
 	  
-    expect(CodeSlide.prototype.showCurrentCodeHelper.calls.length).toBe(1);
+    expect(CodeSlide.prototype.showCodeHelper.calls.length).toBe(1);
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
 	  
   });
@@ -365,8 +342,8 @@ describe("IDE UPDATE", function() {
   
   it("should get last execution", function() {
 
-    expect(codeSlideNode.querySelector('#code_input').value).toBe('');
-    expect(codeSlideNode.querySelector('#code_output').value).toBe('');
+    expect(slideNode.querySelector('#code_input').value).toBe('');
+    expect(slideNode.querySelector('#code_output').value).toBe('');
     
     getResource = jasmine.createSpy('getResource').andReturn('puts 2');
     postResource = jasmine.createSpy('postResource').andReturn('2');
@@ -379,8 +356,8 @@ describe("IDE UPDATE", function() {
     expect(postResource.calls.length).toBe(1);
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 2', SYNCHRONOUS);		 
 
-    expect(codeSlideNode.querySelector('#code_input').value).toBe('puts 2');
-    expect(codeSlideNode.querySelector('#code_output').value).toBe('2');
+    expect(slideNode.querySelector('#code_input').value).toBe('puts 2');
+    expect(slideNode.querySelector('#code_output').value).toBe('2');
     
   });   
   
@@ -389,22 +366,22 @@ describe("IDE UPDATE", function() {
 describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
   
   beforeEach(function () {
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
+    slideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
   });  
 	
   it("should run code to display if no last execution", function() {
 
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
 	  
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
 
     postResource = jasmine.createSpy('postResource'); 		  
          
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
+    expect(slideNode.querySelector('#code_input').value).toBe("");
 
     slide._update(0);
 
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");
+    expect(slideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', "puts 'CODE TO DISPLAY'", SYNCHRONOUS);	  
 
   });
@@ -413,15 +390,15 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn('code in last execution');
 	  
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
 
     postResource = jasmine.createSpy('postResource'); 		  
          
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
+    expect(slideNode.querySelector('#code_input').value).toBe("");
 
     slide._update(0);
 
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("code in last execution");
+    expect(slideNode.querySelector('#code_input').value).toBe("code in last execution");
     expect(postResource.calls.length).toBe(1);	  
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', "code in last execution", SYNCHRONOUS);
 
@@ -431,20 +408,20 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
 	  
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
 
     postResource = jasmine.createSpy('postResource'); 		  
          
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
+    expect(slideNode.querySelector('#code_input').value).toBe("");
 
     slide._update(0);
 
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");
+    expect(slideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");
     expect(postResource.calls.length).toBe(1);
 
     slide._update(0);
 
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");    
+    expect(slideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");    
     expect(postResource.calls.length).toBe(1);
 
   }); 
@@ -454,24 +431,24 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 describe("IDE UPDATE with code to ADD in Code Helper", function() {  
   
   beforeEach(function () {
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><div class='code_author'>AUTHOR: <span id='author_name'>author</span><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
+    slideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><div class='code_author'>AUTHOR: <span id='author_name'>author</span><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
    });	  
   
   it("should run code to add", function() {
 
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
 
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
 
     postResource = jasmine.createSpy('postResource').andReturn("CODE TO ADD");
 
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
+    expect(slideNode.querySelector('#code_input').value).toBe("");
 	  
     slide._update(0);
 	  
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("");	  
+    expect(slideNode.querySelector('#code_input').value).toBe("");	  
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', SEPARATOR + "puts 'CODE TO ADD'", SYNCHRONOUS);
-    expect(codeSlideNode.querySelector('#code_output').value).toBe("CODE TO ADD");	  
+    expect(slideNode.querySelector('#code_output').value).toBe("CODE TO ADD");	  
 
   });	  
   
@@ -479,7 +456,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
     getResource = jasmine.createSpy('getResource').andReturn('code to execute' + SEPARATOR + "puts 'CODE TO ADD'");
 
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
     
     slide._editor.updateEditor('code to execute');
 
@@ -495,7 +472,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
     getResource = jasmine.createSpy('getResource').andReturn('' + SEPARATOR + "puts 'CODE TO ADD'");
 
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
     
     slide._editor.updateEditor('');
 
@@ -511,13 +488,13 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
     getResource = jasmine.createSpy('getResource').andReturn(SEPARATOR + "puts 'CODE TO ADD'");
 
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
 	  
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("");	  
+    expect(slideNode.querySelector('#code_input').value).toBe("");	  
 	  
     slide._update(0);	  
 
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("");
+    expect(slideNode.querySelector('#code_input').value).toBe("");
 
   });
   
@@ -525,13 +502,13 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
     //~ getResource = jasmine.createSpy('getResource').andReturn('attendee name'+ '#|||||#'+ 'attendee code' +SEPARATOR + "puts 'CODE TO ADD'");
 
-    //~ var slide = new CodeSlide(codeSlideNode);
+    //~ var slide = new CodeSlide(slideNode);
 	  
-    //~ expect(codeSlideNode.querySelector('#code_input').value).toBe("");
+    //~ expect(slideNode.querySelector('#code_input').value).toBe("");
 	  
     //~ slide._update(0, 'teacher');	  
 
-    //~ expect(codeSlideNode.querySelector('#code_input').value).toBe("attendee code");
+    //~ expect(slideNode.querySelector('#code_input').value).toBe("attendee code");
 
   //~ });
   
@@ -539,13 +516,13 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
     getResource = jasmine.createSpy('getResource').andReturn('0#|||||#teacher run' + SEPARATOR + "puts 'CODE TO ADD'");
 
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
 	  
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("");	  
+    expect(slideNode.querySelector('#code_input').value).toBe("");	  
     
     slide.getAndExecuteCode()
 
-    expect(codeSlideNode.querySelector('#code_input').value).toBe("teacher run");
+    expect(slideNode.querySelector('#code_input').value).toBe("teacher run");
 
   });  
 
@@ -555,16 +532,16 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 describe("IDE UPDATE with attendee name to type in", function() {  
   
   beforeEach(function () {
-    codeSlideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'>AUTHOR NAME?<input id='attendee_name' type='text'></div><div class='code_author'>AUTHOR: <span id='author_name'>author</span><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><input type='button' id='get_last_send'/><textarea id='code_output'></textarea></section></div>");
+    slideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'>AUTHOR NAME?<input id='attendee_name' type='text'></div><div class='code_author'>AUTHOR: <span id='author_name'>author</span><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><input type='button' id='get_last_send'/><textarea id='code_output'></textarea></section></div>");
    });	  
    
   it("should display session id when initialized", function() {
 
     getResource = jasmine.createSpy('getResource').andReturn('a name');
 
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
 	  
-    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a name");  
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");  
 
   });
   
@@ -573,15 +550,15 @@ describe("IDE UPDATE with attendee name to type in", function() {
     getResource = jasmine.createSpy('getResource').andReturn('a name');
     postResource = jasmine.createSpy('postResource')
 
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
     
-    codeSlideNode.querySelector('#attendee_name').value = 'a new name';
+    slideNode.querySelector('#attendee_name').value = 'a new name';
     
-    __triggerKeyboardEvent(codeSlideNode.querySelector('#attendee_name'), RETURN);
+    __triggerKeyboardEvent(slideNode.querySelector('#attendee_name'), RETURN);
     
     expect(postResource).toHaveBeenCalledWith("session_id/attendee_name", "attendee_name=a new name", SYNCHRONOUS);     
     
-    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a new name");    
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a new name");    
 
   });
   
@@ -590,17 +567,17 @@ describe("IDE UPDATE with attendee name to type in", function() {
     getResource = jasmine.createSpy('getResource').andReturn('a name');
     postResource = jasmine.createSpy('postResource')
 
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
     
-    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a name");
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
     
-    codeSlideNode.querySelector('#author_name').innerHTML = 'a name to replace';
+    slideNode.querySelector('#author_name').innerHTML = 'a name to replace';
     
     slide._editor.updateEditor("code to execute");    
     
-    codeSlideNode.querySelector('#execute').click();
+    slideNode.querySelector('#execute').click();
     
-    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a name");    
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");    
 
   }); 
   
@@ -609,21 +586,21 @@ describe("IDE UPDATE with attendee name to type in", function() {
     getResource = jasmine.createSpy('getResource').andReturn('a name');
     postResource = jasmine.createSpy('postResource')
 
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
     
-    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a name");      
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");      
     
-    codeSlideNode.querySelector('#attendee_name').value = 'a new name';
+    slideNode.querySelector('#attendee_name').value = 'a new name';
     
-    __triggerKeyboardEvent(codeSlideNode.querySelector('#attendee_name'), RETURN);
+    __triggerKeyboardEvent(slideNode.querySelector('#attendee_name'), RETURN);
     
-    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a new name");  
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a new name");  
 
     slide._editor.updateEditor("code to execute");    
     
-    codeSlideNode.querySelector('#execute').click();
+    slideNode.querySelector('#execute').click();
     
-    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a new name");    
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a new name");    
 
   }); 
 
@@ -634,13 +611,13 @@ describe("IDE UPDATE with attendee name to type in", function() {
     
     spyOn(CodeSlide.prototype ,"attendeesLastSend").andReturn("attendee id#|||||#code sent");
 
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
     
-    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a name");
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
     
-    codeSlideNode.querySelector('#get_last_send').click();
+    slideNode.querySelector('#get_last_send').click();
     
-    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("attendee id");    
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("attendee id");    
 
   });
   
@@ -651,15 +628,15 @@ describe("IDE UPDATE with attendee name to type in", function() {
     
     spyOn(CodeSlide.prototype ,"attendeesLastSend").andReturn("attendee id#|||||#code sent");
 
-    var slide = new CodeSlide(codeSlideNode);
+    var slide = new CodeSlide(slideNode);
     
-    codeSlideNode.querySelector('#code_input').value = "code sent"
+    slideNode.querySelector('#code_input').value = "code sent"
     
-    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("a name");
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
     
-    codeSlideNode.querySelector('#get_last_send').click();
+    slideNode.querySelector('#get_last_send').click();
     
-    expect(codeSlideNode.querySelector('#author_name').innerHTML).toBe("attendee id");
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("attendee id");
 
   });  
 

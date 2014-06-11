@@ -230,12 +230,16 @@ CodeSlide.prototype = {
     return this._codeHelpers[this._codeHelper_current_index]
   },   
   
-  showCurrentCodeHelper: function(slide_index) {
+  showCodeHelper: function(slide_index) {
     if (this._codeHelpers.length == 0) return;
     this._clearCodeHelpers();
     this._codeHelpers[slide_index].setState('current');
     this._codeHelper_current_index = slide_index;    	  
-  },  
+  }, 
+
+  updateEditor: function(code) {
+    this._editor.updateEditor(code);
+  },   
   
   codeToExecute: function() {
     return this._editor.content() + this._currentCodeHelper().codeToAdd();
@@ -260,7 +264,7 @@ CodeSlide.prototype = {
     code = getResource(get_url)
     if (code.split('#|||||#')[1]) {
       code = code.split('#|||||#')[1].split(SEPARATOR)[0];
-      this._editor.updateEditor(code);
+      this.updateEditor(code);
       this.executeCode();
     }
   }, 
@@ -279,7 +283,7 @@ CodeSlide.prototype = {
       attendeeLastSend = this.attendeesLastSend(slideShowType);
       if (attendeeLastSend != '') {
         if (attendeeLastSend.split('#|||||#')[1] != '') { 
-          this._editor.updateEditor(attendeeLastSend.split('#|||||#')[1].split(SEPARATOR)[0]);        
+          this.updateEditor(attendeeLastSend.split('#|||||#')[1].split(SEPARATOR)[0]);        
           this.executeAndSendCode(slideShowType);
           this._authorBar.updateWith(attendeeLastSend.split('#|||||#')[0]);
         };        
@@ -291,7 +295,7 @@ CodeSlide.prototype = {
     lastexecution = this.lastExecution(slideShowType);
     if (lastexecution != '') {
       if (lastexecution.split(SEPARATOR)[0] != this._editor.content()) { 
-        this._editor.updateEditor(lastexecution.split(SEPARATOR)[0]);        
+        this.updateEditor(lastexecution.split(SEPARATOR)[0]);        
         this.executeCode(slideShowType);
       };
       return true;
@@ -302,7 +306,7 @@ CodeSlide.prototype = {
     codeToDisplay = this._currentCodeHelper().codeToDisplay(); 
     if (codeToDisplay != '') { 
       if (codeToDisplay != this._editor.content()) { 
-        this._editor.updateEditor(codeToDisplay); 
+        this.updateEditor(codeToDisplay); 
         this.executeCode(slideShowType);
         };
       return true;
@@ -312,7 +316,7 @@ CodeSlide.prototype = {
   _updateEditorWithCodeToAddAndExecute: function(slideShowType) {
     codeToAdd = this._currentCodeHelper().codeToAdd();
     if (codeToAdd != '') {
-      this._editor.updateEditor(''); 
+      this.updateEditor(''); 
       this.executeCode(slideShowType);
       return  true;
     }
@@ -328,7 +332,7 @@ CodeSlide.prototype = {
     if (lastSendToBlackboard != '') {
       if (lastSendToBlackboard.split('#|||||#')[1]) {
         if (lastSendToBlackboard.split('#|||||#')[1].split(SEPARATOR)[0] != this._editor.content()) { 
-          this._editor.updateEditor(lastSendToBlackboard.split('#|||||#')[1].split(SEPARATOR)[0]);        
+          this.updateEditor(lastSendToBlackboard.split('#|||||#')[1].split(SEPARATOR)[0]);        
           this.executeCode(slideShowType);
           this._authorBar.updateWith(lastSendToBlackboard.split('#|||||#')[0]);        
         };
@@ -357,7 +361,7 @@ CodeSlide.prototype = {
   },
   
   _update: function(slide_index, slideShowType) {
-    this.showCurrentCodeHelper(slide_index);
+    this.showCodeHelper(slide_index);
     this._updateLastSendAttendeeName();
     this._updateEditorAndExecuteCode(slideShowType);
   },
