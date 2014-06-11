@@ -1,68 +1,66 @@
-describe("Balckboard", function() {
+IDE_slide_html = "" +
+"<div class='slide'/><section>"+
+  "<textarea id='code_input'></textarea>" +
+  "<textarea id='code_output'></textarea>"+  
+  "<div class='code_helper' id='code_helper_1'></div>"+
+  "<div class='code_helper' id='code_helper_2'></div>" +
+  "<div class='code_author'><span id='author_name'>author</span></div>" +
+  "<input type='button' id='execute'>"+
+  "<input type='button' id='send_code'/>"+
+  "<input type='button' id='get_code'/>" +
+  "<input type='button' id='get_last_send'/>"+
+"</section><div>"
+
+describe("Blackboard RUN", function() {
   
-  it("should call specific url when run", function() {
-    
-    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
-    
-    var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
+  beforeEach(function () {
+    setFixtures("<div class='slides'>"+ IDE_slide_html +"</div>")	      
+    blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide')); 
+  });
+  
+  it("should call specific url", function() {
 
     postResource = jasmine.createSpy('postResource');
 
-    blackboardSlideShow._slides[0]._editor.updateEditor("code to run");
-  
+    blackboardSlideShow._slides[0].updateEditor("code to run");
     blackboardSlideShow._slides[0].executeCode('blackboard');
 
     expect(postResource).toHaveBeenCalledWith('/code_run_result_blackboard/0', "code to run", SYNCHRONOUS);
 
-  });  
+  });
+  
+});  
+
+describe("Blackboard REFRESH", function() {
+  
+  beforeEach(function () {
+    setFixtures("<div class='slides'>"+ IDE_slide_html +"</div>")	      
+    blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide')); 
+    spyOn(CodeSlide.prototype, 'executeCode');      
+    spyOn(CodeSlide.prototype, 'lastSendToBlackboard').andReturn('0#|||||#last send to blackboard');    
+  });
   
   it("should get last Teacher run when refreshed", function() {
-    
-    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
-    
-    var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
-
-    spyOn(CodeSlide.prototype, 'executeCode');
-    getResource = jasmine.createSpy('getResource').andReturn('0#|||||#last teacher run');
-
-    blackboardSlideShow._slides[0]._editor.updateEditor("");
   
     blackboardSlideShow._refresh();
 
     expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');    
-    expect(blackboardSlideShow._slides[0]._editor.content()).toBe('last teacher run');
+    expect(blackboardSlideShow._slides[0]._editor.content()).toBe('last send to blackboard');
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
 
   });  
   
-  it("should NOT refresh when last execution equals code in code editor", function() {
+  it("should NOT refresh when last send is the same that code in editor", function() {
     
-    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
-    
-    var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
-
-    spyOn(CodeSlide.prototype, 'executeCode');      
-    spyOn(CodeSlide.prototype, 'lastSendToBlackboard').andReturn('0#|||||#last send to blackboard');
-
-    blackboardSlideShow._slides[0]._editor.updateEditor("");
-  
-    blackboardSlideShow._refresh();
-    
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
-    
-    blackboardSlideShow._slides[0]._editor.updateEditor("last send to blackboard");
+    blackboardSlideShow._slides[0].updateEditor("last send to blackboard");
     
     blackboardSlideShow._refresh();
     
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
     
   });
   
   it("should NOT show current slide if no change", function() {
-    
-    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div class='code_helper'><div class='code_helper'><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	      
-    
-    var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
 
     spyOn(BlackboardSlideShow.prototype, '_showCurrentSlide');
     
