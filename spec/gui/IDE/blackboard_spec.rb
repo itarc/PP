@@ -201,13 +201,7 @@ describe 'Blackboard Update', :type => :feature, :js => true do
   
   end
 
-  it 'should display attendee send when teacher allows it with its name' do   
-
-    #~ visit attendee_IDE
-    
-    #~ fill_IDE_with("print 'attendee send'")
-    
-    #~ send_code
+  it 'should display attendee send when teacher allows it with its name' do
     
     visit teacher_presentation; go_down    
 
@@ -223,7 +217,7 @@ describe 'Blackboard Update', :type => :feature, :js => true do
 
     expect_IDE_to_have(code_input = 'print "attendee send"', code_output = "attendee send")
     
-    expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = 'attendee 1 >>')
+    expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = '')
     
   end
 

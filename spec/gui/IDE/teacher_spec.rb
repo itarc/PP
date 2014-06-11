@@ -196,13 +196,27 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     
     expect_AuthorBar_to_have(author = '#', last_send_attendee_name = '')
     
+  end
+  
+  it 'should show attendee last send with attendee name when last send has already been shown' do   
+
+    visit teacher_presentation; go_down 
+    
+    expect_IDE_to_be_empty
+    
+    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    
+    click_on 'get_last_send'
+    
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    
     click_on 'get_last_send'
     
     expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
     
     expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = '')
     
-  end
+  end  
   
   after(:each) do
     $db.execute_sql("delete from run_events") 
@@ -249,6 +263,30 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     expect_AuthorBar_to_have(author = '#', last_send_attendee_name = 'attendee 1 >>')
     
   end
+  
+  it 'should NOT show attendee name of last send when teacher as already allowed it' do
+
+    visit teacher_presentation
+    go_down 
+    
+    expect_IDE_to_be_empty
+    
+    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    
+    press_space
+    
+    expect_IDE_to_be_empty
+    
+    expect_AuthorBar_to_have(author = '#', last_send_attendee_name = 'attendee 1 >>')
+    
+    click_on "get_last_send"
+
+    press_space
+    
+    expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = '')    
+    
+    
+  end  
   
   it 'should NOT show attendee last send when attendee last send is on another slide' do   
 

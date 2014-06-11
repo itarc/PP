@@ -211,9 +211,10 @@ CodeSlide.prototype = {
     if (this._node.querySelector('#get_last_send')) {
     this._node.querySelector('#get_last_send').addEventListener('click',
       function(e) {
-        _t._node.querySelector('#code_output').value = '' ;      
+        output_save = _t._node.querySelector('#code_output').value
+        _t._node.querySelector('#code_output').value = '' ;
         _t._node.querySelector('#get_last_send').style.background = "red";
-        _t._updateEditorWithLastSendAndExecute(); 
+        if (! _t._updateEditorWithLastSendAndExecute()) { _t._node.querySelector('#code_output').value = output_save; }
         _t._node.querySelector('#get_last_send').style.background = "";}, false
     );
     };

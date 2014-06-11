@@ -129,6 +129,21 @@ class TestLastExecution_in_teacher_slide < Test::Unit::TestCase
     assert_equal "attendee_1#|||||#code sent", last_response.body    
   end    
   
+  def test04_should_return_last_attendee_send_empty_after_last_teacher_send
+    post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'attendee_1'}
+    post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => '0'}
+    get '/code_attendees_last_send/0', {}, 'rack.session' => {:user_id => '0' }
+    assert_equal "", last_response.body    
+  end 
+
+  def test05_should_return_last_attendee_empty_after_last_teacher_send
+    post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'attendee_1'}
+    post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => '0'}
+    post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'attendee_2'}
+    get '/code_attendees_last_send/0', {}, 'rack.session' => {:user_id => '0' }    
+    assert_equal "attendee_2#|||||#code sent", last_response.body
+  end
+  
   def teardown
     $db.execute_sql("delete from run_events")	  
   end  
