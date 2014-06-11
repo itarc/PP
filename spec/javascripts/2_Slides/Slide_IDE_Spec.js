@@ -79,7 +79,7 @@ describe("IDE RUN", function() {
 
   });  
   
-  it("should post code on server and show result on standard output", function() {
+  it("should run code on server and show result on standard output", function() {
 	  
     expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
     expect(slideNode.querySelector('#code_output').value).toBe('');
@@ -104,7 +104,7 @@ describe("IDE RUN BUTTON", function() {
     spyOn(CodeSlide.prototype ,"executeCode");
   });  
 
-  it("should run code when run button clicked", function() {
+  it("should run code when RUN BUTTON clicked", function() {
 	  
     IDESlide.updateEditor('puts 1');
     slideNode.querySelector('#execute').click();
@@ -137,47 +137,79 @@ describe("IDE RUN & SEND", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);    
-    slide = new CodeSlide(slideNode);  
+    IDESlide = new CodeSlide(slideNode); 
+    IDESlide.updateEditor("puts 1");
+    postResource = jasmine.createSpy('postResource').andReturn('1');    
   });	  
+  
+  it("should NOT send code when editor is empty", function() {
 
-  it("should run and send code when send button clicked", function() {
+    IDESlide.updateEditor("");    
+    IDESlide.executeAndSendCode();
 
-    postResource = jasmine.createSpy('postResource');
+    expect(postResource).not.toHaveBeenCalled();    
+
+  });  
+
+  it("should send code for current slide only", function() {
 	  
-    slide._editor.updateEditor('code to send');
+    IDESlide.showCodeHelper(0);
+    IDESlide.executeAndSendCode();
+
+    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'puts 1', SYNCHRONOUS);
+
+    IDESlide.showCodeHelper(1);
+    IDESlide.executeAndSendCode();
+
+    expect(postResource).toHaveBeenCalledWith('/code_send_result/1', 'puts 1', SYNCHRONOUS);    
+
+  });
+
+  it("should send code on server and show result on standard output", function() {
 	  
+    expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
+    expect(slideNode.querySelector('#code_output').value).toBe('');
+    expect(postResource.calls.length).toBe(0);	  
+
+    IDESlide.executeAndSendCode();
+	  
+    expect(postResource.calls.length).toBe(1);
+    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'puts 1', SYNCHRONOUS);
+    expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
+    expect(slideNode.querySelector('#code_output').value).toBe('1');
+    
+  });  
+  
+});  
+  
+describe("IDE RUN & SEND BUTTON", function() {   
+  
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new CodeSlide(slideNode);  
+    spyOn(CodeSlide.prototype ,"executeAndSendCode");
+  });
+
+  it("should run and send code when SEND BUTTON clicked", function() {  
+    
+    IDESlide.updateEditor('puts 1');
     slideNode.querySelector('#send_code').click();
 
-    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'code to send', SYNCHRONOUS);	  
+    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(1);     
     
-  });
+  });  
   
   it("should run and send code when ALT-S pressed", function() {
-    
-    slide._editor.updateEditor('code to send');     
-
-    postResource = jasmine.createSpy('postResource');
 
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
 	  
-    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'code to send', SYNCHRONOUS);		  
-	  
-    slide.showCodeHelper(1);
-	  
-    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);	  
-
-    expect(postResource).toHaveBeenCalledWith('/code_send_result/1', 'code to send', SYNCHRONOUS);		  
+    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(1);	  
 	  
   }); 
 
   it("should NOT send code when ALT-S button disabled", function() {
-   
-    slideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code' disabled><input type='button' id='get_code'><textarea id='code_output'></textarea></section></div>");
-    slide = new CodeSlide(slideNode);  
-    
-    spyOn(CodeSlide.prototype, 'executeAndSendCode');      
 
-    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);
+    slideNode.querySelector('#send_code').setAttribute("disabled", true);
 	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
 
