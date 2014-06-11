@@ -63,21 +63,7 @@ describe("IDE RUN", function() {
 
     expect(postResource).not.toHaveBeenCalled();    
 
-  });  
-  
-  it("should run code for current slide only", function() {
-	  
-    IDESlide.showCodeHelper(0);
-    IDESlide.executeCode();
-
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);
-
-    IDESlide.showCodeHelper(1);
-    IDESlide.executeCode();
-
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/1', 'puts 1', SYNCHRONOUS);    
-
-  });  
+  });
   
   it("should run code on server and show result on standard output", function() {
 	  
@@ -92,6 +78,20 @@ describe("IDE RUN", function() {
     expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
     expect(slideNode.querySelector('#code_output').value).toBe('1');
     
+  });  
+  
+  it("should run code for current slide only", function() {
+	  
+    IDESlide.showCodeHelper(0);
+    IDESlide.executeCode();
+
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);
+
+    IDESlide.showCodeHelper(1);
+    IDESlide.executeCode();
+
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/1', 'puts 1', SYNCHRONOUS);    
+
   });  
   
 });  
@@ -149,20 +149,6 @@ describe("IDE RUN & SEND", function() {
 
     expect(postResource).not.toHaveBeenCalled();    
 
-  });  
-
-  it("should send code for current slide only", function() {
-	  
-    IDESlide.showCodeHelper(0);
-    IDESlide.executeAndSendCode();
-
-    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'puts 1', SYNCHRONOUS);
-
-    IDESlide.showCodeHelper(1);
-    IDESlide.executeAndSendCode();
-
-    expect(postResource).toHaveBeenCalledWith('/code_send_result/1', 'puts 1', SYNCHRONOUS);    
-
   });
 
   it("should send code on server and show result on standard output", function() {
@@ -178,6 +164,20 @@ describe("IDE RUN & SEND", function() {
     expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
     expect(slideNode.querySelector('#code_output').value).toBe('1');
     
+  });  
+  
+  it("should send code for current slide only", function() {
+	  
+    IDESlide.showCodeHelper(0);
+    IDESlide.executeAndSendCode();
+
+    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'puts 1', SYNCHRONOUS);
+
+    IDESlide.showCodeHelper(1);
+    IDESlide.executeAndSendCode();
+
+    expect(postResource).toHaveBeenCalledWith('/code_send_result/1', 'puts 1', SYNCHRONOUS);    
+
   });  
   
 });  
@@ -223,49 +223,72 @@ describe("IDE GET & RUN", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);    
-    slide = new CodeSlide(slideNode);  
-  });  
-  
-  it("should get and run last teacher run when get button clicked", function() {
-
-    getResource = jasmine.createSpy('getResource').andReturn('0#|||||#last teacher run code');
-    postResource = jasmine.createSpy('postResource');
-	  
-    slide._editor.updateEditor('');
-	  
-    slideNode.querySelector('#get_code').click();
-
-    expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'last teacher run code', SYNCHRONOUS);
-    
-    expect(slide._editor.content()).toBe('last teacher run code');	  
-    
+    IDESlide = new CodeSlide(slideNode);
+    spyOn(CodeSlide.prototype ,"executeCode");    
+    getResource = jasmine.createSpy('getResource').andReturn('0#|||||#puts 1');
   });
   
-  it("should get and run last teacher run when ALT-G pressed", function() {
+  it("should NOT execute code when retreived code is empty", function() {
     
-    getResource = jasmine.createSpy('getResource').andReturn('0#|||||#last teacher run code');
-    postResource = jasmine.createSpy('postResource');
+    getResource = jasmine.createSpy('getResource').andReturn('');    
+    
+    IDESlide.getAndExecuteCode();
+    
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);    
+
+  });  
+
+  it("should get code and show run result on standard output", function() {
+    
+    IDESlide.getAndExecuteCode();
+    
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);    
+
+  });
+  
+  it("should get code for current slide only", function() {
 	  
-    slide._editor.updateEditor('');
+    IDESlide.showCodeHelper(0);
+    IDESlide.getAndExecuteCode();
+
+    expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');
+
+    IDESlide.showCodeHelper(1);
+    IDESlide.getAndExecuteCode();
+
+    expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/1');    
+
+  });  
+
+});  
+  
+describe("IDE GET & RUN BUTTON", function() {  
+  
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new CodeSlide(slideNode);  
+    spyOn(CodeSlide.prototype ,"getAndExecuteCode");
+  });  
+  
+  it("should run and send code when GET & RUN BUTTON clicked", function() {  
+    
+    slideNode.querySelector('#get_code').click();
+
+    expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(1);     
+    
+  });  
+  
+  it("should get and run last teacher run when ALT-G pressed", function() {
 	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
-    expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');	  
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'last teacher run code', SYNCHRONOUS);	  
-    
-    expect(slide._editor.content()).toBe('last teacher run code');  
+    expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(1);    
 	  
   });    
   
   it("should NOT get and run code when ALT-G disabled", function() {
-   
-    slideNode = sandbox("<div class='slide'><section><textarea id='code_input'></textarea><textarea class='code_helper'></textarea><textarea class='code_helper'></textarea><input type='button' id='execute'><input type='button' id='send_code'><input type='button' id='get_code' disabled><textarea id='code_output'></textarea></section></div>");
-    slide = new CodeSlide(slideNode);  
     
-    spyOn(CodeSlide.prototype, 'getAndExecuteCode');      
-
-    expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(0);
+    slideNode.querySelector('#get_code').setAttribute("disabled", true);    
 	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
