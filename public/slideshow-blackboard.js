@@ -35,5 +35,5 @@ for(key in SlideShow.prototype) {
 // INITIALIZE SLIDESHOW
 // ----------------------------------  
 var blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));
-var slideshowTimer = setInterval( function(){ blackboardSlideShow._refresh(); },2000);
+var slideshowTimer = setInterval( function(){ blackboardSlideShow._refresh(); },1000);
 
