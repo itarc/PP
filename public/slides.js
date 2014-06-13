@@ -59,6 +59,7 @@ for(key in Slide.prototype) {
 // ----------------------------------
 var Editor = function(node) {
   this._node = node;
+  this._contentHasChanged;
 }
 
 Editor.prototype = {
@@ -273,6 +274,18 @@ CodeSlide.prototype = {
     url = '/code_last_execution'
     return getResource(url + '/' + this._codeHelper_current_index);
   },  
+  
+  _updateEditorWithLastUserRunAndExecute: function(slideShowType) {
+    lastexecution = this.lastExecution(slideShowType);
+    code = lastexecution.split(SEPARATOR)[0]; code_to_add = lastexecution.split(SEPARATOR)[1];
+    if ( code != '' || code_to_add != undefined) { // Last Run Exists
+      if (code != this._editor.content()) {
+        this.updateEditor(code);
+        this.executeCode(slideShowType);
+      }
+      return true;
+    }
+  },  
 
   attendeesLastSend: function(slideShowType) {
     url = '/code_attendees_last_send'
@@ -290,18 +303,7 @@ CodeSlide.prototype = {
         return true;     
       };
   },
-  
-  _updateEditorWithLastUserRunAndExecute: function(slideShowType) {
-    lastexecution = this.lastExecution(slideShowType);
-    if (lastexecution != '') {
-      if (lastexecution.split(SEPARATOR)[0] != this._editor.content()) { 
-        this.updateEditor(lastexecution.split(SEPARATOR)[0]);        
-        this.executeCode(slideShowType);
-      };
-      return true;
-    };
-  },
-  
+
   _updateEditorWithCodeToDisplayAndExecute: function(slideShowType) {
     codeToDisplay = this._currentCodeHelper().codeToDisplay(); 
     if (codeToDisplay != '') { 
@@ -345,7 +347,7 @@ CodeSlide.prototype = {
     if (slideShowType == 'blackboard') {
       if (this._updateEditorWithLastSendToBlackboardAndExecute(slideShowType)) return;
     } else {
-      if (this._updateEditorWithLastUserRunAndExecute(slideShowType)) return;
+      if (this._updateEditorWithLastUserRunAndExecute(slideShowType) ) return;
     }
     if (this._updateEditorWithCodeToDisplayAndExecute(slideShowType)) return;
     if (this._updateEditorWithCodeToAddAndExecute(slideShowType)) return;

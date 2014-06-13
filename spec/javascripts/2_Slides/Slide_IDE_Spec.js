@@ -45,6 +45,16 @@ describe("IDE", function() {
 
   });
   
+  it("should find last execution", function() {
+    
+    getResource = jasmine.createSpy('getResource').andReturn('');
+	  
+    IDESlide.lastExecution();
+	  
+    expect(getResource).toHaveBeenCalledWith('/code_last_execution/0');
+    
+  });    
+  
 }); 
 
 describe("IDE RUN", function() {
@@ -503,52 +513,46 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
    });	  
   
   it("should run code to add", function() {
+    
+    var slide = new CodeSlide(slideNode);    
 
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
 
-    var slide = new CodeSlide(slideNode);
-
     postResource = jasmine.createSpy('postResource').andReturn("CODE TO ADD");
-
-    expect(slideNode.querySelector('#code_input').value).toBe("");
 	  
     slide._update(0);
 	  
     expect(slideNode.querySelector('#code_input').value).toBe("");	  
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', SEPARATOR + "puts 'CODE TO ADD'", SYNCHRONOUS);
-    expect(slideNode.querySelector('#code_output').value).toBe("CODE TO ADD");	  
+    expect(slideNode.querySelector('#code_output').value).toBe("CODE TO ADD");  
 
   });	  
   
   it("should NOT run code if last execution exists with the same code to execute in code editor", function() {
 
-    getResource = jasmine.createSpy('getResource').andReturn('code to execute' + SEPARATOR + "puts 'CODE TO ADD'");
-
     var slide = new CodeSlide(slideNode);
     
-    slide._editor.updateEditor('code to execute');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('code to execute' + SEPARATOR + "ADDED CODE");
+    spyOn(CodeSlide.prototype, 'executeCode');
 
-    postResource = jasmine.createSpy('postResource');
-	  
+    slide.updateEditor('code to execute');	  
     slide._update(0);
-	  
-    expect(postResource.calls.length).toBe(0);
+
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
 
   });  
   
   it("should NOT run code if last execution exists and code to execute is empty", function() {
 
-    getResource = jasmine.createSpy('getResource').andReturn('' + SEPARATOR + "puts 'CODE TO ADD'");
-
-    var slide = new CodeSlide(slideNode);
+    var slide = new CodeSlide(slideNode);    
     
-    slide._editor.updateEditor('');
-
-    postResource = jasmine.createSpy('postResource');
-	  
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('' + SEPARATOR + "ADDED CODE");
+    spyOn(CodeSlide.prototype, 'executeCode');    
+    
+    slide.updateEditor('');	  
     slide._update(0);
 	  
-    expect(postResource.calls.length).toBe(0);
+    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);    
 
   });   
   
