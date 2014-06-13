@@ -77,15 +77,15 @@ describe 'Blackboard Presentation', :type => :feature, :js => true do
   end
 
   it 'should be on IDE with code helper 2 when teacher is on IDE with code helper 2' do
-    
+
     visit teacher_presentation
-    
+
     go_down    
-    
+
     expect(page).to have_content 'HELPER 2'
-  
+
     visit blackboard_presentation
-        
+
     expect(page).to have_content 'HELPER 2'       
 
   end

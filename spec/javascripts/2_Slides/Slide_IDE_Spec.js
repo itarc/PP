@@ -318,6 +318,7 @@ describe("IDE LAST SEND", function() {
   it("should get and run last attendee send when ALT-N pressed", function() {
     
     getResource = jasmine.createSpy('getResource').andReturn('attendee_1#|||||#last attendee send code');
+    //~ getResource = jasmine.createSpy('getResource').andReturn({"author": 'attendee_1', "code": 'last attendee send code'});
     postResource = jasmine.createSpy('postResource');
 	  
     slide._editor.updateEditor('');
@@ -599,11 +600,23 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
 });
 
+html_slide = "<div class='slide'/><section>"+
+"<textarea id='code_input'></textarea>"+
+"<div class='code_helper'>AUTHOR NAME?<input id='attendee_name' type='text'></div>"+
+"<div class='code_author'>"+
+"AUTHOR: <span id='author_name'>author</span>"+
+"<input type='button' id='execute'/>"+
+"<input type='button' id='send_code'/>"+
+"<input type='button' id='get_code'/>"+
+"<input type='button' id='get_last_send'/>"+
+"<textarea id='code_output'></textarea>"+
+"</section></div>"
+ 
 
 describe("IDE UPDATE with attendee name to type in", function() {  
   
   beforeEach(function () {
-    slideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'>AUTHOR NAME?<input id='attendee_name' type='text'></div><div class='code_author'>AUTHOR: <span id='author_name'>author</span><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><input type='button' id='get_last_send'/><textarea id='code_output'></textarea></section></div>");
+    slideNode = sandbox(html_slide);
    });	  
    
   it("should display session id when initialized", function() {
@@ -680,7 +693,7 @@ describe("IDE UPDATE with attendee name to type in", function() {
     getResource = jasmine.createSpy('getResource').andReturn('a name');
     postResource = jasmine.createSpy('postResource')
     
-    spyOn(CodeSlide.prototype ,"attendeesLastSend").andReturn("attendee id#|||||#code sent");
+    spyOn(CodeSlide.prototype ,"attendeesLastSend").andReturn({author: 'attendee id', code: 'code sent'});
 
     var slide = new CodeSlide(slideNode);
     
@@ -697,7 +710,7 @@ describe("IDE UPDATE with attendee name to type in", function() {
     getResource = jasmine.createSpy('getResource').andReturn('a name');
     postResource = jasmine.createSpy('postResource')
     
-    spyOn(CodeSlide.prototype ,"attendeesLastSend").andReturn("attendee id#|||||#code sent");
+    spyOn(CodeSlide.prototype ,"attendeesLastSend").andReturn({author: 'attendee id', code: 'code sent'});
 
     var slide = new CodeSlide(slideNode);
     

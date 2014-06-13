@@ -292,18 +292,25 @@ CodeSlide.prototype = {
 
   attendeesLastSend: function(slideShowType) {
     url = '/code_attendees_last_send'
-    return getResource(url + '/' + this._codeHelper_current_index);
+    attendeeLastSend = getResource(url + '/' + this._codeHelper_current_index);
+    author = attendeeLastSend.split('#|||||#')[0];
+    code_and_code_to_add = attendeeLastSend.split('#|||||#')[1];
+    code = ''
+    code_to_add = ''
+    if (code_and_code_to_add) {
+    code = code_and_code_to_add.split(SEPARATOR)[0];
+    code_to_add = code_and_code_to_add.split(SEPARATOR)[1];  
+    } 
+    return { "author": author, "code": code,"code_to_add": code_to_add }
   }, 
 
   _updateEditorWithLastSendAndExecute: function(slideShowType) {
       attendeeLastSend = this.attendeesLastSend(slideShowType);
-      if (attendeeLastSend != '') {
-        if (attendeeLastSend.split('#|||||#')[1] != '') { 
-          this.updateEditor(attendeeLastSend.split('#|||||#')[1].split(SEPARATOR)[0]);        
-          this.executeAndSendCode(slideShowType);
-          this._authorBar.updateWith(attendeeLastSend.split('#|||||#')[0]);
-        };        
-        return true;     
+      if (attendeeLastSend.code != '') { 
+        this.updateEditor(attendeeLastSend.code);        
+        this.executeAndSendCode(slideShowType);
+        this._authorBar.updateWith(attendeeLastSend.author);
+        return true;
       };
   },
 
@@ -358,7 +365,7 @@ CodeSlide.prototype = {
   
   _updateLastSendAttendeeName: function(slide_index, slideShowType) {
     if ( this._node.querySelector('#last_send_attendee_name') ) {
-      attendee_name =  this.attendeesLastSend().split('#|||||#')[0]
+      attendee_name =  this.attendeesLastSend(slideShowType).author;
       if (attendee_name.split('_')[1]) attendee_name = attendee_name.split('_')[1];
       if (attendee_name != '' ) attendee_name = attendee_name + ' >> ';
       this._node.querySelector('#last_send_attendee_name').innerHTML = attendee_name;
