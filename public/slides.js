@@ -272,15 +272,18 @@ CodeSlide.prototype = {
 
   lastExecution: function(slideShowType) {
     url = '/code_last_execution'
-    return getResource(url + '/' + this._codeHelper_current_index);
+    lastexecution = getResource(url + '/' + this._codeHelper_current_index);
+    if ( lastexecution == '') return;
+    code = lastexecution.split(SEPARATOR)[0];
+    code_to_add = (lastexecution.split(SEPARATOR)[1]) ? lastexecution.split(SEPARATOR)[1] : ''
+    return { "code" : code, "code_to_add" : code_to_add };
   },  
   
   _updateEditorWithLastUserRunAndExecute: function(slideShowType) {
     lastexecution = this.lastExecution(slideShowType);
-    code = lastexecution.split(SEPARATOR)[0]; code_to_add = lastexecution.split(SEPARATOR)[1];
-    if ( code != '' || code_to_add != undefined) { // Last Run Exists
-      if (code != this._editor.content()) {
-        this.updateEditor(code);
+    if (lastexecution) {
+      if (lastexecution.code != this._editor.content()) {
+        this.updateEditor(lastexecution.code);
         this.executeCode(slideShowType);
       }
       return true;

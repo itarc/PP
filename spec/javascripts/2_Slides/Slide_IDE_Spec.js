@@ -368,14 +368,13 @@ describe("IDE UPDATE", function() {
   
   it("should run the user last run", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('last execution');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"code": 'last execution', "code_to_add": ''});
 	  
     spyOn(CodeSlide.prototype, 'showCodeHelper');	  
     spyOn(CodeSlide.prototype, 'executeCode');
 	  
     slide._update(0);
-	  
-    expect(CodeSlide.prototype.showCodeHelper.calls.length).toBe(1);
+
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
 	  
   });
@@ -384,7 +383,7 @@ describe("IDE UPDATE", function() {
 
     slide._editor.updateEditor('last execution');
     
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('last execution');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"code": 'last execution', "code_to_add": ''});
 	  
     spyOn(CodeSlide.prototype, 'executeCode');
 	  
@@ -396,7 +395,7 @@ describe("IDE UPDATE", function() {
   
   it("should NOT run anything when no last run, no code to display and no code to add", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"code": '', "code_to_add": ''});
     
     slide._editor.updateEditor("print 'code remaining from previous slide'");
     
@@ -449,7 +448,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 	
   it("should run code to display if no last execution", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn();
 	  
     var slide = new CodeSlide(slideNode);
 
@@ -466,7 +465,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
   
   it("should run last execution if exists", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('code in last execution');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"code": "last execution", "code_to_add": ''});
 	  
     var slide = new CodeSlide(slideNode);
 
@@ -476,15 +475,15 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 
     slide._update(0);
 
-    expect(slideNode.querySelector('#code_input').value).toBe("code in last execution");
+    expect(slideNode.querySelector('#code_input').value).toBe("last execution");
     expect(postResource.calls.length).toBe(1);	  
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', "code in last execution", SYNCHRONOUS);
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', "last execution", SYNCHRONOUS);
 
   });  
 
   it("should run code to display once when updated twice", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn();
 	  
     var slide = new CodeSlide(slideNode);
 
@@ -516,7 +515,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
     
     var slide = new CodeSlide(slideNode);    
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('');
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn();
 
     postResource = jasmine.createSpy('postResource').andReturn("CODE TO ADD");
 	  
@@ -532,7 +531,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
     var slide = new CodeSlide(slideNode);
     
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('code to execute' + SEPARATOR + "ADDED CODE");
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"code": 'code to execute', "code_to_add": 'ADDED CODE'});
     spyOn(CodeSlide.prototype, 'executeCode');
 
     slide.updateEditor('code to execute');	  
@@ -546,7 +545,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
     var slide = new CodeSlide(slideNode);    
     
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn('' + SEPARATOR + "ADDED CODE");
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"code": '', "code_to_add": 'ADDED CODE'});
     spyOn(CodeSlide.prototype, 'executeCode');    
     
     slide.updateEditor('');	  
