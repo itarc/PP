@@ -36,8 +36,8 @@ describe("Blackboard REFRESH", function() {
   beforeEach(function () {
     setFixtures("<div class='slides'>"+ IDE_slide_html +"</div>")	      
     blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide')); 
-    spyOn(CodeSlide.prototype, 'executeCode');      
-    spyOn(CodeSlide.prototype, 'lastSendToBlackboard').andReturn('0#|||||#last send to blackboard');    
+    spyOn(CodeSlide.prototype, 'executeCode');       
+    spyOn(CodeSlide.prototype, 'lastSendToBlackboard').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });    
   });
   
   it("should get last Teacher run when refreshed", function() {
