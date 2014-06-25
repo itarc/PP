@@ -273,34 +273,31 @@ CodeSlide.prototype = {
   lastExecution: function(slideShowType) {
     url = '/code_last_execution'
     lastexecution = getResource(url + '/' + this._codeHelper_current_index);
-    if ( lastexecution == '') return;
-    code = lastexecution.split(SEPARATOR)[0];
-    code_to_add = (lastexecution.split(SEPARATOR)[1]) ? lastexecution.split(SEPARATOR)[1] : ''
+    author = '';
+    code = (lastexecution && lastexecution.split(SEPARATOR)[0]) ? lastexecution.split(SEPARATOR)[0] : '';
+    code_to_add = (lastexecution && lastexecution.split(SEPARATOR)[1]) ? lastexecution.split(SEPARATOR)[1] : '';
     return { "code" : code, "code_to_add" : code_to_add };
-  },  
-  
-  _updateEditorWithLastUserRunAndExecute: function(slideShowType) {
-    lastexecution = this.lastExecution(slideShowType);
-    if (lastexecution) {
-      if (lastexecution.code != this._editor.content()) {
-        this.updateEditor(lastexecution.code);
-        this.executeCode(slideShowType);
-      }
-      return true;
-    }
-  },  
+  }, 
 
   attendeesLastSend: function(slideShowType) {
     url = '/code_attendees_last_send'
     attendeeLastSend = getResource(url + '/' + this._codeHelper_current_index);
     author = attendeeLastSend.split('#|||||#')[0];
     code_and_code_to_add = attendeeLastSend.split('#|||||#')[1];
-    code = ''; code_to_add = '';
-    if (code_and_code_to_add) {
-    code = code_and_code_to_add.split(SEPARATOR)[0];
-    code_to_add = code_and_code_to_add.split(SEPARATOR)[1];  
-    } 
+    code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
+    code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
     return { "author": author, "code": code,"code_to_add": code_to_add }
+  },  
+  
+  _updateEditorWithLastUserRunAndExecute: function(slideShowType) {
+    lastexecution = this.lastExecution(slideShowType);
+    if (lastexecution.code != '' || lastexecution.code_to_add != '') {
+      if (lastexecution.code != this._editor.content()) {
+        this.updateEditor(lastexecution.code);
+        this.executeCode(slideShowType);
+      }
+      return true;
+    }
   }, 
 
   _updateEditorWithLastSendAndExecute: function(slideShowType) {
