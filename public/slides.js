@@ -273,12 +273,12 @@ CodeSlide.prototype = {
   lastExecution: function(slideShowType) {
     url = '/code_last_execution'
     last_execution = getResource(url + '/' + this._codeHelper_current_index);
-    author = '';
-    code_and_code_to_add = last_execution;
+    author = last_execution.split('#|||||#')[0];
+    code_and_code_to_add = last_execution.split('#|||||#')[1];
     code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
     code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
     return { "author": author, "code" : code, "code_to_add" : code_to_add };
-  }, 
+  },
 
   attendeesLastSend: function(slideShowType) {
     url = '/code_attendees_last_send'

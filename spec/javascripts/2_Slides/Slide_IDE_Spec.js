@@ -423,7 +423,7 @@ describe("IDE UPDATE", function() {
     expect(slideNode.querySelector('#code_input').value).toBe('');
     expect(slideNode.querySelector('#code_output').value).toBe('');
     
-    getResource = jasmine.createSpy('getResource').andReturn('puts 2');
+    getResource = jasmine.createSpy('getResource').andReturn('user_1#|||||#puts 2');
     postResource = jasmine.createSpy('postResource').andReturn('2');
 
     slide._update(0);

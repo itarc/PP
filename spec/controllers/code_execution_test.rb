@@ -76,13 +76,13 @@ class TestLastExecution_in_attendee_slide < Test::Unit::TestCase
   def test02_should_return_last_send
     post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'user_1'}
     get '/code_last_execution/0', {}, 'rack.session' => {:user_id => 'user_1'}
-    assert_equal "code sent", last_response.body    
+    assert_equal "user_1#|||||#code sent", last_response.body    
   end
   
   def test03_should_return_last_run 
     post '/code_run_result/0', "code run", 'rack.session' => {:user_id => 'user_1'}
     get '/code_last_execution/0', {}, 'rack.session' => {:user_id => 'user_1'}
-    assert_equal "code run", last_response.body    
+    assert_equal "user_1#|||||#code run", last_response.body    
   end
   
   def test04_should_return_empty_if_not_the_right_slide
