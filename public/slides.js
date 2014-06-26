@@ -251,7 +251,7 @@ CodeSlide.prototype = {
     run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
     if (slideShowType == 'blackboard') { run_url = '/code_run_result_blackboard' + "/" + this._codeHelper_current_index; }    
     this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);
-    this._authorBar.refresh();
+    if (slideShowType != 'blackboard') this._authorBar.refresh();
   },
   
   executeAndSendCode: function() {
@@ -298,18 +298,7 @@ CodeSlide.prototype = {
     code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
     code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
     return { "author": author, "code": code,"code_to_add": code_to_add }
-  },  
-  
-  _updateEditorWithLastUserRunAndExecute: function(slideShowType) {
-    lastexecution = this.lastExecution(slideShowType);
-    if (lastexecution.code != '' || lastexecution.code_to_add != '') {
-      if (lastexecution.code != this._editor.content()) {
-        this.updateEditor(lastexecution.code);
-        this.executeCode(slideShowType);
-      }
-      return true;
-    }
-  }, 
+  },
 
   _updateEditorWithLastSendAndExecute: function(slideShowType) {
       attendeeLastSend = this.attendeesLastSend(slideShowType);
@@ -320,47 +309,50 @@ CodeSlide.prototype = {
         return true;
       };
   },
-
-  _updateEditorWithCodeToDisplayAndExecute: function(slideShowType) {
-    codeToDisplay = this._currentCodeHelper().codeToDisplay(); 
-    if (codeToDisplay != '') { 
-      if (codeToDisplay != this._editor.content()) { 
-        this.updateEditor(codeToDisplay); 
-        this.executeCode(slideShowType);
-        };
-      return true;
-    };
-  },
   
   _updateEditorWithCodeToAddAndExecute: function(slideShowType) {
     codeToAdd = this._currentCodeHelper().codeToAdd();
     if (codeToAdd != '') {
-      this.updateEditor(''); 
       this.executeCode(slideShowType);
       return  true;
     }
   },
   
-  _updateEditorWithLastSendToBlackboardAndExecute: function(slideShowType) {
-    lastSendToBlackboard = this.lastSendToBlackboard(slideShowType);
-    if (lastSendToBlackboard.code != '') {
-      if (lastSendToBlackboard.code != this._editor.content()) {
-        this.updateEditor(lastSendToBlackboard.code);        
-        this.executeCode(slideShowType);
-        this._authorBar.updateWith(lastSendToBlackboard.author);        
-      };
+  editor_update: function(slideShowType) {
+    if (slideShowType == 'blackboard') {
+      lastSendToBlackboard = this.lastSendToBlackboard(slideShowType);
+      if (lastSendToBlackboard.code != '' && lastSendToBlackboard.code != this._editor.content()) { 
+        this.updateEditor(lastSendToBlackboard.code);
+        this._authorBar.updateWith(lastSendToBlackboard.author);
+        return true; 
+      }
+    } else {
+      lastexecution = this.lastExecution(slideShowType);
+      if (lastexecution.code != '' && lastexecution.code != this._editor.content()) { 
+        this.updateEditor(lastexecution.code); 
+        return true; 
+      }
+      if (lastexecution.code_to_add != '' && lastexecution.code == this._editor.content()) {
+        return false;
+      }
+    }
+    codeToDisplay = this._currentCodeHelper().codeToDisplay();
+    if (codeToDisplay != '' && codeToDisplay != this._editor.content()) { 
+      this.updateEditor(codeToDisplay) ; 
+      return true; 
+    }
+    CodeToAdd = this._currentCodeHelper().codeToAdd()
+    if (this._currentCodeHelper().codeToAdd() != '') {
       return true;
-    };
-  },  
+    }
+    return false;
+  },
   
   _updateEditorAndExecuteCode: function(slideShowType) {
-    if (slideShowType == 'blackboard') {
-      if (this._updateEditorWithLastSendToBlackboardAndExecute(slideShowType)) return;
-    } else {
-      if (this._updateEditorWithLastUserRunAndExecute(slideShowType) ) return;
-    }
-    if (this._updateEditorWithCodeToDisplayAndExecute(slideShowType)) return;
-    if (this._updateEditorWithCodeToAddAndExecute(slideShowType)) return;
+    if (this.editor_update(slideShowType)) {
+      this.executeCode(slideShowType);
+    };
+    
   },
   
   _updateLastSendAttendeeName: function(slide_index, slideShowType) {

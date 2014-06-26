@@ -441,10 +441,25 @@ describe("IDE UPDATE", function() {
   
 });
 
+IDE_slide_with_code_to_display_html = "" +
+"<div class='slide'>"+
+"<section>"+
+"<textarea id='code_input'></textarea>"+
+"<div class='code_helper'>"+
+"<div class='code_to_display'>puts 'CODE TO DISPLAY'</div>"+
+"</div>"+
+"<div class='code_author'>AUTHOR: <span id='author_name'>author</span></div>"+
+"<input type='button' id='execute'/>"+
+"<input type='button' id='send_code'/>"+
+"<input type='button' id='get_code'/>"+
+"<textarea id='code_output'></textarea>"+
+"</section>"+
+"</div>"
+
 describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
   
   beforeEach(function () {
-    slideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div><div class='code_author'>AUTHOR: <span id='author_name'>author</span></div><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
+    slideNode = sandbox(IDE_slide_with_code_to_display_html);
   });  
 	
   it("should run code to display if no last execution", function() {
