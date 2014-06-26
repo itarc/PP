@@ -69,6 +69,35 @@ Editor.prototype = {
   updateEditor: function(code) {
     this._node.value = code;  
   },
+  update: function(context, slideShowType) {
+    if (slideShowType == 'blackboard') {
+      lastSendToBlackboard = context.lastSendToBlackboard(slideShowType);
+      if (lastSendToBlackboard.code != '' && lastSendToBlackboard.code != this.content()) { 
+        this.updateEditor(lastSendToBlackboard.code);
+        context._authorBar.updateWith(lastSendToBlackboard.author);
+        return true; 
+      }
+    } else {
+      lastexecution = context.lastExecution(slideShowType);
+      if (lastexecution.code != '' && lastexecution.code != this.content()) { 
+        this.updateEditor(lastexecution.code); 
+        return true; 
+      }
+      if (lastexecution.code_to_add != '' && lastexecution.code == this.content()) {
+        return false;
+      }
+    }
+    codeToDisplay = context._currentCodeHelper().codeToDisplay();
+    if (codeToDisplay != '' && codeToDisplay != this.content()) { 
+      this.updateEditor(codeToDisplay) ; 
+      return true; 
+    }
+    CodeToAdd = context._currentCodeHelper().codeToAdd()
+    if (context._currentCodeHelper().codeToAdd() != '') {
+      return true;
+    }
+    return false;  
+  },
 }
 
 // ----------------------------------
@@ -310,49 +339,10 @@ CodeSlide.prototype = {
       };
   },
   
-  _updateEditorWithCodeToAddAndExecute: function(slideShowType) {
-    codeToAdd = this._currentCodeHelper().codeToAdd();
-    if (codeToAdd != '') {
-      this.executeCode(slideShowType);
-      return  true;
-    }
-  },
-  
-  editor_update: function(slideShowType) {
-    if (slideShowType == 'blackboard') {
-      lastSendToBlackboard = this.lastSendToBlackboard(slideShowType);
-      if (lastSendToBlackboard.code != '' && lastSendToBlackboard.code != this._editor.content()) { 
-        this.updateEditor(lastSendToBlackboard.code);
-        this._authorBar.updateWith(lastSendToBlackboard.author);
-        return true; 
-      }
-    } else {
-      lastexecution = this.lastExecution(slideShowType);
-      if (lastexecution.code != '' && lastexecution.code != this._editor.content()) { 
-        this.updateEditor(lastexecution.code); 
-        return true; 
-      }
-      if (lastexecution.code_to_add != '' && lastexecution.code == this._editor.content()) {
-        return false;
-      }
-    }
-    codeToDisplay = this._currentCodeHelper().codeToDisplay();
-    if (codeToDisplay != '' && codeToDisplay != this._editor.content()) { 
-      this.updateEditor(codeToDisplay) ; 
-      return true; 
-    }
-    CodeToAdd = this._currentCodeHelper().codeToAdd()
-    if (this._currentCodeHelper().codeToAdd() != '') {
-      return true;
-    }
-    return false;
-  },
-  
   _updateEditorAndExecuteCode: function(slideShowType) {
-    if (this.editor_update(slideShowType)) {
+    if (this._editor.update(this, slideShowType)) {
       this.executeCode(slideShowType);
     };
-    
   },
   
   _updateLastSendAttendeeName: function(slide_index, slideShowType) {
