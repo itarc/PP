@@ -289,15 +289,24 @@ CodeSlide.prototype = {
     this._node.querySelector('#code_output').value = postResource(send_url, this.codeToExecute(), SYNCHRONOUS);   
   },
 
-  getAndExecuteCode: function() {         
-    get_url = "/code_get_last_send_to_blackboard" + "/" + this._codeHelper_current_index;
-    code = getResource(get_url)
-    if (code.split('#|||||#')[1]) {
-      code = code.split('#|||||#')[1].split(SEPARATOR)[0];
-      this.updateEditor(code);
+  getAndExecuteCode: function() {
+    lastRunOnBlackBoard = this.lastRunOnBlackBoard();
+    if (lastRunOnBlackBoard.code != '') {
+      this.updateEditor(lastRunOnBlackBoard.code);
       this.executeCode();
     }
   }, 
+  
+  lastRunOnBlackBoard: function() {
+    get_url = "/code_get_last_send_to_blackboard" + "/" + this._codeHelper_current_index;
+    lastRunOnBlackBoard = getResource(get_url);
+    author = lastRunOnBlackBoard.split('#|||||#')[0];
+    code_and_code_to_add = lastRunOnBlackBoard.split('#|||||#')[1];
+    code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
+    code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';    
+    return { "author": author, "code" : code, "code_to_add" : code_to_add };    
+    return lastRunOnBlackBoard;
+  },
 
   lastExecution: function(slideShowType) {
     url = '/code_last_execution'
