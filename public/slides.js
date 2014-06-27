@@ -66,21 +66,21 @@ Editor.prototype = {
   content: function() {
     return this._node.value;
   },
-  updateEditor: function(code) {
+  updateWithText: function(code) {
     this._node.value = code;  
   },
   update: function(context, slideShowType) {
     if (slideShowType == 'blackboard') {
       lastSendToBlackboard = context.lastSendToBlackboard(slideShowType);
       if (lastSendToBlackboard.code != '' && lastSendToBlackboard.code != this.content()) { 
-        this.updateEditor(lastSendToBlackboard.code);
+        this.updateWithText(lastSendToBlackboard.code);
         context._authorBar.updateWith(lastSendToBlackboard.author);
         return true; 
       }
     } else {
       lastexecution = context.lastExecution(slideShowType);
       if (lastexecution.code != '' && lastexecution.code != this.content()) { 
-        this.updateEditor(lastexecution.code); 
+        this.updateWithText(lastexecution.code); 
         return true; 
       }
       if (lastexecution.code_to_add != '' && lastexecution.code == this.content()) {
@@ -89,7 +89,7 @@ Editor.prototype = {
     }
     codeToDisplay = context._currentCodeHelper().codeToDisplay();
     if (codeToDisplay != '' && codeToDisplay != this.content()) { 
-      this.updateEditor(codeToDisplay) ; 
+      this.updateWithText(codeToDisplay) ; 
       return true; 
     }
     CodeToAdd = context._currentCodeHelper().codeToAdd()
@@ -268,7 +268,7 @@ CodeSlide.prototype = {
   }, 
 
   updateEditor: function(code) {
-    this._editor.updateEditor(code);
+    this._editor.updateWithText(code);
   },   
   
   codeToExecute: function() {

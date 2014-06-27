@@ -321,7 +321,7 @@ describe("IDE LAST SEND", function() {
     //~ getResource = jasmine.createSpy('getResource').andReturn({"author": 'attendee_1', "code": 'last attendee send code'});
     postResource = jasmine.createSpy('postResource');
 	  
-    slide._editor.updateEditor('');
+    slide._editor.updateWithText('');
 	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
 
@@ -382,7 +382,7 @@ describe("IDE UPDATE", function() {
   
   it("should NOT run the user last run when code has not changed", function() {
 
-    slide._editor.updateEditor('last execution');
+    slide._editor.updateWithText('last execution');
     
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"code": 'last execution', "code_to_add": ''});
 	  
@@ -398,7 +398,7 @@ describe("IDE UPDATE", function() {
 
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"code": '', "code_to_add": ''});
     
-    slide._editor.updateEditor("print 'code remaining from previous slide'");
+    slide._editor.updateWithText("print 'code remaining from previous slide'");
     
     postResource = jasmine.createSpy('postResource');
     
@@ -672,7 +672,7 @@ describe("IDE UPDATE with attendee name to type in", function() {
     
     slideNode.querySelector('#author_name').innerHTML = 'a name to replace';
     
-    slide._editor.updateEditor("code to execute");    
+    slide._editor.updateWithText("code to execute");    
     
     slideNode.querySelector('#execute').click();
     
@@ -695,7 +695,7 @@ describe("IDE UPDATE with attendee name to type in", function() {
     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a new name");  
 
-    slide._editor.updateEditor("code to execute");    
+    slide._editor.updateWithText("code to execute");    
     
     slideNode.querySelector('#execute').click();
     
