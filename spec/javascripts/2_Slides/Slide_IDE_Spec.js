@@ -369,7 +369,7 @@ describe("IDE UPDATE", function() {
   
   it("should run the user last run", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"code": 'last execution', "code_to_add": ''});
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
 	  
     spyOn(CodeSlide.prototype, 'showCodeHelper');	  
     spyOn(CodeSlide.prototype, 'executeCode');
@@ -446,8 +446,7 @@ IDE_slide_with_code_to_display_html = "" +
 "<section>"+
 "<textarea id='code_input'></textarea>"+
 "<div class='code_helper'>"+
-"<div class='code_to_display'>puts 'CODE TO DISPLAY'</div>"+
-"</div>"+
+"<div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div>"+
 "<div class='code_author'>AUTHOR: <span id='author_name'>author</span></div>"+
 "<input type='button' id='execute'/>"+
 "<input type='button' id='send_code'/>"+
@@ -464,7 +463,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 	
   it("should run code to display if no last execution", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({ "author": '', "code" : '', "code_to_add" : ''});
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code" : '', "code_to_add" : ''});
 	  
     var slide = new CodeSlide(slideNode);
 
@@ -481,7 +480,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
   
   it("should run last execution if exists", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"code": "last execution", "code_to_add": ''});
+    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code": "last execution", "code_to_add": ''});
 	  
     var slide = new CodeSlide(slideNode);
 
@@ -520,11 +519,24 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
   }); 
 
 });
+
+IDE_slide_with_code_to_add_html = 
+"<div class='slide'/>" +
+"<section>"+
+  "<textarea id='code_input'></textarea>"+
+  "<div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div>"+
+  "<div class='code_author'>AUTHOR: <span id='author_name'>author</span></div>"+
+  "<input type='button' id='execute'/>"+
+  "<input type='button' id='send_code'/>"+
+  "<input type='button' id='get_code'/>"+
+  "<textarea id='code_output'></textarea>"+
+"</section>"+
+"</div>"
   
 describe("IDE UPDATE with code to ADD in Code Helper", function() {  
   
   beforeEach(function () {
-    slideNode = sandbox("<div class='slide'/><section><textarea id='code_input'></textarea><div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div><div class='code_author'>AUTHOR: <span id='author_name'>author</span><input type='button' id='execute'/><input type='button' id='send_code'/><input type='button' id='get_code'/><textarea id='code_output'></textarea></section></div>");
+    slideNode = sandbox(IDE_slide_with_code_to_add_html);
    });	  
   
   it("should run code to add", function() {
@@ -534,7 +546,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn({ "author": '', "code" : '', "code_to_add" : ''});
 
     postResource = jasmine.createSpy('postResource').andReturn("CODE TO ADD");
-	  
+
     slide._update(0);
 	  
     expect(slideNode.querySelector('#code_input').value).toBe("");	  
@@ -557,19 +569,19 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
   });  
   
-  it("should NOT run code if last execution exists and code to execute is empty", function() {
+  //~ it("should NOT run code if last execution exists and code to execute is empty", function() {
 
-    var slide = new CodeSlide(slideNode);    
+    //~ var slide = new CodeSlide(slideNode);    
     
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code": '', "code_to_add": 'ADDED CODE'});
-    spyOn(CodeSlide.prototype, 'executeCode');    
+    //~ spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code": '', "code_to_add": 'ADDED CODE'});
+    //~ spyOn(CodeSlide.prototype, 'executeCode');    
     
-    slide.updateEditor('');
-    slide._update(0);
+    //~ slide.updateEditor('');
+    //~ slide._update(0);
 	  
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);    
+    //~ expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);    
 
-  });   
+  //~ });   
   
   it("should NOT display code to add in code editor", function() {
 

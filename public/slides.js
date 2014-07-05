@@ -60,43 +60,35 @@ for(key in Slide.prototype) {
 var Editor = function(node) {
   this._node = node;
   this._contentHasChanged;
+  this.updated = true;
+  this.notUpdated = false;
 }
 
 Editor.prototype = {
   content: function() {
     return this._node.value;
   },
+  
   updateWithText: function(code) {
     this._node.value = code;  
   },
+  
   update: function(context, slideShowType) {
     if (slideShowType == 'blackboard') {
-      lastSendToBlackboard = context.lastSendToBlackboard(slideShowType);
-      if (lastSendToBlackboard.code != '' && lastSendToBlackboard.code != this.content()) { 
-        this.updateWithText(lastSendToBlackboard.code);
-        context._authorBar.updateWith(lastSendToBlackboard.author);
-        return true; 
-      }
+      executionContext = context.lastSendToBlackboard(slideShowType);
     } else {
-      lastexecution = context.lastExecution(slideShowType);
-      if (lastexecution.code != '' && lastexecution.code != this.content()) { 
-        this.updateWithText(lastexecution.code); 
-        return true; 
-      }
-      if (lastexecution.code_to_add != '' && lastexecution.code == this.content()) {
-        return false;
-      }
+      executionContext = context.lastExecution(slideShowType);
     }
-    codeToDisplay = context._currentCodeHelper().codeToDisplay();
-    if (codeToDisplay != '' && codeToDisplay != this.content()) { 
-      this.updateWithText(codeToDisplay) ; 
-      return true; 
+    if (executionContext.code == '') executionContext.code = context._currentCodeHelper().codeToDisplay();
+    if (executionContext.code_to_add == '') executionContext.code_to_add = context._currentCodeHelper().codeToAdd();
+
+    if ((executionContext.code != '' && executionContext.code != this.content()) || (executionContext.code == '' && executionContext.code_to_add != '')) 
+    {
+      this.updateWithText(executionContext.code);      
+      context._authorBar.updateWith(executionContext.author);             
+      return this.updated;
     }
-    CodeToAdd = context._currentCodeHelper().codeToAdd()
-    if (context._currentCodeHelper().codeToAdd() != '') {
-      return true;
-    }
-    return false;  
+    return this.notUpdated;
   },
 }
 
@@ -146,7 +138,7 @@ var CodeHelper = function(node, slideNode) {
 CodeHelper.prototype = {
   setState: function(state) {
     this._node.className = 'code_helper' + ((state != '') ? (' ' + state) : '');
-  },  
+  }, 
   codeToAdd: function() {
     code = '';
     if (this._node.querySelector('.code_to_add') ) 
