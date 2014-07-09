@@ -296,8 +296,7 @@ CodeSlide.prototype = {
     code_and_code_to_add = lastRunOnBlackBoard.split('#|||||#')[1];
     code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
     code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';    
-    return { "author": author, "code" : code, "code_to_add" : code_to_add };    
-    return lastRunOnBlackBoard;
+    return { "author": author, "code" : code, "code_to_add" : code_to_add };
   },
 
   lastExecution: function(slideShowType) {
