@@ -55,6 +55,31 @@ for(key in Slide.prototype) {
 };
 
 // ----------------------------------
+// EXECUTION CONTEXT
+// ----------------------------------
+var ExecutionContext = function() {
+  this.author = '';
+  this.code = '';
+  this.code_to_add = '';
+}
+
+ExecutionContext.prototype = {
+  update: function(context, slideShowType) {
+    var executionContext = { "author": '', "code": '', "code_to_add": '' };
+    if (slideShowType == 'blackboard') {
+      executionContext = context.lastSendToBlackboard(slideShowType);
+    } else {
+      executionContext = context.lastExecution(slideShowType);
+    }
+    if (executionContext.code == '') executionContext.code = context._currentCodeHelper().codeToDisplay();
+    if (executionContext.code_to_add == '') executionContext.code_to_add = context._currentCodeHelper().codeToAdd();
+    this.author = executionContext.author;
+    this.code = executionContext.code;
+    this.code_to_add = executionContext.code_to_add;
+  },
+}
+
+// ----------------------------------
 // EDITOR
 // ----------------------------------
 var Editor = function(node) {
@@ -74,14 +99,8 @@ Editor.prototype = {
   },
   
   update: function(context, slideShowType) {
-    if (slideShowType == 'blackboard') {
-      executionContext = context.lastSendToBlackboard(slideShowType);
-    } else {
-      executionContext = context.lastExecution(slideShowType);
-    }
-    if (executionContext.code == '') executionContext.code = context._currentCodeHelper().codeToDisplay();
-    if (executionContext.code_to_add == '') executionContext.code_to_add = context._currentCodeHelper().codeToAdd();
-
+    executionContext = new ExecutionContext();
+    executionContext.update(context, slideShowType);
     if ((executionContext.code != '' && executionContext.code != this.content()) || (executionContext.code == '' && executionContext.code_to_add != '')) 
     {
       this.updateWithText(executionContext.code);      
