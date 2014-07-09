@@ -537,12 +537,11 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_code_to_add_html);
+    slide = new CodeSlide(slideNode);   
    });	  
   
   it("should run code to add", function() {
     
-    var slide = new CodeSlide(slideNode);    
-
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code" : '', "code_to_add" : ''});
 
     postResource = jasmine.createSpy('postResource').andReturn("CODE TO ADD");
@@ -556,8 +555,6 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   });	  
   
   it("should NOT run code that is already in editor", function() {
-
-    var slide = new CodeSlide(slideNode);
     
     spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code": 'code to execute', "code_to_add": 'ADDED CODE'});
     spyOn(CodeSlide.prototype, 'executeCode');
@@ -613,9 +610,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should get last teacher run without code to add", function() {
 
-    getResource = jasmine.createSpy('getResource').andReturn('0#|||||#teacher run' + SEPARATOR + "puts 'CODE TO ADD'");    
-
-    var slide = new CodeSlide(slideNode);
+    getResource = jasmine.createSpy('getResource').andReturn('0#|||||#teacher run' + SEPARATOR + "puts 'CODE TO ADD'");
 	  
     expect(slideNode.querySelector('#code_input').value).toBe("");	  
     
