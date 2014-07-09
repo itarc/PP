@@ -64,8 +64,14 @@ var ExecutionContext = function() {
 }
 
 ExecutionContext.prototype = {
+  
+  _updateWithJSON: function(executionContext) {
+    this.author = executionContext.author;
+    this.code = executionContext.code;
+    this.code_to_add = executionContext.code_to_add;    
+  },
+  
   update: function(context, slideShowType) {
-    var executionContext = { "author": '', "code": '', "code_to_add": '' };
     if (slideShowType == 'blackboard') {
       executionContext = context.lastSendToBlackboard(slideShowType);
     } else {
@@ -73,9 +79,7 @@ ExecutionContext.prototype = {
     }
     if (executionContext.code == '') executionContext.code = context._currentCodeHelper().codeToDisplay();
     if (executionContext.code_to_add == '') executionContext.code_to_add = context._currentCodeHelper().codeToAdd();
-    this.author = executionContext.author;
-    this.code = executionContext.code;
-    this.code_to_add = executionContext.code_to_add;
+    this._updateWithJSON(executionContext);
   },
 }
 
