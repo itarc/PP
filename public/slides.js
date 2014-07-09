@@ -103,7 +103,6 @@ Editor.prototype = {
   },
   
   update: function(context, slideShowType, executionContext) {
-    executionContext.update(context, slideShowType);
     if ((executionContext.code != '' && executionContext.code != this.content()) || (executionContext.code == '' && executionContext.code_to_add != '')) 
     {
       this.updateWithText(executionContext.code);      
@@ -380,6 +379,7 @@ CodeSlide.prototype = {
   _update: function(slide_index, slideShowType) {
     this.showCodeHelper(slide_index);
     this._updateLastSendAttendeeName();
+    this._executionContext.update(this, slideShowType);
     this._updateEditorAndExecuteCode(slideShowType);
   },
   
