@@ -102,8 +102,7 @@ Editor.prototype = {
     this._node.value = code;  
   },
   
-  update: function(context, slideShowType) {
-    executionContext = new ExecutionContext();
+  update: function(context, slideShowType, executionContext) {
     executionContext.update(context, slideShowType);
     if ((executionContext.code != '' && executionContext.code != this.content()) || (executionContext.code == '' && executionContext.code_to_add != '')) 
     {
@@ -190,6 +189,7 @@ var CodeSlide = function(node) {
   
   this._codeHelper_current_index = 0;
   this._declareEvents();
+  this._executionContext = new ExecutionContext();
   this._editor = new Editor(this._node.querySelector('#code_input'));
   this._authorBar = new AuthorBar(this._node.querySelector('#author_name'));
 
@@ -363,7 +363,7 @@ CodeSlide.prototype = {
   },
   
   _updateEditorAndExecuteCode: function(slideShowType) {
-    if (this._editor.update(this, slideShowType)) {
+    if (this._editor.update(this, slideShowType, this._executionContext)) {
       this.executeCode(slideShowType);
     };
   },
