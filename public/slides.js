@@ -80,19 +80,14 @@ ExecutionContext.prototype = {
     code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
     code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
     return { "author": author, "code" : code, "code_to_add" : code_to_add };   
-  },  
-  
-  _updateWithJSON: function(executionContext) {
-    this.author = executionContext.author;
-    this.code = executionContext.code;
-    this.code_to_add = executionContext.code_to_add;    
   },
   
   update: function(context, slideShowType) {
-    executionContext = this.getLastContext(this.executionContextResourceURL(slideShowType) + '/' + context._codeHelper_current_index);
-    if (executionContext.code == '') executionContext.code = context._currentCodeHelper().codeToDisplay();
-    if (executionContext.code_to_add == '') executionContext.code_to_add = context._currentCodeHelper().codeToAdd();
-    this._updateWithJSON(executionContext);
+    resourceURL = this.executionContextResourceURL(slideShowType);
+    newExecutionContext = this.getLastContext(resourceURL + '/' + context._codeHelper_current_index);
+    this.author = newExecutionContext.author;
+    this.code = (newExecutionContext.code == '') ? context.codeToDisplay() : newExecutionContext.code;
+    this.code_to_add = (newExecutionContext.code_to_add == '') ? context.codeToAdd() : newExecutionContext.code_to_add;
   },
 }
 
@@ -300,8 +295,16 @@ CodeSlide.prototype = {
   
   codeToExecute: function() {
     return this._editor.content() + this._currentCodeHelper().codeToAdd();
-  },	  
+  },	 
 
+  codeToDisplay: function() {
+    return this._currentCodeHelper().codeToDisplay();
+  },	 
+  
+  codeToAdd: function() {
+    return this._currentCodeHelper().codeToAdd();
+  },	   
+  
   executeCode: function(slideShowType) {
     if (this.codeToExecute() == '' ) return;
     run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
