@@ -14,13 +14,15 @@ IDE_slide_html = "" +
 describe("ExecutionContext", function() {
 
   beforeEach(function () {
+    setFixtures("<div class='slides'>"+ IDE_slide_html +"</div>")	      
+    blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));    
     slideNode = sandbox(IDE_slide_html);
-    IDESlide = new CodeSlide(slideNode);  
+    IDESlide = new CodeSlide(slideNode, blackboardSlideShow);  
   });	
   
-  it("should update with last execution", function() {
+  it("should update with last send to blackboard", function() {
     
-    executionContext = new ExecutionContext();
+    executionContext = new ExecutionContext(IDESlide);
     
     getResource = jasmine.createSpy('getResource').andReturn('');
 	  
@@ -57,8 +59,7 @@ describe("Blackboard REFRESH", function() {
   beforeEach(function () {
     setFixtures("<div class='slides'>"+ IDE_slide_html +"</div>")	      
     blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide')); 
-    spyOn(CodeSlide.prototype, 'executeCode');       
-    //~ spyOn(CodeSlide.prototype, 'lastSendToBlackboard').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });   
+    spyOn(CodeSlide.prototype, 'executeCode');   
     spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });      
   });
   

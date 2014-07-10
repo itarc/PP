@@ -23,11 +23,11 @@ describe("ExecutionContext", function() {
   
   it("should update with last execution", function() {
     
-    executionContext = new ExecutionContext();
+    executionContext = new ExecutionContext(IDESlide);
     
     getResource = jasmine.createSpy('getResource').andReturn('');
 	  
-    executionContext.update(IDESlide);
+    executionContext.update();
 	  
     expect(getResource).toHaveBeenCalledWith('/code_last_execution/0');
     

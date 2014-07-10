@@ -42,15 +42,17 @@ Position.prototype = {
 // SLIDESHOW CLASS
 // ----------------------------------  
 var SlideShow = function(slides) {
+  var _t = this;
+  
   this._slides = (slides).map(function(element) { 
-	  if (element.querySelector('#execute') != null) { return new CodeSlide(element); };
-	  if (element.querySelector('.poll_response_rate') != null) { return new PollSlide(element); };
-    return new Slide(element); 
+	  if (element.querySelector('#execute') != null) { return new CodeSlide(element, _t); };
+	  if (element.querySelector('.poll_response_rate') != null) { return new PollSlide(element, _t); };
+    return new Slide(element, _t); 
   });
   this._numberOfSlides = this._slides.length;
   this._currentSlide = this._slides[0];  
 
-  var _t = this;
+
   document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );
 
   this.position = new Position();

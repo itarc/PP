@@ -3,7 +3,7 @@
 // ----------------------------------
 var BlackboardSlideShow = function(slides) {
   SlideShow.call(this, slides);
-  this.position.slideShowType = 'blackboard';
+  this.slideShowType = 'blackboard';   
   this._updateCurrentSlide();  
 };
 
