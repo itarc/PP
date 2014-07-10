@@ -118,7 +118,7 @@ Editor.prototype = {
     if ((executionContext.code != '' && executionContext.code != this.content()) || (executionContext.code == '' && executionContext.code_to_add != '')) 
     {
       this.updateWithText(executionContext.code);      
-      context._authorBar.updateWith(executionContext.author);             
+      context._authorBar.updateWithAuthorName(executionContext.author);             
       return this.updated;
     }
     return this.notUpdated;
@@ -131,7 +131,7 @@ Editor.prototype = {
 var AuthorBar = function(node) {
   this._node = node;
   this.getCurrentAuthor();
-  this.updateWith(this._author);
+  this.updateWithAuthorName(this._author);
 }
 
 AuthorBar.prototype = {
@@ -140,12 +140,13 @@ AuthorBar.prototype = {
     this._author = getResource('/session_id');
   },
   
-  sendNewAuthor: function(newAuthor) {
+  createSessionID: function(newAuthor) {
+    if (newAuthor == '') return;
     postResource('session_id/attendee_name', 'attendee_name=' + newAuthor, SYNCHRONOUS);
     this._author = newAuthor;
   },
   
-  updateWith: function(author) {
+  updateWithAuthorName: function(author) {
     if (is_a_number(author)) {
       if (author == '0') { author = '#'; } else { author = '?'; }
     }
@@ -156,7 +157,7 @@ AuthorBar.prototype = {
   },
   
   refresh: function() {
-    this.updateWith(this._author);
+    this.updateWithAuthorName(this._author);
   },
   
 }
@@ -230,14 +231,13 @@ CodeSlide.prototype = {
   _declareEvents: function() {  
     var _t = this;   
     if (_t._node.querySelector('#attendee_name')) {
-      this._node.querySelector('#attendee_name').addEventListener('keydown',
-        function(e) { if (e.keyCode == RETURN) {
-          if (this.value == '') return;
-          _t._authorBar.sendNewAuthor(this.value);
-          _t._authorBar.updateWith(this.value);
-          this.value = '';
-        } }, false
-      );
+    this._node.querySelector('#attendee_name').addEventListener('keydown',
+      function(e) { 
+        if (e.keyCode == RETURN) { 
+        _t._authorBar.createSessionID(this.value);
+        _t._authorBar.refresh();
+        this.value = '';} }, false
+    );
     }
     this._node.querySelector('#code_input').addEventListener('keydown',
       function(e) { _t._keyHandling(e); }, false
@@ -332,7 +332,7 @@ CodeSlide.prototype = {
     if (this._executionContext.code != '') { 
       this.updateEditor(this._executionContext.code);        
       this.executeAndSendCode(slideShowType);
-      this._authorBar.updateWith(this._executionContext.author);
+      this._authorBar.updateWithAuthorName(this._executionContext.author);
       return true;
     };
   },
