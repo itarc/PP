@@ -11,6 +11,27 @@ IDE_slide_html = "" +
   "<input type='button' id='get_last_send'/>"+
 "</section><div>"
 
+describe("ExecutionContext", function() {
+
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new CodeSlide(slideNode);  
+  });	
+  
+  it("should update with last execution", function() {
+    
+    executionContext = new ExecutionContext();
+    
+    getResource = jasmine.createSpy('getResource').andReturn('');
+	  
+    executionContext.update(IDESlide, 'blackboard');
+	  
+    expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');
+    
+  });  
+  
+});
+
 describe("Blackboard RUN", function() {
   
   beforeEach(function () {
@@ -37,7 +58,8 @@ describe("Blackboard REFRESH", function() {
     setFixtures("<div class='slides'>"+ IDE_slide_html +"</div>")	      
     blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide')); 
     spyOn(CodeSlide.prototype, 'executeCode');       
-    spyOn(CodeSlide.prototype, 'lastSendToBlackboard').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });    
+    //~ spyOn(CodeSlide.prototype, 'lastSendToBlackboard').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });   
+    spyOn(ExecutionContext.prototype, 'getLastContext').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });      
   });
   
   it("should get last Teacher run when refreshed", function() {

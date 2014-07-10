@@ -82,8 +82,7 @@ ExecutionContext.prototype = {
   
   update: function(context, slideShowType) {
     if (slideShowType == 'blackboard') {
-      executionContext = context.lastSendToBlackboard(slideShowType);
-      //~ executionContext = this.getLastContext('/code_get_last_send_to_blackboard' + '/' + context._codeHelper_current_index);      
+      executionContext = this.getLastContext('/code_get_last_send_to_blackboard' + '/' + context._codeHelper_current_index);      
     } else {
       executionContext = this.getLastContext('/code_last_execution' + '/' + context._codeHelper_current_index);
     }
@@ -336,16 +335,6 @@ CodeSlide.prototype = {
     attendeeLastSend = getResource(url + '/' + this._codeHelper_current_index);
     author = attendeeLastSend.split('#|||||#')[0];
     code_and_code_to_add = attendeeLastSend.split('#|||||#')[1];
-    code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
-    code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
-    return { "author": author, "code": code,"code_to_add": code_to_add }
-  },  
-  
-  lastSendToBlackboard: function(slideShowType) {
-    url = '/code_get_last_send_to_blackboard';
-    lastSendToBlackboard = getResource(url + '/' + this._codeHelper_current_index);
-    author = lastSendToBlackboard.split('#|||||#')[0];
-    code_and_code_to_add = lastSendToBlackboard.split('#|||||#')[1];
     code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
     code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
     return { "author": author, "code": code,"code_to_add": code_to_add }
