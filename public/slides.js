@@ -230,13 +230,12 @@ CodeSlide.prototype = {
   _declareEvents: function() {  
     var _t = this;   
     if (_t._node.querySelector('#attendee_name')) {
-      _attendee_name = this._node.querySelector('#attendee_name')
-      _attendee_name.addEventListener('keydown',
+      this._node.querySelector('#attendee_name').addEventListener('keydown',
         function(e) { if (e.keyCode == RETURN) {
-          if (_attendee_name.value == '') return;
-          _t._authorBar.sendNewAuthor(_attendee_name.value);
-          _t._authorBar.updateWith(_attendee_name.value);
-          _attendee_name.value = '';
+          if (this.value == '') return;
+          _t._authorBar.sendNewAuthor(this.value);
+          _t._authorBar.updateWith(this.value);
+          this.value = '';
         } }, false
       );
     }
