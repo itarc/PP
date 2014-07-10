@@ -342,13 +342,13 @@ CodeSlide.prototype = {
   },
 
   _updateEditorWithLastSendAndExecute: function(slideShowType) {
-      attendeeLastSend = this.attendeesLastSend(slideShowType);
-      if (attendeeLastSend.code != '') { 
-        this.updateEditor(attendeeLastSend.code);        
-        this.executeAndSendCode(slideShowType);
-        this._authorBar.updateWith(attendeeLastSend.author);
-        return true;
-      };
+    this._executionContext.updateWithResource(this, '/code_attendees_last_send');
+    if (this._executionContext.code != '') { 
+      this.updateEditor(this._executionContext.code);        
+      this.executeAndSendCode(slideShowType);
+      this._authorBar.updateWith(this._executionContext.author);
+      return true;
+    };
   },
   
   _updateEditorAndExecuteCode: function(slideShowType) {

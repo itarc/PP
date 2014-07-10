@@ -727,7 +727,8 @@ describe("IDE UPDATE with attendee name to type in", function() {
     getResource = jasmine.createSpy('getResource').andReturn('a name');
     postResource = jasmine.createSpy('postResource')
     
-    spyOn(CodeSlide.prototype ,"attendeesLastSend").andReturn({author: 'attendee id', code: 'code sent'});
+    //~ spyOn(CodeSlide.prototype ,"attendeesLastSend").andReturn({author: 'attendee id', code: 'code sent'});
+    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee id', code: 'code sent'});     
 
     var slide = new CodeSlide(slideNode);
     
@@ -744,7 +745,8 @@ describe("IDE UPDATE with attendee name to type in", function() {
     getResource = jasmine.createSpy('getResource').andReturn('a name');
     postResource = jasmine.createSpy('postResource')
     
-    spyOn(CodeSlide.prototype ,"attendeesLastSend").andReturn({author: 'attendee id', code: 'code sent'});
+    //~ spyOn(CodeSlide.prototype ,"attendeesLastSend").andReturn({author: 'attendee id', code: 'code sent'});
+    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee id', code: 'code sent'});       
 
     var slide = new CodeSlide(slideNode);
     
