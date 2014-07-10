@@ -59,7 +59,7 @@ describe("Blackboard REFRESH", function() {
     blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide')); 
     spyOn(CodeSlide.prototype, 'executeCode');       
     //~ spyOn(CodeSlide.prototype, 'lastSendToBlackboard').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });   
-    spyOn(ExecutionContext.prototype, 'getLastContext').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });      
+    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });      
   });
   
   it("should get last Teacher run when refreshed", function() {

@@ -73,7 +73,7 @@ ExecutionContext.prototype = {
     }    
   },
   
-  getLastContext: function(url) {
+  getContextOnServer: function(url) {
     last_execution = getResource(url);
     author = last_execution.split('#|||||#')[0];
     code_and_code_to_add = last_execution.split('#|||||#')[1];
@@ -82,12 +82,16 @@ ExecutionContext.prototype = {
     return { "author": author, "code" : code, "code_to_add" : code_to_add };   
   },
   
-  update: function(context, slideShowType) {
-    resourceURL = this.executionContextResourceURL(slideShowType);
-    newExecutionContext = this.getLastContext(resourceURL + '/' + context._codeHelper_current_index);
+  updateWithResource: function(context, resourceURL) {
+    newExecutionContext = this.getContextOnServer(resourceURL + '/' + context._codeHelper_current_index);
     this.author = newExecutionContext.author;
     this.code = (newExecutionContext.code == '') ? context.codeToDisplay() : newExecutionContext.code;
     this.code_to_add = (newExecutionContext.code_to_add == '') ? context.codeToAdd() : newExecutionContext.code_to_add;
+  },
+  
+  update: function(context, slideShowType) {
+    defaultResourceURL = this.executionContextResourceURL(slideShowType);
+    this.updateWithResource(context, defaultResourceURL);
   },
 }
 
