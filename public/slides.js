@@ -130,34 +130,36 @@ Editor.prototype = {
 // ----------------------------------
 var AuthorBar = function(node) {
   this._node = node;
-  this.getCurrentAuthor();
-  this.updateWithAuthorName(this._author);
+  this.getSessionID();
+  this.refresh();
 }
 
 AuthorBar.prototype = {
   
-  getCurrentAuthor: function() {
-    this._author = getResource('/session_id');
+  getSessionID: function() {
+    this._sessionID = getResource('/session_id');
   },
   
   createSessionID: function(newAuthor) {
     if (newAuthor == '') return;
     postResource('session_id/attendee_name', 'attendee_name=' + newAuthor, SYNCHRONOUS);
     this._author = newAuthor;
+    this._sessionID = newAuthor;
+    this.updateWithAuthorName(this._author);
   },
   
   updateWithAuthorName: function(author) {
-    if (is_a_number(author)) {
-      if (author == '0') { author = '#'; } else { author = '?'; }
-    }
     if (this._node) { 
-      if (author.split('_')[1]) author = author.split('_')[1];
-      this._node.innerHTML = author;
+      if (author.split('_')[1]) { this._author = author.split('_')[1]; } else { this._author = author; }
+      if (is_a_number(author)) {
+        if (author == '0') { this._author = '#'; } else { this._author = '?'; }
+      }      
+      this._node.innerHTML = this._author;
     };
   },
   
   refresh: function() {
-    this.updateWithAuthorName(this._author);
+    this.updateWithAuthorName(this._sessionID);
   },
   
 }
@@ -234,9 +236,8 @@ CodeSlide.prototype = {
     this._node.querySelector('#attendee_name').addEventListener('keydown',
       function(e) { 
         if (e.keyCode == RETURN) { 
-        _t._authorBar.createSessionID(this.value);
-        _t._authorBar.refresh();
-        this.value = '';} }, false
+          _t._authorBar.createSessionID(this.value); 
+          this.value = '';} }, false
     );
     }
     this._node.querySelector('#code_input').addEventListener('keydown',
