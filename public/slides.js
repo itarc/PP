@@ -327,24 +327,21 @@ CodeSlide.prototype = {
     }
   }, 
   
-  lastRunOnBlackBoard: function() {
-    get_url = "/code_get_last_send_to_blackboard" + "/" + this._codeHelper_current_index;
-    lastRunOnBlackBoard = getResource(get_url);
-    author = lastRunOnBlackBoard.split('#|||||#')[0];
-    code_and_code_to_add = lastRunOnBlackBoard.split('#|||||#')[1];
+  getExecutionContext: function(url) {
+    executionContext = getResource(url + '/' + this._codeHelper_current_index);
+    author = executionContext.split('#|||||#')[0];
+    code_and_code_to_add = executionContext.split('#|||||#')[1];
     code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
-    code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';    
-    return { "author": author, "code" : code, "code_to_add" : code_to_add };
+    code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
+    return { "author": author, "code": code,"code_to_add": code_to_add }   
+  },
+  
+  lastRunOnBlackBoard: function() {
+    return this.getExecutionContext('/code_get_last_send_to_blackboard');    
   },
 
   attendeesLastSend: function(slideShowType) {
-    url = '/code_attendees_last_send'
-    attendeeLastSend = getResource(url + '/' + this._codeHelper_current_index);
-    author = attendeeLastSend.split('#|||||#')[0];
-    code_and_code_to_add = attendeeLastSend.split('#|||||#')[1];
-    code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
-    code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
-    return { "author": author, "code": code,"code_to_add": code_to_add }
+    return this.getExecutionContext('/code_attendees_last_send');
   },
 
   _updateEditorWithLastSendAndExecute: function(slideShowType) {
