@@ -228,8 +228,8 @@ describe("TeacherSlideShow Navigation With an IDE Slide", function() {
 	  
     getResource = jasmine.createSpy('getResource').andReturn('0;false');
     postResource = jasmine.createSpy('postResource');
-    
-    spyOn(CodeSlide.prototype, 'attendeesLastSend').andReturn('#|||||#');    
+       
+    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({author: '', code: ''});     
     
     var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
     

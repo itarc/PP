@@ -327,19 +327,6 @@ CodeSlide.prototype = {
     this._executionContext.updateWithResource(this, '/code_get_last_send_to_blackboard');
     this._updateEditorAndExecuteCode();
   }, 
-  
-  getExecutionContext: function(url) {
-    executionContext = getResource(url + '/' + this._codeHelper_current_index);
-    author = executionContext.split('#|||||#')[0];
-    code_and_code_to_add = executionContext.split('#|||||#')[1];
-    code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
-    code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
-    return { "author": author, "code": code,"code_to_add": code_to_add }   
-  },
-
-  attendeesLastSend: function(slideShowType) {
-    return this.getExecutionContext('/code_attendees_last_send');
-  },
 
   _updateEditorWithLastSendAndExecute: function(slideShowType) {
     this._executionContext.updateWithResource(this, '/code_attendees_last_send');
@@ -359,7 +346,8 @@ CodeSlide.prototype = {
   
   _updateLastSendAttendeeName: function(slide_index, slideShowType) {
     if ( this._node.querySelector('#last_send_attendee_name') ) {
-      attendee_name =  this.attendeesLastSend(slideShowType).author;
+      this._executionContext.updateWithResource(this, '/code_attendees_last_send');
+      attendee_name =  this._executionContext.author;
       if (attendee_name.split('_')[1]) attendee_name = attendee_name.split('_')[1];
       if (attendee_name != '' ) attendee_name = attendee_name + ' >> ';
       this._node.querySelector('#last_send_attendee_name').innerHTML = attendee_name;
