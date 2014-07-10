@@ -65,6 +65,15 @@ var ExecutionContext = function() {
 
 ExecutionContext.prototype = {
   
+  getLastContext: function(url) {
+    last_execution = getResource(url);
+    author = last_execution.split('#|||||#')[0];
+    code_and_code_to_add = last_execution.split('#|||||#')[1];
+    code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
+    code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
+    return { "author": author, "code" : code, "code_to_add" : code_to_add };   
+  },  
+  
   _updateWithJSON: function(executionContext) {
     this.author = executionContext.author;
     this.code = executionContext.code;
@@ -74,8 +83,9 @@ ExecutionContext.prototype = {
   update: function(context, slideShowType) {
     if (slideShowType == 'blackboard') {
       executionContext = context.lastSendToBlackboard(slideShowType);
+      //~ executionContext = this.getLastContext('/code_get_last_send_to_blackboard' + '/' + context._codeHelper_current_index);      
     } else {
-      executionContext = context.lastExecution(slideShowType);
+      executionContext = this.getLastContext('/code_last_execution' + '/' + context._codeHelper_current_index);
     }
     if (executionContext.code == '') executionContext.code = context._currentCodeHelper().codeToDisplay();
     if (executionContext.code_to_add == '') executionContext.code_to_add = context._currentCodeHelper().codeToAdd();
@@ -318,16 +328,6 @@ CodeSlide.prototype = {
     code_and_code_to_add = lastRunOnBlackBoard.split('#|||||#')[1];
     code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
     code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';    
-    return { "author": author, "code" : code, "code_to_add" : code_to_add };
-  },
-
-  lastExecution: function(slideShowType) {
-    url = '/code_last_execution'
-    last_execution = getResource(url + '/' + this._codeHelper_current_index);
-    author = last_execution.split('#|||||#')[0];
-    code_and_code_to_add = last_execution.split('#|||||#')[1];
-    code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
-    code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
     return { "author": author, "code" : code, "code_to_add" : code_to_add };
   },
 

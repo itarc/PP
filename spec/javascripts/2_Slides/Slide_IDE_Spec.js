@@ -13,6 +13,28 @@ IDE_slide_html = "" +
 "</section>"+
 "<div>"
     
+    
+describe("ExecutionContext", function() {
+
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new CodeSlide(slideNode);  
+  });	
+  
+  it("should update with last execution", function() {
+    
+    executionContext = new ExecutionContext();
+    
+    getResource = jasmine.createSpy('getResource').andReturn('');
+	  
+    executionContext.update(IDESlide);
+	  
+    expect(getResource).toHaveBeenCalledWith('/code_last_execution/0');
+    
+  });  
+  
+});
+
 describe("IDE", function() {
 
   beforeEach(function () {
@@ -46,16 +68,6 @@ describe("IDE", function() {
     expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper current');  
 
   });
-  
-  it("should find last execution", function() {
-    
-    getResource = jasmine.createSpy('getResource').andReturn('');
-	  
-    IDESlide.lastExecution();
-	  
-    expect(getResource).toHaveBeenCalledWith('/code_last_execution/0');
-    
-  });    
   
 }); 
 
@@ -370,7 +382,7 @@ describe("IDE UPDATE", function() {
   
   it("should run the user last run", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
+    spyOn(ExecutionContext.prototype, 'getLastContext').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
 	  
     spyOn(CodeSlide.prototype, 'showCodeHelper');	  
     spyOn(CodeSlide.prototype, 'executeCode');
@@ -385,7 +397,7 @@ describe("IDE UPDATE", function() {
 
     slide._editor.updateWithText('last execution');
     
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"code": 'last execution', "code_to_add": ''});
+    spyOn(ExecutionContext.prototype, 'getLastContext').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
 	  
     spyOn(CodeSlide.prototype, 'executeCode');
 	  
@@ -397,7 +409,7 @@ describe("IDE UPDATE", function() {
   
   it("should NOT run anything when no last run, no code to display and no code to add", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"code": '', "code_to_add": ''});
+    spyOn(ExecutionContext.prototype, 'getLastContext').andReturn({"author": '', "code": '', "code_to_add": ''});    
     
     slide._editor.updateWithText("print 'code remaining from previous slide'");
     
@@ -464,7 +476,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 	
   it("should run code to display if no last execution", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code" : '', "code_to_add" : ''});
+    spyOn(ExecutionContext.prototype, 'getLastContext').andReturn({"author": '', "code": '', "code_to_add": ''});    
 	  
     var slide = new CodeSlide(slideNode);
 	
@@ -481,7 +493,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
   
   it("should run last execution if exists", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code": "last execution", "code_to_add": ''});
+    spyOn(ExecutionContext.prototype, 'getLastContext').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});    
 	  
     var slide = new CodeSlide(slideNode);		
 
@@ -498,7 +510,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 
   it("should NOT run code that is already in editor", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({ "author": '', "code" : '', "code_to_add" : ''});
+    spyOn(ExecutionContext.prototype, 'getLastContext').andReturn({"author": '', "code": '', "code_to_add": ''});
 	  
     var slide = new CodeSlide(slideNode);
 
@@ -542,7 +554,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should run code to add", function() {
     
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code" : '', "code_to_add" : ''});
+    spyOn(ExecutionContext.prototype, 'getLastContext').andReturn({"author": '', "code": '', "code_to_add": ''});
 
     postResource = jasmine.createSpy('postResource').andReturn("CODE TO ADD");
 
@@ -556,7 +568,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should NOT run code that is already in editor", function() {
     
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code": 'code to execute', "code_to_add": 'ADDED CODE'});
+    spyOn(ExecutionContext.prototype, 'getLastContext').andReturn({"author": '', "code": 'code to execute', "ADDED CODE": ''});
     spyOn(CodeSlide.prototype, 'executeCode');
 
     slide.updateEditor('code to execute');	  
@@ -582,7 +594,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should NOT display code to add in code editor", function() {
 
-    spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code": '', "code_to_add": 'ADDED CODE'});
+    spyOn(ExecutionContext.prototype, 'getLastContext').andReturn({"author": '', "code": '', "ADDED CODE": ''});  
 
     var slide = new CodeSlide(slideNode);
 	  
