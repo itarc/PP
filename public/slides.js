@@ -65,6 +65,14 @@ var ExecutionContext = function() {
 
 ExecutionContext.prototype = {
   
+  executionContextResourceURL: function(slideShowType) {
+    if (slideShowType == 'blackboard') {
+      return '/code_get_last_send_to_blackboard';
+    } else {
+      return '/code_last_execution';
+    }    
+  },
+  
   getLastContext: function(url) {
     last_execution = getResource(url);
     author = last_execution.split('#|||||#')[0];
@@ -81,11 +89,7 @@ ExecutionContext.prototype = {
   },
   
   update: function(context, slideShowType) {
-    if (slideShowType == 'blackboard') {
-      executionContext = this.getLastContext('/code_get_last_send_to_blackboard' + '/' + context._codeHelper_current_index);      
-    } else {
-      executionContext = this.getLastContext('/code_last_execution' + '/' + context._codeHelper_current_index);
-    }
+    executionContext = this.getLastContext(this.executionContextResourceURL(slideShowType) + '/' + context._codeHelper_current_index);
     if (executionContext.code == '') executionContext.code = context._currentCodeHelper().codeToDisplay();
     if (executionContext.code_to_add == '') executionContext.code_to_add = context._currentCodeHelper().codeToAdd();
     this._updateWithJSON(executionContext);
@@ -377,3 +381,4 @@ CodeSlide.prototype = {
 for(key in Slide.prototype) {
   if (! CodeSlide.prototype[key]) CodeSlide.prototype[key] = Slide.prototype[key];
 };
+
