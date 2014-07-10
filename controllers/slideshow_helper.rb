@@ -3,6 +3,8 @@
 require_relative '../models/Poll'
 require_relative '../models/RunTime'
 
+$SEPARATOR = "\n\#{SEP}#\n"
+
 def question_id
   params[:splat][1]
 end

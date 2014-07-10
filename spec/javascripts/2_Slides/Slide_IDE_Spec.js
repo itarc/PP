@@ -249,7 +249,7 @@ describe("IDE GET & RUN", function() {
     slideNode = sandbox(IDE_slide_html);    
     IDESlide = new CodeSlide(slideNode);
     spyOn(CodeSlide.prototype ,"executeCode");    
-    getResource = jasmine.createSpy('getResource').andReturn('0#|||||#puts 1');
+    getResource = jasmine.createSpy('getResource').andReturn('0' + SEPARATOR + 'puts 1');
   });
   
   it("should NOT execute code when retreived code is empty", function() {
@@ -331,8 +331,7 @@ describe("IDE LAST SEND", function() {
   
   it("should get and run last attendee send when ALT-N pressed", function() {
     
-    getResource = jasmine.createSpy('getResource').andReturn('attendee_1#|||||#last attendee send code');
-    //~ getResource = jasmine.createSpy('getResource').andReturn({"author": 'attendee_1', "code": 'last attendee send code'});
+    getResource = jasmine.createSpy('getResource').andReturn('attendee_1' + SEPARATOR + 'last attendee send code');
     postResource = jasmine.createSpy('postResource');
 	  
     slide._editor.updateWithText('');
@@ -436,7 +435,7 @@ describe("IDE UPDATE", function() {
     expect(slideNode.querySelector('#code_input').value).toBe('');
     expect(slideNode.querySelector('#code_output').value).toBe('');
     
-    getResource = jasmine.createSpy('getResource').andReturn('user_1#|||||#puts 2');
+    getResource = jasmine.createSpy('getResource').andReturn('user_1' + SEPARATOR + 'puts 2');
     postResource = jasmine.createSpy('postResource').andReturn('2');
 
     slide._update(0);
@@ -608,7 +607,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   //~ it("should NOT display code to add in Teacher code editor when get attendee last Send", function() {
 
-    //~ getResource = jasmine.createSpy('getResource').andReturn('attendee name'+ '#|||||#'+ 'attendee code' +SEPARATOR + "puts 'CODE TO ADD'");
+    //~ getResource = jasmine.createSpy('getResource').andReturn('attendee name'+ '' + SEPARATOR + ''+ 'attendee code' +SEPARATOR + "puts 'CODE TO ADD'");
 
     //~ var slide = new CodeSlide(slideNode);
 	  
@@ -622,7 +621,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should get last teacher run without code to add", function() {
 
-    getResource = jasmine.createSpy('getResource').andReturn('0#|||||#teacher run' + SEPARATOR + "puts 'CODE TO ADD'");
+    getResource = jasmine.createSpy('getResource').andReturn('0' + SEPARATOR + 'teacher run' + SEPARATOR + "puts 'CODE TO ADD'");
 	  
     expect(slideNode.querySelector('#code_input').value).toBe("");	  
     

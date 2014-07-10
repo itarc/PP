@@ -75,8 +75,8 @@ ExecutionContext.prototype = {
   
   getContextOnServer: function(url) {
     last_execution = getResource(url);
-    author = last_execution.split('#|||||#')[0];
-    code_and_code_to_add = last_execution.split('#|||||#')[1];
+    author = last_execution.split(SEPARATOR)[0];
+    code_and_code_to_add = last_execution.split(SEPARATOR)[1];
     code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
     code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
     return { "author": author, "code" : code, "code_to_add" : code_to_add };   
@@ -143,9 +143,8 @@ AuthorBar.prototype = {
   createSessionID: function(newAuthor) {
     if (newAuthor == '') return;
     postResource('session_id/attendee_name', 'attendee_name=' + newAuthor, SYNCHRONOUS);
-    this._author = newAuthor;
     this._sessionID = newAuthor;
-    this.updateWithAuthorName(this._author);
+    this.updateWithAuthorName(this._sessionID);
   },
   
   updateWithAuthorName: function(author) {

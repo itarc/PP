@@ -5,6 +5,8 @@ require_relative "../../controllers/slideshow"
 require 'test/unit'
 require 'rack/test'
 
+
+
 class TestCodeRun < Test::Unit::TestCase
   
   include Rack::Test::Methods
@@ -76,13 +78,13 @@ class TestLastExecution_in_attendee_slide < Test::Unit::TestCase
   def test02_should_return_last_send
     post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'user_1'}
     get '/code_last_execution/0', {}, 'rack.session' => {:user_id => 'user_1'}
-    assert_equal "user_1#|||||#code sent", last_response.body    
+    assert_equal "user_1" + $SEPARATOR + "code sent", last_response.body    
   end
   
   def test03_should_return_last_run 
     post '/code_run_result/0', "code run", 'rack.session' => {:user_id => 'user_1'}
     get '/code_last_execution/0', {}, 'rack.session' => {:user_id => 'user_1'}
-    assert_equal "user_1#|||||#code run", last_response.body    
+    assert_equal "user_1" + $SEPARATOR + "code run", last_response.body    
   end
   
   def test04_should_return_empty_if_not_the_right_slide
@@ -112,21 +114,21 @@ class TestLastExecution_in_teacher_slide < Test::Unit::TestCase
   def test01_should_return_last_attendee_send
     post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'attendee_1'}
     get '/code_attendees_last_send/0', {}, 'rack.session' => {:user_id => '0' }
-    assert_equal "attendee_1#|||||#code sent", last_response.body    
+    assert_equal "attendee_1" + $SEPARATOR + "code sent", last_response.body    
   end
   
   def test02_should_return_last_attendee_send_even_if_a_run_is_fresher
     post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'attendee_1'}
     post '/code_run_result/0', "code run", 'rack.session' => {:user_id => 'attendee_1'}
     get '/code_attendees_last_send/0', {}, 'rack.session' => {:user_id => '0' }
-    assert_equal "attendee_1#|||||#code sent", last_response.body    
+    assert_equal "attendee_1" + $SEPARATOR + "code sent", last_response.body    
   end  
   
   def test03_should_return_last_attendee_send_even_if_teacher_made_a_run
     post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'attendee_1'}
     post '/code_run_result/0', "code run", 'rack.session' => {:user_id => '0'}
     get '/code_attendees_last_send/0', {}, 'rack.session' => {:user_id => '0' }
-    assert_equal "attendee_1#|||||#code sent", last_response.body    
+    assert_equal "attendee_1" + $SEPARATOR + "code sent", last_response.body    
   end    
   
   def test04_should_return_last_attendee_send_empty_after_last_teacher_send
@@ -141,7 +143,7 @@ class TestLastExecution_in_teacher_slide < Test::Unit::TestCase
     post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => '0'}
     post '/code_send_result/0', "code sent", 'rack.session' => {:user_id => 'attendee_2'}
     get '/code_attendees_last_send/0', {}, 'rack.session' => {:user_id => '0' }    
-    assert_equal "attendee_2#|||||#code sent", last_response.body
+    assert_equal "attendee_2" + $SEPARATOR + "code sent", last_response.body
   end
   
   def teardown
@@ -165,7 +167,7 @@ class TestLastSendToBlackBoard < Test::Unit::TestCase
   def test01_should_get_last_send_to_blackboard
     post '/code_run_result/0', "teacher run", 'rack.session' => {:user_id => '0'}
     get '/code_get_last_send_to_blackboard/0', {}, 'rack.session' => {:user_id => 'user_1' }
-    assert_equal "0#|||||#teacher run", last_response.body    
+    assert_equal "0" + $SEPARATOR + "teacher run", last_response.body    
   end
   
   def teardown
