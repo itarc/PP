@@ -324,11 +324,8 @@ CodeSlide.prototype = {
   },
 
   getAndExecuteCode: function() {
-    lastRunOnBlackBoard = this.lastRunOnBlackBoard();
-    if (lastRunOnBlackBoard.code != '') {
-      this.updateEditor(lastRunOnBlackBoard.code);
-      this.executeCode();
-    }
+    this._executionContext.updateWithResource(this, '/code_get_last_send_to_blackboard');
+    this._updateEditorAndExecuteCode();
   }, 
   
   getExecutionContext: function(url) {
@@ -338,10 +335,6 @@ CodeSlide.prototype = {
     code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
     code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
     return { "author": author, "code": code,"code_to_add": code_to_add }   
-  },
-  
-  lastRunOnBlackBoard: function() {
-    return this.getExecutionContext('/code_get_last_send_to_blackboard');    
   },
 
   attendeesLastSend: function(slideShowType) {
