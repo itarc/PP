@@ -147,14 +147,14 @@ Editor.prototype = {
 // ----------------------------------
 var AuthorBar = function(node) {
   this._node = node;
-  this.getSessionID();
-  this.refresh();
+  this._sessionID = this.getSessionID();
+  this.refreshWithSessionID();
 }
 
 AuthorBar.prototype = {
   
   getSessionID: function() {
-    this._sessionID = getResource('/session_id');
+    return getResource('/session_id');
   },
   
   createSessionID: function(newAuthor) {
@@ -174,7 +174,7 @@ AuthorBar.prototype = {
     };
   },
   
-  refresh: function() {
+  refreshWithSessionID: function() {
     this.updateWithAuthorName(this._sessionID);
   },
   
@@ -342,7 +342,7 @@ CodeSlide.prototype = {
   
   executeCode: function() {
     this.executeCodeAt(this.runResource());
-    if (this.slideShowType() != 'blackboard') this._authorBar.refresh();
+    if (this.slideShowType() != 'blackboard') this._authorBar.refreshWithSessionID();
   },
   
   executeAndSendCode: function() {
