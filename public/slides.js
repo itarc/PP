@@ -288,11 +288,12 @@ CodeSlide.prototype = {
     if (this._node.querySelector('#get_last_send')) {
     this._node.querySelector('#get_last_send').addEventListener('click',
       function(e) {
-        output_save = _t._node.querySelector('#code_output').value
+        _t._serverExecutionContext.updateWithResource('/code_attendees_last_send');
+        if (_t._serverExecutionContext.canReplaceCurrentExecutionContext()) {
         _t._node.querySelector('#code_output').value = '' ;
         _t._node.querySelector('#get_last_send').style.background = "red";
-        if (! _t._updateEditorWithLastSendAndExecute()) { _t._node.querySelector('#code_output').value = output_save; }
-        _t._node.querySelector('#get_last_send').style.background = "";}, false
+        _t._updateEditorWithLastSendAndExecute();
+        _t._node.querySelector('#get_last_send').style.background = ""; } }, false
     );
     };
   },
@@ -367,13 +368,9 @@ CodeSlide.prototype = {
   }, 
 
   _updateEditorWithLastSendAndExecute: function() {
-    this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
-    if (this._serverExecutionContext.code != '') { 
       this.updateEditor(this._serverExecutionContext.code);        
       this.executeAndSendCode();
       this._authorBar.updateWithAuthorName(this._serverExecutionContext.author);
-      return true;
-    };
   },
   
   _updateLastSendAttendeeName: function(slide_index) {
