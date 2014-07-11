@@ -333,6 +333,7 @@ CodeSlide.prototype = {
   },     
   
   executeCodeAt: function(url) {
+    if (this.codeToExecute() == '' ) return;
     url += ("/" + this._codeHelper_current_index);
     executionResult = postResource(url, this.codeToExecute(), SYNCHRONOUS);
     this._clearStandardOutput();   
@@ -340,13 +341,11 @@ CodeSlide.prototype = {
   },
   
   executeCode: function() {
-    if (this.codeToExecute() == '' ) return;
     this.executeCodeAt(this.runResource());
     if (this.slideShowType() != 'blackboard') this._authorBar.refresh();
   },
   
   executeAndSendCode: function() {
-    if (this.codeToExecute() == '' ) return;
     this.executeCodeAt(this.sendResource());
   },
 
