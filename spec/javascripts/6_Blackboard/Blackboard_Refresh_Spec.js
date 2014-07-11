@@ -11,7 +11,7 @@ IDE_slide_html = "" +
   "<input type='button' id='get_last_send'/>"+
 "</section><div>"
 
-describe("ExecutionContext", function() {
+describe("ServerExecutionContext", function() {
 
   beforeEach(function () {
     setFixtures("<div class='slides'>"+ IDE_slide_html +"</div>")	      
@@ -22,7 +22,7 @@ describe("ExecutionContext", function() {
   
   it("should update with last send to blackboard", function() {
     
-    executionContext = new ExecutionContext(IDESlide);
+    executionContext = new ServerExecutionContext(IDESlide);
     
     getResource = jasmine.createSpy('getResource').andReturn('');
 	  
@@ -60,7 +60,7 @@ describe("Blackboard REFRESH", function() {
     setFixtures("<div class='slides'>"+ IDE_slide_html +"</div>")	      
     blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide')); 
     spyOn(CodeSlide.prototype, 'executeCode');   
-    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });      
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });      
   });
   
   it("should get last Teacher run when refreshed", function() {

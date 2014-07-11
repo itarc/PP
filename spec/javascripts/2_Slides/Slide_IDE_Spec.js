@@ -14,7 +14,7 @@ IDE_slide_html = "" +
 "<div>"
     
     
-describe("ExecutionContext", function() {
+describe("ServerExecutionContext", function() {
 
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
@@ -23,7 +23,7 @@ describe("ExecutionContext", function() {
   
   it("should update with last execution", function() {
     
-    executionContext = new ExecutionContext(IDESlide);
+    executionContext = new ServerExecutionContext(IDESlide);
     
     getResource = jasmine.createSpy('getResource').andReturn('');
 	  
@@ -381,7 +381,7 @@ describe("IDE UPDATE", function() {
   
   it("should run the user last run", function() {
 
-    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
 	  
     spyOn(CodeSlide.prototype, 'showCodeHelper');	  
     spyOn(CodeSlide.prototype, 'executeCode');
@@ -396,7 +396,7 @@ describe("IDE UPDATE", function() {
 
     slide._editor.updateWithText('last execution');
     
-    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
 	  
     spyOn(CodeSlide.prototype, 'executeCode');
 	  
@@ -408,7 +408,7 @@ describe("IDE UPDATE", function() {
   
   it("should NOT run anything when no last run, no code to display and no code to add", function() {
 
-    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});    
     
     slide._editor.updateWithText("print 'code remaining from previous slide'");
     
@@ -475,7 +475,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 	
   it("should run code to display if no last execution", function() {
 
-    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});    
 	  
     var slide = new CodeSlide(slideNode);
 	
@@ -492,7 +492,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
   
   it("should run last execution if exists", function() {
 
-    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});    
 	  
     var slide = new CodeSlide(slideNode);		
 
@@ -509,7 +509,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 
   it("should NOT run code that is already in editor", function() {
 
-    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});
 	  
     var slide = new CodeSlide(slideNode);
 
@@ -553,7 +553,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should run code to add", function() {
     
-    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});
 
     postResource = jasmine.createSpy('postResource').andReturn("CODE TO ADD");
 
@@ -567,7 +567,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should NOT run code that is already in editor", function() {
     
-    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'code to execute', "ADDED CODE": ''});
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'code to execute', "code_to_add": "puts 'CODE TO ADD'" });
     spyOn(CodeSlide.prototype, 'executeCode');
 
     slide.updateEditor('code to execute');	  
@@ -593,8 +593,8 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should NOT display code to add in code editor", function() {
 
-    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "ADDED CODE": ''});  
-
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": "puts 'CODE TO ADD'" });
+    
     var slide = new CodeSlide(slideNode);
 	  
     expect(slideNode.querySelector('#code_input').value).toBe("");	  
@@ -726,7 +726,7 @@ describe("IDE UPDATE with attendee name to type in", function() {
     getResource = jasmine.createSpy('getResource').andReturn('a name');
     postResource = jasmine.createSpy('postResource')
     
-    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee id', code: 'code sent'});     
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee id', code: 'code sent'});     
 
     var slide = new CodeSlide(slideNode);
     
@@ -743,7 +743,7 @@ describe("IDE UPDATE with attendee name to type in", function() {
     getResource = jasmine.createSpy('getResource').andReturn('a name');
     postResource = jasmine.createSpy('postResource')
     
-    spyOn(ExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee id', code: 'code sent'});       
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee id', code: 'code sent'});       
 
     var slide = new CodeSlide(slideNode);
     
