@@ -366,7 +366,7 @@ CodeSlide.prototype = {
   _update: function(slide_index, slideShowType) {
     this.showCodeHelper(slide_index);
     this._updateLastSendAttendeeName();
-    this._executionContext.update(this);
+    this._executionContext.update();
     this._updateEditorAndExecuteCode();
   },
   
