@@ -56,7 +56,7 @@ for(key in Slide.prototype) {
 };
 
 // ----------------------------------
-// EXECUTION CONTEXT
+// SERVER EXECUTION CONTEXT
 // ----------------------------------
 var ServerExecutionContext = function(slide) {
   this._slide = slide;
@@ -114,8 +114,6 @@ ServerExecutionContext.prototype = {
     this.updateWithResource(defaultResourceURL);
   },
 }
-
-
 
 // ----------------------------------
 // EDITOR
@@ -205,6 +203,26 @@ CodeHelper.prototype = {
   },
 }
 
+
+// ----------------------------------
+// STANDARD OUTPUT
+// ----------------------------------
+
+var StandardOutput = function(node) {
+  this._node = node;
+
+}
+
+StandardOutput.prototype = {
+  clear: function() {
+    this._node.value = '';
+  },   
+  
+  updateWith: function(text) {
+    this._node.value = text;
+  },    
+}
+
 // ----------------------------------
 // CODE SLIDE EXTENDS SLIDE CLASS
 // ----------------------------------
@@ -222,6 +240,7 @@ var CodeSlide = function(node, slideshow) {
   this._serverExecutionContext = new ServerExecutionContext(this);
   this._editor = new Editor(this._node.querySelector('#code_input'));
   this._authorBar = new AuthorBar(this._node.querySelector('#author_name'));
+  this._standardOuput = new StandardOutput(this._node.querySelector('#code_output'));
 
 };
 
@@ -318,15 +337,7 @@ CodeSlide.prototype = {
   
   sendResource: function() {
     return '/code_send_result'
-  },  
-
-  _clearStandardOutput: function() {
-    this._node.querySelector('#code_output').value = '';
   }, 
-  
-  _updateStandardOutputWith: function(text) {
-    this._node.querySelector('#code_output').value = text;
-  },   
   
   _updateLastSendAttendeeNameWith: function(name) {
     this._node.querySelector('#last_send_attendee_name').innerHTML = name;
@@ -334,10 +345,10 @@ CodeSlide.prototype = {
   
   executeCodeAt: function(url) {
     if (this.codeToExecute() == '' ) return;
+    this._standardOuput.clear();    
     url += ("/" + this._codeHelper_current_index);
     executionResult = postResource(url, this.codeToExecute(), SYNCHRONOUS);
-    this._clearStandardOutput();   
-    this._updateStandardOutputWith(executionResult);     
+    this._standardOuput.updateWith(executionResult);    
   },
   
   executeCode: function() {
