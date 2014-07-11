@@ -4,6 +4,7 @@
 var BlackboardSlideShow = function(slides) {
   SlideShow.call(this, slides);
   this.slideShowType = 'blackboard';   
+  this.runResource = '/code_run_result_blackboard';   
   this._updateCurrentSlide();  
 };
 

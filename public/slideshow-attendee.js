@@ -3,6 +3,8 @@
 // ----------------------------------
 var AttendeeSlideShow = function(slides) {
   SlideShow.call(this, slides);
+  this.slideShowType = 'attendee';    
+  this.runResource = '/code_run_result';  
   this._updateCurrentSlide();    
 };
 

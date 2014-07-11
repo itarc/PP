@@ -334,6 +334,14 @@ CodeSlide.prototype = {
     if (this._slideshow) return this._slideshow.slideShowType;
   },
 
+  runResource: function() {
+    if (this._slideshow) { return this._slideshow.runResource; } else { return '/code_run_result' };
+  },
+  
+  sendResource: function() {
+    return '/code_send_result'
+  },  
+
   executeCodeAt: function(url) {
     url += ("/" + this._codeHelper_current_index);
     this._node.querySelector('#code_output').value = postResource(url, this.codeToExecute(), SYNCHRONOUS);     
@@ -341,15 +349,13 @@ CodeSlide.prototype = {
   
   executeCode: function() {
     if (this.codeToExecute() == '' ) return;
-    run_url = "/code_run_result";
-    if (this.slideShowType() == 'blackboard') { run_url = '/code_run_result_blackboard' };
-    this.executeCodeAt(run_url);
+    this.executeCodeAt(this.runResource());
     if (this.slideShowType() != 'blackboard') this._authorBar.refresh();
   },
   
   executeAndSendCode: function() {
     if (this.codeToExecute() == '' ) return; 
-    this.executeCodeAt('/code_send_result');
+    this.executeCodeAt(this.sendResource());
   },
 
   getAndExecuteCode: function() {

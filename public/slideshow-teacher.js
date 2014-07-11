@@ -3,7 +3,8 @@
 // ----------------------------------
 var TeacherSlideShow = function(slides) {
   SlideShow.call(this, slides); 
-  this.position.slideShowType = 'teacher';  
+  this.slideShowType = 'teacher';  
+  this.runResource = '/code_run_result';     
   this.position.postCurrentIndex();
   this._updateCurrentSlide();  
 };
