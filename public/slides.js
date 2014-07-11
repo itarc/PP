@@ -328,6 +328,10 @@ CodeSlide.prototype = {
     this._node.querySelector('#code_output').value = text;
   },   
   
+  _updateLastSendAttendeeNameWith: function(name) {
+    this._node.querySelector('#last_send_attendee_name').innerHTML = name;
+  },     
+  
   executeCodeAt: function(url) {
     url += ("/" + this._codeHelper_current_index);
     executionResult = postResource(url, this.codeToExecute(), SYNCHRONOUS);
@@ -363,13 +367,16 @@ CodeSlide.prototype = {
     }
   },
   
+  lastSendAttendeeName: function(attendee_name) {
+    if (attendee_name.split('_')[1]) attendee_name = attendee_name.split('_')[1];
+    if (attendee_name != '' ) attendee_name += ' >> ';
+    return attendee_name;
+  },  
+  
   _updateLastSendAttendeeName: function(slide_index) {
     if ( this._node.querySelector('#last_send_attendee_name') ) {
       this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
-      attendee_name =  this._serverExecutionContext.author;
-      if (attendee_name.split('_')[1]) attendee_name = attendee_name.split('_')[1];
-      if (attendee_name != '' ) attendee_name = attendee_name + ' >> ';
-      this._node.querySelector('#last_send_attendee_name').innerHTML = attendee_name;
+      this._updateLastSendAttendeeNameWith(this.lastSendAttendeeName(this._serverExecutionContext.author));
     }
   },
   
