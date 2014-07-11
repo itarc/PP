@@ -137,13 +137,8 @@ Editor.prototype = {
   },
   
   update: function(context, executionContext) {
-    //~ if ((executionContext.code != '' && executionContext.code != this.content()) || (executionContext.code == '' && executionContext.code_to_add != '')) 
-    //~ {
-      this.updateWithText(executionContext.code);      
-      context._authorBar.updateWithAuthorName(executionContext.author);             
-      //~ return this.updated;
-    //~ }
-    //~ return this.notUpdated;
+    this.updateWithText(executionContext.code);      
+    context._authorBar.updateWithAuthorName(executionContext.author);             
   },
 }
 
