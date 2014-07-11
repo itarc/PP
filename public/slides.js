@@ -251,6 +251,10 @@ CodeSlide.prototype = {
     }    
   },
   
+  _clearStandardOutput: function() {
+    this._node.querySelector('#code_output').value = '';
+  },  
+  
   _declareEvents: function() {  
     var _t = this;   
     if (_t._node.querySelector('#attendee_name')) {
@@ -265,35 +269,22 @@ CodeSlide.prototype = {
       function(e) { _t._keyHandling(e); }, false
     );
     this._node.querySelector('#execute').addEventListener('click',
-      function(e) { 
-        _t._node.querySelector('#code_output').value = '';
-        _t._node.querySelector('#execute').style.background = "red"; 
-        _t.executeCode(); 
-        _t._node.querySelector('#execute').style.background = "";}, false
+      function(e) { _t.executeCode(); }, false
     );     
     this._node.querySelector('#send_code').addEventListener('click',
-      function(e) { 
-        _t._node.querySelector('#code_output').value = '';        
-        _t._node.querySelector('#send_code').style.background = "red";  
-        _t.executeAndSendCode(); 
-        _t._node.querySelector('#send_code').style.background = ""; }, false
+      function(e) { _t.executeAndSendCode(); }, false
     );     
     this._node.querySelector('#get_code').addEventListener('click',
-      function(e) {
-        _t._node.querySelector('#code_output').value = '' ;      
-        _t._node.querySelector('#get_code').style.background = "red";
-        _t.getAndExecuteCode(); 
-        _t._node.querySelector('#get_code').style.background = "";}, false
+      function(e) { _t.getAndExecuteCode(); }, false
     );
     if (this._node.querySelector('#get_last_send')) {
     this._node.querySelector('#get_last_send').addEventListener('click',
       function(e) {
         _t._serverExecutionContext.updateWithResource('/code_attendees_last_send');
         if (_t._serverExecutionContext.canReplaceCurrentExecutionContext()) {
-        _t._node.querySelector('#code_output').value = '' ;
-        _t._node.querySelector('#get_last_send').style.background = "red";
-        _t._updateEditorWithLastSendAndExecute();
-        _t._node.querySelector('#get_last_send').style.background = ""; } }, false
+          _t._updateEditorWithLastSendAndExecute();
+        } 
+        }, false
     );
     };
   },
@@ -350,12 +341,14 @@ CodeSlide.prototype = {
   
   executeCode: function() {
     if (this.codeToExecute() == '' ) return;
+    this._clearStandardOutput();
     this.executeCodeAt(this.runResource());
     if (this.slideShowType() != 'blackboard') this._authorBar.refresh();
   },
   
   executeAndSendCode: function() {
     if (this.codeToExecute() == '' ) return; 
+    this._clearStandardOutput(); 
     this.executeCodeAt(this.sendResource());
   },
 
