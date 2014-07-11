@@ -341,21 +341,15 @@ CodeSlide.prototype = {
   
   executeCode: function() {
     if (this.codeToExecute() == '' ) return;
-    //~ run_url = "/code_run_result" + "/" + this._codeHelper_current_index;
-    //~ if (this.slideShowType() == 'blackboard') { run_url = '/code_run_result_blackboard' + "/" + this._codeHelper_current_index; }    
-    //~ this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);
     run_url = "/code_run_result";
     if (this.slideShowType() == 'blackboard') { run_url = '/code_run_result_blackboard' };
     this.executeCodeAt(run_url);
-    //~ this._node.querySelector('#code_output').value = postResource(run_url , this.codeToExecute(), SYNCHRONOUS);    
     if (this.slideShowType() != 'blackboard') this._authorBar.refresh();
   },
   
   executeAndSendCode: function() {
     if (this.codeToExecute() == '' ) return; 
     this.executeCodeAt('/code_send_result');
-    //~ send_url = "/code_send_result" + "/" + this._codeHelper_current_index;
-    //~ this._node.querySelector('#code_output').value = postResource(send_url, this.codeToExecute(), SYNCHRONOUS);   
   },
 
   getAndExecuteCode: function() {
