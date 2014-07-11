@@ -246,18 +246,14 @@ CodeSlide.prototype = {
     }    
   },
   
-  _clearStandardOutput: function() {
-    this._node.querySelector('#code_output').value = '';
-  },  
-  
   _declareEvents: function() {  
     var _t = this;   
     if (_t._node.querySelector('#attendee_name')) {
     this._node.querySelector('#attendee_name').addEventListener('keydown',
       function(e) { 
         if (e.keyCode == RETURN) { 
-          _t._authorBar.createSessionID(this.value); 
-          this.value = '';} }, false
+          _t._authorBar.createSessionID(this.value); this.value = '';
+        } }, false
     );
     }
     this._node.querySelector('#code_input').addEventListener('keydown',
@@ -324,21 +320,29 @@ CodeSlide.prototype = {
     return '/code_send_result'
   },  
 
+  _clearStandardOutput: function() {
+    this._node.querySelector('#code_output').value = '';
+  }, 
+  
+  _updateStandardOutputWith: function(text) {
+    this._node.querySelector('#code_output').value = text;
+  },   
+  
   executeCodeAt: function(url) {
     url += ("/" + this._codeHelper_current_index);
-    this._node.querySelector('#code_output').value = postResource(url, this.codeToExecute(), SYNCHRONOUS);     
+    executionResult = postResource(url, this.codeToExecute(), SYNCHRONOUS);
+    this._clearStandardOutput();   
+    this._updateStandardOutputWith(executionResult);     
   },
   
   executeCode: function() {
     if (this.codeToExecute() == '' ) return;
-    this._clearStandardOutput();
     this.executeCodeAt(this.runResource());
     if (this.slideShowType() != 'blackboard') this._authorBar.refresh();
   },
   
   executeAndSendCode: function() {
-    if (this.codeToExecute() == '' ) return; 
-    this._clearStandardOutput(); 
+    if (this.codeToExecute() == '' ) return;
     this.executeCodeAt(this.sendResource());
   },
 
