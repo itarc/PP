@@ -278,14 +278,9 @@ CodeSlide.prototype = {
       function(e) { _t.getAndExecuteCode(); }, false
     );
     if (this._node.querySelector('#get_last_send')) {
-    this._node.querySelector('#get_last_send').addEventListener('click',
-      function(e) {
-        _t._serverExecutionContext.updateWithResource('/code_attendees_last_send');
-        if (_t._serverExecutionContext.canReplaceCurrentExecutionContext()) {
-          _t._updateEditorWithLastSendAndExecute();
-        } 
-        }, false
-    );
+      this._node.querySelector('#get_last_send').addEventListener('click',
+        function(e) { _t._updateEditorWithLastSendAndExecute() }, false
+      );
     };
   },
   
@@ -361,9 +356,12 @@ CodeSlide.prototype = {
   }, 
 
   _updateEditorWithLastSendAndExecute: function() {
+    this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
+    if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
       this.updateEditor(this._serverExecutionContext.code);        
       this.executeAndSendCode();
       this._authorBar.updateWithAuthorName(this._serverExecutionContext.author);
+    }
   },
   
   _updateLastSendAttendeeName: function(slide_index) {
