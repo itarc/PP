@@ -1,10 +1,18 @@
+IDE_slideshow = "<div class='slides'>"+
+"<div class='slide'>"+
+"<div id='code_input'>"+
+"<div id='execute'>"+
+"<div id='send_code'/>"+
+"<div id='get_code'/>"+
+"<div id='code_output'>"+
+"<div class='slide'/>"+
+"</div>"
+
 describe("SlideShow with an IDE Slide", function() {  
   
   beforeEach(function() {
-
-    setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	  
+    setFixtures(IDE_slideshow)	  
     spyOn(CodeSlide.prototype, '_update');    
-    
   });
 
   it("should be updated when refreshed and position changed", function() {
