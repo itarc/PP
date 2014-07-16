@@ -435,13 +435,15 @@ describe("IDE UPDATE", function() {
     expect(slideNode.querySelector('#code_input').value).toBe('');
     expect(slideNode.querySelector('#code_output').value).toBe('');
     
-    getResource = jasmine.createSpy('getResource').andReturn('user_1' + SEPARATOR + 'puts 2');
+    //~ getResource = jasmine.createSpy('getResource').andReturn('user_1' + SEPARATOR + 'puts 2');
+    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": 'user_1', "code": 'puts 2', "code_to_add": ''}); 
     postResource = jasmine.createSpy('postResource').andReturn('2');
 
     slide._update(0);
    
-    expect(getResource.calls.length).toBe(1);
-    expect(getResource).toHaveBeenCalledWith('/code_last_execution/0');	 
+    expect(ServerExecutionContext.prototype.getContextOnServer.calls.length).toBe(1);
+    expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_last_execution/0');	 
 
     expect(postResource.calls.length).toBe(1);
     expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 2', SYNCHRONOUS);		 
@@ -633,7 +635,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
 });
 
-html_slide = "<div class='slide'/><section>"+
+IDE_slide_with_attendee_name_field_html = "<div class='slide'/><section>"+
 "<textarea id='code_input'></textarea>"+
 "<div class='code_helper'>AUTHOR NAME?<input id='attendee_name' type='text'></div>"+
 "<div class='code_author'>"+
@@ -649,7 +651,7 @@ html_slide = "<div class='slide'/><section>"+
 describe("IDE UPDATE with attendee name to type in", function() {  
   
   beforeEach(function () {
-    slideNode = sandbox(html_slide);
+    slideNode = sandbox(IDE_slide_with_attendee_name_field_html);
    });	  
    
   it("should display session id when initialized", function() {
@@ -758,3 +760,40 @@ describe("IDE UPDATE with attendee name to type in", function() {
   });  
 
 });   
+
+
+IDE_slide_with_last_send_attendee_name_html = "<div class='slide'/><section>"+
+"<textarea id='code_input'></textarea>"+
+"<div class='code_helper'></div>"+
+"<div class='code_author'>"+
+"LAST ATTENDEE NAME: <span id='last_send_attendee_name'></span>"+
+"<input type='button' id='execute'/>"+
+"<input type='button' id='send_code'/>"+
+"<input type='button' id='get_code'/>"+
+"<input type='button' id='get_last_send'/>"+
+"<textarea id='code_output'></textarea>"+
+"</section></div>"
+ 
+
+describe("IDE UPDATE with last send attendee name", function() {  
+  
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_with_last_send_attendee_name_html);
+   });	 
+   
+   
+  it("should display session id when initialized", function() {
+
+    getResource = jasmine.createSpy('getResource').andReturn('a name');
+
+    var slide = new CodeSlide(slideNode);
+	  
+    expect(slideNode.querySelector('#last_send_attendee_name').innerHTML).toBe("");  
+    
+    slide._updateLastSendAttendeeName();
+    
+    expect(slideNode.querySelector('#last_send_attendee_name').innerHTML.replace(/&gt;/g, '>')).toBe("a name >> "); 
+
+  });   
+   
+});     

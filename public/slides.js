@@ -136,7 +136,7 @@ Editor.prototype = {
   
   update: function(context, executionContext) {
     this.updateWithText(executionContext.code);      
-    context._authorBar.updateWithAuthorName(executionContext.author);             
+    context._authorBar.updateAuthorNameWith(executionContext.author);             
   },
 }
 
@@ -145,6 +145,8 @@ Editor.prototype = {
 // ----------------------------------
 var AuthorBar = function(node) {
   this._node = node;
+  if (this._node) this.authorNode = this._node.querySelector('#author_name')
+  if (this._node) this.lastsendNode = this._node.querySelector('#last_send_attendee_name')
   this._sessionID = this.getSessionID();
   this.refreshWithSessionID();
 }
@@ -159,21 +161,29 @@ AuthorBar.prototype = {
     if (newAuthor == '') return;
     postResource('session_id/attendee_name', 'attendee_name=' + newAuthor, SYNCHRONOUS);
     this._sessionID = newAuthor;
-    this.updateWithAuthorName(this._sessionID);
+    this.updateAuthorNameWith(this._sessionID);
   },
   
-  updateWithAuthorName: function(author) {
-    if (this._node) { 
+  updateAuthorNameWith: function(author) {
+    if (this.authorNode) { 
       if (author.split('_')[1]) { this._author = author.split('_')[1]; } else { this._author = author; }
       if (is_a_number(author)) {
         if (author == '0') { this._author = '#'; } else { this._author = '?'; }
       }      
-      this._node.innerHTML = this._author;
+      this.authorNode.innerHTML = this._author;
     };
   },
   
+  updateLastSendAttendeeNameWith: function(attendee_name) {
+    if (this.lastsendNode) {    
+      if (attendee_name.split('_')[1]) attendee_name = attendee_name.split('_')[1];
+      if (attendee_name != '' ) attendee_name += (' >>' + ' ');
+      this.lastsendNode.innerHTML = attendee_name; 
+    }
+  },
+  
   refreshWithSessionID: function() {
-    this.updateWithAuthorName(this._sessionID);
+    this.updateAuthorNameWith(this._sessionID);
   },
   
 }
@@ -239,7 +249,7 @@ var CodeSlide = function(node, slideshow) {
   this._declareEvents();
   this._serverExecutionContext = new ServerExecutionContext(this);
   this._editor = new Editor(this._node.querySelector('#code_input'));
-  this._authorBar = new AuthorBar(this._node.querySelector('#author_name'));
+  this._authorBar = new AuthorBar(this._node.querySelector('.code_author'));
   this._standardOuput = new StandardOutput(this._node.querySelector('#code_output'));
 
 };
@@ -337,11 +347,7 @@ CodeSlide.prototype = {
   
   sendResource: function() {
     return '/code_send_result'
-  }, 
-  
-  _updateLastSendAttendeeNameWith: function(name) {
-    this._node.querySelector('#last_send_attendee_name').innerHTML = name;
-  },     
+  },
   
   executeCodeAt: function(url) {
     if (this.codeToExecute() == '' ) return;
@@ -373,20 +379,14 @@ CodeSlide.prototype = {
     if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
       this.updateEditor(this._serverExecutionContext.code);        
       this.executeAndSendCode();
-      this._authorBar.updateWithAuthorName(this._serverExecutionContext.author);
+      this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);
     }
   },
-  
-  lastSendAttendeeName: function(attendee_name) {
-    if (attendee_name.split('_')[1]) attendee_name = attendee_name.split('_')[1];
-    if (attendee_name != '' ) attendee_name += ' >> ';
-    return attendee_name;
-  },  
   
   _updateLastSendAttendeeName: function(slide_index) {
     if ( this._node.querySelector('#last_send_attendee_name') ) {
       this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
-      this._updateLastSendAttendeeNameWith(this.lastSendAttendeeName(this._serverExecutionContext.author));
+      this._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
     }
   },
   
