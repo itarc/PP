@@ -132,12 +132,7 @@ Editor.prototype = {
   
   updateWithText: function(code) {
     this._node.value = code;  
-  },
-  
-  update: function(context, executionContext) {
-    this.updateWithText(executionContext.code);      
-    context._authorBar.updateAuthorNameWith(executionContext.author);             
-  },
+  }
 }
 
 // ----------------------------------
@@ -320,10 +315,6 @@ CodeSlide.prototype = {
     this._codeHelpers[slide_index].setState('current');
     this._codeHelper_current_index = slide_index;    	  
   }, 
-
-  //~ updateEditor: function(code) {
-    //~ this._editor.updateWithText(code);
-  //~ },   
   
   codeToExecute: function() {
     return this._editor.content() + this._currentCodeHelper().codeToAdd();
@@ -370,17 +361,17 @@ CodeSlide.prototype = {
     this._serverExecutionContext.updateWithResource('/code_get_last_send_to_blackboard');
     if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
       this._editor.updateWithText(this._serverExecutionContext.code);
-      this.executeCode(); 
       this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
+      this.executeCode();
     }
   }, 
 
   _updateEditorWithLastSendAndExecute: function() {
     this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
     if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {   
-      this._editor.updateWithText(this._serverExecutionContext.code);       
+      this._editor.updateWithText(this._serverExecutionContext.code); 
+      this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
       this.executeAndSendCode();
-      this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);
     }
   },
   
@@ -396,7 +387,8 @@ CodeSlide.prototype = {
     this._updateLastSendAttendeeName();
     this._serverExecutionContext.update();
     if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
-        this._editor.update(this, this._serverExecutionContext);
+        this._editor.updateWithText(this._serverExecutionContext.code); 
+        this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);       
         this.executeCode();
     }
   },
