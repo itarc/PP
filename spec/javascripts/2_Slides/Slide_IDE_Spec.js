@@ -46,7 +46,7 @@ describe("IDE", function() {
 	  
    expect(slideNode.querySelector('#code_input').value).toBe('');
 
-   IDESlide.updateEditor("print 'editor updated'");
+   IDESlide._editor.updateWithText("print 'editor updated'");
 	  
    expect(slideNode.querySelector('#code_input').value).toBe("print 'editor updated'");
     
@@ -76,13 +76,13 @@ describe("IDE RUN", function() {
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
     IDESlide = new CodeSlide(slideNode);
-    IDESlide.updateEditor("puts 1");
+    IDESlide._editor.updateWithText("puts 1");
     postResource = jasmine.createSpy('postResource').andReturn('1');
   });
   
   it("should NOT run code when editor is empty", function() {
 
-    IDESlide.updateEditor("");    
+    IDESlide._editor.updateWithText("");    
     IDESlide.executeCode();
 
     expect(postResource).not.toHaveBeenCalled();    
@@ -130,7 +130,7 @@ describe("IDE RUN BUTTON", function() {
 
   it("should run code when RUN BUTTON clicked", function() {
 	  
-    IDESlide.updateEditor('puts 1');
+    IDESlide._editor.updateWithText('puts 1');
     slideNode.querySelector('#execute').click();
 
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1); 
@@ -162,13 +162,13 @@ describe("IDE RUN & SEND", function() {
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);    
     IDESlide = new CodeSlide(slideNode); 
-    IDESlide.updateEditor("puts 1");
+    IDESlide._editor.updateWithText("puts 1");
     postResource = jasmine.createSpy('postResource').andReturn('1');    
   });	  
   
   it("should NOT send code when editor is empty", function() {
 
-    IDESlide.updateEditor("");    
+    IDESlide._editor.updateWithText("");    
     IDESlide.executeAndSendCode();
 
     expect(postResource).not.toHaveBeenCalled();    
@@ -216,7 +216,7 @@ describe("IDE RUN & SEND BUTTON", function() {
 
   it("should run and send code when SEND BUTTON clicked", function() {  
     
-    IDESlide.updateEditor('puts 1');
+    IDESlide._editor.updateWithText('puts 1');
     slideNode.querySelector('#send_code').click();
 
     expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(1);     
@@ -572,7 +572,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'code to execute', "code_to_add": "puts 'CODE TO ADD'" });
     spyOn(CodeSlide.prototype, 'executeCode');
 
-    slide.updateEditor('code to execute');	  
+    slide._editor.updateWithText('code to execute');	  
     slide._update(0);
 
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
@@ -586,7 +586,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
     //~ spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code": '', "code_to_add": 'ADDED CODE'});
     //~ spyOn(CodeSlide.prototype, 'executeCode');    
     
-    //~ slide.updateEditor('');
+    //~ slide._editor.updateWithText('');
     //~ slide._update(0);
 	  
     //~ expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);    

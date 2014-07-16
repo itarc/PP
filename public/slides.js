@@ -321,9 +321,9 @@ CodeSlide.prototype = {
     this._codeHelper_current_index = slide_index;    	  
   }, 
 
-  updateEditor: function(code) {
-    this._editor.updateWithText(code);
-  },   
+  //~ updateEditor: function(code) {
+    //~ this._editor.updateWithText(code);
+  //~ },   
   
   codeToExecute: function() {
     return this._editor.content() + this._currentCodeHelper().codeToAdd();
@@ -369,15 +369,16 @@ CodeSlide.prototype = {
   getAndExecuteCode: function() {
     this._serverExecutionContext.updateWithResource('/code_get_last_send_to_blackboard');
     if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
-      this._editor.update(this, this._serverExecutionContext);
+      this._editor.updateWithText(this._serverExecutionContext.code);
       this.executeCode(); 
+      this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
     }
   }, 
 
   _updateEditorWithLastSendAndExecute: function() {
     this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
-    if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
-      this.updateEditor(this._serverExecutionContext.code);        
+    if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {   
+      this._editor.updateWithText(this._serverExecutionContext.code);       
       this.executeAndSendCode();
       this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);
     }

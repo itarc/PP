@@ -45,7 +45,7 @@ describe("Blackboard RUN", function() {
 
     postResource = jasmine.createSpy('postResource');
 
-    blackboardSlideShow._slides[0].updateEditor("code to run");
+    blackboardSlideShow._slides[0]._editor.updateWithText("code to run");
     blackboardSlideShow._slides[0].executeCode('blackboard');
 
     expect(postResource).toHaveBeenCalledWith('/code_run_result_blackboard/0', "code to run", SYNCHRONOUS);
@@ -75,7 +75,7 @@ describe("Blackboard REFRESH", function() {
   
   it("should NOT refresh when last send is the same that code in editor", function() {
     
-    blackboardSlideShow._slides[0].updateEditor("last send to blackboard");
+    blackboardSlideShow._slides[0]._editor.updateWithText("last send to blackboard");
     
     blackboardSlideShow._refresh();
     
