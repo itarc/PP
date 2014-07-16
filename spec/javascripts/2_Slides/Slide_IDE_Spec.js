@@ -19,12 +19,11 @@ describe("ServerExecutionContext", function() {
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
     IDESlide = new CodeSlide(slideNode);  
+    executionContext = new ServerExecutionContext(IDESlide);
   });	
   
-  it("should update with last execution", function() {
-    
-    executionContext = new ServerExecutionContext(IDESlide);
-    
+  it("should update with last execution by default", function() {
+
     getResource = jasmine.createSpy('getResource').andReturn('');
 	  
     executionContext.update();
@@ -434,8 +433,6 @@ describe("IDE UPDATE", function() {
 
     expect(slideNode.querySelector('#code_input').value).toBe('');
     expect(slideNode.querySelector('#code_output').value).toBe('');
-    
-    //~ getResource = jasmine.createSpy('getResource').andReturn('user_1' + SEPARATOR + 'puts 2');
     
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": 'user_1', "code": 'puts 2', "code_to_add": ''}); 
     postResource = jasmine.createSpy('postResource').andReturn('2');
