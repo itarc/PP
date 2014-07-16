@@ -45,24 +45,55 @@ describe("ServerExecutionContext", function() {
   
 });
 
-describe("IDE", function() {
 
+describe("IDE EDITOR", function() {
+  
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
     IDESlide = new CodeSlide(slideNode);  
   });	
   
-  it("should update editor", function() {
+  it("should be empty when IDE initialized", function() {
+	  
+   expect(slideNode.querySelector('#code_input').value).toBe('');
+    
+  });   
+  
+  it("should be filled when updated", function() {
 	  
    expect(slideNode.querySelector('#code_input').value).toBe('');
 
-   IDESlide._editor.updateWithText("print 'editor updated'");
+   IDESlide._editor.updateWithText("CODE");
 	  
-   expect(slideNode.querySelector('#code_input').value).toBe("print 'editor updated'");
+   expect(slideNode.querySelector('#code_input').value).toBe("CODE");
     
   });  
+  
+});
 
-  it("should show code helper", function() {
+describe("IDE STANDARD OUTPUT", function() {
+  
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new CodeSlide(slideNode);  
+  });	
+  
+  it("should be empty when IDE initialized", function() {
+	  
+   expect(slideNode.querySelector('#code_output').value).toBe('');
+    
+  });  
+  
+});
+
+describe("IDE CODE HELPERS", function() {
+
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new CodeSlide(slideNode);  
+  });
+
+  it("should show the right code helper", function() {
     
     expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper');
     expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper');   
@@ -81,52 +112,68 @@ describe("IDE", function() {
   
 }); 
 
+describe("IDE EXECUTE AT", function() {
+  
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new CodeSlide(slideNode);
+    postResource = jasmine.createSpy('postResource').andReturn('1');
+  });
+
+  it("should NOT be called when IDE is initialized", function() {
+    
+    expect(postResource.calls.length).toBe(0);   
+
+  });  
+  
+  it("should NOT execute code when editor is empty", function() {
+    IDESlide._editor.updateWithText("");
+    
+    IDESlide.executeCodeAt('/url');
+
+    expect(postResource).not.toHaveBeenCalled();    
+  });
+  
+  it("should execute code on server and show result on standard output", function() {
+    IDESlide._editor.updateWithText("CODE");    
+
+    IDESlide.executeCodeAt('/url');
+	  
+    expect(postResource.calls.length).toBe(1);
+    expect(postResource).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
+    expect(slideNode.querySelector('#code_input').value).toBe('CODE');
+    expect(slideNode.querySelector('#code_output').value).toBe('1');
+  });  
+  
+  it("should execute code for current slide only", function() {
+    IDESlide._editor.updateWithText("CODE");
+    
+    IDESlide.showCodeHelper(0);
+    IDESlide.executeCodeAt('/url');
+
+    expect(postResource).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
+
+    IDESlide.showCodeHelper(1);
+    IDESlide.executeCodeAt('/url');
+
+    expect(postResource).toHaveBeenCalledWith('/url/1', 'CODE', SYNCHRONOUS);    
+  });  
+  
+}); 
+
 describe("IDE RUN", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
     IDESlide = new CodeSlide(slideNode);
-    IDESlide._editor.updateWithText("puts 1");
-    postResource = jasmine.createSpy('postResource').andReturn('1');
+    IDESlide._editor.updateWithText("CODE TO RUN");
   });
   
-  it("should NOT run code when editor is empty", function() {
-
-    IDESlide._editor.updateWithText("");    
-    IDESlide.executeCode();
-
-    expect(postResource).not.toHaveBeenCalled();    
-
-  });
-  
-  it("should run code on server and show result on standard output", function() {
-	  
-    expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
-    expect(slideNode.querySelector('#code_output').value).toBe('');
-    expect(postResource.calls.length).toBe(0);	  
-
+  it("should run code at RUN URL", function() {
     IDESlide.executeCode();
 	  
-    expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);
-    expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
-    expect(slideNode.querySelector('#code_output').value).toBe('1');
-    
-  });  
-  
-  it("should run code for current slide only", function() {
-	  
-    IDESlide.showCodeHelper(0);
-    IDESlide.executeCode();
-
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 1', SYNCHRONOUS);
-
-    IDESlide.showCodeHelper(1);
-    IDESlide.executeCode();
-
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/1', 'puts 1', SYNCHRONOUS);    
-
-  });  
+    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'CODE TO RUN', SYNCHRONOUS);
+  }); 
   
 });  
   
@@ -135,34 +182,28 @@ describe("IDE RUN BUTTON", function() {
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
     IDESlide = new CodeSlide(slideNode);  
+    IDESlide._editor.updateWithText('CODE TO RUN WITH A BUTTON');
     spyOn(CodeSlide.prototype ,"executeCode");
   });  
 
   it("should run code when RUN BUTTON clicked", function() {
-	  
-    IDESlide._editor.updateWithText('puts 1');
     slideNode.querySelector('#execute').click();
 
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1); 
-    
   });
   
   it("should run code when ALT-R pressed", function() {
-
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 	  
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
-	  
   });  
 
   it("should NOT run code when ALT-R disabled", function() {
-    
     slideNode.querySelector('#execute').setAttribute("disabled", true);
 	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);  
-
   });
   
 });
@@ -170,49 +211,16 @@ describe("IDE RUN BUTTON", function() {
 describe("IDE RUN & SEND", function() {  
   
   beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);    
-    IDESlide = new CodeSlide(slideNode); 
-    IDESlide._editor.updateWithText("puts 1");
-    postResource = jasmine.createSpy('postResource').andReturn('1');    
-  });	  
-  
-  it("should NOT send code when editor is empty", function() {
-
-    IDESlide._editor.updateWithText("");    
-    IDESlide.executeAndSendCode();
-
-    expect(postResource).not.toHaveBeenCalled();    
-
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new CodeSlide(slideNode);
+    IDESlide._editor.updateWithText("CODE TO RUN & SEND");
   });
-
-  it("should send code on server and show result on standard output", function() {
-	  
-    expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
-    expect(slideNode.querySelector('#code_output').value).toBe('');
-    expect(postResource.calls.length).toBe(0);	  
-
-    IDESlide.executeAndSendCode();
-	  
-    expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'puts 1', SYNCHRONOUS);
-    expect(slideNode.querySelector('#code_input').value).toBe('puts 1');
-    expect(slideNode.querySelector('#code_output').value).toBe('1');
-    
-  });  
   
-  it("should send code for current slide only", function() {
+  it("should run code & send at SEND URL", function() {
+    IDESlide.executeAndSendCode();
 	  
-    IDESlide.showCodeHelper(0);
-    IDESlide.executeAndSendCode();
-
-    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'puts 1', SYNCHRONOUS);
-
-    IDESlide.showCodeHelper(1);
-    IDESlide.executeAndSendCode();
-
-    expect(postResource).toHaveBeenCalledWith('/code_send_result/1', 'puts 1', SYNCHRONOUS);    
-
-  });  
+    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'CODE TO RUN & SEND', SYNCHRONOUS);
+  });
   
 });  
   
@@ -220,35 +228,29 @@ describe("IDE RUN & SEND BUTTON", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
-    IDESlide = new CodeSlide(slideNode);  
+    IDESlide = new CodeSlide(slideNode);
+    IDESlide._editor.updateWithText('CODE TO RUN & SEND WITH A BUTTON');    
     spyOn(CodeSlide.prototype ,"executeAndSendCode");
   });
 
   it("should run and send code when SEND BUTTON clicked", function() {  
-    
-    IDESlide._editor.updateWithText('puts 1');
     slideNode.querySelector('#send_code').click();
 
     expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(1);     
-    
   });  
   
   it("should run and send code when ALT-S pressed", function() {
-
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
 	  
-    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(1);	  
-	  
+    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(1);
   }); 
 
   it("should NOT send code when ALT-S button disabled", function() {
-
     slideNode.querySelector('#send_code').setAttribute("disabled", true);
 	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
 
-    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);  
-
+    expect(CodeSlide.prototype.executeAndSendCode.calls.length).toBe(0);
   });
   
 });
@@ -258,41 +260,16 @@ describe("IDE GET & RUN", function() {
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);    
     IDESlide = new CodeSlide(slideNode);
-    spyOn(CodeSlide.prototype ,"executeCode");    
-    getResource = jasmine.createSpy('getResource').andReturn('0' + SEPARATOR + 'puts 1');
+    spyOn(CodeSlide.prototype ,"executeCode");  
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'LAST SEND TO BLACKBOARD', "code_to_add": ''});    
   });
   
-  it("should NOT execute code when retreived code is empty", function() {
-    
-    getResource = jasmine.createSpy('getResource').andReturn('');    
-    
+  it("should run last send to blackboard", function() {
     IDESlide.getAndExecuteCode();
     
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);    
-
-  });  
-
-  it("should get code and show run result on standard output", function() {
-    
-    IDESlide.getAndExecuteCode();
-    
+    expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);    
-
   });
-  
-  it("should get code for current slide only", function() {
-	  
-    IDESlide.showCodeHelper(0);
-    IDESlide.getAndExecuteCode();
-
-    expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');
-
-    IDESlide.showCodeHelper(1);
-    IDESlide.getAndExecuteCode();
-
-    expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/1');    
-
-  });  
 
 });  
   
@@ -305,34 +282,28 @@ describe("IDE GET & RUN BUTTON", function() {
   });  
   
   it("should run and send code when GET & RUN BUTTON clicked", function() {  
-    
     slideNode.querySelector('#get_code').click();
 
     expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(1);     
-    
   });  
   
   it("should get and run last teacher run when ALT-G pressed", function() {
-	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
     expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(1);    
-	  
   });    
   
   it("should NOT get and run code when ALT-G disabled", function() {
-    
     slideNode.querySelector('#get_code').setAttribute("disabled", true);    
 	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
     expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(0);  
-
   });
 
 });
   
-describe("IDE LAST SEND", function() {   
+describe("TEACHER IDE LAST SEND", function() {   
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);    
