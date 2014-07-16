@@ -1,19 +1,30 @@
-IDE_slide_html = "" +
-"<div class='slide'/>"+
-"<section>"+
-  "<textarea id='code_input'></textarea>" +
-  "<textarea id='code_output'></textarea>"+  
-  "<div class='code_helper' id='code_helper_1'></div>"+
-  "<div class='code_helper' id='code_helper_2'></div>" +
-  "<div class='code_author'><span id='author_name'>author</span></div>" +
-  "<input type='button' id='execute'>"+
-  "<input type='button' id='send_code'/>"+
-  "<input type='button' id='get_code'/>" +
-  "<input type='button' id='get_last_send'/>"+
-"</section>"+
-"<div>"
-    
-    
+HEADER = 
+"<div class='slide'/>"+"<section>"
+code_input = 
+"<textarea id='code_input'></textarea>"
+code_helpers = 
+"<div class='code_helper' id='code_helper_1'></div>"+
+"<div class='code_helper' id='code_helper_2'></div>"
+author_bar = 
+"<div class='code_author'><span id='author_name'>author</span></div>"
+buttons = 
+"<input type='button' id='execute'/>"+
+"<input type='button' id='send_code'/>"+
+"<input type='button' id='get_code'/>"
+code_ouput = 
+"<textarea id='code_output'></textarea>"
+FOOTER = 
+"</section>"+"</div>"
+
+IDE_slide_html =  
+HEADER + 
+code_input + 
+code_helpers +
+author_bar +
+buttons + 
+code_ouput + 
+FOOTER
+
 describe("ServerExecutionContext", function() {
 
   beforeEach(function () {
@@ -452,19 +463,16 @@ describe("IDE UPDATE", function() {
   
 });
 
-IDE_slide_with_code_to_display_html = "" +
-"<div class='slide'>"+
-"<section>"+
-"<textarea id='code_input'></textarea>"+
+IDE_slide_with_code_to_display_html =  
+HEADER + 
+code_input + 
 "<div class='code_helper'>"+
-"<div class='code_to_display'>puts 'CODE TO DISPLAY'</div></div>"+
-"<div class='code_author'>AUTHOR: <span id='author_name'>author</span></div>"+
-"<input type='button' id='execute'/>"+
-"<input type='button' id='send_code'/>"+
-"<input type='button' id='get_code'/>"+
-"<textarea id='code_output'></textarea>"+
-"</section>"+
-"</div>"
+"<div class='code_to_display'>puts 'CODE TO DISPLAY'</div>"+
+"</div>"+
+author_bar +
+buttons + 
+code_ouput + 
+FOOTER
 
 describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
   
@@ -530,18 +538,16 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
 
 });
 
-IDE_slide_with_code_to_add_html = 
-"<div class='slide'/>" +
-"<section>"+
-  "<textarea id='code_input'></textarea>"+
-  "<div class='code_helper'><div class='code_to_add'>puts 'CODE TO ADD'</div></div>"+
-  "<div class='code_author'>AUTHOR: <span id='author_name'>author</span></div>"+
-  "<input type='button' id='execute'/>"+
-  "<input type='button' id='send_code'/>"+
-  "<input type='button' id='get_code'/>"+
-  "<textarea id='code_output'></textarea>"+
-"</section>"+
-"</div>"
+IDE_slide_with_code_to_add_html =  
+HEADER + 
+code_input + 
+"<div class='code_helper'>"+
+"<div class='code_to_add'>puts 'CODE TO ADD'</div>"+
+"</div>"+
+author_bar +
+buttons + 
+code_ouput + 
+FOOTER
   
 describe("IDE UPDATE with code to ADD in Code Helper", function() {  
   
@@ -631,19 +637,15 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   });  
 
 });
-
-IDE_slide_with_attendee_name_field_html = "<div class='slide'/><section>"+
-"<textarea id='code_input'></textarea>"+
-"<div class='code_helper'>AUTHOR NAME?<input id='attendee_name' type='text'></div>"+
-"<div class='code_author'>"+
-"AUTHOR: <span id='author_name'>author</span>"+
-"<input type='button' id='execute'/>"+
-"<input type='button' id='send_code'/>"+
-"<input type='button' id='get_code'/>"+
-"<input type='button' id='get_last_send'/>"+
-"<textarea id='code_output'></textarea>"+
-"</section></div>"
  
+IDE_slide_with_attendee_name_field_html =  
+HEADER + 
+code_input + 
+"<div class='code_helper'>AUTHOR NAME?<input id='attendee_name' type='text'></div>"+
+author_bar +
+buttons + 
+code_ouput + 
+FOOTER
 
 describe("IDE UPDATE with attendee name to type in", function() {  
   
@@ -720,6 +722,24 @@ describe("IDE UPDATE with attendee name to type in", function() {
 
   }); 
 
+});  
+
+IDE_slide_with_attendee_name =  
+HEADER + 
+code_input + 
+code_helpers +
+author_bar +
+buttons + 
+"<input type='button' id='get_last_send'/>"+
+code_ouput + 
+FOOTER
+
+describe("IDE UPDATE with attendee name", function() {  
+  
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_with_attendee_name);
+   });	
+   
   it("should display author id when teacher display last send", function() {
 
     getResource = jasmine.createSpy('getResource').andReturn('a name');
@@ -754,27 +774,26 @@ describe("IDE UPDATE with attendee name to type in", function() {
     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("attendee id");
 
-  });  
+  });   
 
 });   
 
-
-IDE_slide_with_last_send_attendee_name_html = "<div class='slide'/><section>"+
-"<textarea id='code_input'></textarea>"+
-"<div class='code_helper'></div>"+
+IDE_slide_with_last_send_attendee_name_html =  
+HEADER + 
+code_input + 
+code_helpers + 
 "<div class='code_author'>"+
 "LAST ATTENDEE NAME: <span id='last_send_attendee_name'></span>"+
-"<input type='button' id='execute'/>"+
-"<input type='button' id='send_code'/>"+
-"<input type='button' id='get_code'/>"+
-"<input type='button' id='get_last_send'/>"+
-"<textarea id='code_output'></textarea>"+
-"</section></div>"
+"</div>" +
+buttons + 
+code_ouput + 
+FOOTER
  
 
 describe("IDE UPDATE with last send attendee name", function() {  
   
   beforeEach(function () {
+    
     slideNode = sandbox(IDE_slide_with_last_send_attendee_name_html);
    });	 
    
