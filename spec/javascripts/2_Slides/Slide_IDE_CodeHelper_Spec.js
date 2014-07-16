@@ -40,7 +40,7 @@ describe("Code Helper (Mini-slide)", function() {
 	  
   });    
   
-  it("should esacape html caracters in code to add", function() { 
+  it("should escape html caracters in code to add", function() { 
 
     CodeHelperNode = sandbox("<div class='code_helper'><div class='code_to_add'><<<>>>&&&'''\"\"\"</div></div>");
     var codeHelper = new CodeHelper(CodeHelperNode);
