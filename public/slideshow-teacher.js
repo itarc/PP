@@ -4,7 +4,9 @@
 var TeacherSlideShow = function(slides) {
   SlideShow.call(this, slides); 
   this.slideShowType = 'teacher';  
-  this.runResource = '/code_run_result';     
+  this._runResource = '/code_run_result'; 
+  this._sendResource = '/code_send_result'
+  this._updateResource = '/code_last_execution'  
   this.position.postCurrentIndex();
   this._updateCurrentSlide();  
 };

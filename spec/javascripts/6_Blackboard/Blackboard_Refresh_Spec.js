@@ -11,29 +11,6 @@ IDE_slide_html = "" +
   "<input type='button' id='get_last_send'/>"+
 "</section><div>"
 
-describe("ServerExecutionContext", function() {
-
-  beforeEach(function () {
-    setFixtures("<div class='slides'>"+ IDE_slide_html +"</div>")	      
-    blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide'));    
-    slideNode = sandbox(IDE_slide_html);
-    IDESlide = new CodeSlide(slideNode, blackboardSlideShow);  
-  });	
-  
-  //~ it("should update with last send to blackboard", function() {
-    
-    //~ executionContext = new ServerExecutionContext(IDESlide);
-    
-    //~ getResource = jasmine.createSpy('getResource').andReturn('');
-	  
-    //~ executionContext.update(IDESlide, 'blackboard');
-	  
-    //~ expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');
-    
-  //~ });  
-  
-});
-
 describe("Blackboard RUN", function() {
   
   beforeEach(function () {
@@ -46,7 +23,7 @@ describe("Blackboard RUN", function() {
     postResource = jasmine.createSpy('postResource');
 
     blackboardSlideShow._slides[0]._editor.updateWithText("code to run");
-    blackboardSlideShow._slides[0].executeCode('blackboard');
+    blackboardSlideShow._slides[0].executeCode();
 
     expect(postResource).toHaveBeenCalledWith('/code_run_result_blackboard/0', "code to run", SYNCHRONOUS);
 

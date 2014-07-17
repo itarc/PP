@@ -316,11 +316,11 @@ CodeSlide.prototype = {
   },
 
   runResource: function() {
-    if (this._slideshow) { return this._slideshow.runResource; } else { return '/code_run_result' };
+    if (this._slideshow) { return this._slideshow._runResource; } else { return '/code_run_result' };
   },
   
   sendResource: function() {
-    return '/code_send_result'
+    if (this._slideshow) { return this._slideshow._sendResource; } else { return '/code_send_result' };
   },
   
   executeCodeAt: function(url) {
@@ -370,7 +370,8 @@ CodeSlide.prototype = {
       return '/code_get_last_send_to_blackboard';
     } else {
       return '/code_last_execution';
-    }    
+    }
+    
   },  
   
   _update: function(slide_index, slideShowType) {
