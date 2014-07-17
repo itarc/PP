@@ -8,10 +8,8 @@ var TeacherCodeSlide = function(slides, slideshow) {
 TeacherCodeSlide.prototype = {
   
  _updateLastSendAttendeeName: function(slide_index) {
-    if ( this._node.querySelector('#last_send_attendee_name') ) {
-      this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
-      this._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
-    }
+    this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
+    this._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
   },  
   
   _update: function(slide_index) {
