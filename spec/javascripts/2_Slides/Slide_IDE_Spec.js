@@ -295,7 +295,6 @@ describe("IDE GET & RUN BUTTON", function() {
   
   it("should NOT get and run code when ALT-G disabled", function() {
     slideNode.querySelector('#get_code').setAttribute("disabled", true);    
-	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
     expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(0);  
@@ -319,9 +318,6 @@ describe("TEACHER IDE GET LAST SEND", function() {
   
   it("should NOT get and run last attendee send when ALT-N button not present", function() {
     slideNode.querySelector('section').removeChild(slideNode.querySelector('section').querySelector('#get_last_send'));
-
-    expect(CodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(0);
-	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
 
     expect(CodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(0);  
@@ -333,7 +329,7 @@ describe("IDE UPDATE", function() {
 	
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html); 
-    slide = new CodeSlide(slideNode);  
+    slide = new CodeSlide(slideNode);
   });
   
   it("should show current code helper", function() {
@@ -348,16 +344,13 @@ describe("IDE UPDATE", function() {
   });  
   
   it("should run the user last run", function() {
-
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
-	  
-    spyOn(CodeSlide.prototype, 'showCodeHelper');	  
     spyOn(CodeSlide.prototype, 'executeCode');
-	  
+
     slide._update(0);
 
+    expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_last_execution/0');
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
-	  
   });
   
   it("should NOT run the user last run when code has not changed", function() {
@@ -396,28 +389,7 @@ describe("IDE UPDATE", function() {
 	  
     expect(CodeSlide.prototype._updateLastSendAttendeeName.calls.length).toBe(1);
 	  
-  });  
-  
-  it("should get last execution", function() {
-
-    expect(slideNode.querySelector('#code_input').value).toBe('');
-    expect(slideNode.querySelector('#code_output').value).toBe('');
-    
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": 'user_1', "code": 'puts 2', "code_to_add": ''}); 
-    postResource = jasmine.createSpy('postResource').andReturn('2');
-
-    slide._update(0);
-   
-    expect(ServerExecutionContext.prototype.getContextOnServer.calls.length).toBe(1);
-    expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_last_execution/0');	 
-
-    expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'puts 2', SYNCHRONOUS);		 
-
-    expect(slideNode.querySelector('#code_input').value).toBe('puts 2');
-    expect(slideNode.querySelector('#code_output').value).toBe('2');
-    
-  });   
+  });
   
 });
 
