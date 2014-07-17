@@ -25,7 +25,7 @@ buttons +
 code_ouput + 
 FOOTER
 
-describe("ServerExecutionContext", function() {
+describe("Server Execution Context", function() {
 
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
@@ -34,13 +34,11 @@ describe("ServerExecutionContext", function() {
   });	
   
   it("should update with last execution by default", function() {
-
     getResource = jasmine.createSpy('getResource').andReturn('');
 	  
     executionContext.update();
 	  
     expect(getResource).toHaveBeenCalledWith('/code_last_execution/0');
-    
   });  
   
 });
@@ -54,19 +52,15 @@ describe("IDE EDITOR", function() {
   });	
   
   it("should be empty when IDE initialized", function() {
-	  
    expect(slideNode.querySelector('#code_input').value).toBe('');
-    
   });   
   
   it("should be filled when updated", function() {
-	  
    expect(slideNode.querySelector('#code_input').value).toBe('');
 
    IDESlide._editor.updateWithText("CODE");
 	  
    expect(slideNode.querySelector('#code_input').value).toBe("CODE");
-    
   });  
   
 });
@@ -79,9 +73,7 @@ describe("IDE STANDARD OUTPUT", function() {
   });	
   
   it("should be empty when IDE initialized", function() {
-	  
    expect(slideNode.querySelector('#code_output').value).toBe('');
-    
   });  
   
 });
@@ -94,7 +86,6 @@ describe("IDE CODE HELPERS", function() {
   });
 
   it("should show the right code helper", function() {
-    
     expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper');
     expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper');   
     
@@ -107,7 +98,6 @@ describe("IDE CODE HELPERS", function() {
 
     expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper');
     expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper current');  
-
   });
   
 }); 
@@ -121,9 +111,7 @@ describe("IDE EXECUTE AT", function() {
   });
 
   it("should NOT be called when IDE is initialized", function() {
-    
     expect(postResource.calls.length).toBe(0);   
-
   });  
   
   it("should NOT execute code when editor is empty", function() {
