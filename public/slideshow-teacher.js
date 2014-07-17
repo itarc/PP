@@ -1,8 +1,44 @@
 // ----------------------------------
+// TEACHER CODE SLIDE / EXTENDS CODE SLIDE
+// ----------------------------------
+var TeacherCodeSlide = function(slides, slideshow) {
+  CodeSlide.call(this, slides, slideshow);
+};
+
+TeacherCodeSlide.prototype = {
+  
+ _updateLastSendAttendeeName: function(slide_index) {
+    if ( this._node.querySelector('#last_send_attendee_name') ) {
+      this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
+      this._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
+    }
+  },  
+  
+  _update: function(slide_index) {
+    CodeSlide.prototype._update.call(this, slide_index);
+    this._updateLastSendAttendeeName();    
+  }
+  
+};
+
+for(key in CodeSlide.prototype) {
+  if (! TeacherCodeSlide.prototype[key]) { TeacherCodeSlide.prototype[key] = CodeSlide.prototype[key]; };
+};
+
+// ----------------------------------
 // TEACHER SLIDESHOW CLASS / EXTENDS SLIDESHOW
 // ----------------------------------
 var TeacherSlideShow = function(slides) {
   SlideShow.call(this, slides); 
+  
+  var _t = this;
+  
+  this._slides = (slides).map(function(element) { 
+	  if (element.querySelector('#execute') != null) { return new TeacherCodeSlide(element, _t); };
+	  if (element.querySelector('.poll_response_rate') != null) { return new PollSlide(element, _t); };
+    return new Slide(element, _t); 
+  });
+  
   this.slideShowType = 'teacher';  
   this._runResource = '/code_run_result'; 
   this._sendResource = '/code_send_result'
@@ -51,7 +87,7 @@ TeacherSlideShow.prototype = {
 
 for(key in SlideShow.prototype) {
   if (! TeacherSlideShow.prototype[key]) TeacherSlideShow.prototype[key] = SlideShow.prototype[key];
-}
+};
 
 // ----------------------------------
 // INITIALIZE SLIDESHOW

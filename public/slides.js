@@ -358,13 +358,6 @@ CodeSlide.prototype = {
     }
   },
   
-  _updateLastSendAttendeeName: function(slide_index) {
-    if ( this._node.querySelector('#last_send_attendee_name') ) {
-      this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
-      this._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
-    }
-  },
-  
   executionContextResourceURL: function() {
     if (this.slideShowType() == 'blackboard') {
       return '/code_get_last_send_to_blackboard';
@@ -376,7 +369,6 @@ CodeSlide.prototype = {
   
   _update: function(slide_index, slideShowType) {
     this.showCodeHelper(slide_index);
-    this._updateLastSendAttendeeName();
     this._serverExecutionContext.updateWithResource(this.executionContextResourceURL());
     if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
         this._editor.updateWithText(this._serverExecutionContext.code); 

@@ -22,37 +22,37 @@ describe("TeacherSlideShow with and IDE", function() {
 	
   it("should be updated when teacher shows it", function() {
 
-    spyOn(CodeSlide.prototype, '_update');
+    spyOn(TeacherCodeSlide.prototype, '_update');
 
     var slideShow = new TeacherSlideShow(queryAll(document, '.slide'))
 
-    expect(CodeSlide.prototype._update.calls.length).toBe(0); 	    
+    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(0); 	    
 	  
     slideShow.down();	
 	  
-    expect(CodeSlide.prototype._update.calls.length).toBe(1);
+    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(1);
 
   });	
   
   it("should be updated when teacher shows it and presses space", function() {
 
-    spyOn(CodeSlide.prototype, '_update');
+    spyOn(TeacherCodeSlide.prototype, '_update');
 
-    expect(CodeSlide.prototype._update.calls.length).toBe(0);
+    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(0);
 	  
     var teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));
 	  
-    expect(CodeSlide.prototype._update.calls.length).toBe(0); 	  
+    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(0); 	  
 
     teacherSlideShow.down();
 	  
-    expect(CodeSlide.prototype._update.calls.length).toBe(1); 
+    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(1); 
     
     getResource = jasmine.createSpy('getResource').andReturn('0;true');    
 
     __triggerKeyboardEvent(document, SPACE);
 
-    expect(CodeSlide.prototype._update.calls.length).toBe(4); // SHOULD BE 2 => To Review
+    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(4); // SHOULD BE 2 => To Review
   
   });
   

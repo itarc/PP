@@ -6,7 +6,7 @@ code_helpers =
 "<div class='code_helper' id='code_helper_1'></div>"+
 "<div class='code_helper' id='code_helper_2'></div>"
 author_bar = 
-"<div class='code_author'><span id='author_name'>author</span></div>"
+"<div class='code_author'><span id='author_name'></span></div>"
 buttons = 
 "<input type='button' id='execute'/>"+
 "<input type='button' id='send_code'/>"+
@@ -381,18 +381,8 @@ describe("IDE UPDATE", function() {
     expect(postResource.calls.length).toBe(0); 
 
   });  
-  
-  it("should show last send attendee name", function() {
-	  
-    spyOn(CodeSlide.prototype, '_updateLastSendAttendeeName');	  
-	  
-    slide._update(0);
-	  
-    expect(CodeSlide.prototype._updateLastSendAttendeeName.calls.length).toBe(1);
-	  
-  });
-  
-});
+
+}); 
 
 IDE_slide_with_code_to_display_html =  
 HEADER + 
@@ -715,32 +705,35 @@ code_input +
 code_helpers + 
 "<div class='code_author'>"+
 "LAST ATTENDEE NAME: <span id='last_send_attendee_name'></span>"+
+"AUTHOR NAME <span id='author_name'></span>"+
 "</div>" +
 buttons + 
 code_ouput + 
 FOOTER
- 
 
-describe("IDE UPDATE with last send attendee name", function() {  
+
+describe("TEACHER IDE", function() {  
   
   beforeEach(function () {
-    
     slideNode = sandbox(IDE_slide_with_last_send_attendee_name_html);
+    slide = new TeacherCodeSlide(slideNode);    
    });	 
    
-   
-  it("should display session id when initialized", function() {
-
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
-
-    var slide = new CodeSlide(slideNode);
+  it("should show last send attendee name when upated", function() {
+    spyOn(TeacherCodeSlide.prototype, '_updateLastSendAttendeeName');	  
 	  
-    expect(slideNode.querySelector('#last_send_attendee_name').innerHTML).toBe("");  
+    slide._update(0);
+	  
+    expect(TeacherCodeSlide.prototype._updateLastSendAttendeeName.calls.length).toBe(1);
+  });     
+   
+   
+  it("should display last send attendee name", function() {
+    getResource = jasmine.createSpy('getResource').andReturn('a name');
     
     slide._updateLastSendAttendeeName();
     
     expect(slideNode.querySelector('#last_send_attendee_name').innerHTML.replace(/&gt;/g, '>')).toBe("a name >> "); 
-
   });   
    
 });     
