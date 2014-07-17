@@ -56,8 +56,6 @@ describe("IDE EDITOR", function() {
   });   
   
   it("should be filled when updated", function() {
-   expect(slideNode.querySelector('#code_input').value).toBe('');
-
    IDESlide._editor.updateWithText("CODE");
 	  
    expect(slideNode.querySelector('#code_input').value).toBe("CODE");
@@ -75,6 +73,12 @@ describe("IDE STANDARD OUTPUT", function() {
   it("should be empty when IDE initialized", function() {
    expect(slideNode.querySelector('#code_output').value).toBe('');
   });  
+  
+  it("should be filled when updated", function() {
+   IDESlide._standardOuput.updateWith("CODE RESULT");
+	  
+   expect(slideNode.querySelector('#code_output').value).toBe("CODE RESULT");
+  });   
   
 });
 
