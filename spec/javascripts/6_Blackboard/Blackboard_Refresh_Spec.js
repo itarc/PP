@@ -20,17 +20,17 @@ describe("ServerExecutionContext", function() {
     IDESlide = new CodeSlide(slideNode, blackboardSlideShow);  
   });	
   
-  it("should update with last send to blackboard", function() {
+  //~ it("should update with last send to blackboard", function() {
     
-    executionContext = new ServerExecutionContext(IDESlide);
+    //~ executionContext = new ServerExecutionContext(IDESlide);
     
-    getResource = jasmine.createSpy('getResource').andReturn('');
+    //~ getResource = jasmine.createSpy('getResource').andReturn('');
 	  
-    executionContext.update(IDESlide, 'blackboard');
+    //~ executionContext.update(IDESlide, 'blackboard');
 	  
-    expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');
+    //~ expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');
     
-  });  
+  //~ });  
   
 });
 

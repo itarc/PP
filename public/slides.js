@@ -79,26 +79,13 @@ ServerExecutionContext.prototype = {
 
   canReplaceCurrentExecutionContext: function() {
     return ( ! this.isEmpty() ) && (this.codeToExecute() != this._slide.codeToExecute());
-  },  
-  
-  slideShowType: function() {
-    if (this._slide) return this._slide.slideShowType();
-  },  
-  
-  executionContextResourceURL: function() {
-    if (this.slideShowType() == 'blackboard') {
-      return '/code_get_last_send_to_blackboard';
-    } else {
-      return '/code_last_execution';
-    }    
   },
   
   getContextOnServer: function(url) {
-    last_execution = getResource(url);
-    author = last_execution.split(SEPARATOR)[0];
-    code_and_code_to_add = last_execution.split(SEPARATOR)[1];
-    code = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[0]) ? code_and_code_to_add.split(SEPARATOR)[0] : '';
-    code_to_add = (code_and_code_to_add && code_and_code_to_add.split(SEPARATOR)[1]) ? code_and_code_to_add.split(SEPARATOR)[1] : '';
+    last_execution = getResource(url).split(SEPARATOR);
+    author = last_execution[0];
+    code = (last_execution[1]) ? last_execution[1] : '';
+    code_to_add = (last_execution[2]) ? last_execution[2] : '';
     return { "author": author, "code" : code, "code_to_add" : code_to_add };   
   },
   
@@ -108,11 +95,7 @@ ServerExecutionContext.prototype = {
     this.code = (newServerExecutionContext.code == '') ? this._slide.codeToDisplay() : newServerExecutionContext.code;
     this.code_to_add = (newServerExecutionContext.code_to_add == '') ? this._slide.codeToAdd() : newServerExecutionContext.code_to_add;
   },
-  
-  update: function(context) {
-    defaultResourceURL = this.executionContextResourceURL();
-    this.updateWithResource(defaultResourceURL);
-  },
+
 }
 
 // ----------------------------------
@@ -382,10 +365,18 @@ CodeSlide.prototype = {
     }
   },
   
+  executionContextResourceURL: function() {
+    if (this.slideShowType() == 'blackboard') {
+      return '/code_get_last_send_to_blackboard';
+    } else {
+      return '/code_last_execution';
+    }    
+  },  
+  
   _update: function(slide_index, slideShowType) {
     this.showCodeHelper(slide_index);
     this._updateLastSendAttendeeName();
-    this._serverExecutionContext.update();
+    this._serverExecutionContext.updateWithResource(this.executionContextResourceURL());
     if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
         this._editor.updateWithText(this._serverExecutionContext.code); 
         this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);       

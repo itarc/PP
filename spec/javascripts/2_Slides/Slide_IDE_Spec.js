@@ -31,14 +31,23 @@ describe("Server Execution Context", function() {
     slideNode = sandbox(IDE_slide_html);
     IDESlide = new CodeSlide(slideNode);  
     executionContext = new ServerExecutionContext(IDESlide);
-  });	
+    getResource = jasmine.createSpy('getResource').andReturn('server_author' + SEPARATOR + 'server_code' + SEPARATOR + 'server_code to add');    
+  });
   
-  it("should update with last execution by default", function() {
-    getResource = jasmine.createSpy('getResource').andReturn('');
+  it("should get a JSON format", function() {	 
+    jsonContext = executionContext.getContextOnServer('/url')  
+    
+    expect(jsonContext.author).toBe('server_author');
+    expect(jsonContext.code).toBe('server_code');
+    expect(jsonContext.code_to_add).toBe('server_code to add');
+  });    
+  
+  it("should be update with a resource", function() {
+    executionContext.updateWithResource('/url');
 	  
-    executionContext.update();
-	  
-    expect(getResource).toHaveBeenCalledWith('/code_last_execution/0');
+    expect(executionContext.author).toBe('server_author');
+    expect(executionContext.code).toBe('server_code');
+    expect(executionContext.code_to_add).toBe('server_code to add');
   });  
   
 });
