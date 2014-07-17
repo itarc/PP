@@ -307,21 +307,21 @@ describe("TEACHER IDE GET LAST SEND", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);    
-    slide = new CodeSlide(slideNode);  
-    spyOn(CodeSlide.prototype, '_updateEditorWithLastSendAndExecute');    
+    slide = new TeacherCodeSlide(slideNode);  
+    spyOn(TeacherCodeSlide.prototype, '_updateEditorWithLastSendAndExecute');    
   });   
   
   it("should get and run last attendee send when ALT-N pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
     
-    expect(CodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(1);      	  
+    expect(TeacherCodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(1);      	  
   });  
   
   it("should NOT get and run last attendee send when ALT-N button not present", function() {
     slideNode.querySelector('section').removeChild(slideNode.querySelector('section').querySelector('#get_last_send'));
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
 
-    expect(CodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(0);  
+    expect(TeacherCodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(0);  
   });  
 
 });
@@ -645,60 +645,6 @@ describe("IDE UPDATE with attendee name to type in", function() {
 
 });  
 
-IDE_slide_with_attendee_name =  
-HEADER + 
-code_input + 
-code_helpers +
-author_bar +
-buttons + 
-"<input type='button' id='get_last_send'/>"+
-code_ouput + 
-FOOTER
-
-describe("IDE UPDATE with attendee name", function() {  
-  
-  beforeEach(function () {
-    slideNode = sandbox(IDE_slide_with_attendee_name);
-   });	
-   
-  it("should display author id when teacher display last send", function() {
-
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
-    postResource = jasmine.createSpy('postResource')
-    
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee id', code: 'code sent'});     
-
-    var slide = new CodeSlide(slideNode);
-    
-    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
-    
-    slideNode.querySelector('#get_last_send').click();
-    
-    expect(slideNode.querySelector('#author_name').innerHTML).toBe("attendee id");    
-
-  });
-  
-  it("should display author id when teacher display last send even if last send is the same in editor", function() {
-
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
-    postResource = jasmine.createSpy('postResource')
-    
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee id', code: 'code sent'});       
-
-    var slide = new CodeSlide(slideNode);
-    
-    slideNode.querySelector('#code_input').value = "code sent"
-    
-    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
-    
-    slideNode.querySelector('#get_last_send').click();
-    
-    expect(slideNode.querySelector('#author_name').innerHTML).toBe("attendee id");
-
-  });   
-
-});   
-
 IDE_slide_with_last_send_attendee_name_html =  
 HEADER + 
 code_input + 
@@ -708,6 +654,7 @@ code_helpers +
 "AUTHOR NAME <span id='author_name'></span>"+
 "</div>" +
 buttons + 
+"<input type='button' id='get_last_send'/>"+
 code_ouput + 
 FOOTER
 
@@ -734,6 +681,42 @@ describe("TEACHER IDE", function() {
     slide._updateLastSendAttendeeName();
     
     expect(slideNode.querySelector('#last_send_attendee_name').innerHTML.replace(/&gt;/g, '>')).toBe("a name >> "); 
-  });   
+  }); 
+
+  it("should display author name when teacher displays last send", function() {
+
+    getResource = jasmine.createSpy('getResource').andReturn('a name');
+    postResource = jasmine.createSpy('postResource')
+    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee name', code: 'code sent'});     
+
+    var slide = new CodeSlide(slideNode);
+    
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
+    
+    slideNode.querySelector('#get_last_send').click();
+    
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("attendee name");    
+
+  });
+  
+  it("should display author name when teacher displays last send even if last send is the same in editor", function() {
+
+    getResource = jasmine.createSpy('getResource').andReturn('a name');
+    postResource = jasmine.createSpy('postResource')
+    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee name', code: 'code sent'});       
+
+    var slide = new CodeSlide(slideNode);
+    
+    slideNode.querySelector('#code_input').value = "code sent"
+    
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
+    
+    slideNode.querySelector('#get_last_send').click();
+    
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("attendee name");
+
+  });  
    
 });     

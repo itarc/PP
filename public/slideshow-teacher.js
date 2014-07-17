@@ -6,6 +6,32 @@ var TeacherCodeSlide = function(slides, slideshow) {
 };
 
 TeacherCodeSlide.prototype = {
+
+  _keyHandling: function(e) {
+    if ( e.altKey ) { 
+      if (e.which == N) { this._node.querySelector('#get_last_send').click();}
+    } else {
+      e.stopPropagation()
+    }     
+    CodeSlide.prototype._keyHandling.call(this);    
+  }, 
+  
+  _declareEvents: function() {
+    CodeSlide.prototype._declareEvents.call(this);
+    var _t = this; 
+    this._node.querySelector('#get_last_send').addEventListener('click',
+      function(e) { _t._updateEditorWithLastSendAndExecute() }, false
+    );
+  },
+  
+  _updateEditorWithLastSendAndExecute: function() {
+    this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
+    if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {   
+      this._editor.updateWithText(this._serverExecutionContext.code); 
+      this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
+      this.executeAndSendCode();
+    }
+  },  
   
  _updateLastSendAttendeeName: function(slide_index) {
     this._serverExecutionContext.updateWithResource('/code_attendees_last_send');

@@ -143,7 +143,8 @@ AuthorBar.prototype = {
   },
   
   updateAuthorNameWith: function(author) {
-    if (this.authorNode) { 
+    if (this.authorNode) {
+      if (! author) author = '#';
       if (author.split('_')[1]) { this._author = author.split('_')[1]; } else { this._author = author; }
       if (is_a_number(author)) {
         if (author == '0') { this._author = '#'; } else { this._author = '?'; }
@@ -275,11 +276,6 @@ CodeSlide.prototype = {
     this._node.querySelector('#get_code').addEventListener('click',
       function(e) { _t.getAndExecuteCode(); }, false
     );
-    if (this._node.querySelector('#get_last_send')) {
-      this._node.querySelector('#get_last_send').addEventListener('click',
-        function(e) { _t._updateEditorWithLastSendAndExecute() }, false
-      );
-    };
   },
   
   _clearCodeHelpers: function() {
@@ -346,15 +342,6 @@ CodeSlide.prototype = {
       this._editor.updateWithText(this._serverExecutionContext.code);
       this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
       this.executeCode();
-    }
-  }, 
-
-  _updateEditorWithLastSendAndExecute: function() {
-    this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
-    if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {   
-      this._editor.updateWithText(this._serverExecutionContext.code); 
-      this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
-      this.executeAndSendCode();
     }
   },
   

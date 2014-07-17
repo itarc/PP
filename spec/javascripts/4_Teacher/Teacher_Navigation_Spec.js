@@ -172,11 +172,62 @@ describe("TeacherSlideShow Navigation with 3 Slides", function() {
   
 });
 
+HEADER = 
+"<div class='slide'/>"+"<section>"
+code_input = 
+"<textarea id='code_input'></textarea>"
+code_helpers = 
+"<div class='code_helper' id='code_helper_1'></div>"+
+"<div class='code_helper' id='code_helper_2'></div>"
+author_bar = 
+"<div class='code_author'><span id='author_name'></span></div>"
+buttons = 
+"<input type='button' id='execute'/>"+
+"<input type='button' id='send_code'/>"+
+"<input type='button' id='get_code'/>"
+code_ouput = 
+"<textarea id='code_output'></textarea>"
+FOOTER = 
+"</section>"+"</div>"
+
+TEACHER_SLIDESHOW_WITH_IDE =  
+"<div class='slides'>"+
+"<div class='slide'></div>"+
+"<div class='slide'></div>"+
+HEADER + 
+code_input + 
+code_helpers + 
+"<div class='code_author'>"+
+"LAST ATTENDEE NAME: <span id='last_send_attendee_name'></span>"+
+"AUTHOR NAME <span id='author_name'></span>"+
+"</div>" +
+buttons + 
+"<input type='button' id='get_last_send'/>"+
+code_ouput + 
+FOOTER +
+"/div"
+
+//~ "<div class='slides'>"+
+//~ "<div class='slide'>"+
+//~ "</div>"+
+//~ "<div class='slide'>"+
+//~ "</div>"+
+//~ "<div class='slide'>"+
+//~ "<div id='code_input'>"+
+//~ "<div class='code_helper'>"+
+//~ "</div><div class='code_helper'>"+
+//~ "</div><div id='execute'>"+
+//~ "<div id='send_code'>"+
+//~ "<div id='get_code'>"+
+//~ "<div id='code_output'>"+
+//~ "</div></div>"
+
 describe("TeacherSlideShow Navigation With an IDE Slide", function() {
   
   beforeEach(function() {
     
-   setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='send_code'><div id='get_code'><div id='code_output'></div></div>")	  
+   //~ setFixtures("<div class='slides'><div class='slide'></div><div class='slide'></div><div class='slide'><div id='code_input'><div class='code_helper'></div><div class='code_helper'></div><div id='execute'><div id='send_code'><div id='get_code'><div id='code_output'></div></div>")	  
+   setFixtures(TEACHER_SLIDESHOW_WITH_IDE);
 
   });  
 
