@@ -303,41 +303,28 @@ describe("IDE GET & RUN BUTTON", function() {
 
 });
   
-describe("TEACHER IDE LAST SEND", function() {   
+describe("TEACHER IDE GET LAST SEND", function() {   
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);    
     slide = new CodeSlide(slideNode);  
+    spyOn(CodeSlide.prototype, '_updateEditorWithLastSendAndExecute');    
   });   
   
   it("should get and run last attendee send when ALT-N pressed", function() {
-    
-    getResource = jasmine.createSpy('getResource').andReturn('attendee_1' + SEPARATOR + 'last attendee send code');
-    postResource = jasmine.createSpy('postResource');
-	  
-    slide._editor.updateWithText('');
-	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
-
-    expect(getResource).toHaveBeenCalledWith('/code_attendees_last_send/0');
-    expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'last attendee send code', SYNCHRONOUS);	  
     
-    expect(slide._editor.content()).toBe('last attendee send code'); 
-	  
+    expect(CodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(1);      	  
   });  
   
   it("should NOT get and run last attendee send when ALT-N button not present", function() {
-    
     slideNode.querySelector('section').removeChild(slideNode.querySelector('section').querySelector('#get_last_send'));
-    
-    spyOn(CodeSlide.prototype, '_updateEditorWithLastSendAndExecute');      
 
     expect(CodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(0);
 	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
 
     expect(CodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(0);  
-
   });  
 
 });
