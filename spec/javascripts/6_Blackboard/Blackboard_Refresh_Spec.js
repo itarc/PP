@@ -36,7 +36,7 @@ describe("Blackboard REFRESH", function() {
   beforeEach(function () {
     setFixtures("<div class='slides'>"+ IDE_slide_html +"</div>")	      
     blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide')); 
-    spyOn(BlackboardCodeSlide.prototype, 'executeCode');   
+    spyOn(BlackboardCodeSlide.prototype, 'executeCodeAt');   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });      
   });
   
@@ -46,7 +46,7 @@ describe("Blackboard REFRESH", function() {
 
     expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');    
     expect(blackboardSlideShow._slides[0]._editor.content()).toBe('last send to blackboard');
-    expect(BlackboardCodeSlide.prototype.executeCode.calls.length).toBe(1);
+    expect(BlackboardCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result_blackboard');
 
   });  
   
@@ -56,7 +56,7 @@ describe("Blackboard REFRESH", function() {
     
     blackboardSlideShow._refresh();
     
-    expect(BlackboardCodeSlide.prototype.executeCode.calls.length).toBe(0);
+    expect(BlackboardCodeSlide.prototype.executeCodeAt.calls.length).toBe(0);
     
   });
   

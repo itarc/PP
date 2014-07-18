@@ -84,7 +84,7 @@ describe("IDE STANDARD OUTPUT", function() {
   });  
   
   it("should be filled when updated", function() {
-   IDESlide._standardOuput.updateWith("CODE RESULT");
+   IDESlide._standardOutput.updateWith("CODE RESULT");
 	  
    expect(slideNode.querySelector('#code_output').value).toBe("CODE RESULT");
   });   
@@ -261,7 +261,7 @@ describe("IDE GET & RUN", function() {
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);    
     IDESlide = new CodeSlide(slideNode);
-    spyOn(CodeSlide.prototype ,"executeCode");  
+    spyOn(CodeSlide.prototype ,"executeCodeAt");  
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'LAST SEND TO BLACKBOARD', "code_to_add": ''});    
   });
   
@@ -269,7 +269,7 @@ describe("IDE GET & RUN", function() {
     IDESlide.getAndExecuteCode();
     
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);    
+    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
   });
 
 });  
@@ -346,12 +346,12 @@ describe("IDE UPDATE", function() {
   
   it("should run the user last run", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
-    spyOn(CodeSlide.prototype, 'executeCode');
+    spyOn(CodeSlide.prototype, 'executeCodeAt');
 
     slide._update(0);
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_last_execution/0');
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
+    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');      
   });
   
   it("should NOT run the user last run when code has not changed", function() {
@@ -399,62 +399,43 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_code_to_display_html);
+    slide = new CodeSlide(slideNode);  
+    spyOn(CodeSlide.prototype, 'executeCodeAt');    
   });  
 	
-  it("should run code to display if no last execution", function() {
-
+  it("should run code to display when no execution context on server", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});    
-	  
-    var slide = new CodeSlide(slideNode);
-	
-    spyOn(CodeSlide.prototype, 'executeCode');    
-
-    expect(slideNode.querySelector('#code_input').value).toBe("");
-
+    expect(slide._editor.content()).toBe("");
+    
     slide._update(0);
 
-    expect(slideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
-
+    expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");
+    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');
   });
   
-  it("should run last execution if exists", function() {
-
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});    
-	  
-    var slide = new CodeSlide(slideNode);		
-
-    spyOn(CodeSlide.prototype, 'executeCode');
-
-    expect(slideNode.querySelector('#code_input').value).toBe("");
-
+  it("should run last execution when exists", function() {
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'LAST EXECUTION', "code_to_add": ''});    
+    expect(slide._editor.content()).toBe("");
+    
     slide._update(0);
 
-    expect(slideNode.querySelector('#code_input').value).toBe("last execution");
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);	  
-
+    expect(slide._editor.content()).toBe("LAST EXECUTION");
+    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');  
   });  
 
   it("should NOT run code that is already in editor", function() {
-
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});
-	  
-    var slide = new CodeSlide(slideNode);
+    expect(slide._editor.content()).toBe("");
+    
+    slide._update(0);
 
-    spyOn(CodeSlide.prototype, 'executeCode');    
-
-    expect(slideNode.querySelector('#code_input').value).toBe("");
+    expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");
+    expect(CodeSlide.prototype.executeCodeAt.calls.length).toBe(1);	
 
     slide._update(0);
 
-    expect(slideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);	
-
-    slide._update(0);
-
-    expect(slideNode.querySelector('#code_input').value).toBe("puts 'CODE TO DISPLAY'");    
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);	
-
+    expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");    
+    expect(CodeSlide.prototype.executeCodeAt.calls.length).toBe(1);	
   }); 
 
 });

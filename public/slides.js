@@ -199,17 +199,21 @@ CodeHelper.prototype = {
 
 var StandardOutput = function(node) {
   this._node = node;
-
+  this.clear();
 }
 
 StandardOutput.prototype = {
   clear: function() {
     this._node.value = '';
-  },   
+  },  
+
+  content: function(text) {
+    return this._node.value;
+  },  
   
   updateWith: function(text) {
     this._node.value = text;
-  },    
+  },
 }
 
 // ----------------------------------
@@ -229,7 +233,7 @@ var CodeSlide = function(node, slideshow) {
   this._serverExecutionContext = new ServerExecutionContext(this);
   this._editor = new Editor(this._node.querySelector('#code_input'));
   this._authorBar = new AuthorBar(this._node.querySelector('.code_author'));
-  this._standardOuput = new StandardOutput(this._node.querySelector('#code_output'));
+  this._standardOutput = new StandardOutput(this._node.querySelector('#code_output'));
   
   this._runResource = '/code_run_result';
   this._sendResource = '/code_send_result';
@@ -317,11 +321,20 @@ CodeSlide.prototype = {
   
   executeCodeAt: function(url) {
     if (this.codeToExecute() == '' ) return;
-    this._standardOuput.clear();    
+    this._standardOutput.clear();    
     url += ("/" + this._codeHelper_current_index);
     executionResult = postResource(url, this.codeToExecute(), SYNCHRONOUS);
-    this._standardOuput.updateWith(executionResult);    
+    this._standardOutput.updateWith(executionResult);    
   },
+  
+  getExecutionContextAtAndExecuteCodeAt: function(excutionContextResource, executionResource) {
+    this._serverExecutionContext.updateWithResource(excutionContextResource);
+    if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
+      this._editor.updateWithText(this._serverExecutionContext.code);
+      this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
+      this.executeCodeAt(executionResource);
+    }
+  },  
   
   executeCode: function() {
     this.executeCodeAt(this._runResource);
@@ -333,22 +346,12 @@ CodeSlide.prototype = {
   },
 
   getAndExecuteCode: function() {
-    this._serverExecutionContext.updateWithResource(this._getAndRunResource);
-    if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
-      this._editor.updateWithText(this._serverExecutionContext.code);
-      this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
-      this.executeCode();
-    }
+    this.getExecutionContextAtAndExecuteCodeAt(this._getAndRunResource, this._runResource);
   },
   
   _update: function(slide_index, slideShowType) {
     this.showCodeHelper(slide_index);
-    this._serverExecutionContext.updateWithResource(this._updateResource);
-    if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
-        this._editor.updateWithText(this._serverExecutionContext.code); 
-        this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);       
-        this.executeCode();
-    }
+    this.getExecutionContextAtAndExecuteCodeAt(this._updateResource, this._runResource);
   },
   
 };
