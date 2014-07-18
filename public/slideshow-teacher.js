@@ -1,8 +1,22 @@
 // ----------------------------------
+// TEACHER POLL SLIDE / EXTENDS CODE SLIDE
+// ----------------------------------
+var TeacherPollSlide = function(node, slideshow) {
+  PollSlide.call(this, node, slideshow);
+};
+
+TeacherPollSlide.prototype = {
+};
+
+for(key in PollSlide.prototype) {
+  if (! TeacherPollSlide.prototype[key]) { TeacherPollSlide.prototype[key] = PollSlide.prototype[key]; };
+};
+
+// ----------------------------------
 // TEACHER CODE SLIDE / EXTENDS CODE SLIDE
 // ----------------------------------
-var TeacherCodeSlide = function(slides, slideshow) {
-  CodeSlide.call(this, slides, slideshow);
+var TeacherCodeSlide = function(node, slideshow) {
+  CodeSlide.call(this, node, slideshow);
 };
 
 TeacherCodeSlide.prototype = {
@@ -53,15 +67,23 @@ for(key in CodeSlide.prototype) {
 // TEACHER SLIDESHOW CLASS / EXTENDS SLIDESHOW
 // ----------------------------------
 var TeacherSlideShow = function(slides) {
-  SlideShow.call(this, slides); 
+  //~ SlideShow.call(this, slides);  // SUPER CONSTRUCTOR NOT CALLED
   
   var _t = this;
-  
   this._slides = (slides).map(function(element) { 
 	  if (element.querySelector('#execute') != null) { return new TeacherCodeSlide(element, _t); };
-	  if (element.querySelector('.poll_response_rate') != null) { return new PollSlide(element, _t); };
+	  if (element.querySelector('.poll_response_rate') != null) { return new TeacherPollSlide(element, _t); };
     return new Slide(element, _t); 
   });
+
+  document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );
+  
+  this._numberOfSlides = this._slides.length;
+  this._currentSlide = this._slides[0];  
+  this.position = new Position();
+
+  this._refreshPosition();
+  this._showCurrentSlide();  
   
   this.slideShowType = 'teacher';  
   this._runResource = '/code_run_result'; 
