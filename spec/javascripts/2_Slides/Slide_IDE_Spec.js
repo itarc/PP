@@ -307,21 +307,25 @@ describe("TEACHER IDE GET LAST SEND", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);    
-    slide = new TeacherCodeSlide(slideNode);  
-    spyOn(TeacherCodeSlide.prototype, '_updateEditorWithLastSendAndExecute');    
+    slide = new TeacherCodeSlide(slideNode);
+    spyOn(TeacherCodeSlide.prototype ,"executeCodeAt");   
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
   });   
   
   it("should get and run last attendee send when ALT-N pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
-    
-    expect(TeacherCodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(1);      	  
+
+    expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_attendees_last_send/0');   
+    expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_send_result');       
   });  
   
   it("should NOT get and run last attendee send when ALT-N button not present", function() {
     slideNode.querySelector('section').removeChild(slideNode.querySelector('section').querySelector('#get_last_send'));
+    
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
 
-    expect(TeacherCodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(0);  
+    expect(ServerExecutionContext.prototype.getContextOnServer).not.toHaveBeenCalled();   
+    expect(TeacherCodeSlide.prototype.executeCodeAt).not.toHaveBeenCalled();
   });  
 
 });
