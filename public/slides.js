@@ -352,6 +352,7 @@ CodeSlide.prototype = {
   _update: function(slide_index, slideShowType) {
     this.showCodeHelper(slide_index);
     this.getExecutionContextAtAndExecuteCodeAt(this._updateResource, this._runResource);
+    if (this.slideShowType() != 'blackboard') this._authorBar.refreshWithSessionID();
   },
   
 };
@@ -359,4 +360,3 @@ CodeSlide.prototype = {
 for(key in Slide.prototype) {
   if (! CodeSlide.prototype[key]) CodeSlide.prototype[key] = Slide.prototype[key];
 };
-
