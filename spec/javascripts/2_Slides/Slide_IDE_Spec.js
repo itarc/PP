@@ -34,7 +34,7 @@ describe("Server Execution Context", function() {
     getResource = jasmine.createSpy('getResource').andReturn('server_author' + SEPARATOR + 'server_code' + SEPARATOR + 'server_code to add');    
   });
   
-  it("should get a JSON format", function() {	 
+  it("should format server response", function() {	 
     jsonContext = executionContext.getContextOnServer('/url')  
     
     expect(jsonContext.author).toBe('server_author');
@@ -42,7 +42,7 @@ describe("Server Execution Context", function() {
     expect(jsonContext.code_to_add).toBe('server_code to add');
   });    
   
-  it("should be updated with a resource", function() {
+  it("should update context with a resource", function() {
     executionContext.updateWithResource('/url');
 	  
     expect(executionContext.author).toBe('server_author');
@@ -160,23 +160,7 @@ describe("IDE EXECUTE AT", function() {
     expect(postResource).toHaveBeenCalledWith('/url/1', 'CODE', SYNCHRONOUS);    
   });  
   
-}); 
-
-//~ describe("IDE RUN", function() {
-  
-  //~ beforeEach(function () {
-    //~ slideNode = sandbox(IDE_slide_html);
-    //~ IDESlide = new CodeSlide(slideNode);
-    //~ IDESlide._editor.updateWithText("CODE TO RUN");
-  //~ });
-  
-  //~ it("should run code at RUN URL", function() {
-    //~ IDESlide.executeCode();
-	  
-    //~ expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'CODE TO RUN', SYNCHRONOUS);
-  //~ }); 
-  
-//~ });  
+});  
   
 describe("IDE RUN", function() {
   
@@ -208,28 +192,11 @@ describe("IDE RUN", function() {
   
 });
   
-//~ describe("IDE RUN & SEND", function() {  
-  
-  //~ beforeEach(function () {
-    //~ slideNode = sandbox(IDE_slide_html);
-    //~ IDESlide = new CodeSlide(slideNode);
-    //~ IDESlide._editor.updateWithText("CODE TO RUN & SEND");
-  //~ });
-  
-  //~ it("should run code & send at SEND URL", function() {
-    //~ IDESlide.executeAndSendCode();
-	  
-    //~ expect(postResource).toHaveBeenCalledWith('/code_send_result/0', 'CODE TO RUN & SEND', SYNCHRONOUS);
-  //~ });
-  
-//~ });  
-  
 describe("IDE RUN & SEND BUTTON", function() {   
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
-    IDESlide = new CodeSlide(slideNode);
-    //~ IDESlide._editor.updateWithText('CODE TO RUN & SEND WITH A BUTTON');    
+    IDESlide = new CodeSlide(slideNode);  
     spyOn(CodeSlide.prototype ,"executeCodeAt");
   });
 
@@ -254,24 +221,6 @@ describe("IDE RUN & SEND BUTTON", function() {
   });
   
 });
-  
-//~ describe("IDE GET & RUN", function() {   
-  
-  //~ beforeEach(function () {
-    //~ slideNode = sandbox(IDE_slide_html);    
-    //~ IDESlide = new CodeSlide(slideNode);
-    //~ spyOn(CodeSlide.prototype ,"executeCodeAt");  
-    //~ spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'LAST SEND TO BLACKBOARD', "code_to_add": ''});    
-  //~ });
-  
-  //~ it("should run last send to blackboard", function() {
-    //~ IDESlide.getAndExecuteCode();
-    
-    //~ expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
-    //~ expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
-  //~ });
-
-//~ });  
   
 describe("IDE GET & RUN BUTTON", function() {  
   
@@ -409,7 +358,7 @@ buttons +
 code_ouput + 
 FOOTER
 
-describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
+describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_code_to_display_html);
@@ -417,7 +366,7 @@ describe("IDE UPDATE with code to DISPLAY in Code Helper", function() {
     spyOn(CodeSlide.prototype, 'executeCodeAt');    
   });  
 	
-  it("should run code to display when no execution context on server", function() {
+  it("should display CODE TO DISPLAY when no execution context on server", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});    
     expect(slide._editor.content()).toBe("");
     
