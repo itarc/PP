@@ -3,7 +3,7 @@ describe("AttendeeSlideShow with an IDE Slide", function() {
   beforeEach(function() {
 
     setFixtures("<div class='slides'><div class='slide'><div id='code_input'><div id='execute'><div id='send_code'/><div id='get_code'/><div id='code_output'><div class='slide'/></div>")	  
-    spyOn(CodeSlide.prototype, '_update');    
+    spyOn(AttendeeCodeSlide.prototype, '_update');    
     
   });  
 
@@ -13,7 +13,7 @@ describe("AttendeeSlideShow with an IDE Slide", function() {
 
     var attendeeSlideShow = new AttendeeSlideShow(queryAll(document, '.slide'))
 
-    expect(CodeSlide.prototype._update.calls.length).toBe(1);     	  
+    expect(AttendeeCodeSlide.prototype._update.calls.length).toBe(1);     	  
 
   });
   
