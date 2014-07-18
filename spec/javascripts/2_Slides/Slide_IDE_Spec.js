@@ -42,7 +42,7 @@ describe("Server Execution Context", function() {
     expect(jsonContext.code_to_add).toBe('server_code to add');
   });    
   
-  it("should be update with a resource", function() {
+  it("should be updated with a resource", function() {
     executionContext.updateWithResource('/url');
 	  
     expect(executionContext.author).toBe('server_author');
@@ -120,7 +120,7 @@ describe("IDE EXECUTE AT", function() {
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
     IDESlide = new CodeSlide(slideNode);
-    postResource = jasmine.createSpy('postResource').andReturn('1');
+    postResource = jasmine.createSpy('postResource').andReturn('EXECUTION RESULT');
   });
 
   it("should NOT be called when IDE is initialized", function() {
@@ -143,7 +143,7 @@ describe("IDE EXECUTE AT", function() {
     expect(postResource.calls.length).toBe(1);
     expect(postResource).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
     expect(slideNode.querySelector('#code_input').value).toBe('CODE');
-    expect(slideNode.querySelector('#code_output').value).toBe('1');
+    expect(slideNode.querySelector('#code_output').value).toBe('EXECUTION RESULT');
   });  
   
   it("should execute code for current slide only", function() {
@@ -278,27 +278,31 @@ describe("IDE GET & RUN BUTTON", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
-    IDESlide = new CodeSlide(slideNode);  
-    spyOn(CodeSlide.prototype ,"getAndExecuteCode");
+    IDESlide = new CodeSlide(slideNode);
+    spyOn(CodeSlide.prototype ,"executeCodeAt");   
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'CODE ON BLACKBOARD', "code_to_add": ''});     
   });  
   
-  it("should run and send code when GET & RUN BUTTON clicked", function() {  
+  it("should be triggered when GET & RUN BUTTON clicked", function() {  
     slideNode.querySelector('#get_code').click();
 
-    expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(1);     
+    expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
+    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
   });  
   
-  it("should get and run last teacher run when ALT-G pressed", function() {
+  it("should be triggered when ALT-G pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
-    expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(1);    
+    expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
+    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
   });    
   
-  it("should NOT get and run code when ALT-G disabled", function() {
+  it("should NOT be triggered when ALT-G disabled", function() {
     slideNode.querySelector('#get_code').setAttribute("disabled", true);    
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
-    expect(CodeSlide.prototype.getAndExecuteCode.calls.length).toBe(0);  
+    expect(ServerExecutionContext.prototype.getContextOnServer).not.toHaveBeenCalledWith();   
+    expect(CodeSlide.prototype.executeCodeAt).not.toHaveBeenCalledWith();  
   });
 
 });
@@ -312,14 +316,14 @@ describe("TEACHER IDE GET LAST SEND", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
   });   
   
-  it("should get and run last attendee send when ALT-N pressed", function() {
+  it("should be triggered when ALT-N pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_attendees_last_send/0');   
     expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_send_result');       
   });  
   
-  it("should NOT get and run last attendee send when ALT-N button not present", function() {
+  it("should NOT be triggered when ALT-N BUTTON not present", function() {
     slideNode.querySelector('section').removeChild(slideNode.querySelector('section').querySelector('#get_last_send'));
     
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
