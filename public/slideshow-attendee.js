@@ -25,6 +25,7 @@ var AttendeeCodeSlide = function(node, slideshow) {
 };
 
 AttendeeCodeSlide.prototype = {
+
 };
 
 for(key in CodeSlide.prototype) {

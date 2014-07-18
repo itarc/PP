@@ -586,25 +586,6 @@ describe("IDE UPDATE with attendee name to type in", function() {
 
   });
   
-  it("should display current session id when teacher execute code", function() {
-
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
-    postResource = jasmine.createSpy('postResource')
-
-    var slide = new CodeSlide(slideNode);
-    
-    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
-    
-    slideNode.querySelector('#author_name').innerHTML = 'a name to replace';
-    
-    slide._editor.updateWithText("code to execute");    
-    
-    slideNode.querySelector('#execute').click();
-    
-    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");    
-
-  }); 
-  
   it("should keep new session id when attendee execute code", function() {
 
     getResource = jasmine.createSpy('getResource').andReturn('a name');
@@ -701,6 +682,25 @@ describe("TEACHER IDE", function() {
     slideNode.querySelector('#get_last_send').click();
     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("attendee name");
+
+  });  
+  
+  it("should display teacher session ID when teacher execute code", function() {
+
+    getResource = jasmine.createSpy('getResource').andReturn('a name');
+    postResource = jasmine.createSpy('postResource')
+
+    var slide = new TeacherCodeSlide(slideNode);
+    
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
+    
+    slideNode.querySelector('#author_name').innerHTML = 'a name to replace';
+    
+    slide._editor.updateWithText("code to execute");    
+    
+    slideNode.querySelector('#execute').click();
+    
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");    
 
   });  
    

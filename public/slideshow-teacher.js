@@ -45,6 +45,11 @@ TeacherCodeSlide.prototype = {
     );
   },
   
+  executeCode: function() {
+    CodeSlide.prototype.executeCode.call(this);
+    this._authorBar.refreshWithSessionID();
+  },  
+  
   _updateEditorWithLastSendAndExecute: function() {
     this.getExecutionContextAtAndExecuteCodeAt(this._attendeesLastSendResource, this._sendResource);
   },  

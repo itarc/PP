@@ -144,7 +144,7 @@ AuthorBar.prototype = {
   
   updateAuthorNameWith: function(author) {
     if (this.authorNode) {
-      if (! author) author = '#';
+      if (! author) author = this._sessionID;
       if (author.split('_')[1]) { this._author = author.split('_')[1]; } else { this._author = author; }
       if (is_a_number(author)) {
         if (author == '0') { this._author = '#'; } else { this._author = '?'; }
@@ -162,7 +162,7 @@ AuthorBar.prototype = {
   },
   
   refreshWithSessionID: function() {
-    this.updateAuthorNameWith(this._sessionID);
+    if (this._sessionID) this.updateAuthorNameWith(this._sessionID);
   },
   
 }
@@ -314,10 +314,6 @@ CodeSlide.prototype = {
   codeToAdd: function() {
     return this._currentCodeHelper().codeToAdd();
   },
-
-  slideShowType: function() {
-    if (this._slideshow) return this._slideshow.slideShowType;
-  },
   
   executeCodeAt: function(url) {
     if (this.codeToExecute() == '' ) return;
@@ -338,7 +334,6 @@ CodeSlide.prototype = {
   
   executeCode: function() {
     this.executeCodeAt(this._runResource);
-    if (this.slideShowType() != 'blackboard') this._authorBar.refreshWithSessionID();
   },
   
   executeAndSendCode: function() {
@@ -349,10 +344,9 @@ CodeSlide.prototype = {
     this.getExecutionContextAtAndExecuteCodeAt(this._getAndRunResource, this._runResource);
   },
   
-  _update: function(slide_index, slideShowType) {
+  _update: function(slide_index) {
     this.showCodeHelper(slide_index);
     this.getExecutionContextAtAndExecuteCodeAt(this._updateResource, this._runResource);
-    if (this.slideShowType() != 'blackboard') this._authorBar.refreshWithSessionID();
   },
   
 };
