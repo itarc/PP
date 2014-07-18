@@ -17,6 +17,13 @@ for(key in PollSlide.prototype) {
 // ----------------------------------
 var TeacherCodeSlide = function(node, slideshow) {
   CodeSlide.call(this, node, slideshow);
+
+  this._runResource = '/code_run_result';
+  this._sendResource = '/code_send_result';
+  this._getAndRunResource = '';
+  this._updateResource = '/code_last_execution';
+  
+  this._attendeesLastSendResource = '/code_attendees_last_send';
 };
 
 TeacherCodeSlide.prototype = {
@@ -39,7 +46,7 @@ TeacherCodeSlide.prototype = {
   },
   
   _updateEditorWithLastSendAndExecute: function() {
-    this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
+    this._serverExecutionContext.updateWithResource(this._attendeesLastSendResource);
     if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {   
       this._editor.updateWithText(this._serverExecutionContext.code); 
       this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
@@ -48,7 +55,7 @@ TeacherCodeSlide.prototype = {
   },  
   
  _updateLastSendAttendeeName: function(slide_index) {
-    this._serverExecutionContext.updateWithResource('/code_attendees_last_send');
+    this._serverExecutionContext.updateWithResource(this._attendeesLastSendResource);
     this._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
   },  
   

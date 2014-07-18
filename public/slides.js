@@ -230,7 +230,11 @@ var CodeSlide = function(node, slideshow) {
   this._editor = new Editor(this._node.querySelector('#code_input'));
   this._authorBar = new AuthorBar(this._node.querySelector('.code_author'));
   this._standardOuput = new StandardOutput(this._node.querySelector('#code_output'));
-
+  
+  this._runResource = '/code_run_result';
+  this._sendResource = '/code_send_result';
+  this._getAndRunResource = '/code_get_last_send_to_blackboard'    
+  this._updateResource = '/code_last_execution'    
 };
 
 CodeSlide.prototype = {
@@ -310,14 +314,6 @@ CodeSlide.prototype = {
   slideShowType: function() {
     if (this._slideshow) return this._slideshow.slideShowType;
   },
-
-  runResource: function() {
-    if (this._slideshow) { return this._slideshow._runResource; } else { return '/code_run_result' };
-  },
-  
-  sendResource: function() {
-    if (this._slideshow) { return this._slideshow._sendResource; } else { return '/code_send_result' };
-  },
   
   executeCodeAt: function(url) {
     if (this.codeToExecute() == '' ) return;
@@ -328,16 +324,16 @@ CodeSlide.prototype = {
   },
   
   executeCode: function() {
-    this.executeCodeAt(this.runResource());
+    this.executeCodeAt(this._runResource);
     if (this.slideShowType() != 'blackboard') this._authorBar.refreshWithSessionID();
   },
   
   executeAndSendCode: function() {
-    this.executeCodeAt(this.sendResource());
+    this.executeCodeAt(this._sendResource);
   },
 
   getAndExecuteCode: function() {
-    this._serverExecutionContext.updateWithResource('/code_get_last_send_to_blackboard');
+    this._serverExecutionContext.updateWithResource(this._getAndRunResource);
     if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
       this._editor.updateWithText(this._serverExecutionContext.code);
       this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
@@ -345,18 +341,9 @@ CodeSlide.prototype = {
     }
   },
   
-  executionContextResourceURL: function() {
-    if (this.slideShowType() == 'blackboard') {
-      return '/code_get_last_send_to_blackboard';
-    } else {
-      return '/code_last_execution';
-    }
-    
-  },  
-  
   _update: function(slide_index, slideShowType) {
     this.showCodeHelper(slide_index);
-    this._serverExecutionContext.updateWithResource(this.executionContextResourceURL());
+    this._serverExecutionContext.updateWithResource(this._updateResource);
     if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
         this._editor.updateWithText(this._serverExecutionContext.code); 
         this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);       
