@@ -256,23 +256,23 @@ describe("IDE RUN & SEND BUTTON", function() {
   
 });
   
-describe("IDE GET & RUN", function() {   
+//~ describe("IDE GET & RUN", function() {   
   
-  beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);    
-    IDESlide = new CodeSlide(slideNode);
-    spyOn(CodeSlide.prototype ,"executeCodeAt");  
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'LAST SEND TO BLACKBOARD', "code_to_add": ''});    
-  });
+  //~ beforeEach(function () {
+    //~ slideNode = sandbox(IDE_slide_html);    
+    //~ IDESlide = new CodeSlide(slideNode);
+    //~ spyOn(CodeSlide.prototype ,"executeCodeAt");  
+    //~ spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'LAST SEND TO BLACKBOARD', "code_to_add": ''});    
+  //~ });
   
-  it("should run last send to blackboard", function() {
-    IDESlide.getAndExecuteCode();
+  //~ it("should run last send to blackboard", function() {
+    //~ IDESlide.getAndExecuteCode();
     
-    expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
-    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
-  });
+    //~ expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
+    //~ expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
+  //~ });
 
-});  
+//~ });  
   
 describe("IDE GET & RUN BUTTON", function() {  
   
@@ -314,6 +314,13 @@ describe("TEACHER IDE GET LAST SEND", function() {
     slide = new TeacherCodeSlide(slideNode);
     spyOn(TeacherCodeSlide.prototype ,"executeCodeAt");   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
+  });   
+  
+  it("should be triggered when GET LAST SEND BUTTON clicked", function() {  
+    slideNode.querySelector('#get_last_send').click();
+
+    expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_attendees_last_send/0');   
+    expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_send_result');   
   });   
   
   it("should be triggered when ALT-N pressed", function() {
