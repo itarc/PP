@@ -162,49 +162,48 @@ describe("IDE EXECUTE AT", function() {
   
 }); 
 
+//~ describe("IDE RUN", function() {
+  
+  //~ beforeEach(function () {
+    //~ slideNode = sandbox(IDE_slide_html);
+    //~ IDESlide = new CodeSlide(slideNode);
+    //~ IDESlide._editor.updateWithText("CODE TO RUN");
+  //~ });
+  
+  //~ it("should run code at RUN URL", function() {
+    //~ IDESlide.executeCode();
+	  
+    //~ expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'CODE TO RUN', SYNCHRONOUS);
+  //~ }); 
+  
+//~ });  
+  
 describe("IDE RUN", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
-    IDESlide = new CodeSlide(slideNode);
-    IDESlide._editor.updateWithText("CODE TO RUN");
-  });
-  
-  it("should run code at RUN URL", function() {
-    IDESlide.executeCode();
-	  
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', 'CODE TO RUN', SYNCHRONOUS);
-  }); 
-  
-});  
-  
-describe("IDE RUN BUTTON", function() {
-  
-  beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);
     IDESlide = new CodeSlide(slideNode);  
-    IDESlide._editor.updateWithText('CODE TO RUN WITH A BUTTON');
-    spyOn(CodeSlide.prototype ,"executeCode");
+    spyOn(CodeSlide.prototype ,"executeCodeAt");
   });  
 
-  it("should run code when RUN BUTTON clicked", function() {
+  it("should be triggered when RUN BUTTON clicked", function() {
     slideNode.querySelector('#execute').click();
 
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1); 
+    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
   });
   
-  it("should run code when ALT-R pressed", function() {
+  it("should be triggered when ALT-R pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 	  
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(1);
+    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');
   });  
 
-  it("should NOT run code when ALT-R disabled", function() {
+  it("should NOT be triggered when ALT-R disabled", function() {
     slideNode.querySelector('#execute').setAttribute("disabled", true);
 	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);  
+    expect(CodeSlide.prototype.executeCodeAt).not.toHaveBeenCalled();
   });
   
 });
@@ -230,7 +229,7 @@ describe("IDE RUN & SEND BUTTON", function() {
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
     IDESlide = new CodeSlide(slideNode);
-    IDESlide._editor.updateWithText('CODE TO RUN & SEND WITH A BUTTON');    
+    //~ IDESlide._editor.updateWithText('CODE TO RUN & SEND WITH A BUTTON');    
     spyOn(CodeSlide.prototype ,"executeCodeAt");
   });
 
