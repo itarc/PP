@@ -42,25 +42,10 @@ Position.prototype = {
 // SLIDESHOW CLASS
 // ----------------------------------  
 var SlideShow = function(slides) {
-  var _t = this;
-  
-  this._slides = (slides).map(function(element) { 
-	  if (element.querySelector('#execute') != null) { return new CodeSlide(element, _t); };
-	  if (element.querySelector('.poll_response_rate') != null) { return new PollSlide(element, _t); };
-    return new Slide(element, _t); 
-  });
-  this._numberOfSlides = this._slides.length;
-  this._currentSlide = this._slides[0];  
-
-
-  document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );
-
-  this.position = new Position();
-  this._refreshPosition();
-  this._showCurrentSlide();
-
+  this.initEvents();
+  this.initSlides(slides);
+  this.initCurrentSlidePosition();
 };
-
 
 
 SlideShow.prototype = {
@@ -68,7 +53,28 @@ SlideShow.prototype = {
   _currentSlide : undefined,
   _numberOfSlides : 0,
 
+  initEvents: function() {
+    var _t = this;    
+    document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );
+  },
+  
+  initSlides: function(slides) {
+    var _t = this;
+    this._slides = (slides).map(function(element) { 
+      if (element.querySelector('#execute') != null) { return new CodeSlide(element, _t); };
+      if (element.querySelector('.poll_response_rate') != null) { return new PollSlide(element, _t); };
+      return new Slide(element, _t); 
+    });
+    this._numberOfSlides = this._slides.length;
+  },  
 
+  initCurrentSlidePosition: function() {
+    this._currentSlide = this._slides[0];
+    this.position = new Position();
+    this._refreshPosition();
+    this._showCurrentSlide();
+  },  
+  
   handleKeys: function(e) {
     preventDefaultKeys(e);
   },
