@@ -584,7 +584,7 @@ code_ouput +
 FOOTER
 
 
-describe("TEACHER IDE", function() {  
+describe("TEACHER IDE Author Bar", function() {  
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_last_send_attendee_name_html);
@@ -600,23 +600,17 @@ describe("TEACHER IDE", function() {
   });     
    
    
-  it("should display last send attendee name", function() {
+  it("should display the author name of the last send on server", function() {
     getResource = jasmine.createSpy('getResource').andReturn('a name');
     
-    slide._updateLastSendAttendeeName();
+    slide._update(0);
     
     expect(slideNode.querySelector('#last_send_attendee_name').innerHTML.replace(/&gt;/g, '>')).toBe("a name >> "); 
   }); 
 
-  it("should display author name when teacher displays last send", function() {
-
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
-    postResource = jasmine.createSpy('postResource')
-    
+  it("should display the author name of the last send in editor", function() {
+    getResource = jasmine.createSpy('getResource').andReturn('a name');   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee name', code: 'code sent'});     
-
-    var slide = new CodeSlide(slideNode);
-    
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
     
     slideNode.querySelector('#get_last_send').click();
@@ -625,42 +619,25 @@ describe("TEACHER IDE", function() {
 
   });
   
-  it("should display author name when teacher displays last send even if last send is the same in editor", function() {
-
+  it("should display the author name of the last send in editor even if the code on server is the same in editor", function() {
     getResource = jasmine.createSpy('getResource').andReturn('a name');
-    postResource = jasmine.createSpy('postResource')
-    
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee name', code: 'code sent'});       
-
-    var slide = new CodeSlide(slideNode);
-    
-    slideNode.querySelector('#code_input').value = "code sent"
+    slide._editor.updateWithText("code sent");
     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
     
     slideNode.querySelector('#get_last_send').click();
     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("attendee name");
-
   });  
   
-  it("should display teacher session ID when teacher execute code", function() {
-
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
-    postResource = jasmine.createSpy('postResource')
-
-    var slide = new TeacherCodeSlide(slideNode);
-    
-    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
-    
+  it("should display teacher session ID when teacher executes code", function() {
+    slide._editor.updateWithText("code to execute");
     slideNode.querySelector('#author_name').innerHTML = 'a name to replace';
-    
-    slide._editor.updateWithText("code to execute");    
     
     slideNode.querySelector('#execute').click();
     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");    
-
   });  
    
 });     
