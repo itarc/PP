@@ -512,7 +512,7 @@ buttons +
 code_ouput + 
 FOOTER
 
-describe("ATTENDEE IDE UPDATE Author Bar", function() {  
+describe("ATTENDEE IDE Author Bar", function() {  
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_attendee_name_field_html);
@@ -609,7 +609,7 @@ describe("TEACHER IDE Author Bar", function() {
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("attendee name");
   });  
   
-  it("should display teacher session ID when teacher executes code", function() {
+  it("should replace author name with teacher session ID when teacher executes code", function() {
     slide._editor.updateWithText("code to execute");
     slideNode.querySelector('#author_name').innerHTML = 'a name to replace';
     
