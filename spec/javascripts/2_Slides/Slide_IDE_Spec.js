@@ -512,7 +512,7 @@ buttons +
 code_ouput + 
 FOOTER
 
-describe("IDE UPDATE Author Bar", function() {  
+describe("ATTENDEE IDE UPDATE Author Bar", function() {  
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_attendee_name_field_html);
