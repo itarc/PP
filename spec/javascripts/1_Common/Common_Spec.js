@@ -36,6 +36,36 @@ describe("Common GET", function() {
 	  
   });  
   
+  it("should GET ASynchronous", function() {
+
+    spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
+    spyOn(XMLHttpRequest.prototype, 'send')	  
+    
+    function callback(response) {
+      return false;
+    }    
+    
+    callbackSpy = jasmine.createSpy('callback')
+	  
+    getResponse = getResource('/teacher_current_slide', ASYNCHRONOUS, callback)
+
+    expect(XMLHttpRequest.prototype.open).toHaveBeenCalled()
+    expect(XMLHttpRequest.prototype.open.calls.length).toBe(1)	  
+    expect(XMLHttpRequest.prototype.open).toHaveBeenCalledWith('GET', '/teacher_current_slide', ASYNCHRONOUS, callback)
+    expect(XMLHttpRequest.prototype.send).toHaveBeenCalled()  
+    expect(XMLHttpRequest.prototype.send.calls.length).toBe(1)  
+    expect(getResponse).toBeUndefined()
+
+    //~ waitsFor(function() {
+      //~ return callback();
+    //~ }, "the spreadsheet calculation to complete", 10000);
+    
+    //~ waits(1500);    
+    
+    //~ expect(callbackSpy).toHaveBeenCalled()
+	  
+  });   
+  
   it("should concatenate url with global variable SERVER_PATH", function() {
 
     spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()

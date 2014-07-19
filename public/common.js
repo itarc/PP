@@ -45,11 +45,24 @@ var postResource = function(path, params, synchronous_asynchronous) {
   return xmlhttp.responseText;
 };
 
-var getResource = function(path) {
+var getResource = function(path, synchronous_asynchronous, callback) {
   var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", SERVER_PATH + path, false);
-  xmlhttp.send();
-  return xmlhttp.responseText;
+
+  if (synchronous_asynchronous == ASYNCHRONOUS) {    
+    xmlhttp.onreadystatechange=function()
+    {
+      if (xmlhttp.readyState==4 && xmlhttp.status==200)
+      {
+        callback.call(this, xmlhttp.responseText);
+      }
+    }
+    xmlhttp.open("GET", SERVER_PATH + path, true, callback);
+    xmlhttp.send();    
+  } else {
+    xmlhttp.open("GET", SERVER_PATH + path, false);
+    xmlhttp.send();    
+    return xmlhttp.responseText;
+  }
 };
 
 var preventDefaultKeys = function(e) {};
