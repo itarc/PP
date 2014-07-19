@@ -29,12 +29,12 @@ var TeacherCodeSlide = function(node, slideshow) {
 TeacherCodeSlide.prototype = {
 
   _keyHandling: function(e) {
-    if ( e.altKey ) { 
+    if ( e.altKey ) {
+      CodeSlide.prototype._bindKeys.call(this, e);
       if (e.which == N) { this._node.querySelector('#get_last_send').click();}
     } else {
       e.stopPropagation()
-    }     
-    CodeSlide.prototype._keyHandling.call(this);    
+    }    
   }, 
   
   _declareEvents: function() {

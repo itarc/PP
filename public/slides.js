@@ -253,13 +253,17 @@ CodeSlide.prototype = {
     preventDefaultKeys(e);
     
     if ( e.altKey ) { 
-      if (e.which == R) { this._node.querySelector('#execute').click(); }
-      if (e.which == S) { this._node.querySelector('#send_code').click(); }
-      if (e.which == G) { this._node.querySelector('#get_code').click(); }
-      if (e.which == N) { this._node.querySelector('#get_last_send').click();}
+      this._bindKeys(e);
     } else {
       e.stopPropagation()
     }    
+  },
+  
+  _bindKeys: function(e) {  
+      if (e.which == R) { this._node.querySelector('#execute').click(); }
+      if (e.which == S) { this._node.querySelector('#send_code').click(); }
+      if (e.which == G) { this._node.querySelector('#get_code').click(); }
+      if (e.which == N) { this._node.querySelector('#get_last_send').click();}    
   },
   
   _declareEvents: function() {  

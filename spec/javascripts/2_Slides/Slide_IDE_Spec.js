@@ -160,74 +160,76 @@ describe("IDE EXECUTE AT", function() {
     expect(postResource).toHaveBeenCalledWith('/url/1', 'CODE', SYNCHRONOUS);    
   });  
   
-});  
-  
-describe("IDE RUN", function() {
+});
+
+describe("BLACKBOARD IDE RUN", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
-    IDESlide = new CodeSlide(slideNode);  
-    spyOn(CodeSlide.prototype ,"executeCodeAt");
-  });  
-
-  it("should be triggered when RUN BUTTON clicked", function() {
-    slideNode.querySelector('#execute').click();
-
-    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
+    IDESlide = new BlackboardCodeSlide(slideNode);  
+    spyOn(BlackboardCodeSlide.prototype ,"executeCodeAt");
   });
-  
-  it("should be triggered when ALT-R pressed", function() {
-    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
-	  
-    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');
-  });  
 
   it("should NOT be triggered when ALT-R disabled", function() {
     slideNode.querySelector('#execute').setAttribute("disabled", true);
 	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 
-    expect(CodeSlide.prototype.executeCodeAt).not.toHaveBeenCalled();
+    expect(BlackboardCodeSlide.prototype.executeCodeAt).not.toHaveBeenCalled();
   });
   
 });
   
-describe("IDE RUN & SEND BUTTON", function() {   
+describe("ATTENDEE IDE RUN", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
-    IDESlide = new CodeSlide(slideNode);  
-    spyOn(CodeSlide.prototype ,"executeCodeAt");
+    IDESlide = new AttendeeCodeSlide(slideNode);  
+    spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");
+  });  
+
+  it("should be triggered when RUN BUTTON clicked", function() {
+    slideNode.querySelector('#execute').click();
+
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
+  });
+  
+  it("should be triggered when ALT-R pressed", function() {
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
+	  
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');
+  });
+  
+});
+  
+describe("ATTENDEE IDE RUN & SEND BUTTON", function() {   
+  
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new AttendeeCodeSlide(slideNode);  
+    spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");
   });
 
   it("should be triggered when SEND BUTTON clicked", function() {  
     slideNode.querySelector('#send_code').click();
 
-    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_send_result');      
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_send_result');      
   });  
   
   it("should rbe triggered when ALT-S pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
 	  
-    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_send_result');
-  }); 
-
-  it("should NOT be triggered when ALT-S button disabled", function() {
-    slideNode.querySelector('#send_code').setAttribute("disabled", true);
-	  
-    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
-
-    expect(CodeSlide.prototype.executeCodeAt).not.toHaveBeenCalled();
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_send_result');
   });
   
 });
-  
-describe("IDE GET & RUN BUTTON", function() {  
+
+describe("ATTENDEE IDE GET & RUN BUTTON", function() {  
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html);
-    IDESlide = new CodeSlide(slideNode);
-    spyOn(CodeSlide.prototype ,"executeCodeAt");   
+    IDESlide = new AttendeeCodeSlide(slideNode);
+    spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'CODE ON BLACKBOARD', "code_to_add": ''});     
   });  
   
@@ -235,15 +237,86 @@ describe("IDE GET & RUN BUTTON", function() {
     slideNode.querySelector('#get_code').click();
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
-    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
   });  
   
   it("should be triggered when ALT-G pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
-    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
-  });    
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
+  });
+
+});
+
+describe("ATTENDEE IDE GET LAST SEND", function() { 
+  
+    beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);    
+    slide = new AttendeeCodeSlide(slideNode);
+    spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");   
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
+  });
+  
+  it("should NOT be triggered when ALT-N BUTTON not present", function() {
+    slideNode.querySelector('section').removeChild(slideNode.querySelector('section').querySelector('#get_last_send'));
+    
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
+
+    expect(ServerExecutionContext.prototype.getContextOnServer).not.toHaveBeenCalled();   
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).not.toHaveBeenCalled();
+  });  
+  
+});
+
+describe("TEACHER IDE RUN", function() {
+  
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new TeacherCodeSlide(slideNode);  
+    spyOn(TeacherCodeSlide.prototype ,"executeCodeAt");
+  });  
+
+  it("should be triggered when RUN BUTTON clicked", function() {
+    slideNode.querySelector('#execute').click();
+
+    expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
+  });
+  
+  it("should be triggered when ALT-R pressed", function() {
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
+	  
+    expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');
+  });
+  
+});
+
+describe("TEACHER IDE RUN & SEND BUTTON", function() {   
+  
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new TeacherCodeSlide(slideNode);  
+    spyOn(TeacherCodeSlide.prototype ,"executeCodeAt");
+  }); 
+
+  it("should NOT be triggered when ALT-S button disabled", function() {
+    slideNode.querySelector('#send_code').setAttribute("disabled", true);
+	  
+    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
+
+    expect(TeacherCodeSlide.prototype.executeCodeAt).not.toHaveBeenCalled();
+  });
+  
+});
+
+describe("TEACHER IDE GET & RUN BUTTON", function() {  
+  
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new CodeSlide(slideNode);
+    spyOn(CodeSlide.prototype ,"executeCodeAt");   
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'CODE ON BLACKBOARD', "code_to_add": ''});     
+  });
   
   it("should NOT be triggered when ALT-G disabled", function() {
     slideNode.querySelector('#get_code').setAttribute("disabled", true);    
@@ -254,7 +327,7 @@ describe("IDE GET & RUN BUTTON", function() {
   });
 
 });
-  
+
 describe("TEACHER IDE GET LAST SEND", function() {   
   
   beforeEach(function () {
@@ -276,16 +349,7 @@ describe("TEACHER IDE GET LAST SEND", function() {
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_attendees_last_send/0');   
     expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_send_result');       
-  });  
-  
-  it("should NOT be triggered when ALT-N BUTTON not present", function() {
-    slideNode.querySelector('section').removeChild(slideNode.querySelector('section').querySelector('#get_last_send'));
-    
-    __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
-
-    expect(ServerExecutionContext.prototype.getContextOnServer).not.toHaveBeenCalled();   
-    expect(TeacherCodeSlide.prototype.executeCodeAt).not.toHaveBeenCalled();
-  });  
+  });
 
 });
 
