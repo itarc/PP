@@ -512,60 +512,38 @@ buttons +
 code_ouput + 
 FOOTER
 
-describe("IDE UPDATE with attendee name to type in", function() {  
+describe("IDE UPDATE Author Bar", function() {  
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_attendee_name_field_html);
+    getResource = jasmine.createSpy('getResource').andReturn('a name');
+    slide = new CodeSlide(slideNode);    
    });	  
    
-  it("should display session id when initialized", function() {
-
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
-
-    var slide = new CodeSlide(slideNode);
-	  
+  it("should display login when initialized", function() {	  
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");  
-
   });
   
-  it("should display new name and save new session id when user types a new name", function() {
-
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
-    postResource = jasmine.createSpy('postResource')
-
-    var slide = new CodeSlide(slideNode);
+  it("should display new login and save it", function() {
+    postResource = jasmine.createSpy('postResource');
     
     slideNode.querySelector('#attendee_name').value = 'a new name';
-    
     __triggerKeyboardEvent(slideNode.querySelector('#attendee_name'), RETURN);
     
     expect(postResource).toHaveBeenCalledWith("session_id/attendee_name", "attendee_name=a new name", SYNCHRONOUS);     
-    
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a new name");    
-
   });
   
-  it("should keep new session id when attendee execute code", function() {
-
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
-    postResource = jasmine.createSpy('postResource')
-
-    var slide = new CodeSlide(slideNode);
-    
-    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");      
-    
+  it("should keep displaying login when attendee executes code", function() {
     slideNode.querySelector('#attendee_name').value = 'a new name';
-    
     __triggerKeyboardEvent(slideNode.querySelector('#attendee_name'), RETURN);
     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a new name");  
 
-    slide._editor.updateWithText("code to execute");    
-    
+    slide._editor.updateWithText("code to execute");
     slideNode.querySelector('#execute').click();
     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a new name");    
-
   }); 
 
 });  
