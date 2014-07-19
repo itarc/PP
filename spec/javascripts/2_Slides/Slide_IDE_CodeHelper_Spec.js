@@ -50,3 +50,27 @@ describe("Code Helper (Mini-slide)", function() {
   });  
   
 });
+
+describe("IDE CODE HELPERS", function() {
+
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_html);
+    IDESlide = new CodeSlide(slideNode);  
+  });
+
+  it("should show the right code helper", function() {
+    expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper');
+    expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper');   
+    
+    IDESlide.showCodeHelper(0);
+
+    expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper current');
+    expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper');
+	  
+    IDESlide.showCodeHelper(1);	
+
+    expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper');
+    expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper current');  
+  });
+  
+});
