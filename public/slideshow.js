@@ -6,7 +6,6 @@ var Position = function() {
   this._IDEDisplayed  = false;
   this._previousIndex = undefined;
   this._previousIDEDisplayed = undefined;
-  this.slideShowType = undefined;
 };
 
 Position.prototype = {
@@ -44,12 +43,15 @@ Position.prototype = {
 var SlideShow = function(slides) {
   this.initEvents();
   this.initSlides(slides);
-  this.initCurrentSlidePosition();
+  this.initPosition();
+  this._showCurrentSlide();  
 };
 
 
 SlideShow.prototype = {
   _slides : [],
+  _currentSlideIndex: 0,
+  _IDEDisplayed: false,
   _currentSlide : undefined,
   _numberOfSlides : 0,
 
@@ -68,11 +70,12 @@ SlideShow.prototype = {
     this._numberOfSlides = this._slides.length;
   },  
 
-  initCurrentSlidePosition: function() {
-    this._currentSlide = this._slides[0];
+  initPosition: function() {
     this.position = new Position();
     this._refreshPosition();
-    this._showCurrentSlide();
+    this._currentSlideIndex = this.position.slideIndex;
+    this._IDEDisplayed = this.position.IDEDisplayed;
+    this._currentSlide = this._slides[0];
   },  
   
   handleKeys: function(e) {
