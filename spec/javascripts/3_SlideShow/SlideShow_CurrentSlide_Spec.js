@@ -38,11 +38,12 @@ describe("SlideShow Current Slide Index", function() {
   
   beforeEach(function () {
     setFixtures("<div class='slides'><div class='slide'/><div class='slide'/><div class='slide'/></div>")	 
+    spyOn(Position.prototype, 'getPosition').andReturn("1");
     slideShow = new SlideShow(queryAll(document, '.slide'));
   });
 
   it("should be SERVER index when initialized", function() {
-    expect(slideShow.position._currentIndex).toBe(0)
+    expect(slideShow._currentIndex).toBe(1);
   });  
 	
   it("should be NEXT index when next slide is called", function() {

@@ -10,8 +10,12 @@ var Position = function() {
 
 Position.prototype = {
   
+  getPosition: function() {
+    return getResource('/teacher_current_slide');
+  },
+  
   _synchronise: function() {
-    serverData = getResource('/teacher_current_slide');
+    serverData = this.getPosition();
     if (serverData) {
       serverIndex = parseInt(serverData.split(';')[0]);
       if ( is_a_number(serverIndex) ) {
@@ -50,7 +54,7 @@ var SlideShow = function(slides) {
 
 SlideShow.prototype = {
   _slides : [],
-  _currentSlideIndex: 0,
+  _currentIndex: 0,
   _IDEDisplayed: false,
   _currentSlide : undefined,
   _numberOfSlides : 0,
@@ -73,8 +77,8 @@ SlideShow.prototype = {
   initPosition: function() {
     this.position = new Position();
     this._refreshPosition();
-    this._currentSlideIndex = this.position.slideIndex;
-    this._IDEDisplayed = this.position.IDEDisplayed;
+    this._currentIndex = this.position._currentIndex;
+    this._IDEDisplayed = this.position._IDEDisplayed;
     this._currentSlide = this._slides[0];
   },  
   
