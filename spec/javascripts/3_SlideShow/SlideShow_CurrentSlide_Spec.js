@@ -34,14 +34,18 @@ describe("SlideShow Current Slide", function() {
   
 });  
   
-describe("SlideShow Current Slide Navigation", function() {
+describe("SlideShow Current Slide Index", function() {
   
   beforeEach(function () {
     setFixtures("<div class='slides'><div class='slide'/><div class='slide'/><div class='slide'/></div>")	 
     slideShow = new SlideShow(queryAll(document, '.slide'));
+  });
+
+  it("should be SERVER index when initialized", function() {
+    expect(slideShow.position._currentIndex).toBe(0)
   });  
 	
-  it("should be next slide when next slide is called", function() {
+  it("should be NEXT index when next slide is called", function() {
     slideShow.position._currentIndex = 1;
     slideShow._numberOfSlides = 3;	  
 
@@ -50,7 +54,7 @@ describe("SlideShow Current Slide Navigation", function() {
     expect(slideShow.position._currentIndex).toBe(2)
   });
   
-  it("should be previous slide when previous slide is called", function() {	  
+  it("should be PREVIOUS index when previous slide is called", function() {	  
     slideShow.position._currentIndex = 2;
     slideShow._numberOfSlides = 3;	  
 
