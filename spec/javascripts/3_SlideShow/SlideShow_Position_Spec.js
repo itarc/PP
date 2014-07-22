@@ -9,6 +9,15 @@ describe("Slide Position", function() {
     expect(position._IDEDisplayed).toBe(false);
   });
   
+  it("should not change if server unavailable", function() {
+    position._synchronise(); // Can not call the server since getResource is not spyed 
+
+    slideShow._refreshPosition(); 
+
+    expect(position._currentIndex).toBe(0);
+    expect(position._IDEDisplayed).toBe(false);  
+  });  
+  
   it("should NOT be updated when slideIndex is unknown", function() {
     getResource = jasmine.createSpy('getResource').andReturn('UNKNOWN;true');
     

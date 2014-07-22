@@ -57,7 +57,7 @@ describe("AttendeeSlideShow KeyHandling", function() {
 
     __triggerKeyboardEvent(document, F5);
 
-    expect(preventDefaultKeys.calls.length).toBe(33); // SHOULD BE 1 => TO REVIEW
+    expect(preventDefaultKeys.calls.length).toBe(32); // SHOULD BE 1 => TO REVIEW
 
   });  
   
