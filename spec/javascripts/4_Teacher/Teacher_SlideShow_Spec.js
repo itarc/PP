@@ -13,9 +13,7 @@ describe("TeacherSlideShow Navigation with 3 Slides (No IDE)", function() {
     teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
   });  
 
-  it("should open on first slide", function() {
-    expect(teacherSlideShow._slides.length).toBe(3);	  
-
+  it("should be on first slide when initialized", function() {
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide current')
     expect(teacherSlideShow._slides[1]._node.className).toBe('slide')	  
     expect(teacherSlideShow._slides[2]._node.className).toBe('slide')
@@ -57,7 +55,17 @@ describe("TeacherSlideShow Navigation with 3 Slides (No IDE)", function() {
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide current')
     expect(teacherSlideShow._slides[1]._node.className).toBe('slide')
     expect(teacherSlideShow._slides[2]._node.className).toBe('slide')	  
-  })
+  });
+  
+  it("should go to first slide when HOME pressed", function() {
+    __triggerKeyboardEvent(document, RIGHT_ARROW)
+    __triggerKeyboardEvent(document, RIGHT_ARROW)
+    __triggerKeyboardEvent(document, HOME)
+	  
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current')
+    expect(teacherSlideShow._slides[1]._node.className).toBe('slide')
+    expect(teacherSlideShow._slides[2]._node.className).toBe('slide')	 
+  });   
   
   it("should NOT show last slide when arrow down pressed", function() {
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
@@ -134,6 +142,14 @@ describe("TeacherSlideShow Position (includes IDE)", function() {
     expect(Position.prototype.postPosition).toHaveBeenCalledWith(0, false);    
   });   
   
+  it("should be posted on server when teacher goes HOME", function() {
+    teacherSlideShow.next();
+    teacherSlideShow.home();
+
+    expect(Position.prototype.postPosition.calls.length).toBe(3);  // init + next + home  
+    expect(Position.prototype.postPosition).toHaveBeenCalledWith(0, false);  // should check if Third call (home) is the good call
+  });  
+  
 });
 
 describe("TeacherSlideShow Navigation With 3 Slides (includes IDE Slide)", function() {
@@ -203,7 +219,7 @@ describe("TeacherSlideShow IDE", function() {
     spyOn(Position.prototype, "getPosition").andReturn('0;true'); // POSITION SHOULD HAVE CHANGED TO ALLOW UPDATE
     __triggerKeyboardEvent(document, SPACE);
 
-    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(12); // SHOULD BE 2 => To Review
+    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(13); // SHOULD BE 2 => To Review
   });
   
 });

@@ -35,10 +35,6 @@ Position.prototype = {
     }
   },
   
-  postCurrentIndex: function() {  
-    this.postPosition(this._currentIndex, this._IDEDisplayed);  
-  }, 
-  
   hasChanged: function() {
     return this._currentIndex != this._previousIndex || this._IDEDisplayed != this._previousIDEDisplayed
   },
@@ -132,22 +128,22 @@ SlideShow.prototype = {
     this._refreshPosition();  
     if (this.position.hasChanged()) { this._showCurrentSlide(); this._updateCurrentSlide();}
   },
-
-  prev: function() {
-    if (this.position._currentIndex <= 0) return;
-    this.position._currentIndex -= 1;
-    this._showCurrentSlide();	 
-    this._updateCurrentSlide();    
-    this.position.postCurrentIndex();
-  },
-
+  
   next: function() {
     if (this.position._currentIndex >= (this._numberOfSlides - 1) ) return;
     if (this._slides[this.position._currentIndex+1] && this._slides[this.position._currentIndex+1]._isCodingSlide()) return;		  
     this.position._currentIndex += 1;		  
     this._showCurrentSlide();
     this._updateCurrentSlide();    
-    this.position.postCurrentIndex();    
+    this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);    
+  },  
+
+  prev: function() {
+    if (this.position._currentIndex <= 0) return;
+    this.position._currentIndex -= 1;
+    this._showCurrentSlide();	 
+    this._updateCurrentSlide();    
+    this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
   },
   
   down: function() {
@@ -155,14 +151,24 @@ SlideShow.prototype = {
     this.position._IDEDisplayed = true;
     this._showCurrentSlide(); 
     this._updateCurrentSlide();    
-    this.position.postCurrentIndex();
+    this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
   },
   
   up: function() {
     this.position._IDEDisplayed = false;	  
     this._showCurrentSlide();
     this._updateCurrentSlide();    
-    this.position.postCurrentIndex();     
+    this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);       
   },
+  
+  home: function() {
+    //~ this._showCurrentSlide();
+    //~ this._updateCurrentSlide();    
+    //~ this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);       
+    this.position._currentIndex = 0;
+    this._showCurrentSlide();
+    this._updateCurrentSlide();
+    this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);
+  },  
   
 };

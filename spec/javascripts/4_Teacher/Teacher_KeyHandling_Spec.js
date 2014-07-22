@@ -1,7 +1,6 @@
 describe("TeacherSlideShow KeyHandling", function() {
 
   it("should detect key pressed", function() {
-
     spyOn(TeacherSlideShow.prototype, 'handleKeys');
 	  
     expect(TeacherSlideShow.prototype.handleKeys.calls.length).toBe(0);
@@ -70,8 +69,18 @@ describe("TeacherSlideShow KeyHandling", function() {
 
     expect(TeacherSlideShow.prototype.up.calls.length).toBe(1);    
 
-  });  
+  });
+  
+  it("should call home when HOME pressed", function() {
+    spyOn(TeacherSlideShow.prototype, 'home');
 
+    expect(TeacherSlideShow.prototype.home.calls.length).toBe(0);
+	  
+    __triggerKeyboardEvent(document, HOME);
+
+    expect(TeacherSlideShow.prototype.home.calls.length).toBe(1);    
+  });
+  
   it("should refresh position and show current slide (F5) when space pressed", function() {
 
     spyOn(TeacherSlideShow.prototype, '_refreshPosition');

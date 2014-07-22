@@ -96,7 +96,7 @@ var TeacherSlideShow = function(slides) {
   this._runResource = '/code_run_result'; 
   this._sendResource = '/code_send_result'
   this._updateResource = '/code_last_execution'  
-  this.position.postCurrentIndex();
+  this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
   this._updateCurrentSlide();  
 };
 
@@ -129,10 +129,7 @@ TeacherSlideShow.prototype = {
         this._updateCurrentSlide(); 
       break;	
       case HOME:  
-        this.position._currentIndex = 0;
-        this._showCurrentSlide();
-        this._updateCurrentSlide();
-        this.position.postCurrentIndex();      
+        this.home();     
       break;		    
     }
   },	
