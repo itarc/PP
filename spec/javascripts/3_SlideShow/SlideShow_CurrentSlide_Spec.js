@@ -57,7 +57,7 @@ describe("SlideShow Current Slide Index", function() {
   });
 
   it("should be SERVER index when initialized", function() {
-    expect(slideShow._currentIndex).toBe(1);
+    expect(slideShow.position._currentIndex).toBe(1);
   });  
 	
   it("should be NEXT index when next slide is called", function() {

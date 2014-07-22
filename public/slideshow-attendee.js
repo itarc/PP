@@ -38,23 +38,21 @@ for(key in CodeSlide.prototype) {
 var AttendeeSlideShow = function(slides) {
   //~ SlideShow.call(this, slides); // SUPER CONSTRUCTOR NOT CALLED
   
+  SlideShow.prototype.initEvents.call(this);  
+  
   var _t = this;
   this._slides = (slides).map(function(element) { 
 	  if (element.querySelector('#execute') != null) { return new AttendeeCodeSlide(element, _t); };
 	  if (element.querySelector('.poll_response_rate') != null) { return new AttendeePollSlide(element, _t); };
     return new Slide(element, _t); 
   });
+  this._numberOfSlides = this._slides.length;  
 
-  document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );
+  SlideShow.prototype.initPosition.call(this);  
   
-  this._numberOfSlides = this._slides.length;
-  this._currentSlide = this._slides[0];  
-  this.position = new Position();
-
-  this._refreshPosition();
+  this._currentSlide = this._slides[0];   
   this._showCurrentSlide();   
-  
-  this._updateCurrentSlide();    
+  this._updateCurrentSlide();
 };
 
 AttendeeSlideShow.prototype = {

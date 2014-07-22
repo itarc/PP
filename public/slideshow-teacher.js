@@ -75,6 +75,8 @@ for(key in CodeSlide.prototype) {
 // ----------------------------------
 var TeacherSlideShow = function(slides) {
   //~ SlideShow.call(this, slides);  // SUPER CONSTRUCTOR NOT CALLED
+
+  SlideShow.prototype.initEvents.call(this); 
   
   var _t = this;
   this._slides = (slides).map(function(element) { 
@@ -82,14 +84,11 @@ var TeacherSlideShow = function(slides) {
 	  if (element.querySelector('.poll_response_rate') != null) { return new TeacherPollSlide(element, _t); };
     return new Slide(element, _t); 
   });
-
-  document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );
-  
   this._numberOfSlides = this._slides.length;
-  this._currentSlide = this._slides[0];  
-  this.position = new Position();
 
-  this._refreshPosition();
+  SlideShow.prototype.initPosition.call(this);    
+  
+  this._currentSlide = this._slides[0];  
   this._showCurrentSlide();  
   this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
   this._updateCurrentSlide();  

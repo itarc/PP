@@ -37,20 +37,19 @@ for(key in CodeSlide.prototype) {
 var BlackboardSlideShow = function(slides) {
   //~ SlideShow.call(this, slides); // SUPER CONSTRUCTOR NOT CALLED
   
+  SlideShow.prototype.initEvents.call(this);  
+  
   var _t = this;
   this._slides = (slides).map(function(element) { 
 	  if (element.querySelector('#execute') != null) { return new BlackboardCodeSlide(element, _t); };
 	  if (element.querySelector('.poll_response_rate') != null) { return new BlackboardPollSlide(element, _t); };
     return new Slide(element, _t); 
-  });  
-
-  document.addEventListener('keydown', function(e) { _t.handleKeys(e); }, false );
+  });
+  this._numberOfSlides = this._slides.length;  
   
-  this._numberOfSlides = this._slides.length;
-  this._currentSlide = this._slides[0];  
-  this.position = new Position();
+  SlideShow.prototype.initPosition.call(this);    
 
-  this._refreshPosition();
+  this._currentSlide = this._slides[0];  
   this._showCurrentSlide();
   this._updateCurrentSlide();  
 };

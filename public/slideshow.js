@@ -48,6 +48,8 @@ var SlideShow = function(slides) {
   this.initEvents();
   this.initSlides(slides);
   this.initPosition();
+  
+  this._currentSlide = this._slides[0];
   this._showCurrentSlide();  
 };
 
@@ -77,9 +79,8 @@ SlideShow.prototype = {
   initPosition: function() {
     this.position = new Position();
     this._refreshPosition();
-    this._currentIndex = this.position._currentIndex;
-    this._IDEDisplayed = this.position._IDEDisplayed;
-    this._currentSlide = this._slides[0];
+    //~ this._currentIndex = this.position._currentIndex;
+    //~ this._IDEDisplayed = this.position._IDEDisplayed;
   },  
   
   handleKeys: function(e) {
