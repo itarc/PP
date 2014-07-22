@@ -45,6 +45,13 @@ describe("SlideShow Current Slide", function() {
 
     expect(slideShow._slides[slideShow.position._currentIndex]._node.className).toBe('slide current');
   });
+  
+  it("should be update when slideshow initialized", function() {
+    spyOn(SlideShow.prototype, "_updateCurrentSlide").andReturn('121;true');
+    var slideShow = new SlideShow(queryAll(document, '.slide'))
+
+    expect(SlideShow.prototype._updateCurrentSlide.calls.length).toBe(1);
+  });  
 
 }); 
   

@@ -51,6 +51,7 @@ var SlideShow = function(slides) {
   
   this._currentSlide = this._slides[0];
   this._showCurrentSlide();  
+  this._updateCurrentSlide();  
 };
 
 
@@ -162,10 +163,7 @@ SlideShow.prototype = {
     this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);       
   },
   
-  home: function() {
-    //~ this._showCurrentSlide();
-    //~ this._updateCurrentSlide();    
-    //~ this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);       
+  home: function() {      
     this.position._currentIndex = 0;
     this._showCurrentSlide();
     this._updateCurrentSlide();
