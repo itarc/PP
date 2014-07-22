@@ -92,38 +92,39 @@ describe("TeacherSlideShow Position (includes IDE)", function() {
   beforeEach(function() {
     setFixtures(TEACHER_SLIDESHOW_WITH_IDE);
     getResource = jasmine.createSpy('getResource').andReturn('0;false');
-    postResource = jasmine.createSpy('postResource');     
+    //~ spyOn(Position.prototype, "getPosition").andReturn('0;false');     
+    spyOn(Position.prototype, "postPosition");
     teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
   }); 
   
   it("should be posted on server when slideshow initialized", function() {    
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=false', ASYNCHRONOUS); 
+    expect(Position.prototype.postPosition).toHaveBeenCalledWith(0, false); 
   });  
   
   it("should be posted on server when teacher goes NEXT", function() {
     teacherSlideShow.next(); 
     
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '1' + '&' + 'ide_displayed=false', ASYNCHRONOUS);     
+    expect(Position.prototype.postPosition).toHaveBeenCalledWith(1, false);    
   });  
   
   it("should be posted on server when teacher goes DOWN", function() {
     teacherSlideShow.down();
     
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=true', ASYNCHRONOUS);         
+    expect(Position.prototype.postPosition).toHaveBeenCalledWith(0, true);    
   });  
 
   it("should be posted on server when teacher goes PREVIOUS", function() {   
     teacherSlideShow.next();
     teacherSlideShow.prev(); 
-    
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=false', ASYNCHRONOUS);        
+
+    expect(Position.prototype.postPosition).toHaveBeenCalledWith(0, false);      
   });   
   
   it("should be posted on server when teacher goes UP", function() {
     teacherSlideShow.down();
     teacherSlideShow.up();
-     
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=false', ASYNCHRONOUS);      
+
+    expect(Position.prototype.postPosition).toHaveBeenCalledWith(0, false);    
   });   
   
 });

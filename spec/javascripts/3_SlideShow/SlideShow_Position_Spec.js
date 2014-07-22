@@ -53,17 +53,25 @@ describe("Slide Position", function() {
     expect(position._currentIndex).toBe(1);
     expect(position._IDEDisplayed).toBe(false);
   });  
+  
+  it("should get slideshow position on server", function() {    
+    getResource = jasmine.createSpy('postResource').andReturn('1;false');
+    
+    p = position.getPosition();
+	  
+    expect(getResource.calls.length).toBe(1);
+    expect(getResource).toHaveBeenCalledWith('/teacher_current_slide');
+    expect(p).toBe('1;false');
+  });
 
   it("should post slideshow current position", function() {    
-    postResource = jasmine.createSpy('postResource');
-    position._currentIndex = 5;
-    position._IDEDisplayed = true     
+    postResource = jasmine.createSpy('postResource');   
 
-    position.postCurrentIndex();
+    position.postPosition(1, true);
 	  
     expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '5' + '&' + 'ide_displayed=' + true, ASYNCHRONOUS);
-  });   
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '1' + '&' + 'ide_displayed=' + true, ASYNCHRONOUS);
+  });  
   
   it("should tell if position has changed", function() {
     expect(position._currentIndex).toBe(0);

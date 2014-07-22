@@ -14,6 +14,10 @@ Position.prototype = {
     return getResource('/teacher_current_slide');
   },
   
+  postPosition: function(index, IDEDisplayed) {
+    postResource('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
+  },  
+  
   _synchronise: function() {
     serverData = this.getPosition();
     if (serverData) {
@@ -31,8 +35,8 @@ Position.prototype = {
     }
   },
   
-  postCurrentIndex: function() {
-    postResource('/teacher_current_slide', 'index=' +   this._currentIndex + '&' + 'ide_displayed=' + this._IDEDisplayed, ASYNCHRONOUS);  
+  postCurrentIndex: function() {  
+    this.postPosition(this._currentIndex, this._IDEDisplayed);  
   }, 
   
   hasChanged: function() {
