@@ -1,49 +1,9 @@
-describe("TeacherSlideShow Position (includes IDE)", function() {
-  
-  beforeEach(function() {
-    setFixtures(TEACHER_SLIDESHOW_WITH_IDE);
-    getResource = jasmine.createSpy('getResource').andReturn('0;false');
-    postResource = jasmine.createSpy('postResource');     
-    teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
-  }); 
-  
-  it("should be posted on server when slideshow initialized", function() {    
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=false', ASYNCHRONOUS); 
-  });  
-  
-  it("should be posted on server when teacher goes NEXT", function() {
-    teacherSlideShow.next(); 
-    
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '1' + '&' + 'ide_displayed=false', ASYNCHRONOUS);     
-  });  
-  
-  it("should be updated when teacher goes DOWN", function() {
-    teacherSlideShow.down();
-    
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=true', ASYNCHRONOUS);         
-  });  
-
-  it("should be updated when teacher goes PREVIOUS", function() {   
-    teacherSlideShow.next();
-    teacherSlideShow.prev(); 
-    
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=false', ASYNCHRONOUS);        
-  });   
-  
-  it("should be updated when teacher goes UP", function() {
-    teacherSlideShow.down();
-    teacherSlideShow.up();
-     
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=false', ASYNCHRONOUS);      
-  });   
-  
-});
-
 describe("TeacherSlideShow Navigation with 3 Slides (No IDE)", function() {
   
   beforeEach(function () {
     setFixtures("<div class='slides'><div class='slide'><div class='slide'><div class='slide'></div></div>")
-    teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))    
+    getResource = jasmine.createSpy('getResource');  
+    teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
   });  
 
   it("should open on first slide", function() {
@@ -127,6 +87,47 @@ code_ouput +
 FOOTER +
 "/div"
 
+describe("TeacherSlideShow Position (includes IDE)", function() {
+  
+  beforeEach(function() {
+    setFixtures(TEACHER_SLIDESHOW_WITH_IDE);
+    getResource = jasmine.createSpy('getResource').andReturn('0;false');
+    postResource = jasmine.createSpy('postResource');     
+    teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
+  }); 
+  
+  it("should be posted on server when slideshow initialized", function() {    
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=false', ASYNCHRONOUS); 
+  });  
+  
+  it("should be posted on server when teacher goes NEXT", function() {
+    teacherSlideShow.next(); 
+    
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '1' + '&' + 'ide_displayed=false', ASYNCHRONOUS);     
+  });  
+  
+  it("should be posted on server when teacher goes DOWN", function() {
+    teacherSlideShow.down();
+    
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=true', ASYNCHRONOUS);         
+  });  
+
+  it("should be posted on server when teacher goes PREVIOUS", function() {   
+    teacherSlideShow.next();
+    teacherSlideShow.prev(); 
+    
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=false', ASYNCHRONOUS);        
+  });   
+  
+  it("should be posted on server when teacher goes UP", function() {
+    teacherSlideShow.down();
+    teacherSlideShow.up();
+     
+    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '0' + '&' + 'ide_displayed=false', ASYNCHRONOUS);      
+  });   
+  
+});
+
 describe("TeacherSlideShow Navigation With 3 Slides (includes IDE Slide)", function() {
   
   beforeEach(function() {
@@ -154,7 +155,7 @@ describe("TeacherSlideShow Navigation With 3 Slides (includes IDE Slide)", funct
     expect(teacherSlideShow._last_slide()._node.className).toBe('slide current');  
   });  
   
-  it("should return to current slide when ARROW UP pressed", function() {
+  it("should show classic slide when ARROW UP pressed", function() {
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide current'); 
 	  
     __triggerKeyboardEvent(document, DOWN_ARROW);
