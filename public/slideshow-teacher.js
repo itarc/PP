@@ -89,9 +89,10 @@ var TeacherSlideShow = function(slides) {
   SlideShow.prototype.initPosition.call(this);    
   
   this._currentSlide = this._slides[0];  
-  this._showCurrentSlide();  
-  this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
+  this._showCurrentSlide();    
   this._updateCurrentSlide();  
+  
+  this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
 };
 
 TeacherSlideShow.prototype = {
