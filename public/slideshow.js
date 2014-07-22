@@ -125,7 +125,7 @@ SlideShow.prototype = {
 
   _updateCurrentSlide: function() {
     if (this._slides.length == 0) return; 
-    this._currentSlide._update(this.position._currentIndex, this.position.slideShowType);
+    this._currentSlide._update(this.position._currentIndex);
   },  
   
   _refresh: function() {
