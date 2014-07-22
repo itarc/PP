@@ -91,11 +91,6 @@ var TeacherSlideShow = function(slides) {
 
   this._refreshPosition();
   this._showCurrentSlide();  
-  
-  this.slideShowType = 'teacher';  
-  this._runResource = '/code_run_result'; 
-  this._sendResource = '/code_send_result'
-  this._updateResource = '/code_last_execution'  
   this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
   this._updateCurrentSlide();  
 };

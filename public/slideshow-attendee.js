@@ -54,10 +54,6 @@ var AttendeeSlideShow = function(slides) {
   this._refreshPosition();
   this._showCurrentSlide();   
   
-  this.slideShowType = 'attendee';    
-  this._runResource = '/code_run_result';  
-  this._sendResource = '/code_send_result'
-  this._updateResource = '/code_last_execution'
   this._updateCurrentSlide();    
 };
 

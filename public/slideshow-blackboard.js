@@ -52,8 +52,6 @@ var BlackboardSlideShow = function(slides) {
 
   this._refreshPosition();
   this._showCurrentSlide();
-  
-  this.slideShowType = 'blackboard';   
   this._updateCurrentSlide();  
 };
 
