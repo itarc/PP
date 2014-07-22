@@ -1,7 +1,14 @@
+TEACHER_SLIDESHOW_WITH_3_SLIDES = 
+"<div class='slides'>"+
+  "<div class='slide'/>"+
+  "<div class='slide'/>"+
+  "<div class='slide'/>"+
+"</div>"
+
 describe("TeacherSlideShow Navigation with 3 Slides (No IDE)", function() {
   
   beforeEach(function () {
-    setFixtures("<div class='slides'><div class='slide'><div class='slide'><div class='slide'></div></div>")
+    setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES)
     getResource = jasmine.createSpy('getResource');  
     teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
   });  
@@ -70,7 +77,7 @@ describe("TeacherSlideShow Navigation with 3 Slides (No IDE)", function() {
   
 });
 
-TEACHER_SLIDESHOW_WITH_IDE =  
+TEACHER_SLIDESHOW_WITH_3_SLIDES_INCLUDING_IDE =  
 "<div class='slides'>"+
 "<div class='slide'></div>"+
 "<div class='slide'></div>"+
@@ -90,9 +97,9 @@ FOOTER +
 describe("TeacherSlideShow Position (includes IDE)", function() {
   
   beforeEach(function() {
-    setFixtures(TEACHER_SLIDESHOW_WITH_IDE);
-    getResource = jasmine.createSpy('getResource').andReturn('0;false');
-    //~ spyOn(Position.prototype, "getPosition").andReturn('0;false');     
+    setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES_INCLUDING_IDE);
+    getResource = jasmine.createSpy('getResource').andReturn('0;false'); 
+    //~ spyOn(Position.prototype, "getPosition").andReturn('0;false');     ///// raises 'getResource not defined' when "teacherSlideShow.down();" ???
     spyOn(Position.prototype, "postPosition");
     teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
   }); 
@@ -132,11 +139,11 @@ describe("TeacherSlideShow Position (includes IDE)", function() {
 describe("TeacherSlideShow Navigation With 3 Slides (includes IDE Slide)", function() {
   
   beforeEach(function() {
-    setFixtures(TEACHER_SLIDESHOW_WITH_IDE);
+    setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES_INCLUDING_IDE);
     teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
   });  
 
-  it("should not go beyond penultimate slide (2nd slide)", function() {
+  it("should not go beyond penultimate slide (2nd slide here)", function() {
     expect(teacherSlideShow.position._currentIndex).toBe(0)	  
 	  
     __triggerKeyboardEvent(document, RIGHT_ARROW)
@@ -156,7 +163,7 @@ describe("TeacherSlideShow Navigation With 3 Slides (includes IDE Slide)", funct
     expect(teacherSlideShow._last_slide()._node.className).toBe('slide current');  
   });  
   
-  it("should show classic slide when ARROW UP pressed", function() {
+  it("should show CLASSIC Slide when ARROW UP pressed", function() {
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide current'); 
 	  
     __triggerKeyboardEvent(document, DOWN_ARROW);
@@ -164,6 +171,39 @@ describe("TeacherSlideShow Navigation With 3 Slides (includes IDE Slide)", funct
     __triggerKeyboardEvent(document, UP_ARROW);
 	  
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide current');
+  });
+  
+});
+
+
+describe("TeacherSlideShow IDE", function() { 	
+  
+  beforeEach(function() {
+    setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES_INCLUDING_IDE);
+    teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));    
+    spyOn(TeacherCodeSlide.prototype, '_update');  
+    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(0);	     
+  });
+  
+  it("should NOT be updated when NOT visible and teacher presses space", function() {
+    __triggerKeyboardEvent(document, SPACE);
+
+    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(0);
+  });
+  
+  it("should be updated when teacher make it visible", function() {	    
+    teacherSlideShow.down();	
+	  
+    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(1);
+  });  
+  
+  it("should be updated when teacher make it visible and presses space", function() { // TO REPLACE OR REMOVE
+    teacherSlideShow.down();
+    
+    spyOn(Position.prototype, "getPosition").andReturn('0;true'); // POSITION SHOULD HAVE CHANGED TO ALLOW UPDATE
+    __triggerKeyboardEvent(document, SPACE);
+
+    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(12); // SHOULD BE 2 => To Review
   });
   
 });
