@@ -77,8 +77,8 @@ SlideShow.prototype = {
   initPosition: function() {
     this.position = new Position();
     this.position._synchronise();
-    //~ this._currentIndex = this.position._currentIndex;
-    //~ this._IDEDisplayed = this.position._IDEDisplayed;
+    this._currentIndex = this.position._currentIndex;
+    this._IDEDisplayed = this.position._IDEDisplayed;
   },  
   
   initCurrentSlide: function() {
@@ -95,7 +95,7 @@ SlideShow.prototype = {
   },
   
   _showClassicSlide: function() {
-    if (this._slides[this.position._currentIndex]) this._currentSlide = this._slides[this.position._currentIndex];
+    if (this._slides[this._currentIndex]) this._currentSlide = this._slides[this._currentIndex];
     this._clear();	    
     this._currentSlide.setState('current');
   },
@@ -112,20 +112,22 @@ SlideShow.prototype = {
     
   _showCurrentSlide: function() {  
     if (this._slides.length == 0) return;       
-    if (this.position._IDEDisplayed) 
+    if (this._IDEDisplayed) 
       this._showIDESlide();
     else
       this._showClassicSlide();
-    window.console && window.console.log("Refreshed with this._currentIndex = " + this.position._currentIndex + " and this._showIDE = " + this.position._IDEDisplayed);
+    window.console && window.console.log("Refreshed with this._currentIndex = " + this._currentIndex + " and this._showIDE = " + this._IDEDisplayed);
   },
 
   _updateCurrentSlide: function() {
     if (this._slides.length == 0) return; 
-    this._currentSlide._update(this.position._currentIndex);
+    this._currentSlide._update(this._currentIndex);
   },  
   
   _refresh: function() {
     this.position._synchronise();
+    this._currentIndex = this.position._currentIndex;
+    this._IDEDisplayed = this.position._IDEDisplayed;    
     if (this.position.hasChanged()) { this._update();}
   },
   

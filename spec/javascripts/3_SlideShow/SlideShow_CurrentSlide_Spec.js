@@ -34,6 +34,31 @@ describe("SlideShow Position", function() {
   
 }); 
 
+describe("TeacherSlideShow Current Slide Index", function() {
+  
+  beforeEach(function () {
+    setFixtures(SLIDESHOW_WITH_3_SLIDES);
+  });
+
+  it("should be SERVER index when initialized", function() {
+    spyOn(Position.prototype, 'getPosition').andReturn("1;false");
+    slideShow = new SlideShow(queryAll(document, '.slide')); 
+    
+    expect(slideShow._currentIndex).toBe(1);
+    expect(slideShow._IDEDisplayed).toBe(false);
+  });  
+  
+  it("should be SERVER index when refreshed", function() {
+    slideShow = new SlideShow(queryAll(document, '.slide'));     
+    spyOn(Position.prototype, 'getPosition').andReturn("2;true");
+    
+    slideShow._refresh();
+    expect(slideShow._currentIndex).toBe(2);
+    expect(slideShow._IDEDisplayed).toBe(true);
+  });   
+	
+});
+
 describe("SlideShow Current Slide", function() {
   
   beforeEach(function () {
@@ -43,10 +68,10 @@ describe("SlideShow Current Slide", function() {
   it("should be visible when slideshow initialized", function() {
     var slideShow = new SlideShow(queryAll(document, '.slide'))
 
-    expect(slideShow._slides[slideShow.position._currentIndex]._node.className).toBe('slide current');
+    expect(slideShow._slides[slideShow._currentIndex]._node.className).toBe('slide current');
   });
   
-  it("should be update when slideshow initialized", function() {
+  it("should be updated when slideshow initialized", function() {
     spyOn(SlideShow.prototype, "_updateCurrentSlide").andReturn('121;true');
     var slideShow = new SlideShow(queryAll(document, '.slide'))
 

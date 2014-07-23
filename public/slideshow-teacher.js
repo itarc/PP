@@ -75,7 +75,7 @@ for(key in CodeSlide.prototype) {
 // ----------------------------------
 var TeacherSlideShow = function(slides) {
   SlideShow.call(this, slides);
-  this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
+  this.position.postPosition(this._currentIndex, this._IDEDisplayed);  
 };
 
 TeacherSlideShow.prototype = {
@@ -120,37 +120,37 @@ TeacherSlideShow.prototype = {
   },	
   
   next: function() {
-    if (this.position._currentIndex >= (this._numberOfSlides - 1) ) return;
-    if (this._slides[this.position._currentIndex+1] && this._slides[this.position._currentIndex+1]._isCodingSlide()) return;		  
-    this.position._currentIndex += 1;		     
+    if (this._currentIndex >= (this._numberOfSlides - 1) ) return;
+    if (this._slides[this._currentIndex+1] && this._slides[this._currentIndex+1]._isCodingSlide()) return;		  
+    this._currentIndex += 1;		     
     this._update();
-    this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);    
+    this.position.postPosition(this._currentIndex, this._IDEDisplayed);    
   },  
 
   prev: function() {
-    if (this.position._currentIndex <= 0) return;
-    this.position._currentIndex -= 1; 
+    if (this._currentIndex <= 0) return;
+    this._currentIndex -= 1; 
     this._update();    
-    this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
+    this.position.postPosition(this._currentIndex, this._IDEDisplayed);  
   },
   
   down: function() {
     if (! this._last_slide()._isCodingSlide()) return;    
-    this.position._IDEDisplayed = true; 
+    this._IDEDisplayed = true; 
     this._update();    
-    this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
+    this.position.postPosition(this._currentIndex, this._IDEDisplayed);  
   },
   
   up: function() {
-    this.position._IDEDisplayed = false;	  
+    this._IDEDisplayed = false;	  
     this._update();    
-    this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);       
+    this.position.postPosition(this._currentIndex, this._IDEDisplayed);       
   },
   
   home: function() {      
-    this.position._currentIndex = 0;
+    this._currentIndex = 0;
     this._update();
-    this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);
+    this.position.postPosition(this._currentIndex, this._IDEDisplayed);
   },    
   
 };

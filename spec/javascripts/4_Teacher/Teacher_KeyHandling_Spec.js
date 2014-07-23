@@ -98,7 +98,7 @@ describe("TeacherSlideShow KeyHandling", function() {
 
     __triggerKeyboardEvent(document, F5);
 
-    expect(preventDefaultKeys.calls.length).toBe(7); // SHOULD BE 1 => TO REVIEW
+    expect(preventDefaultKeys.calls.length).toBe(9); // SHOULD BE 1 => TO REVIEW
 
   });
   
