@@ -48,10 +48,7 @@ var SlideShow = function(slides) {
   this.initEvents();
   this.initSlides(slides);
   this.initPosition();
-  
-  this._currentSlide = this._slides[0];
-  this._showCurrentSlide();  
-  this._updateCurrentSlide();  
+  this.initCurrentSlide();
 };
 
 
@@ -83,6 +80,12 @@ SlideShow.prototype = {
     //~ this._currentIndex = this.position._currentIndex;
     //~ this._IDEDisplayed = this.position._IDEDisplayed;
   },  
+  
+  initCurrentSlide: function() {
+    this._currentSlide = this._slides[0];
+    this._showCurrentSlide();  
+    this._updateCurrentSlide();      
+  },   
   
   handleKeys: function(e) {
     preventDefaultKeys(e);

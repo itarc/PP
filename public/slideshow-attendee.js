@@ -49,10 +49,7 @@ var AttendeeSlideShow = function(slides) {
   this._numberOfSlides = this._slides.length;  
 
   SlideShow.prototype.initPosition.call(this);  
-  
-  this._currentSlide = this._slides[0];   
-  this._showCurrentSlide();   
-  this._updateCurrentSlide();
+  SlideShow.prototype.initCurrentSlide.call(this);  
 };
 
 AttendeeSlideShow.prototype = {
