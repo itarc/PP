@@ -71,37 +71,6 @@ describe("Slide Position", function() {
 	  
     expect(postResource.calls.length).toBe(1);
     expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '1' + '&' + 'ide_displayed=' + true, ASYNCHRONOUS);
-  });  
-  
-  it("should tell if position has changed", function() {
-    expect(position._currentIndex).toBe(0);
-    expect(position._IDEDisplayed).toBe(false);
-    
-    expect(position.hasChanged()).toBe(true);   
-
-    getResource = jasmine.createSpy('getResource').andReturn('0;false');
-    
-    position._synchronise();
-
-    expect(position.hasChanged()).toBe(false);    
-    
-    getResource = jasmine.createSpy('getResource').andReturn('1;false');
-    
-    position._synchronise();
-
-    expect(position.hasChanged()).toBe(true);
-    
-    getResource = jasmine.createSpy('getResource').andReturn('0;true');
-    
-    position._synchronise();
-
-    expect(position.hasChanged()).toBe(true);    
-    
-    getResource = jasmine.createSpy('getResource').andReturn('0;false');
-    
-    position._synchronise();
-
-    expect(position.hasChanged()).toBe(true);
-  });   
+  }); 
 
 });

@@ -35,10 +35,6 @@ Position.prototype = {
     }
   },
   
-  hasChanged: function() {
-    return this._currentIndex != this._previousIndex || this._IDEDisplayed != this._previousIDEDisplayed
-  },
-  
 };
 
 // ----------------------------------
@@ -126,9 +122,11 @@ SlideShow.prototype = {
   
   _refresh: function() {
     this.position._synchronise();
-    this._currentIndex = this.position._currentIndex;
-    this._IDEDisplayed = this.position._IDEDisplayed;    
-    if (this.position.hasChanged()) { this._update();}
+    if (this._currentIndex != this.position._currentIndex || this._IDEDisplayed != this.position._IDEDisplayed) { 
+      this._currentIndex = this.position._currentIndex;
+      this._IDEDisplayed = this.position._IDEDisplayed; 
+      this._update();
+    }
   },
   
   _update: function() {
