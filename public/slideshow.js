@@ -4,8 +4,6 @@
 var Position = function() {
   this._currentIndex = 0;
   this._IDEDisplayed  = false;
-  this._previousIndex = undefined;
-  this._previousIDEDisplayed = undefined;
 };
 
 Position.prototype = {
@@ -23,11 +21,9 @@ Position.prototype = {
     if (serverData) {
       serverIndex = parseInt(serverData.split(';')[0]);
       if ( is_a_number(serverIndex) ) {
-        this._previousIndex = this._currentIndex;
         this._currentIndex = serverIndex;
         serverIDEDisplayed = serverData.split(';')[1]
         if (serverIDEDisplayed) {
-          this._previousIDEDisplayed = this._IDEDisplayed;
           if (serverIDEDisplayed == 'true') this._IDEDisplayed = true;
           if (serverIDEDisplayed == 'false') this._IDEDisplayed = false;
         }
