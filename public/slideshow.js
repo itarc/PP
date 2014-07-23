@@ -45,6 +45,7 @@ Position.prototype = {
 // SLIDESHOW CLASS
 // ----------------------------------  
 var SlideShow = function(slides) {
+  this._numberOfSlides = slides.length;  
   this.initEvents();
   this.initSlides(slides);
   this.initPosition();
@@ -71,7 +72,6 @@ SlideShow.prototype = {
       if (element.querySelector('.poll_response_rate') != null) { return new PollSlide(element, _t); };
       return new Slide(element, _t); 
     });
-    this._numberOfSlides = this._slides.length;
   },  
 
   initPosition: function() {

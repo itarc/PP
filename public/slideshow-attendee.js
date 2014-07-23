@@ -48,7 +48,7 @@ AttendeeSlideShow.prototype = {
       if (element.querySelector('.poll_response_rate') != null) { return new AttendeePollSlide(element, _t); };
       return new Slide(element, _t); 
     });
-    this._numberOfSlides = this._slides.length;      
+    //~ this._numberOfSlides = this._slides.length;      
   },
   
   handleKeys: function(e) {
