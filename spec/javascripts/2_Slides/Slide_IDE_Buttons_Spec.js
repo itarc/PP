@@ -1,16 +1,22 @@
-IDE_slide_html =  
+FULL_IDE_SLIDE =  
+"<div class='slides'>"+
 HEADER + 
 code_input + 
-code_helpers +
-author_bar +
+code_helpers + 
+"<div class='code_author'>"+
+"LAST ATTENDEE NAME: <span id='last_send_attendee_name'></span>"+
+"AUTHOR NAME <span id='author_name'></span>"+
+"</div>" +
 buttons + 
+"<input type='button' id='get_last_send'/>"+
 code_ouput + 
-FOOTER
+FOOTER +
+"/div"
 
 describe("Server Execution Context", function() {
 
   beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);
+    slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode);  
     executionContext = new ServerExecutionContext(IDESlide);
     getResource = jasmine.createSpy('getResource').andReturn('server_author' + SEPARATOR + 'server_code' + SEPARATOR + 'server_code to add');    
@@ -37,7 +43,7 @@ describe("Server Execution Context", function() {
 describe("IDE EXECUTE AT", function() {
   
   beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);
+    slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode);
     postResource = jasmine.createSpy('postResource').andReturn('EXECUTION RESULT');
   });
@@ -84,7 +90,7 @@ describe("IDE EXECUTE AT", function() {
 describe("BLACKBOARD IDE RUN", function() {
   
   beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);
+    slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new BlackboardCodeSlide(slideNode);  
     spyOn(BlackboardCodeSlide.prototype ,"executeCodeAt");
   });
@@ -102,7 +108,7 @@ describe("BLACKBOARD IDE RUN", function() {
 describe("ATTENDEE IDE RUN", function() {
   
   beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);
+    slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new AttendeeCodeSlide(slideNode);  
     spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");
   });  
@@ -124,7 +130,7 @@ describe("ATTENDEE IDE RUN", function() {
 describe("ATTENDEE IDE RUN & SEND BUTTON", function() {   
   
   beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);
+    slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new AttendeeCodeSlide(slideNode);  
     spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");
   });
@@ -146,7 +152,7 @@ describe("ATTENDEE IDE RUN & SEND BUTTON", function() {
 describe("ATTENDEE IDE GET & RUN BUTTON", function() {  
   
   beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);
+    slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new AttendeeCodeSlide(slideNode);
     spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'CODE ON BLACKBOARD', "code_to_add": ''});     
@@ -171,7 +177,7 @@ describe("ATTENDEE IDE GET & RUN BUTTON", function() {
 describe("ATTENDEE IDE GET LAST SEND", function() { 
   
     beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);    
+    slideNode = sandbox(FULL_IDE_SLIDE);    
     slide = new AttendeeCodeSlide(slideNode);
     spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
@@ -191,7 +197,7 @@ describe("ATTENDEE IDE GET LAST SEND", function() {
 describe("TEACHER IDE RUN", function() {
   
   beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);
+    slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new TeacherCodeSlide(slideNode);  
     spyOn(TeacherCodeSlide.prototype ,"executeCodeAt");
   });  
@@ -213,7 +219,7 @@ describe("TEACHER IDE RUN", function() {
 describe("TEACHER IDE RUN & SEND BUTTON", function() {   
   
   beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);
+    slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new TeacherCodeSlide(slideNode);  
     spyOn(TeacherCodeSlide.prototype ,"executeCodeAt");
   }); 
@@ -231,7 +237,7 @@ describe("TEACHER IDE RUN & SEND BUTTON", function() {
 describe("TEACHER IDE GET & RUN BUTTON", function() {  
   
   beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);
+    slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode);
     spyOn(CodeSlide.prototype ,"executeCodeAt");   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'CODE ON BLACKBOARD', "code_to_add": ''});     
@@ -250,7 +256,7 @@ describe("TEACHER IDE GET & RUN BUTTON", function() {
 describe("TEACHER IDE GET LAST SEND", function() {   
   
   beforeEach(function () {
-    slideNode = sandbox(IDE_slide_html);    
+    slideNode = sandbox(FULL_IDE_SLIDE);    
     slide = new TeacherCodeSlide(slideNode);
     spyOn(TeacherCodeSlide.prototype ,"executeCodeAt");   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
