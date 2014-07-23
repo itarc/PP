@@ -55,7 +55,7 @@ describe("TeacherSlideShow Current Slide Index", function() {
   
 });
 
-describe("TeacherSlideShow Navigation with 3 Slides (No IDE)", function() {
+describe("TeacherSlideShow Navigation", function() {
   
   beforeEach(function () {
     setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES)
@@ -117,20 +117,22 @@ describe("TeacherSlideShow Navigation with 3 Slides (No IDE)", function() {
     expect(teacherSlideShow._slides[2]._node.className).toBe('slide')	 
   });   
   
-  it("should NOT show last slide when arrow down pressed", function() {
-    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
+  it("should NOT show last slide when ARROW DOWN pressed and NO IDE", function() {
     expect(teacherSlideShow.position._IDEDisplayed).toBe(false) 
 	  
     __triggerKeyboardEvent(document, DOWN_ARROW)
     
-    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current')  
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current')
+    expect(teacherSlideShow._slides[1]._node.className).toBe('slide')	  
+    expect(teacherSlideShow._slides[2]._node.className).toBe('slide')
     expect(teacherSlideShow.position._IDEDisplayed).toBe(false)     
     
     __triggerKeyboardEvent(document, UP_ARROW)
 	  
-    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current') 
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current')
+    expect(teacherSlideShow._slides[1]._node.className).toBe('slide')	  
+    expect(teacherSlideShow._slides[2]._node.className).toBe('slide') 
     expect(teacherSlideShow.position._IDEDisplayed).toBe(false)     
-    
   });  
   
 });
@@ -151,6 +153,51 @@ buttons +
 code_ouput + 
 FOOTER +
 "/div"
+
+describe("TeacherSlideShow Navigation (includes IDE Slide)", function() {
+  
+  beforeEach(function() {
+    setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES_INCLUDING_IDE);
+    teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
+  });  
+
+  it("should not go beyond penultimate slide (2nd slide here)", function() {  
+    __triggerKeyboardEvent(document, RIGHT_ARROW)
+	  
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide')
+    expect(teacherSlideShow._slides[1]._node.className).toBe('slide current') 
+    expect(teacherSlideShow._slides[2]._node.className).toBe('slide'); 
+    
+    __triggerKeyboardEvent(document, RIGHT_ARROW)
+
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide')
+    expect(teacherSlideShow._slides[1]._node.className).toBe('slide current') 
+    expect(teacherSlideShow._slides[2]._node.className).toBe('slide');    
+  });
+  
+  it("should show IDE Slide when ARROW DOWN pressed", function() {
+    __triggerKeyboardEvent(document, DOWN_ARROW);
+	  
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide')
+    expect(teacherSlideShow._slides[1]._node.className).toBe('slide') 
+    expect(teacherSlideShow._slides[2]._node.className).toBe('slide current');  
+  });  
+  
+  it("should show CLASSIC Slide when ARROW UP pressed", function() {
+    __triggerKeyboardEvent(document, DOWN_ARROW);
+    
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide')
+    expect(teacherSlideShow._slides[1]._node.className).toBe('slide') 
+    expect(teacherSlideShow._slides[2]._node.className).toBe('slide current'); 
+    
+    __triggerKeyboardEvent(document, UP_ARROW);
+	  
+    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current');
+    expect(teacherSlideShow._slides[1]._node.className).toBe('slide') 
+    expect(teacherSlideShow._slides[2]._node.className).toBe('slide');     
+  });
+  
+});
 
 describe("TeacherSlideShow Position (includes IDE)", function() {
   
@@ -202,47 +249,7 @@ describe("TeacherSlideShow Position (includes IDE)", function() {
   
 });
 
-describe("TeacherSlideShow Navigation With 3 Slides (includes IDE Slide)", function() {
-  
-  beforeEach(function() {
-    setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES_INCLUDING_IDE);
-    teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
-  });  
-
-  it("should not go beyond penultimate slide (2nd slide here)", function() {
-    expect(teacherSlideShow.position._currentIndex).toBe(0)	  
-	  
-    __triggerKeyboardEvent(document, RIGHT_ARROW)
-	  
-    expect(teacherSlideShow.position._currentIndex).toBe(1)
-    
-    __triggerKeyboardEvent(document, RIGHT_ARROW)
-
-    expect(teacherSlideShow.position._currentIndex).toBe(1)    
-  });
-  
-  it("should show IDE Slide when ARROW DOWN pressed", function() {
-    expect(teacherSlideShow._last_slide()._node.className).toBe('slide');
-	  
-    __triggerKeyboardEvent(document, DOWN_ARROW);
-	  
-    expect(teacherSlideShow._last_slide()._node.className).toBe('slide current');  
-  });  
-  
-  it("should show CLASSIC Slide when ARROW UP pressed", function() {
-    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current'); 
-	  
-    __triggerKeyboardEvent(document, DOWN_ARROW);
-    expect(teacherSlideShow._slides[0]._node.className).toBe('slide');
-    __triggerKeyboardEvent(document, UP_ARROW);
-	  
-    expect(teacherSlideShow._slides[0]._node.className).toBe('slide current');
-  });
-  
-});
-
-
-describe("TeacherSlideShow IDE", function() { 	
+describe("Teacher IDE", function() { 	
   
   beforeEach(function() {
     setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES_INCLUDING_IDE);
