@@ -50,7 +50,7 @@ BlackboardSlideShow.prototype = {
   },
   
   _refresh: function() {
-    this._refreshPosition();
+    this.position._synchronise();    
     if (this.position.hasChanged()) { this._showCurrentSlide(); };
     this._updateCurrentSlide();
   },  

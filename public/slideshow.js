@@ -76,7 +76,7 @@ SlideShow.prototype = {
 
   initPosition: function() {
     this.position = new Position();
-    this._refreshPosition();
+    this.position._synchronise();
     //~ this._currentIndex = this.position._currentIndex;
     //~ this._IDEDisplayed = this.position._IDEDisplayed;
   },  
@@ -109,10 +109,6 @@ SlideShow.prototype = {
     this._currentSlide = this._last_slide();  
     this._currentSlide.setState('current');
   },
-  
-  _refreshPosition: function() {
-    this.position._synchronise();
-  },     
     
   _showCurrentSlide: function() {  
     if (this._slides.length == 0) return;       
@@ -129,7 +125,7 @@ SlideShow.prototype = {
   },  
   
   _refresh: function() {
-    this._refreshPosition();
+    this.position._synchronise();
     if (this.position.hasChanged()) { this._update();}
   },
   

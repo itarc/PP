@@ -19,14 +19,14 @@ describe("SlideShow Position", function() {
     expect(slideShow.position._IDEDisplayed).toBe(true);
   });  
   
-  it("should be position on server when position is refreshed", function() { 
+  it("should be position on server when refreshed", function() { 
     var slideShow = new SlideShow(queryAll(document, '.slide'));
     
     expect(slideShow.position._currentIndex).toBe(0);
     expect(slideShow.position._IDEDisplayed).toBe(false);
     
     spyOn(Position.prototype, "getPosition").andReturn('212;true');     
-    slideShow._refreshPosition();
+    slideShow._refresh();
     
     expect(slideShow.position._currentIndex).toBe(212);
     expect(slideShow.position._IDEDisplayed).toBe(true);

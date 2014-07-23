@@ -111,8 +111,7 @@ TeacherSlideShow.prototype = {
         this.up();
       break;	    
       case SPACE:
-        this._refreshPosition(); 
-        this._update();      
+        this._refresh();
       break;	
       case HOME:  
         this.home();     

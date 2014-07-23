@@ -276,7 +276,7 @@ describe("Teacher IDE", function() {
     spyOn(Position.prototype, "getPosition").andReturn('0;true'); // POSITION SHOULD HAVE CHANGED TO ALLOW UPDATE
     __triggerKeyboardEvent(document, SPACE);
 
-    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(13); // SHOULD BE 2 => To Review
+    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(1); // SHOULD BE 2 => To Review
   });
   
 });
