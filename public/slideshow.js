@@ -3,7 +3,7 @@
 // ----------------------------------
 var Position = function() {
   this._currentIndex = 0;
-  this._IDEDisplayed  = false;
+  this._IDEDisplayed = false;
 };
 
 Position.prototype = {
@@ -22,11 +22,8 @@ Position.prototype = {
       serverIndex = parseInt(serverData.split(';')[0]);
       if ( is_a_number(serverIndex) ) {
         this._currentIndex = serverIndex;
-        serverIDEDisplayed = serverData.split(';')[1]
-        if (serverIDEDisplayed) {
-          if (serverIDEDisplayed == 'true') this._IDEDisplayed = true;
-          if (serverIDEDisplayed == 'false') this._IDEDisplayed = false;
-        }
+        if (serverData.split(';')[1] == 'true') this._IDEDisplayed = true;
+        if (serverData.split(';')[1] == 'false') this._IDEDisplayed = false;
       }
     }
   },

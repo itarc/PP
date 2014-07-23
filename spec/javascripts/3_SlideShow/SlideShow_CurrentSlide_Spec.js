@@ -21,7 +21,7 @@ describe("SlideShow Position", function() {
   
   it("should be position on server when refreshed", function() { 
     var slideShow = new SlideShow(queryAll(document, '.slide'));
-    
+
     expect(slideShow.position._currentIndex).toBe(0);
     expect(slideShow.position._IDEDisplayed).toBe(false);
     
