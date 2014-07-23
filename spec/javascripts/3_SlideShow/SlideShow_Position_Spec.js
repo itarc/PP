@@ -10,9 +10,9 @@ describe("Slide Position", function() {
   });
   
   it("should not change if server unavailable", function() {
-    position._synchronise(); // Can not call the server since getResource is not spyed 
+    position._update(); // Can not call the server since getResource is not spyed 
 
-    position._synchronise();    
+    position._update();    
 
     expect(position._currentIndex).toBe(0);
     expect(position._IDEDisplayed).toBe(false);  
@@ -21,7 +21,7 @@ describe("Slide Position", function() {
   it("should NOT be updated when slideIndex is unknown", function() {
     getResource = jasmine.createSpy('getResource').andReturn('UNKNOWN;true');
     
-    position._synchronise();    
+    position._update();    
 
     expect(position._currentIndex).toBe(0);
     expect(position._IDEDisplayed).toBe(false);
@@ -30,7 +30,7 @@ describe("Slide Position", function() {
   it("should NOT be updated when IDEDisplay is unknown", function() {    
     getResource = jasmine.createSpy('getResource').andReturn('0;UNKNOWN');
     
-    position._synchronise();    
+    position._update();    
 
     expect(position._currentIndex).toBe(0);
     expect(position._IDEDisplayed).toBe(false);    
@@ -39,7 +39,7 @@ describe("Slide Position", function() {
   it("should NOT be updated when slideIndex is unknown and IDEDisplay is unknown", function() {
     getResource = jasmine.createSpy('getResource').andReturn('UNKNOWN;UNKNOWN');
     
-    position._synchronise();    
+    position._update();    
 
     expect(position._currentIndex).toBe(0);
     expect(position._IDEDisplayed).toBe(false);
@@ -48,7 +48,7 @@ describe("Slide Position", function() {
   it("should get current position on server when synchronised", function() {
     getResource = jasmine.createSpy('getResource').andReturn('1;false');  
     
-    position._synchronise();
+    position._update();
 
     expect(position._currentIndex).toBe(1);
     expect(position._IDEDisplayed).toBe(false);

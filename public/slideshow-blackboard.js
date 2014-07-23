@@ -50,7 +50,7 @@ BlackboardSlideShow.prototype = {
   },
   
   _refresh: function() {
-    this.position._synchronise();    
+    this.position._update();    
     if (this._currentIndex != this.position._currentIndex || this._IDEDisplayed != this.position._IDEDisplayed) { 
       this._currentIndex = this.position._currentIndex;
       this._IDEDisplayed = this.position._IDEDisplayed;       
