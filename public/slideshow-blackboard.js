@@ -46,8 +46,7 @@ BlackboardSlideShow.prototype = {
       if (element.querySelector('#execute') != null) { return new BlackboardCodeSlide(element, _t); };
       if (element.querySelector('.poll_response_rate') != null) { return new BlackboardPollSlide(element, _t); };
       return new Slide(element, _t); 
-    });
-    //~ this._numberOfSlides = this._slides.length;      
+    });  
   },
   
   _refresh: function() {

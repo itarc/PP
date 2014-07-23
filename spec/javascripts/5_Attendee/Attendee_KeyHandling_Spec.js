@@ -10,32 +10,7 @@ describe("AttendeeSlideShow KeyHandling", function() {
 
     expect(AttendeeSlideShow.prototype.handleKeys.calls.length).toBe(1);
 
-  });	
-
-  it("should NOT call next when right arrow pressed", function() {
-
-    spyOn(AttendeeSlideShow.prototype, 'next');
-
-    expect(AttendeeSlideShow.prototype.next.calls.length).toBe(0);
-
-    __triggerKeyboardEvent(document, RIGHT_ARROW);
-
-    expect(AttendeeSlideShow.prototype.next.calls.length).toBe(0);
-  
-
-  });  
-  
-  it("should NOT call prev when left arrow pressed", function() {
-
-    spyOn(AttendeeSlideShow.prototype, 'prev');
-
-    expect(AttendeeSlideShow.prototype.prev.calls.length).toBe(0);
-	  
-    __triggerKeyboardEvent(document, LEFT_ARROW);
-
-    expect(AttendeeSlideShow.prototype.prev.calls.length).toBe(0);
-
-  }); 
+  });
 
   it("should refresh when space pressed", function() {
 

@@ -5,6 +5,56 @@ TEACHER_SLIDESHOW_WITH_3_SLIDES =
   "<div class='slide'/>"+
 "</div>"
 
+describe("TeacherSlideShow Current Slide Index", function() {
+  
+  beforeEach(function () {
+    setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES)	 
+    spyOn(Position.prototype, 'getPosition').andReturn("1");
+    slideShow = new TeacherSlideShow(queryAll(document, '.slide'));
+  });
+
+  it("should be SERVER index when initialized", function() {
+    expect(slideShow.position._currentIndex).toBe(1);
+  });  
+	
+  it("should be NEXT index when next slide is called", function() {
+    slideShow.position._currentIndex = 1;
+    slideShow._numberOfSlides = 3;	  
+
+    slideShow.next();
+
+    expect(slideShow.position._currentIndex).toBe(2)
+  });
+  
+  it("should be PREVIOUS index when previous slide is called", function() {	  
+    slideShow.position._currentIndex = 2;
+    slideShow._numberOfSlides = 3;	  
+
+    slideShow.prev()
+
+    expect(slideShow.position._currentIndex).toBe(1)
+  });
+
+  it("should NOT be a slide beyond last slide", function() {
+    slideShow.position._currentIndex = 2;
+    slideShow._numberOfSlides = 3;
+
+    slideShow.next()
+
+    expect(slideShow.position._currentIndex).toBe(2)
+  });
+  
+  it("should NOT be a slide under first slide", function() {
+    slideShow.position._currentIndex = 0;
+    slideShow._numberOfSlides = 3;
+
+    slideShow.prev()
+
+    expect(slideShow.position._currentIndex).toBe(0)
+  });
+  
+});
+
 describe("TeacherSlideShow Navigation with 3 Slides (No IDE)", function() {
   
   beforeEach(function () {

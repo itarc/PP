@@ -12,7 +12,7 @@ describe("Slide Position", function() {
   it("should not change if server unavailable", function() {
     position._synchronise(); // Can not call the server since getResource is not spyed 
 
-    slideShow._refreshPosition(); 
+    position._synchronise();    
 
     expect(position._currentIndex).toBe(0);
     expect(position._IDEDisplayed).toBe(false);  
