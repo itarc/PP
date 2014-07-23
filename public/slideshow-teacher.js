@@ -74,25 +74,21 @@ for(key in CodeSlide.prototype) {
 // TEACHER SLIDESHOW CLASS / EXTENDS SLIDESHOW
 // ----------------------------------
 var TeacherSlideShow = function(slides) {
-  //~ SlideShow.call(this, slides);  // SUPER CONSTRUCTOR NOT CALLED
-
-  SlideShow.prototype.initEvents.call(this); 
-  
-  var _t = this;
-  this._slides = (slides).map(function(element) { 
-	  if (element.querySelector('#execute') != null) { return new TeacherCodeSlide(element, _t); };
-	  if (element.querySelector('.poll_response_rate') != null) { return new TeacherPollSlide(element, _t); };
-    return new Slide(element, _t); 
-  });
-  this._numberOfSlides = this._slides.length;
-
-  SlideShow.prototype.initPosition.call(this);    
-  SlideShow.prototype.initCurrentSlide.call(this);
-  
+  SlideShow.call(this, slides);
   this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
 };
 
 TeacherSlideShow.prototype = {
+  
+  initSlides: function(slides) {
+    var _t = this;
+    this._slides = (slides).map(function(element) { 
+      if (element.querySelector('#execute') != null) { return new TeacherCodeSlide(element, _t); };
+      if (element.querySelector('.poll_response_rate') != null) { return new TeacherPollSlide(element, _t); };
+      return new Slide(element, _t); 
+    });
+    this._numberOfSlides = this._slides.length;    
+  },  
   
   _refresh: function() {
     this._last_slide()._updateLastSendAttendeeName();

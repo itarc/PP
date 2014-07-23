@@ -36,23 +36,21 @@ for(key in CodeSlide.prototype) {
 // ATTENDEE SLIDESHOW CLASS / EXTENDS SLIDESHOW
 // ----------------------------------
 var AttendeeSlideShow = function(slides) {
-  //~ SlideShow.call(this, slides); // SUPER CONSTRUCTOR NOT CALLED
-  
-  SlideShow.prototype.initEvents.call(this);  
-  
-  var _t = this;
-  this._slides = (slides).map(function(element) { 
-	  if (element.querySelector('#execute') != null) { return new AttendeeCodeSlide(element, _t); };
-	  if (element.querySelector('.poll_response_rate') != null) { return new AttendeePollSlide(element, _t); };
-    return new Slide(element, _t); 
-  });
-  this._numberOfSlides = this._slides.length;  
-
-  SlideShow.prototype.initPosition.call(this);  
-  SlideShow.prototype.initCurrentSlide.call(this);  
+  SlideShow.call(this, slides);
 };
 
 AttendeeSlideShow.prototype = {
+  
+  initSlides: function(slides) {
+    var _t = this;
+    this._slides = (slides).map(function(element) { 
+      if (element.querySelector('#execute') != null) { return new AttendeeCodeSlide(element, _t); };
+      if (element.querySelector('.poll_response_rate') != null) { return new AttendeePollSlide(element, _t); };
+      return new Slide(element, _t); 
+    });
+    this._numberOfSlides = this._slides.length;      
+  },
+  
   handleKeys: function(e) {
     
     SlideShow.prototype.handleKeys.call(this, e);
