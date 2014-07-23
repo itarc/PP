@@ -26,6 +26,13 @@ def send_code
   click_on "send_code"
 end
 
+require_relative '../../../db/Accesseur'  
+$db = Accesseur.new
+
+def display_db_content
+  puts $db.execute_sql("select * from teacher_current_slide").values
+end
+
 def fill_IDE_with(code_input)
   fill_in 'code_input', :with => code_input
 end
