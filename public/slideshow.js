@@ -83,8 +83,7 @@ SlideShow.prototype = {
   
   initCurrentSlide: function() {
     this._currentSlide = this._slides[0];
-    this._showCurrentSlide();  
-    this._updateCurrentSlide();      
+    this._update();
   },   
   
   handleKeys: function(e) {
@@ -130,8 +129,13 @@ SlideShow.prototype = {
   },  
   
   _refresh: function() {
-    this._refreshPosition();  
-    if (this.position.hasChanged()) { this._showCurrentSlide(); this._updateCurrentSlide();}
+    this._refreshPosition();
+    if (this.position.hasChanged()) { this._update();}
   },
+  
+  _update: function() {
+    this._showCurrentSlide();  
+    this._updateCurrentSlide();   
+  },  
   
 };

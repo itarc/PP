@@ -111,9 +111,8 @@ TeacherSlideShow.prototype = {
         this.up();
       break;	    
       case SPACE:
-        this._refreshPosition();       
-        this._showCurrentSlide(); 
-        this._updateCurrentSlide(); 
+        this._refreshPosition(); 
+        this._update();      
       break;	
       case HOME:  
         this.home();     
@@ -124,39 +123,34 @@ TeacherSlideShow.prototype = {
   next: function() {
     if (this.position._currentIndex >= (this._numberOfSlides - 1) ) return;
     if (this._slides[this.position._currentIndex+1] && this._slides[this.position._currentIndex+1]._isCodingSlide()) return;		  
-    this.position._currentIndex += 1;		  
-    this._showCurrentSlide();
-    this._updateCurrentSlide();    
+    this.position._currentIndex += 1;		     
+    this._update();
     this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);    
   },  
 
   prev: function() {
     if (this.position._currentIndex <= 0) return;
-    this.position._currentIndex -= 1;
-    this._showCurrentSlide();	 
-    this._updateCurrentSlide();    
+    this.position._currentIndex -= 1; 
+    this._update();    
     this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
   },
   
   down: function() {
     if (! this._last_slide()._isCodingSlide()) return;    
-    this.position._IDEDisplayed = true;
-    this._showCurrentSlide(); 
-    this._updateCurrentSlide();    
+    this.position._IDEDisplayed = true; 
+    this._update();    
     this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);  
   },
   
   up: function() {
     this.position._IDEDisplayed = false;	  
-    this._showCurrentSlide();
-    this._updateCurrentSlide();    
+    this._update();    
     this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);       
   },
   
   home: function() {      
     this.position._currentIndex = 0;
-    this._showCurrentSlide();
-    this._updateCurrentSlide();
+    this._update();
     this.position.postPosition(this.position._currentIndex, this.position._IDEDisplayed);
   },    
   
