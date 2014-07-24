@@ -38,18 +38,18 @@ describe("Blackboard SlideShow IDE", function() {
     expect(BlackboardCodeSlide.prototype.executeCodeAt.calls.length).toBe(0);
   });
   
-  it("should NOT show current slide if no change", function() {
-    spyOn(BlackboardSlideShow.prototype, '_showCurrentSlide');
-    getResource = jasmine.createSpy('getResource').andReturn('1;false');
+  //~ it("should NOT refresh current slide if position did not change", function() { // TO PUT IN SLIDESHOW
+    //~ spyOn(BlackboardSlideShow.prototype, '_showCurrentSlide');
+    //~ getResource = jasmine.createSpy('getResource').andReturn('1;false');
     
-    blackboardSlideShow._refresh();
+    //~ blackboardSlideShow._refresh();
     
-    expect(BlackboardSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
+    //~ expect(BlackboardSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
     
-    blackboardSlideShow._refresh();
+    //~ blackboardSlideShow._refresh();
     
-    expect(BlackboardSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
-  });  
+    //~ expect(BlackboardSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
+  //~ });  
   
   it("should refresh position every second", function() {
     spyOn(BlackboardSlideShow.prototype, '_refresh');
@@ -61,7 +61,7 @@ describe("Blackboard SlideShow IDE", function() {
     jasmine.Clock.tick(1001);
     expect(BlackboardSlideShow.prototype._refresh.callCount).toEqual(1);
     
-    expect(slideshowTimer).toBeDefined(); // Test if timer is javascript
+    expect(slideshowTimer).toBeDefined(); // Test if timer in javascript
   });  
 
 });

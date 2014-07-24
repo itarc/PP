@@ -69,6 +69,15 @@ SlideShow.prototype = {
     this._IDEDisplayed = this.position._IDEDisplayed;
   },  
   
+  _refresh: function() {
+    this.position._update();
+    if (this._currentIndex != this.position._currentIndex || this._IDEDisplayed != this.position._IDEDisplayed) { 
+      this._currentIndex = this.position._currentIndex;
+      this._IDEDisplayed = this.position._IDEDisplayed; 
+      this._update();
+    }
+  },  
+  
   initCurrentSlide: function() {
     this._update();
   },   
@@ -91,31 +100,12 @@ SlideShow.prototype = {
     else
       if (this._slides[this._currentIndex]) { return this._slides[this._currentIndex]; } else { return  this._slides[0]; }
   },
-    
-  _showCurrentSlide: function() {  
-    //~ if (this._slides.length == 0) return;  
+  
+  _update: function() { 
+    if (this._slides.length == 0) return;  
     this._clear();	    
-    this.currentSlide().setState('current');    
-    window.console && window.console.log("Refreshed with this._currentIndex = " + this._currentIndex + " and this._showIDE = " + this._IDEDisplayed);
-  },
-
-  _updateCurrentSlide: function() {
-    if (this._slides.length == 0) return; 
-    this.currentSlide()._update(this._currentIndex);
-  },  
-  
-  _refresh: function() {
-    this.position._update();
-    if (this._currentIndex != this.position._currentIndex || this._IDEDisplayed != this.position._IDEDisplayed) { 
-      this._currentIndex = this.position._currentIndex;
-      this._IDEDisplayed = this.position._IDEDisplayed; 
-      this._update();
-    }
-  },
-  
-  _update: function() {
-    this._showCurrentSlide();  
-    this._updateCurrentSlide();   
+    this.currentSlide().setState('current'); 
+    this.currentSlide()._update(this._currentIndex);    
   },  
   
 };

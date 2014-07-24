@@ -72,10 +72,10 @@ describe("SlideShow Current Slide", function() {
   });
   
   it("should be updated when slideshow initialized", function() {
-    spyOn(SlideShow.prototype, "_updateCurrentSlide").andReturn('121;true');
+    spyOn(Slide.prototype, "_update");
     var slideShow = new SlideShow(queryAll(document, '.slide'))
 
-    expect(SlideShow.prototype._updateCurrentSlide.calls.length).toBe(1);
+    expect(Slide.prototype._update.calls.length).toBe(1);
   });  
 
 }); 
