@@ -37,7 +37,7 @@ describe("AttendeeSlideShow IDE Slide", function() {
     var slideShow = new AttendeeSlideShow(queryAll(document, '.slide'))
 
     expect(slideShow._currentIndex).toBe(11);
-    expect(slideShow._currentSlide).toBe(slideShow._slides[0]);
+    expect(slideShow.currentSlide()).toBe(slideShow._slides[0]);
   });   
 
   it("should NOT be updated when refreshed but position did not change", function() {

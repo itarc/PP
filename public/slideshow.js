@@ -46,7 +46,6 @@ SlideShow.prototype = {
   _slides : [],
   _currentIndex: 0,
   _IDEDisplayed: false,
-  _currentSlide : undefined,
   _numberOfSlides : 0,
 
   initEvents: function() {
@@ -95,15 +94,14 @@ SlideShow.prototype = {
     
   _showCurrentSlide: function() {  
     if (this._slides.length == 0) return;  
-    this._currentSlide = this.currentSlide();
     this._clear();	    
-    this._currentSlide.setState('current');    
+    this.currentSlide().setState('current');    
     window.console && window.console.log("Refreshed with this._currentIndex = " + this._currentIndex + " and this._showIDE = " + this._IDEDisplayed);
   },
 
   _updateCurrentSlide: function() {
     if (this._slides.length == 0) return; 
-    this._currentSlide._update(this._currentIndex);
+    this.currentSlide()._update(this._currentIndex);
   },  
   
   _refresh: function() {
