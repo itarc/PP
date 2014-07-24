@@ -82,8 +82,12 @@ SlideShow.prototype = {
     for(var slideIndex in this._slides) { this._slides[slideIndex].setState('') }
   },
   
+  currentSlide: function() {
+    if (this._slides[this._currentIndex]) { return this._slides[this._currentIndex]; } else { return  this._slides[0]; }
+  },
+  
   _showClassicSlide: function() {
-    if (this._slides[this._currentIndex]) { this._currentSlide = this._slides[this._currentIndex]; } else { this._currentSlide = this._slides[0]; }
+    this._currentSlide = this.currentSlide();
     this._clear();	    
     this._currentSlide.setState('current');
   },
