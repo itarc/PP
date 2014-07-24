@@ -13,7 +13,7 @@ code_ouput +
 FOOTER +
 "/div"
 
-describe("Blackboard IDE", function() {
+describe("Blackboard SlideShow IDE", function() {
   
   beforeEach(function () {
     setFixtures(BLAKBOARD_SLIDESHOW_WITH_1_IDE_SLIDE_ONLY)	      

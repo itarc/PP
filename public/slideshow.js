@@ -93,7 +93,7 @@ SlideShow.prototype = {
   },
     
   _showCurrentSlide: function() {  
-    if (this._slides.length == 0) return;  
+    //~ if (this._slides.length == 0) return;  
     this._clear();	    
     this.currentSlide().setState('current');    
     window.console && window.console.log("Refreshed with this._currentIndex = " + this._currentIndex + " and this._showIDE = " + this._IDEDisplayed);

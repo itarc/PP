@@ -9,7 +9,7 @@ code_ouput +
 FOOTER +
 "/div"
 
-describe("AttendeeSlideShow IDE Slide", function() {  
+describe("AttendeeSlideShow IDE", function() {  
   
   beforeEach(function() {
     setFixtures(ATTENDEE_SLIDESHOW_WITH_1_IDE_SLIDE_ONLY)	  
