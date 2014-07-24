@@ -82,32 +82,22 @@ SlideShow.prototype = {
     for(var slideIndex in this._slides) { this._slides[slideIndex].setState('') }
   },
   
-  currentSlide: function() {
-    if (this._slides[this._currentIndex]) { return this._slides[this._currentIndex]; } else { return  this._slides[0]; }
-  },
-  
-  _showClassicSlide: function() {
-    this._currentSlide = this.currentSlide();
-    this._clear();	    
-    this._currentSlide.setState('current');
-  },
-
   _last_slide:function() {
     return this._slides[this._numberOfSlides-1]
   },  
   
-  _showIDESlide: function() {
-    this._clear();
-    this._currentSlide = this._last_slide();  
-    this._currentSlide.setState('current');
+  currentSlide: function() {
+    if (this._IDEDisplayed) 
+      return this._last_slide();  
+    else
+      if (this._slides[this._currentIndex]) { return this._slides[this._currentIndex]; } else { return  this._slides[0]; }
   },
     
   _showCurrentSlide: function() {  
-    if (this._slides.length == 0) return;       
-    if (this._IDEDisplayed) 
-      this._showIDESlide();
-    else
-      this._showClassicSlide();
+    if (this._slides.length == 0) return;  
+    this._currentSlide = this.currentSlide();
+    this._clear();	    
+    this._currentSlide.setState('current');    
     window.console && window.console.log("Refreshed with this._currentIndex = " + this._currentIndex + " and this._showIDE = " + this._IDEDisplayed);
   },
 
