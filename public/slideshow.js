@@ -71,7 +71,6 @@ SlideShow.prototype = {
   },  
   
   initCurrentSlide: function() {
-    this._currentSlide = this._slides[0];
     this._update();
   },   
   
@@ -84,7 +83,7 @@ SlideShow.prototype = {
   },
   
   _showClassicSlide: function() {
-    if (this._slides[this._currentIndex]) this._currentSlide = this._slides[this._currentIndex];
+    if (this._slides[this._currentIndex]) { this._currentSlide = this._slides[this._currentIndex]; } else { this._currentSlide = this._slides[0]; }
     this._clear();	    
     this._currentSlide.setState('current');
   },
