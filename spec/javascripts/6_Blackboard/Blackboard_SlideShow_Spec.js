@@ -51,6 +51,19 @@ describe("Blackboard SlideShow IDE", function() {
     //~ expect(BlackboardSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
   //~ });  
   
+  it("should be updated every refresh", function() {
+    spyOn(BlackboardCodeSlide.prototype, '_update');
+    getResource = jasmine.createSpy('getResource').andReturn('1;false');
+    
+    blackboardSlideShow._refresh();
+    
+    expect(BlackboardCodeSlide.prototype._update.calls.length).toBe(2); // init + update in blackboard
+    
+    blackboardSlideShow._refresh();
+    
+    expect(BlackboardCodeSlide.prototype._update.calls.length).toBe(3);
+  });    
+  
   it("should refresh position every second", function() {
     spyOn(BlackboardSlideShow.prototype, '_refresh');
     jasmine.Clock.useMock();
