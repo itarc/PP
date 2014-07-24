@@ -38,22 +38,9 @@ describe("Blackboard SlideShow IDE", function() {
     expect(BlackboardCodeSlide.prototype.executeCodeAt.calls.length).toBe(0);
   });
   
-  //~ it("should NOT refresh current slide if position did not change", function() { // TO PUT IN SLIDESHOW
-    //~ spyOn(BlackboardSlideShow.prototype, '_showCurrentSlide');
-    //~ getResource = jasmine.createSpy('getResource').andReturn('1;false');
-    
-    //~ blackboardSlideShow._refresh();
-    
-    //~ expect(BlackboardSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
-    
-    //~ blackboardSlideShow._refresh();
-    
-    //~ expect(BlackboardSlideShow.prototype._showCurrentSlide.calls.length).toBe(1);
-  //~ });  
-  
   it("should be updated every refresh", function() {
     spyOn(BlackboardCodeSlide.prototype, '_update');
-    getResource = jasmine.createSpy('getResource').andReturn('1;false');
+    spyOn(Position.prototype, 'getPosition').andReturn('3;true');
     
     blackboardSlideShow._refresh();
     

@@ -77,6 +77,20 @@ describe("SlideShow Current Slide", function() {
 
     expect(Slide.prototype._update.calls.length).toBe(1);
   });  
+  
+  it("should NOT be updated when position did not change", function() {
+    spyOn(Slide.prototype, '_update');
+    spyOn(Position.prototype, 'getPosition').andReturn('3;true');
+    var slideShow = new SlideShow(queryAll(document, '.slide'))
+    
+    slideShow._refresh();
+    
+    expect(Slide.prototype._update.calls.length).toBe(1);
+    
+    slideShow._refresh();
+    
+    expect(Slide.prototype._update.calls.length).toBe(1);
+  });    
 
 }); 
   
