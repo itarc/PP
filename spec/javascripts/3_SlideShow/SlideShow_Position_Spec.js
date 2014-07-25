@@ -1,61 +1,61 @@
-describe("Position", function() {
+describe("SlideShow Update Position", function() {
   
   beforeEach(function () {
-    position = new Position();
+    slideshow = new SlideShow([]);    
   });
   
   it("should be first slide when initialized", function() {
-    expect(position._currentIndex).toBe(0);
-    expect(position._IDEDisplayed).toBe(false);
+    expect(slideshow.position._currentIndex).toBe(0);
+    expect(slideshow.position._IDEDisplayed).toBe(false);
   });
   
   it("should NOT change if server unavailable", function() {
-    position._update(); // Can not call the server since getResource is not spyed 
+    slideshow.position._update(); // Can not call the server since getResource is not spyed 
 
-    expect(position._currentIndex).toBe(0);
-    expect(position._IDEDisplayed).toBe(false);  
+    expect(slideshow.position._currentIndex).toBe(0);
+    expect(slideshow.position._IDEDisplayed).toBe(false);  
   });  
   
   it("should NOT be updated when slideIndex is unknown", function() {
     getResource = jasmine.createSpy('getResource').andReturn('UNKNOWN;true');
     
-    position._update();    
+    slideshow.position._update();    
 
-    expect(position._currentIndex).toBe(0);
-    expect(position._IDEDisplayed).toBe(false);
+    expect(slideshow.position._currentIndex).toBe(0);
+    expect(slideshow.position._IDEDisplayed).toBe(false);
   });  
   
   it("should NOT be updated when IDEDisplay is unknown", function() {    
     getResource = jasmine.createSpy('getResource').andReturn('0;UNKNOWN');
     
-    position._update();    
+    slideshow.position._update();    
 
-    expect(position._currentIndex).toBe(0);
-    expect(position._IDEDisplayed).toBe(false);    
+    expect(slideshow.position._currentIndex).toBe(0);
+    expect(slideshow.position._IDEDisplayed).toBe(false);    
   });  
   
   it("should NOT be updated when slideIndex is unknown and IDEDisplay is unknown", function() {
     getResource = jasmine.createSpy('getResource').andReturn('UNKNOWN;UNKNOWN');
     
-    position._update();    
+    slideshow.position._update();    
 
-    expect(position._currentIndex).toBe(0);
-    expect(position._IDEDisplayed).toBe(false);
+    expect(slideshow.position._currentIndex).toBe(0);
+    expect(slideshow.position._IDEDisplayed).toBe(false);
   });  
 
   it("should get current position on server when synchronised", function() {
     getResource = jasmine.createSpy('getResource').andReturn('1;false');  
     
-    position._update();
+    slideshow.position._update();
 
-    expect(position._currentIndex).toBe(1);
-    expect(position._IDEDisplayed).toBe(false);
+    expect(slideshow.position._currentIndex).toBe(1);
+    expect(slideshow.position._IDEDisplayed).toBe(false);
   });  
   
   it("should get slideshow position on server", function() {    
     getResource = jasmine.createSpy('postResource').andReturn('1;false');
     
-    p = position.getPosition();
+    p = slideshow.position.getPosition();
 	  
     expect(getResource.calls.length).toBe(1);
     expect(getResource).toHaveBeenCalledWith('/teacher_current_slide');

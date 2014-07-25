@@ -14,16 +14,16 @@ Position.prototype = {
   },
   
   _updateSlideShow: function() {
-    if (this._slideshow._currentIndex != this._currentIndex || this._slideshow._IDEDisplayed != this.IDEDisplayed ) { 
+    if (this._slideshow._currentIndex != this._currentIndex || this._slideshow._IDEDisplayed != this._IDEDisplayed ) { 
       this._slideshow._currentIndex = this._currentIndex;
-      this._slideshow._IDEDisplayed = this.IDEDisplayed; 
+      this._slideshow._IDEDisplayed = this._IDEDisplayed; 
       this._slideshow._update();
     }    
   },
   
   postPosition: function(index, IDEDisplayed) {
     postResource('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
-    this._currentIndex = index; this.IDEDisplayed = IDEDisplayed;
+    this._currentIndex = index; this._IDEDisplayed = IDEDisplayed;
     this._updateSlideShow();
   },  
   
@@ -37,6 +37,7 @@ Position.prototype = {
         if (serverData.split(';')[1] == 'false') this._IDEDisplayed = false;
       }
     }
+    this._updateSlideShow();
   },
   
 };
@@ -74,21 +75,11 @@ SlideShow.prototype = {
 
   initPosition: function() {
     this.position = new Position(this);
-    this.position._update();
-    if (this._currentIndex != this.position._currentIndex || this._IDEDisplayed != this.position._IDEDisplayed) { 
-      this._currentIndex = this.position._currentIndex;
-      this._IDEDisplayed = this.position._IDEDisplayed;
-      this._update();
-    }      
+    this.position._update();     
   },  
   
   _refresh: function() {
     this.position._update();
-    if (this._currentIndex != this.position._currentIndex || this._IDEDisplayed != this.position._IDEDisplayed) { 
-      this._currentIndex = this.position._currentIndex;
-      this._IDEDisplayed = this.position._IDEDisplayed; 
-      this._update();
-    }
   },
   
   handleKeys: function(e) {

@@ -72,24 +72,29 @@ describe("SlideShow Current Slide", function() {
   });
   
   it("should be updated when slideshow initialized", function() {
-    spyOn(Slide.prototype, "_update");
+    spyOn(SlideShow.prototype, "_update");
+    spyOn(Position.prototype, 'getPosition').andReturn('3;true');    
     var slideShow = new SlideShow(queryAll(document, '.slide'))
 
-    expect(Slide.prototype._update.calls.length).toBe(1);
+    expect(slideShow._currentIndex).toBe(3);
+    expect(slideShow._IDEDisplayed).toBe(true);
+    expect(SlideShow.prototype._update.calls.length).toBe(1);
   });  
   
   it("should NOT be updated when position did not change", function() {
-    spyOn(Slide.prototype, '_update');
-    spyOn(Position.prototype, 'getPosition').andReturn('3;true');
+    spyOn(SlideShow.prototype, '_update');
+    spyOn(Position.prototype, 'getPosition').andReturn('3;true');  
     var slideShow = new SlideShow(queryAll(document, '.slide'))
     
+    expect(SlideShow.prototype._update.calls.length).toBe(1);
+   
+    slideShow._refresh();
+
+    expect(SlideShow.prototype._update.calls.length).toBe(1);
+    
     slideShow._refresh();
     
-    expect(Slide.prototype._update.calls.length).toBe(1);
-    
-    slideShow._refresh();
-    
-    expect(Slide.prototype._update.calls.length).toBe(1);
+    expect(SlideShow.prototype._update.calls.length).toBe(1);
   });    
 
 }); 
