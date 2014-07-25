@@ -13,14 +13,18 @@ Position.prototype = {
     return getResource('/teacher_current_slide');
   },
   
-  postPosition: function(index, IDEDisplayed) {
-    postResource('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
-    this._currentIndex = index; this.IDEDisplayed = IDEDisplayed;
+  _updateSlideShow: function() {
     if (this._slideshow._currentIndex != this._currentIndex || this._slideshow._IDEDisplayed != this.IDEDisplayed ) { 
       this._slideshow._currentIndex = this._currentIndex;
       this._slideshow._IDEDisplayed = this.IDEDisplayed; 
       this._slideshow._update();
     }    
+  },
+  
+  postPosition: function(index, IDEDisplayed) {
+    postResource('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
+    this._currentIndex = index; this.IDEDisplayed = IDEDisplayed;
+    this._updateSlideShow();
   },  
   
   _update: function() {
