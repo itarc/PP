@@ -110,8 +110,8 @@ TeacherSlideShow.prototype = {
       case UP_ARROW:
         this.up();
       break;	    
-      case SPACE:
-        this._refresh();
+      case SPACE: // SHOULD ALSO UPDATE SLIDE
+        this._refresh(); 
       break;	
       case HOME:  
         this.home();     
@@ -122,35 +122,25 @@ TeacherSlideShow.prototype = {
   next: function() {
     if (this._currentIndex >= (this._numberOfSlides - 1) ) return;
     if (this._slides[this._currentIndex+1] && this._slides[this._currentIndex+1]._isCodingSlide()) return;		  
-    this._currentIndex += 1;		     
-    this._update();
-    this.position.postPosition(this._currentIndex, this._IDEDisplayed);    
+    this.position.postPosition(this._currentIndex + 1, this._IDEDisplayed);    
   },  
 
   prev: function() {
-    if (this._currentIndex <= 0) return;
-    this._currentIndex -= 1; 
-    this._update();    
-    this.position.postPosition(this._currentIndex, this._IDEDisplayed);  
+    if (this._currentIndex <= 0) return;    
+    this.position.postPosition(this._currentIndex - 1, this._IDEDisplayed);  
   },
   
   down: function() {
-    if (! this._last_slide()._isCodingSlide()) return;    
-    this._IDEDisplayed = true; 
-    this._update();    
-    this.position.postPosition(this._currentIndex, this._IDEDisplayed);  
+    if (! this._last_slide()._isCodingSlide()) return;       
+    this.position.postPosition(this._currentIndex, true);  
   },
   
   up: function() {
-    this._IDEDisplayed = false;	  
-    this._update();    
-    this.position.postPosition(this._currentIndex, this._IDEDisplayed);       
+    this.position.postPosition(this._currentIndex, false);       
   },
   
-  home: function() {      
-    this._currentIndex = 0;
-    this._update();
-    this.position.postPosition(this._currentIndex, this._IDEDisplayed);
+  home: function() {
+    this.position.postPosition(0, this._IDEDisplayed);
   },    
   
 };

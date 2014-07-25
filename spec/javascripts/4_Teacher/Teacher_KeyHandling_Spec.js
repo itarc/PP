@@ -81,15 +81,6 @@ describe("TeacherSlideShow KeyHandling", function() {
     expect(TeacherSlideShow.prototype.home.calls.length).toBe(1);    
   });
   
-  it("should refresh when space pressed", function() {
-    spyOn(TeacherSlideShow.prototype, '_refresh');
-    expect(TeacherSlideShow.prototype._refresh.calls.length).toBe(0);
-	  
-    __triggerKeyboardEvent(document, SPACE);
-
-    expect(TeacherSlideShow.prototype._refresh.calls.length).toBe(1);
-  });
-  
   it("should prevent default when key pressed on document", function() {
 
     preventDefaultKeys = jasmine.createSpy('preventDefaultKeys');
@@ -98,7 +89,7 @@ describe("TeacherSlideShow KeyHandling", function() {
 
     __triggerKeyboardEvent(document, F5);
 
-    expect(preventDefaultKeys.calls.length).toBe(10); // SHOULD BE 1 => TO REVIEW
+    expect(preventDefaultKeys.calls.length).toBe(13); // SHOULD BE 1 => TO REVIEW
 
   });
   

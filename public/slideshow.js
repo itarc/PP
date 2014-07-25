@@ -1,7 +1,8 @@
 // ----------------------------------
 // SLIDE POSITION ON SERVER 
 // ----------------------------------
-var Position = function() {
+var Position = function(slideshow) {
+  this._slideshow = slideshow;
   this._currentIndex = 0;
   this._IDEDisplayed = false;
 };
@@ -14,6 +15,12 @@ Position.prototype = {
   
   postPosition: function(index, IDEDisplayed) {
     postResource('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
+    this._currentIndex = index; this.IDEDisplayed = IDEDisplayed;
+    if (this._slideshow._currentIndex != this._currentIndex || this._slideshow._IDEDisplayed != this.IDEDisplayed ) { 
+      this._slideshow._currentIndex = this._currentIndex;
+      this._slideshow._IDEDisplayed = this.IDEDisplayed; 
+      this._slideshow._update();
+    }    
   },  
   
   _update: function() {
@@ -63,10 +70,12 @@ SlideShow.prototype = {
   },  
 
   initPosition: function() {
-    this.position = new Position();
+    this.position = new Position(this);
     this.position._update();
-    this._currentIndex = this.position._currentIndex;
-    this._IDEDisplayed = this.position._IDEDisplayed;
+    if (this._currentIndex != this.position._currentIndex || this._IDEDisplayed != this.position._IDEDisplayed) { 
+      this._currentIndex = this.position._currentIndex;
+      this._IDEDisplayed = this.position._IDEDisplayed;
+    }      
   },  
   
   _refresh: function() {

@@ -9,6 +9,7 @@ describe("TeacherSlideShow Current Slide Index", function() {
   
   beforeEach(function () {
     setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES);
+    spyOn(Position.prototype, "getPosition").andReturn("0;false");      
     slideShow = new TeacherSlideShow(queryAll(document, '.slide'));
   });
 	
@@ -54,7 +55,7 @@ describe("TeacherSlideShow Navigation", function() {
   
   beforeEach(function () {
     setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES)
-    getResource = jasmine.createSpy('getResource');  
+    spyOn(Position.prototype, "getPosition").andReturn("0;false");  
     teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
   });  
 
@@ -64,9 +65,9 @@ describe("TeacherSlideShow Navigation", function() {
     expect(teacherSlideShow._slides[2]._node.className).toBe('slide')
   })
   
-  it("should go to second slide", function() {
+  it("should go to second slide", function() {     
     __triggerKeyboardEvent(document, RIGHT_ARROW)
-	  
+
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide')
     expect(teacherSlideShow._slides[1]._node.className).toBe('slide current')
     expect(teacherSlideShow._slides[2]._node.className).toBe('slide')	  
@@ -75,7 +76,7 @@ describe("TeacherSlideShow Navigation", function() {
   it("should go to third slide", function() {
     __triggerKeyboardEvent(document, RIGHT_ARROW)
     __triggerKeyboardEvent(document, RIGHT_ARROW)
-	  
+  
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide')
     expect(teacherSlideShow._slides[1]._node.className).toBe('slide')
     expect(teacherSlideShow._slides[2]._node.className).toBe('slide current')
@@ -153,12 +154,13 @@ describe("TeacherSlideShow Navigation (includes IDE Slide)", function() {
   
   beforeEach(function() {
     setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES_INCLUDING_IDE);
+    spyOn(Position.prototype, "getPosition").andReturn("0;false");  
     teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
   });  
 
   it("should not go beyond penultimate slide (2nd slide here)", function() {  
     __triggerKeyboardEvent(document, RIGHT_ARROW)
-	  
+	 	  
     expect(teacherSlideShow._slides[0]._node.className).toBe('slide')
     expect(teacherSlideShow._slides[1]._node.className).toBe('slide current') 
     expect(teacherSlideShow._slides[2]._node.className).toBe('slide'); 
@@ -244,34 +246,4 @@ describe("TeacherSlideShow Position (includes IDE)", function() {
   
 });
 
-describe("Teacher IDE", function() { 	
-  
-  beforeEach(function() {
-    setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES_INCLUDING_IDE);
-    teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));    
-    spyOn(TeacherCodeSlide.prototype, '_update');  
-    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(0);	     
-  });
-  
-  it("should NOT be updated when NOT visible and teacher presses space", function() {
-    __triggerKeyboardEvent(document, SPACE);
 
-    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(0);
-  });
-  
-  it("should be updated when teacher make it visible", function() {	    
-    teacherSlideShow.down();	
-	  
-    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(1);
-  });  
-  
-  it("should be updated when teacher make it visible and presses space", function() { // TO REPLACE OR REMOVE
-    teacherSlideShow.down();
-    
-    spyOn(Position.prototype, "getPosition").andReturn('0;true'); // POSITION SHOULD HAVE CHANGED TO ALLOW UPDATE
-    __triggerKeyboardEvent(document, SPACE);
-
-    expect(TeacherCodeSlide.prototype._update.calls.length).toBe(1); // SHOULD BE 2 => To Review
-  });
-  
-});
