@@ -49,14 +49,13 @@ var SlideShow = function(slides) {
   this.initEvents();
   this.initSlides(slides);
   this.initPosition();
-  this.initCurrentSlide();
 };
 
 
 SlideShow.prototype = {
   _slides : [],
-  _currentIndex: 0,
-  _IDEDisplayed: false,
+  _currentIndex: undefined,
+  _IDEDisplayed: undefined,
   _numberOfSlides : 0,
 
   initEvents: function() {
@@ -79,6 +78,7 @@ SlideShow.prototype = {
     if (this._currentIndex != this.position._currentIndex || this._IDEDisplayed != this.position._IDEDisplayed) { 
       this._currentIndex = this.position._currentIndex;
       this._IDEDisplayed = this.position._IDEDisplayed;
+      this._update();
     }      
   },  
   
@@ -89,11 +89,7 @@ SlideShow.prototype = {
       this._IDEDisplayed = this.position._IDEDisplayed; 
       this._update();
     }
-  },  
-  
-  initCurrentSlide: function() {
-    this._update();
-  },   
+  },
   
   handleKeys: function(e) {
     preventDefaultKeys(e);
