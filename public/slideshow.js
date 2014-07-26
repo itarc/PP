@@ -9,9 +9,14 @@ var Position = function(slideshow) {
 
 Position.prototype = {
   
-  getPosition: function() {
+  _getPosition: function() {
     return getResource('/teacher_current_slide');
   },
+  
+  _postPosition: function(index, IDEDisplayed) {
+    postResource('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
+    this._currentIndex = index; this._IDEDisplayed = IDEDisplayed;
+  },  
   
   _updateSlideShow: function() {
     if (this._slideshow._currentIndex != this._currentIndex || this._slideshow._IDEDisplayed != this._IDEDisplayed ) { 
@@ -20,22 +25,17 @@ Position.prototype = {
       this._slideshow._update();
     }    
   },
-  
-  postPosition: function(index, IDEDisplayed) {
-    postResource('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
-    this._currentIndex = index; this._IDEDisplayed = IDEDisplayed;
-  },
-  
+
   updateWith: function(index, IDEDisplayed) {
-    this.postPosition(index, IDEDisplayed);
+    this._postPosition(index, IDEDisplayed);
     this._updateSlideShow();
   },
   
   updateWithTeacherPosition: function() {
-    serverPosition = this.getPosition();
-    this._currentIndex = parseInt(serverPosition.split(';')[0]);
+    teacherPosition = this._getPosition();
+    this._currentIndex = parseInt(teacherPosition.split(';')[0]);
     this._currentIndex = is_a_number(this._currentIndex) ? this._currentIndex : 0
-    this._IDEDisplayed = serverPosition.split(';')[1] == 'true' ? true : false
+    this._IDEDisplayed = teacherPosition.split(';')[1] == 'true' ? true : false
     this._updateSlideShow();
   },
   

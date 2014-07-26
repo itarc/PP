@@ -55,7 +55,7 @@ describe("SlideShow Position Update with Teacher Position", function() {
   it("should get slideshow position on server", function() {    
     getResource = jasmine.createSpy('postResource').andReturn('1;false');
     
-    p = slideshow.position.getPosition();
+    p = slideshow.position._getPosition();
 	  
     expect(getResource.calls.length).toBe(1);
     expect(getResource).toHaveBeenCalledWith('/teacher_current_slide');
@@ -67,7 +67,7 @@ describe("SlideShow Position Update with Teacher Position", function() {
 describe("SlideShow Position UpdateWith", function() {
   
   beforeEach(function () {
-    spyOn(Position.prototype, "getPosition").andReturn("0;false"); 
+    spyOn(Position.prototype, "_getPosition").andReturn("0;false"); 
     slideshow = new SlideShow([]);
   });  
   

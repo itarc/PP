@@ -40,7 +40,7 @@ describe("Blackboard SlideShow IDE", function() {
   
   it("should be updated every refresh", function() {
     spyOn(BlackboardCodeSlide.prototype, '_update');
-    spyOn(Position.prototype, 'getPosition').andReturn('3;true');
+    spyOn(Position.prototype, '_getPosition').andReturn('3;true');
     
     blackboardSlideShow._refresh();
     

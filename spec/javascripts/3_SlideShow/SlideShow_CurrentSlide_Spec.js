@@ -12,7 +12,7 @@ describe("SlideShow Position", function() {
   });
   
   it("should be position on server when slideshow is initialized", function() {
-    spyOn(Position.prototype, "getPosition").andReturn('121;true');
+    spyOn(Position.prototype, "_getPosition").andReturn('121;true');
     var slideShow = new SlideShow(queryAll(document, '.slide'));
     
     expect(slideShow.position._currentIndex).toBe(121);
@@ -25,7 +25,7 @@ describe("SlideShow Position", function() {
     expect(slideShow.position._currentIndex).toBe(0);
     expect(slideShow.position._IDEDisplayed).toBe(false);
     
-    spyOn(Position.prototype, "getPosition").andReturn('212;true');     
+    spyOn(Position.prototype, "_getPosition").andReturn('212;true');     
     slideShow._refresh();
     
     expect(slideShow.position._currentIndex).toBe(212);
@@ -41,7 +41,7 @@ describe("TeacherSlideShow Current Slide Index", function() {
   });
 
   it("should be SERVER index when initialized", function() {
-    spyOn(Position.prototype, 'getPosition').andReturn("1;false");
+    spyOn(Position.prototype, '_getPosition').andReturn("1;false");
     slideShow = new SlideShow(queryAll(document, '.slide')); 
     
     expect(slideShow._currentIndex).toBe(1);
@@ -50,7 +50,7 @@ describe("TeacherSlideShow Current Slide Index", function() {
   
   it("should be SERVER index when refreshed", function() {
     slideShow = new SlideShow(queryAll(document, '.slide'));     
-    spyOn(Position.prototype, 'getPosition').andReturn("2;true");
+    spyOn(Position.prototype, '_getPosition').andReturn("2;true");
     
     slideShow._refresh();
     expect(slideShow._currentIndex).toBe(2);
@@ -73,7 +73,7 @@ describe("SlideShow Current Slide", function() {
   
   it("should be updated when slideshow initialized", function() {
     spyOn(SlideShow.prototype, "_update");
-    spyOn(Position.prototype, 'getPosition').andReturn('3;true');    
+    spyOn(Position.prototype, '_getPosition').andReturn('3;true');    
     var slideShow = new SlideShow(queryAll(document, '.slide'))
 
     expect(slideShow._currentIndex).toBe(3);
@@ -83,7 +83,7 @@ describe("SlideShow Current Slide", function() {
   
   it("should NOT be updated when position did not change", function() {
     spyOn(SlideShow.prototype, '_update');
-    spyOn(Position.prototype, 'getPosition').andReturn('3;true');  
+    spyOn(Position.prototype, '_getPosition').andReturn('3;true');  
     var slideShow = new SlideShow(queryAll(document, '.slide'))
     
     expect(SlideShow.prototype._update.calls.length).toBe(1);
