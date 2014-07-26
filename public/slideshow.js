@@ -9,8 +9,12 @@ var Position = function(slideshow) {
 
 Position.prototype = {
   
-  _getPosition: function() {
-    return getResource('/teacher_current_slide');
+  _getPosition: function(synchronous_asynchronous, callback) {
+    if (synchronous_asynchronous == ASYNCHRONOUS) {
+      getResource('/teacher_current_slide', ASYNCHRONOUS, callback);
+    } else {
+      return getResource('/teacher_current_slide');
+    }
   },
   
   _postPosition: function(index, IDEDisplayed) {
@@ -26,17 +30,25 @@ Position.prototype = {
     }    
   },
 
+  treatResponse: function(teacherPosition) {
+      this._currentIndex = parseInt(teacherPosition.split(';')[0]);
+      this._currentIndex = is_a_number(this._currentIndex) ? this._currentIndex : 0
+      this._IDEDisplayed = teacherPosition.split(';')[1] == 'true' ? true : false
+      this._updateSlideShow();
+  },  
+
   updateWith: function(index, IDEDisplayed) {
     this._postPosition(index, IDEDisplayed);
     this._updateSlideShow();
   },
   
-  updateWithTeacherPosition: function() {
-    teacherPosition = this._getPosition();
-    this._currentIndex = parseInt(teacherPosition.split(';')[0]);
-    this._currentIndex = is_a_number(this._currentIndex) ? this._currentIndex : 0
-    this._IDEDisplayed = teacherPosition.split(';')[1] == 'true' ? true : false
-    this._updateSlideShow();
+  updateWithTeacherPosition: function(synchronous_asynchronous) {
+    if (synchronous_asynchronous == ASYNCHRONOUS) {
+      this._getPosition(ASYNCHRONOUS, this.treatResponse);      
+    } else {
+      teacherPosition = this._getPosition(SYNCHRONOUS);
+      this.treatResponse(teacherPosition);
+    }
   },
   
 };
