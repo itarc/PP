@@ -64,40 +64,40 @@ describe("SlideShow Position Update with Teacher Position", function() {
 
 });
   
-describe("SlideShow Post Position", function() {
+describe("SlideShow Position UpdateWith", function() {
   
   beforeEach(function () {
     spyOn(Position.prototype, "getPosition").andReturn("0;false"); 
     slideshow = new SlideShow([]);
   });  
   
-  it("should post slideshow current position", function() {    
+  it("should post position on server", function() {    
     postResource = jasmine.createSpy('postResource');   
 
-    slideshow.position.postPosition(1, true);
+    slideshow.position.updateWith(1, true);
 	  
     expect(postResource.calls.length).toBe(1);
     expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '1' + '&' + 'ide_displayed=' + true, ASYNCHRONOUS);
   });   
   
-  it("should posted position when different from current position ", function() {    
+  it("should update slidshow position when different from current position", function() {    
     spyOn(SlideShow.prototype, "_update");
     expect(SlideShow.prototype._update.calls.length).toBe(0);    
 
-    slideshow.position.postPosition(1, true);
+    slideshow.position.updateWith(1, true);
 
     expect(SlideShow.prototype._update.calls.length).toBe(1);
   });   
   
-  it("should NOT update slideshow when position posted and NOT different from current position ", function() {    
+  it("should NOT update slidshow position when NOT different from current position", function() {    
     spyOn(SlideShow.prototype, "_update");
     expect(SlideShow.prototype._update.calls.length).toBe(0);    
 
-    slideshow.position.postPosition(1, true);
+    slideshow.position.updateWith(1, true);
 	  
     expect(SlideShow.prototype._update.calls.length).toBe(1);
 
-    slideshow.position.postPosition(1, true);
+    slideshow.position.updateWith(1, true);
 	  
     expect(SlideShow.prototype._update.calls.length).toBe(1);
   });   

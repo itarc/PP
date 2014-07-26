@@ -75,7 +75,7 @@ for(key in CodeSlide.prototype) {
 // ----------------------------------
 var TeacherSlideShow = function(slides) {
   SlideShow.call(this, slides);
-  this.position.postPosition(this._currentIndex, this._IDEDisplayed);  
+  this.position.updateWith(this._currentIndex, this._IDEDisplayed);  
 };
 
 TeacherSlideShow.prototype = {
@@ -122,25 +122,25 @@ TeacherSlideShow.prototype = {
   next: function() {
     if (this._currentIndex >= (this._numberOfSlides - 1) ) return;
     if (this._slides[this._currentIndex+1] && this._slides[this._currentIndex+1]._isCodingSlide()) return;		  
-    this.position.postPosition(this._currentIndex + 1, this._IDEDisplayed);    
+    this.position.updateWith(this._currentIndex + 1, this._IDEDisplayed);    
   },  
 
   prev: function() {
     if (this._currentIndex <= 0) return;    
-    this.position.postPosition(this._currentIndex - 1, this._IDEDisplayed);  
+    this.position.updateWith(this._currentIndex - 1, this._IDEDisplayed);  
   },
   
   down: function() {
     if (! this._last_slide()._isCodingSlide()) return;       
-    this.position.postPosition(this._currentIndex, true);  
+    this.position.updateWith(this._currentIndex, true);  
   },
   
   up: function() {
-    this.position.postPosition(this._currentIndex, false);       
+    this.position.updateWith(this._currentIndex, false);       
   },
   
   home: function() {
-    this.position.postPosition(0, this._IDEDisplayed);
+    this.position.updateWith(0, this._IDEDisplayed);
   },    
   
 };

@@ -24,12 +24,12 @@ Position.prototype = {
   postPosition: function(index, IDEDisplayed) {
     postResource('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
     this._currentIndex = index; this._IDEDisplayed = IDEDisplayed;
-    this._updateSlideShow();
   },
   
-  //~ updateWith: function(index, IDEDisplayed) {
-    
-  //~ },
+  updateWith: function(index, IDEDisplayed) {
+    this.postPosition(index, IDEDisplayed);
+    this._updateSlideShow();
+  },
   
   updateWithTeacherPosition: function() {
     serverPosition = this.getPosition();
