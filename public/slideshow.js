@@ -25,9 +25,9 @@ Position.prototype = {
     postResource('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
     this._currentIndex = index; this._IDEDisplayed = IDEDisplayed;
     this._updateSlideShow();
-  },
+  },  
   
-  updateWithTeacherPosition: function() {
+  _update: function() {
     serverPosition = this.getPosition();
     this._currentIndex = parseInt(serverPosition.split(';')[0]);
     this._currentIndex = is_a_number(this._currentIndex) ? this._currentIndex : 0
