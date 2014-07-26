@@ -29,14 +29,13 @@ Position.prototype = {
   
   _update: function() {
     serverData = this.getPosition();
-    if (serverData) {
-      serverIndex = parseInt(serverData.split(';')[0]);
-      if ( is_a_number(serverIndex) ) {
-        this._currentIndex = serverIndex;
-        if (serverData.split(';')[1] == 'true') this._IDEDisplayed = true;
-        if (serverData.split(';')[1] == 'false') this._IDEDisplayed = false;
-      }
-    }
+
+    if ( ! is_a_number(parseInt(serverData.split(';')[0])) ) { this._updateSlideShow(); return; }
+
+    this._currentIndex = parseInt(serverData.split(';')[0]);
+    if (serverData.split(';')[1] == 'true') this._IDEDisplayed = true;
+    if (serverData.split(';')[1] == 'false') this._IDEDisplayed = false;
+    
     this._updateSlideShow();
   },
   
