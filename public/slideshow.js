@@ -25,17 +25,13 @@ Position.prototype = {
     postResource('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
     this._currentIndex = index; this._IDEDisplayed = IDEDisplayed;
     this._updateSlideShow();
-  },  
+  },
   
-  _update: function() {
-    serverData = this.getPosition();
-
-    if ( ! is_a_number(parseInt(serverData.split(';')[0])) ) { this._updateSlideShow(); return; }
-
-    this._currentIndex = parseInt(serverData.split(';')[0]);
-    if (serverData.split(';')[1] == 'true') this._IDEDisplayed = true;
-    if (serverData.split(';')[1] == 'false') this._IDEDisplayed = false;
-    
+  updateWithTeacherPosition: function() {
+    serverPosition = this.getPosition();
+    this._currentIndex = parseInt(serverPosition.split(';')[0]);
+    this._currentIndex = is_a_number(this._currentIndex) ? this._currentIndex : 0
+    this._IDEDisplayed = serverPosition.split(';')[1] == 'true' ? true : false
     this._updateSlideShow();
   },
   

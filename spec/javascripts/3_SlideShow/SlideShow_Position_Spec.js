@@ -22,7 +22,7 @@ describe("SlideShow Update Position", function() {
     slideshow.position._update();    
 
     expect(slideshow.position._currentIndex).toBe(0);
-    expect(slideshow.position._IDEDisplayed).toBe(false);
+    expect(slideshow.position._IDEDisplayed).toBe(true);
   });  
   
   it("should NOT be updated when IDEDisplay is unknown", function() {    
