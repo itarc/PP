@@ -1,4 +1,4 @@
-describe("SlideShow Update Position", function() {
+describe("SlideShow Position Update with Teacher Position", function() {
   
   beforeEach(function () {
     slideshow = new SlideShow([]);    
@@ -10,7 +10,7 @@ describe("SlideShow Update Position", function() {
   });
   
   it("should NOT change if server unavailable", function() {
-    slideshow.position._update(); // Can not call the server since getResource is not spyed 
+    slideshow.position.updateWithTeacherPosition(); // Can not call the server since getResource is not spyed 
 
     expect(slideshow.position._currentIndex).toBe(0);
     expect(slideshow.position._IDEDisplayed).toBe(false);  
@@ -19,7 +19,7 @@ describe("SlideShow Update Position", function() {
   it("should NOT be updated when slideIndex is unknown", function() {
     getResource = jasmine.createSpy('getResource').andReturn('UNKNOWN;true');
     
-    slideshow.position._update();    
+    slideshow.position.updateWithTeacherPosition();    
 
     expect(slideshow.position._currentIndex).toBe(0);
     expect(slideshow.position._IDEDisplayed).toBe(true);
@@ -28,7 +28,7 @@ describe("SlideShow Update Position", function() {
   it("should NOT be updated when IDEDisplay is unknown", function() {    
     getResource = jasmine.createSpy('getResource').andReturn('0;UNKNOWN');
     
-    slideshow.position._update();    
+    slideshow.position.updateWithTeacherPosition();    
 
     expect(slideshow.position._currentIndex).toBe(0);
     expect(slideshow.position._IDEDisplayed).toBe(false);    
@@ -37,7 +37,7 @@ describe("SlideShow Update Position", function() {
   it("should NOT be updated when slideIndex is unknown and IDEDisplay is unknown", function() {
     getResource = jasmine.createSpy('getResource').andReturn('UNKNOWN;UNKNOWN');
     
-    slideshow.position._update();    
+    slideshow.position.updateWithTeacherPosition();    
 
     expect(slideshow.position._currentIndex).toBe(0);
     expect(slideshow.position._IDEDisplayed).toBe(false);
@@ -46,7 +46,7 @@ describe("SlideShow Update Position", function() {
   it("should get current position on server when synchronised", function() {
     getResource = jasmine.createSpy('getResource').andReturn('1;false');  
     
-    slideshow.position._update();
+    slideshow.position.updateWithTeacherPosition();
 
     expect(slideshow.position._currentIndex).toBe(1);
     expect(slideshow.position._IDEDisplayed).toBe(false);
