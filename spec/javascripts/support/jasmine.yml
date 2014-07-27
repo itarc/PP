@@ -1,6 +1,7 @@
 src_files:
   - public/common.js
   - public/slides.js
+  - public/slideshow.js
   - public/slideshow*.js
 
 helpers:

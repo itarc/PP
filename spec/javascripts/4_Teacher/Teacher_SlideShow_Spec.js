@@ -9,7 +9,7 @@ describe("TeacherSlideShow Current Slide Index", function() {
   
   beforeEach(function () {
     setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES);
-    spyOn(Position.prototype, "_getPosition").andReturn("0;false");      
+    spyOn(Position.prototype, "_getPosition").and.returnValue("0;false");    
     slideShow = new TeacherSlideShow(queryAll(document, '.slide'));
   });
 	
@@ -55,7 +55,7 @@ describe("TeacherSlideShow Navigation", function() {
   
   beforeEach(function () {
     setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES)
-    spyOn(Position.prototype, "_getPosition").andReturn("0;false");  
+    spyOn(Position.prototype, "_getPosition").and.returnValue("0;false");  
     teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
   });  
 
@@ -154,7 +154,7 @@ describe("TeacherSlideShow Navigation (includes IDE Slide)", function() {
   
   beforeEach(function() {
     setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES_INCLUDING_IDE);
-    spyOn(Position.prototype, "_getPosition").andReturn("0;false");  
+    spyOn(Position.prototype, "_getPosition").and.returnValue("0;false");  
     teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
   });  
 
@@ -200,8 +200,8 @@ describe("TeacherSlideShow Position (includes IDE)", function() {
   
   beforeEach(function() {
     setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES_INCLUDING_IDE);
-    getResource = jasmine.createSpy('getResource').andReturn('0;false'); 
-    //~ spyOn(Position.prototype, "_getPosition").andReturn('0;false');     ///// raises 'getResource not defined' when "teacherSlideShow.down();" ???
+    getResource = jasmine.createSpy('getResource').and.returnValue('0;false'); 
+    //~ spyOn(Position.prototype, "_getPosition").and.returnValue('0;false');     ///// raises 'getResource not defined' when "teacherSlideShow.down();" ???
     spyOn(Position.prototype, "_postPosition");
     teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
   }); 
@@ -240,7 +240,7 @@ describe("TeacherSlideShow Position (includes IDE)", function() {
     teacherSlideShow.next();
     teacherSlideShow.home();
 
-    expect(Position.prototype._postPosition.calls.length).toBe(3);  // init + next + home  
+    expect(Position.prototype._postPosition.calls.count()).toBe(3);  // init + next + home  
     expect(Position.prototype._postPosition).toHaveBeenCalledWith(0, false);  // should check if Third call (home) is the good call
   });  
   

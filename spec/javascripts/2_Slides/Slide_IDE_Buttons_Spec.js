@@ -19,7 +19,7 @@ describe("Server Execution Context", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode);  
     executionContext = new ServerExecutionContext(IDESlide);
-    getResource = jasmine.createSpy('getResource').andReturn('server_author' + SEPARATOR + 'server_code' + SEPARATOR + 'server_code to add');    
+    getResource = jasmine.createSpy('getResource').and.returnValue('server_author' + SEPARATOR + 'server_code' + SEPARATOR + 'server_code to add');    
   });
   
   it("should format server response", function() {	 
@@ -45,11 +45,11 @@ describe("IDE EXECUTE AT", function() {
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode);
-    postResource = jasmine.createSpy('postResource').andReturn('EXECUTION RESULT');
+    postResource = jasmine.createSpy('postResource').and.returnValue('EXECUTION RESULT');
   });
 
   it("should NOT be called when IDE is initialized", function() {
-    expect(postResource.calls.length).toBe(0);   
+    expect(postResource.calls.count()).toBe(0);   
   });  
   
   it("should NOT execute code when editor is empty", function() {
@@ -65,7 +65,7 @@ describe("IDE EXECUTE AT", function() {
 
     IDESlide.executeCodeAt('/url');
 	  
-    expect(postResource.calls.length).toBe(1);
+    expect(postResource.calls.count()).toBe(1);
     expect(postResource).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
     expect(slideNode.querySelector('#code_input').value).toBe('CODE');
     expect(slideNode.querySelector('#code_output').value).toBe('EXECUTION RESULT');
@@ -155,7 +155,7 @@ describe("ATTENDEE IDE GET & RUN BUTTON", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new AttendeeCodeSlide(slideNode);
     spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");   
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'CODE ON BLACKBOARD', "code_to_add": ''});     
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": 'CODE ON BLACKBOARD', "code_to_add": ''});     
   });  
   
   it("should be triggered when GET & RUN BUTTON clicked", function() {  
@@ -180,7 +180,7 @@ describe("ATTENDEE IDE GET LAST SEND", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);    
     slide = new AttendeeCodeSlide(slideNode);
     spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");   
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
   });
   
   it("should NOT be triggered when ALT-N BUTTON not present", function() {
@@ -240,7 +240,7 @@ describe("TEACHER IDE GET & RUN BUTTON", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode);
     spyOn(CodeSlide.prototype ,"executeCodeAt");   
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'CODE ON BLACKBOARD', "code_to_add": ''});     
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": 'CODE ON BLACKBOARD', "code_to_add": ''});     
   });
   
   it("should NOT be triggered when ALT-G disabled", function() {
@@ -259,7 +259,7 @@ describe("TEACHER IDE GET LAST SEND", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);    
     slide = new TeacherCodeSlide(slideNode);
     spyOn(TeacherCodeSlide.prototype ,"executeCodeAt");   
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
   });   
   
   it("should be triggered when GET LAST SEND BUTTON clicked", function() {  

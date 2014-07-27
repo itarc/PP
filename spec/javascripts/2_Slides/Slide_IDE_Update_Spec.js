@@ -20,13 +20,13 @@ describe("IDE UPDATE", function() {
 	  
     slide._update(0);
 	  
-    expect(CodeSlide.prototype.showCodeHelper.calls.length).toBe(1);
+    expect(CodeSlide.prototype.showCodeHelper.calls.count()).toBe(1);
     expect(CodeSlide.prototype.showCodeHelper).toHaveBeenCalledWith(0);
 	  
   });  
   
   it("should run the user last run", function() {
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": 'last execution', "code_to_add": ''});
     spyOn(CodeSlide.prototype, 'executeCodeAt');
 
     slide._update(0);
@@ -39,19 +39,19 @@ describe("IDE UPDATE", function() {
 
     slide._editor.updateWithText('last execution');
     
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": 'last execution', "code_to_add": ''});
 	  
     spyOn(CodeSlide.prototype, 'executeCode');
 	  
     slide._update(0);
 	  
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
+    expect(CodeSlide.prototype.executeCode.calls.count()).toBe(0);
 	  
   });  
   
   it("should NOT run anything when no last run, no code to display and no code to add", function() {
 
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": '', "code_to_add": ''});    
     
     slide._editor.updateWithText("print 'code remaining from previous slide'");
     
@@ -59,7 +59,7 @@ describe("IDE UPDATE", function() {
     
     slide._update(0);
     
-    expect(postResource.calls.length).toBe(0); 
+    expect(postResource.calls.count()).toBe(0); 
 
   });  
 
@@ -85,7 +85,7 @@ describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
   });  
 	
   it("should display CODE TO DISPLAY when no execution context on server", function() {
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": '', "code_to_add": ''});    
     expect(slide._editor.content()).toBe("");
     
     slide._update(0);
@@ -95,7 +95,7 @@ describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
   });
   
   it("should run last execution when exists", function() {
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'LAST EXECUTION', "code_to_add": ''});    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": 'LAST EXECUTION', "code_to_add": ''});    
     expect(slide._editor.content()).toBe("");
     
     slide._update(0);
@@ -105,18 +105,18 @@ describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
   });  
 
   it("should NOT run code that is already in editor", function() {
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": '', "code_to_add": ''});
     expect(slide._editor.content()).toBe("");
     
     slide._update(0);
 
     expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");
-    expect(CodeSlide.prototype.executeCodeAt.calls.length).toBe(1);	
+    expect(CodeSlide.prototype.executeCodeAt.calls.count()).toBe(1);	
 
     slide._update(0);
 
     expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");    
-    expect(CodeSlide.prototype.executeCodeAt.calls.length).toBe(1);	
+    expect(CodeSlide.prototype.executeCodeAt.calls.count()).toBe(1);	
   }); 
 
 });
@@ -141,9 +141,9 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should run code to add", function() {
     
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": '', "code_to_add": ''});
 
-    postResource = jasmine.createSpy('postResource').andReturn("CODE TO ADD");
+    postResource = jasmine.createSpy('postResource').and.returnValue("CODE TO ADD");
 
     slide._update(0);
 	  
@@ -155,13 +155,13 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should NOT run code that is already in editor", function() {
     
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'code to execute', "code_to_add": "puts 'CODE TO ADD'" });
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": 'code to execute', "code_to_add": "puts 'CODE TO ADD'" });
     spyOn(CodeSlide.prototype, 'executeCode');
 
     slide._editor.updateWithText('code to execute');	  
     slide._update(0);
 
-    expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
+    expect(CodeSlide.prototype.executeCode.calls.count()).toBe(0);
 
   });  
   
@@ -169,19 +169,19 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
     //~ var slide = new CodeSlide(slideNode);    
     
-    //~ spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code": '', "code_to_add": 'ADDED CODE'});
+    //~ spyOn(CodeSlide.prototype, 'lastExecution').and.returnValue({"author": '', "code": '', "code_to_add": 'ADDED CODE'});
     //~ spyOn(CodeSlide.prototype, 'executeCode');    
     
     //~ slide._editor.updateWithText('');
     //~ slide._update(0);
 	  
-    //~ expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);    
+    //~ expect(CodeSlide.prototype.executeCode.calls.count()).toBe(0);    
 
   //~ });   
   
   it("should NOT display code to add in code editor", function() {
 
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": "puts 'CODE TO ADD'" });
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": '', "code_to_add": "puts 'CODE TO ADD'" });
     
     var slide = new CodeSlide(slideNode);
 	  
@@ -195,7 +195,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   //~ it("should NOT display code to add in Teacher code editor when get attendee last Send", function() {
 
-    //~ getResource = jasmine.createSpy('getResource').andReturn('attendee name'+ '' + SEPARATOR + ''+ 'attendee code' +SEPARATOR + "puts 'CODE TO ADD'");
+    //~ getResource = jasmine.createSpy('getResource').and.returnValue('attendee name'+ '' + SEPARATOR + ''+ 'attendee code' +SEPARATOR + "puts 'CODE TO ADD'");
 
     //~ var slide = new CodeSlide(slideNode);
 	  
@@ -209,7 +209,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should get last teacher run without code to add", function() {
 
-    getResource = jasmine.createSpy('getResource').andReturn('0' + SEPARATOR + 'teacher run' + SEPARATOR + "puts 'CODE TO ADD'");
+    getResource = jasmine.createSpy('getResource').and.returnValue('0' + SEPARATOR + 'teacher run' + SEPARATOR + "puts 'CODE TO ADD'");
 	  
     expect(slideNode.querySelector('#code_input').value).toBe("");	  
     

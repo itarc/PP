@@ -11,7 +11,7 @@ describe("ATTENDEE IDE Author Bar", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_attendee_name_field_html);
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
+    getResource = jasmine.createSpy('getResource').and.returnValue('a name');
     slide = new CodeSlide(slideNode);    
    });	  
    
@@ -69,12 +69,12 @@ describe("TEACHER IDE Author Bar", function() {
 	  
     slide._update(0);
 	  
-    expect(TeacherCodeSlide.prototype._updateLastSendAttendeeName.calls.length).toBe(1);
+    expect(TeacherCodeSlide.prototype._updateLastSendAttendeeName.calls.count()).toBe(1);
   });     
    
    
   it("should display the author name of the last send on server", function() {
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
+    getResource = jasmine.createSpy('getResource').and.returnValue('a name');
     
     slide._update(0);
     
@@ -82,8 +82,8 @@ describe("TEACHER IDE Author Bar", function() {
   }); 
 
   it("should display the author name of the last send in editor", function() {
-    getResource = jasmine.createSpy('getResource').andReturn('a name');   
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee name', code: 'code sent'});     
+    getResource = jasmine.createSpy('getResource').and.returnValue('a name');   
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({author: 'attendee name', code: 'code sent'});     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
     
     slideNode.querySelector('#get_last_send').click();
@@ -93,8 +93,8 @@ describe("TEACHER IDE Author Bar", function() {
   });
   
   it("should display the author name of the last send in editor even if the code on server is the same in editor", function() {
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee name', code: 'code sent'});       
+    getResource = jasmine.createSpy('getResource').and.returnValue('a name');
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({author: 'attendee name', code: 'code sent'});       
     slide._editor.updateWithText("code sent");
     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
