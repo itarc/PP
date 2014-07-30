@@ -25,7 +25,8 @@ describe("SlideShow Position", function() {
     expect(slideShow.position._currentIndex).toBe(0);
     expect(slideShow.position._IDEDisplayed).toBe(false);
     
-    spyOn(Position.prototype, "_getPosition").andReturn('212;true');     
+    spyOn(Resource.prototype, "get").andReturn('212;true');
+    
     slideShow._refresh();
     
     expect(slideShow.position._currentIndex).toBe(212);

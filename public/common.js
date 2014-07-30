@@ -41,24 +41,33 @@ var Resource = function() {
 };
 
 Resource.prototype = {
+
+  _asynchronousRequestDone: function(xmlhttp) {
+    return (xmlhttp.readyState==4 && xmlhttp.status==200)
+  },
   
-  _getResourceWithCallBack: function(xmlhttp, path, callback) {
+  _xmlhttpResponseText: function(xmlhttp) {
+    return xmlhttp.responseText;
+  },  
+  
+  _getResourceWithCallBack: function(xmlhttp, path, object, callback) {
+      _t = this;
       xmlhttp.onreadystatechange=function()
       {
-        if (asynchronousRequestDone(xmlhttp))
+        if (_t._asynchronousRequestDone(xmlhttp))
         {
-          callback.call(this, xmlhttp.responseText);
+          callback.call(object, _t._xmlhttpResponseText(xmlhttp));
         }
       }
       xmlhttp.open("GET", SERVER_PATH + path, true, callback);
       xmlhttp.send();
   },
   
-  get: function(path, synchronous_asynchronous, callback) {
+  get: function(path, synchronous_asynchronous, object, callback) {
     var xmlhttp = new XMLHttpRequest();
 
     if (synchronous_asynchronous == ASYNCHRONOUS) {  
-      this._getResourceWithCallBack(xmlhttp, path, callback);
+      this._getResourceWithCallBack(xmlhttp, path, object, callback);
     } else {
       xmlhttp.open("GET", SERVER_PATH + path, false);
       xmlhttp.send();    

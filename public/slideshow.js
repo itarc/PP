@@ -11,16 +11,14 @@ var Position = function(slideshow) {
 Position.prototype = {
   
   _getPosition: function(synchronous_asynchronous, callback) {
-    //~ resource = new Resource();
-    if (synchronous_asynchronous == ASYNCHRONOUS) {
-      this._positionResource.get('/teacher_current_slide', ASYNCHRONOUS, callback);
+    if (synchronous_asynchronous == ASYNCHRONOUS) { 
+      this._positionResource.get('/teacher_current_slide', ASYNCHRONOUS, this, callback);
     } else {
       return this._positionResource.get('/teacher_current_slide');
     }
   },
   
   _postPosition: function(index, IDEDisplayed) {
-    //~ resource = new Resource();
     this._positionResource.post('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
     this._currentIndex = index; this._IDEDisplayed = IDEDisplayed;
   },  

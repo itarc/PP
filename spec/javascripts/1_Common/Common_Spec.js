@@ -40,13 +40,15 @@ describe("Common GET", function() {
   it("should GET ASynchronous", function() {
 
     spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
-    spyOn(XMLHttpRequest.prototype, 'send')	  
-    
-    asynchronousRequestDone = jasmine.createSpy().andReturn(true);
+    spyOn(XMLHttpRequest.prototype, 'send')
+
+    spyOn(Resource.prototype, "_xmlhttpResponseText").andReturn('RESPONSE')   
+    spyOn(Resource.prototype, "_asynchronousRequestDone").andReturn(true)   
     callbackSpy = jasmine.createSpy('callback')
 	  
     resource = new Resource();
-    getResponse = resource.get('/teacher_current_slide', ASYNCHRONOUS, callbackSpy);
+    
+    getResponse = resource.get('/teacher_current_slide', ASYNCHRONOUS, this, callbackSpy);
 
     expect(XMLHttpRequest.prototype.open).toHaveBeenCalled()
     expect(XMLHttpRequest.prototype.open.calls.length).toBe(1)	  
@@ -55,9 +57,9 @@ describe("Common GET", function() {
     expect(XMLHttpRequest.prototype.send.calls.length).toBe(1)  
     expect(getResponse).toBeUndefined()
     
-    //~ waits(200);  
+    //~ waits(1200);  
 
-    expect(callbackSpy).toHaveBeenCalled();
+    expect(callbackSpy).toHaveBeenCalledWith('RESPONSE');
 	  
   });   
   
