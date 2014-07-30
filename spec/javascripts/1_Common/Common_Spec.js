@@ -41,28 +41,21 @@ describe("Common GET", function() {
     spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
     spyOn(XMLHttpRequest.prototype, 'send')	  
     
-    function callback(response) {
-      return false;
-    }    
-    
+    asynchronousRequestDone = jasmine.createSpy().andReturn(true);
     callbackSpy = jasmine.createSpy('callback')
 	  
-    getResponse = getResource('/teacher_current_slide', ASYNCHRONOUS, callback)
+    getResponse = getResource('/teacher_current_slide', ASYNCHRONOUS, callbackSpy)
 
     expect(XMLHttpRequest.prototype.open).toHaveBeenCalled()
     expect(XMLHttpRequest.prototype.open.calls.length).toBe(1)	  
-    expect(XMLHttpRequest.prototype.open).toHaveBeenCalledWith('GET', '/teacher_current_slide', ASYNCHRONOUS, callback)
+    expect(XMLHttpRequest.prototype.open).toHaveBeenCalledWith('GET', '/teacher_current_slide', ASYNCHRONOUS, callbackSpy)
     expect(XMLHttpRequest.prototype.send).toHaveBeenCalled()  
     expect(XMLHttpRequest.prototype.send.calls.length).toBe(1)  
     expect(getResponse).toBeUndefined()
+    
+    //~ waits(200);  
 
-    //~ waitsFor(function() {
-      //~ return callback();
-    //~ }, "the spreadsheet calculation to complete", 10000);
-    
-    //~ waits(1500);    
-    
-    //~ expect(callbackSpy).toHaveBeenCalled()
+    expect(callbackSpy).toHaveBeenCalled();
 	  
   });   
   
