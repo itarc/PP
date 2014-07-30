@@ -39,13 +39,13 @@ PollSlide.prototype = {
     return this._node.querySelectorAll('.poll_response_rate').length > 0  
   },
   savePoll: function(elementId) {
-    new Resource().post('/'+elementId, '', ASYNCHRONOUS);
+    new Resource().post('/'+elementId, '', ASYNCHRONOUS); // ////// New Resource to place in the constructor
   },   
   _update: function() {
     rateNodes = this._node.querySelectorAll('.poll_response_rate')
     for (var i=0; i<rateNodes.length; i++) {
       rateNodeId = '#' + rateNodes[i].id;
-      rateNodeValue = "(" + ( new Resource().get('/' + rateNodes[i].id) ) + "%)"
+      rateNodeValue = "(" + ( new Resource().get('/' + rateNodes[i].id) ) + "%)" // /////// New Resource to place in the constructor
       this._node.querySelector(rateNodeId).innerHTML = rateNodeValue;
     }
   },
@@ -63,6 +63,7 @@ var ServerExecutionContext = function(slide) {
   this.author = '';
   this.code = '';
   this.code_to_add = '';
+  this._executionContextResource = new Resource();  
 }
 
 ServerExecutionContext.prototype = {
@@ -82,7 +83,7 @@ ServerExecutionContext.prototype = {
   },
   
   getContextOnServer: function(url) {
-    last_execution = (new Resource().get(url)).split(SEPARATOR);
+    last_execution = (this._executionContextResource.get(url)).split(SEPARATOR);
     author = last_execution[0];
     code = (last_execution[1]) ? last_execution[1] : '';
     code_to_add = (last_execution[2]) ? last_execution[2] : '';
@@ -125,6 +126,7 @@ var AuthorBar = function(node) {
   this._node = node;
   if (this._node) this.authorNode = this._node.querySelector('#author_name')
   if (this._node) this.lastsendNode = this._node.querySelector('#last_send_attendee_name')
+  this._sessionIDResource = new Resource();
   this._sessionID = this.getSessionID();
   this.refreshWithSessionID();
 }
@@ -132,12 +134,12 @@ var AuthorBar = function(node) {
 AuthorBar.prototype = {
   
   getSessionID: function() {
-    return new Resource().get('/session_id');
+    return this._sessionIDResource.get('/session_id');
   },
   
   createSessionID: function(newAuthor) {
     if (newAuthor == '') return;
-    new Resource().post('session_id/attendee_name', 'attendee_name=' + newAuthor, SYNCHRONOUS);
+    this._sessionIDResource.post('session_id/attendee_name', 'attendee_name=' + newAuthor, SYNCHRONOUS);
     this._sessionID = newAuthor;
     this.updateAuthorNameWith(this._sessionID);
   },
@@ -239,6 +241,8 @@ var CodeSlide = function(node, slideshow) {
   this._sendResource = '/code_send_result';
   this._getAndRunResource = '/code_get_last_send_to_blackboard'    
   this._updateResource = '/code_last_execution'    
+  
+  this._executionResource = new Resource();
 };
 
 CodeSlide.prototype = {
@@ -323,7 +327,7 @@ CodeSlide.prototype = {
     if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();    
     url += ("/" + this._codeHelper_current_index);
-    executionResult = new Resource().post(url, this.codeToExecute(), SYNCHRONOUS);
+    executionResult = this._executionResource.post(url, this.codeToExecute(), SYNCHRONOUS);
     this._standardOutput.updateWith(executionResult);    
   },
   

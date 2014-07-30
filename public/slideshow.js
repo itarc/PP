@@ -5,22 +5,23 @@ var Position = function(slideshow) {
   this._slideshow = slideshow;
   this._currentIndex = 0;
   this._IDEDisplayed = false;
+  this._positionResource = new Resource();
 };
 
 Position.prototype = {
   
   _getPosition: function(synchronous_asynchronous, callback) {
-    resource = new Resource();
+    //~ resource = new Resource();
     if (synchronous_asynchronous == ASYNCHRONOUS) {
-      resource.get('/teacher_current_slide', ASYNCHRONOUS, callback);
+      this._positionResource.get('/teacher_current_slide', ASYNCHRONOUS, callback);
     } else {
-      return resource.get('/teacher_current_slide');
+      return this._positionResource.get('/teacher_current_slide');
     }
   },
   
   _postPosition: function(index, IDEDisplayed) {
-    resource = new Resource();
-    resource.post('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
+    //~ resource = new Resource();
+    this._positionResource.post('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
     this._currentIndex = index; this._IDEDisplayed = IDEDisplayed;
   },  
   

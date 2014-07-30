@@ -18,8 +18,7 @@ describe("Server Execution Context", function() {
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode);  
-    executionContext = new ServerExecutionContext(IDESlide);
-    //~ getResource = jasmine.createSpy('getResource').andReturn('server_author' + SEPARATOR + 'server_code' + SEPARATOR + 'server_code to add');    
+    executionContext = new ServerExecutionContext(IDESlide);  
     spyOn(Resource.prototype, "get").andReturn('server_author' + SEPARATOR + 'server_code' + SEPARATOR + 'server_code to add');
   });
   
