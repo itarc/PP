@@ -39,13 +39,13 @@ PollSlide.prototype = {
     return this._node.querySelectorAll('.poll_response_rate').length > 0  
   },
   savePoll: function(elementId) {
-    postResource('/'+elementId, '', ASYNCHRONOUS);
+    new Resource().post('/'+elementId, '', ASYNCHRONOUS);
   },   
   _update: function() {
     rateNodes = this._node.querySelectorAll('.poll_response_rate')
     for (var i=0; i<rateNodes.length; i++) {
       rateNodeId = '#' + rateNodes[i].id;
-      rateNodeValue = "(" + getResource('/' + rateNodes[i].id) + "%)"
+      rateNodeValue = "(" + ( new Resource().get('/' + rateNodes[i].id) ) + "%)"
       this._node.querySelector(rateNodeId).innerHTML = rateNodeValue;
     }
   },
@@ -82,7 +82,7 @@ ServerExecutionContext.prototype = {
   },
   
   getContextOnServer: function(url) {
-    last_execution = getResource(url).split(SEPARATOR);
+    last_execution = (new Resource().get(url)).split(SEPARATOR);
     author = last_execution[0];
     code = (last_execution[1]) ? last_execution[1] : '';
     code_to_add = (last_execution[2]) ? last_execution[2] : '';
@@ -132,12 +132,12 @@ var AuthorBar = function(node) {
 AuthorBar.prototype = {
   
   getSessionID: function() {
-    return getResource('/session_id');
+    return new Resource().get('/session_id');
   },
   
   createSessionID: function(newAuthor) {
     if (newAuthor == '') return;
-    postResource('session_id/attendee_name', 'attendee_name=' + newAuthor, SYNCHRONOUS);
+    new Resource().post('session_id/attendee_name', 'attendee_name=' + newAuthor, SYNCHRONOUS);
     this._sessionID = newAuthor;
     this.updateAuthorNameWith(this._sessionID);
   },
@@ -323,7 +323,7 @@ CodeSlide.prototype = {
     if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();    
     url += ("/" + this._codeHelper_current_index);
-    executionResult = postResource(url, this.codeToExecute(), SYNCHRONOUS);
+    executionResult = new Resource().post(url, this.codeToExecute(), SYNCHRONOUS);
     this._standardOutput.updateWith(executionResult);    
   },
   

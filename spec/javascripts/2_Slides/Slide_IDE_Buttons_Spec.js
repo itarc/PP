@@ -19,7 +19,8 @@ describe("Server Execution Context", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode);  
     executionContext = new ServerExecutionContext(IDESlide);
-    getResource = jasmine.createSpy('getResource').andReturn('server_author' + SEPARATOR + 'server_code' + SEPARATOR + 'server_code to add');    
+    //~ getResource = jasmine.createSpy('getResource').andReturn('server_author' + SEPARATOR + 'server_code' + SEPARATOR + 'server_code to add');    
+    spyOn(Resource.prototype, "get").andReturn('server_author' + SEPARATOR + 'server_code' + SEPARATOR + 'server_code to add');
   });
   
   it("should format server response", function() {	 
@@ -45,11 +46,12 @@ describe("IDE EXECUTE AT", function() {
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode);
-    postResource = jasmine.createSpy('postResource').andReturn('EXECUTION RESULT');
+    spyOn(Resource.prototype, 'post').andReturn('EXECUTION RESULT');
   });
 
   it("should NOT be called when IDE is initialized", function() {
-    expect(postResource.calls.length).toBe(0);   
+    //~ expect(postResource.calls.length).toBe(0);   
+    expect(Resource.prototype.post.calls.length).toBe(0);   
   });  
   
   it("should NOT execute code when editor is empty", function() {
@@ -57,7 +59,7 @@ describe("IDE EXECUTE AT", function() {
     
     IDESlide.executeCodeAt('/url');
 
-    expect(postResource).not.toHaveBeenCalled();    
+    expect(Resource.prototype.post).not.toHaveBeenCalled();    
   });
   
   it("should execute code on server and show result on standard output", function() {
@@ -65,8 +67,8 @@ describe("IDE EXECUTE AT", function() {
 
     IDESlide.executeCodeAt('/url');
 	  
-    expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
+    expect(Resource.prototype.post.calls.length).toBe(1);
+    expect(Resource.prototype.post).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
     expect(slideNode.querySelector('#code_input').value).toBe('CODE');
     expect(slideNode.querySelector('#code_output').value).toBe('EXECUTION RESULT');
   });  
@@ -77,12 +79,12 @@ describe("IDE EXECUTE AT", function() {
     IDESlide.showCodeHelper(0);
     IDESlide.executeCodeAt('/url');
 
-    expect(postResource).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
+    expect(Resource.prototype.post).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
 
     IDESlide.showCodeHelper(1);
     IDESlide.executeCodeAt('/url');
 
-    expect(postResource).toHaveBeenCalledWith('/url/1', 'CODE', SYNCHRONOUS);    
+    expect(Resource.prototype.post).toHaveBeenCalledWith('/url/1', 'CODE', SYNCHRONOUS);    
   });  
   
 });

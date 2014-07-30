@@ -17,7 +17,7 @@ describe("SlideShow Position Update with Teacher Position", function() {
   });  
   
   it("should NOT be updated when slideIndex is unknown", function() {
-    getResource = jasmine.createSpy('getResource').andReturn('UNKNOWN;true');
+    spyOn(Position.prototype, "_getPosition").andReturn('UNKNOWN;true');    
     
     slideshow.position.updateWithTeacherPosition();    
 
@@ -26,7 +26,7 @@ describe("SlideShow Position Update with Teacher Position", function() {
   });  
   
   it("should NOT be updated when IDEDisplay is unknown", function() {    
-    getResource = jasmine.createSpy('getResource').andReturn('0;UNKNOWN');
+    spyOn(Position.prototype, "_getPosition").andReturn('0;UNKNOWN');        
     
     slideshow.position.updateWithTeacherPosition();    
 
@@ -35,7 +35,7 @@ describe("SlideShow Position Update with Teacher Position", function() {
   });  
   
   it("should NOT be updated when slideIndex is unknown and IDEDisplay is unknown", function() {
-    getResource = jasmine.createSpy('getResource').andReturn('UNKNOWN;UNKNOWN');
+    spyOn(Position.prototype, "_getPosition").andReturn('UNKNOWN;UNKNOWN');  
     
     slideshow.position.updateWithTeacherPosition();    
 
@@ -44,7 +44,7 @@ describe("SlideShow Position Update with Teacher Position", function() {
   });  
 
   it("should get current position on server when synchronised", function() {
-    getResource = jasmine.createSpy('getResource').andReturn('1;false');  
+    spyOn(Position.prototype, "_getPosition").andReturn('1;false');      
     
     slideshow.position.updateWithTeacherPosition();
 
@@ -53,14 +53,14 @@ describe("SlideShow Position Update with Teacher Position", function() {
   });  
   
   it("should get slideshow position on server", function() {    
-    getResource = jasmine.createSpy('postResource').andReturn('1;false');
+    spyOn(Resource.prototype, "get").andReturn('1;false');
     
     p = slideshow.position._getPosition();
 	  
-    expect(getResource.calls.length).toBe(1);
-    expect(getResource).toHaveBeenCalledWith('/teacher_current_slide');
-    expect(p).toBe('1;false');
-  });
+    expect(Resource.prototype.get.calls.length).toBe(1);
+    expect(Resource.prototype.get).toHaveBeenCalledWith('/teacher_current_slide');
+    expect(p).toBe('1;false');  
+  }); 
 
 });
   
@@ -71,13 +71,13 @@ describe("SlideShow Position UpdateWith", function() {
     slideshow = new SlideShow([]);
   });  
   
-  it("should post position on server", function() {    
-    postResource = jasmine.createSpy('postResource');   
+  it("should post position on server", function() {      
+    spyOn(Resource.prototype, "post");  
 
     slideshow.position.updateWith(1, true);
-	  
-    expect(postResource.calls.length).toBe(1);
-    expect(postResource).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '1' + '&' + 'ide_displayed=' + true, ASYNCHRONOUS);
+
+    expect(Resource.prototype.post.calls.length).toBe(1);
+    expect(Resource.prototype.post).toHaveBeenCalledWith('/teacher_current_slide', 'index=' + '1' + '&' + 'ide_displayed=' + true, ASYNCHRONOUS);    
   });   
   
   it("should update slidshow position when different from current position", function() {    

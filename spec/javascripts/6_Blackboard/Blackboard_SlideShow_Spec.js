@@ -25,7 +25,7 @@ describe("Blackboard SlideShow IDE", function() {
   it("should get last Teacher run when refreshed", function() {
     blackboardSlideShow._refresh();
 
-    expect(getResource).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');    
+    expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');    
     expect(blackboardSlideShow._slides[0]._editor.content()).toBe('last send to blackboard');
     expect(BlackboardCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result_blackboard');
   });  
@@ -52,6 +52,8 @@ describe("Blackboard SlideShow IDE", function() {
   });    
   
   it("should refresh position every second", function() {
+    
+    
     spyOn(BlackboardSlideShow.prototype, '_refresh');
     jasmine.Clock.useMock();
 

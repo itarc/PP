@@ -11,7 +11,7 @@ describe("ATTENDEE IDE Author Bar", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_attendee_name_field_html);
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
+    spyOn(Resource.prototype, "get").andReturn('a name');    
     slide = new CodeSlide(slideNode);    
    });	  
    
@@ -20,12 +20,12 @@ describe("ATTENDEE IDE Author Bar", function() {
   });
   
   it("should display new login and save it", function() {
-    postResource = jasmine.createSpy('postResource');
+    spyOn(Resource.prototype, "post");    
     
     slideNode.querySelector('#attendee_name').value = 'a new name';
     __triggerKeyboardEvent(slideNode.querySelector('#attendee_name'), RETURN);
-    
-    expect(postResource).toHaveBeenCalledWith("session_id/attendee_name", "attendee_name=a new name", SYNCHRONOUS);     
+     
+    expect(Resource.prototype.post).toHaveBeenCalledWith("session_id/attendee_name", "attendee_name=a new name", SYNCHRONOUS);     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a new name");    
   });
   
@@ -61,8 +61,18 @@ describe("TEACHER IDE Author Bar", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_last_send_attendee_name_html);
+    spyOn(Resource.prototype, "get").andReturn('a name');
     slide = new TeacherCodeSlide(slideNode);    
-   });	 
+   });	
+
+  it("should display the author name of the last send in editor", function() {
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee name', code: 'code sent'});     
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
+    
+    slideNode.querySelector('#get_last_send').click();
+    
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("attendee name");    
+  });   
    
   it("should show last send attendee name when upated", function() {
     spyOn(TeacherCodeSlide.prototype, '_updateLastSendAttendeeName');	  
@@ -73,27 +83,15 @@ describe("TEACHER IDE Author Bar", function() {
   });     
    
    
-  it("should display the author name of the last send on server", function() {
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
-    
+  it("should display the author name of the last send on server", function() {   
     slide._update(0);
     
     expect(slideNode.querySelector('#last_send_attendee_name').innerHTML.replace(/&gt;/g, '>')).toBe("a name >> "); 
   }); 
 
-  it("should display the author name of the last send in editor", function() {
-    getResource = jasmine.createSpy('getResource').andReturn('a name');   
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee name', code: 'code sent'});     
-    expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
-    
-    slideNode.querySelector('#get_last_send').click();
-    
-    expect(slideNode.querySelector('#author_name').innerHTML).toBe("attendee name");    
 
-  });
   
-  it("should display the author name of the last send in editor even if the code on server is the same in editor", function() {
-    getResource = jasmine.createSpy('getResource').andReturn('a name');
+  it("should display the author name of the last send in editor even if the code on server is the same in editor", function() {   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee name', code: 'code sent'});       
     slide._editor.updateWithText("code sent");
     

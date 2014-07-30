@@ -18,14 +18,15 @@ describe("Common key handling", function() {
   
 });
 
-describe("Common GET", function() {
-
+describe("Common GET", function() {  
+  
   it("should GET Synchronous", function() {
 
     spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
     spyOn(XMLHttpRequest.prototype, 'send')	  
 	  
-    getResponse = getResource('/teacher_current_slide')
+    resource = new Resource();
+    getResponse = resource.get('/teacher_current_slide')
 
     expect(XMLHttpRequest.prototype.open).toHaveBeenCalled()
     expect(XMLHttpRequest.prototype.open.calls.length).toBe(1)	  
@@ -35,7 +36,7 @@ describe("Common GET", function() {
     expect(getResponse).not.toBeUndefined()
 	  
   });  
-  
+
   it("should GET ASynchronous", function() {
 
     spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
@@ -44,7 +45,8 @@ describe("Common GET", function() {
     asynchronousRequestDone = jasmine.createSpy().andReturn(true);
     callbackSpy = jasmine.createSpy('callback')
 	  
-    getResponse = getResource('/teacher_current_slide', ASYNCHRONOUS, callbackSpy)
+    resource = new Resource();
+    getResponse = resource.get('/teacher_current_slide', ASYNCHRONOUS, callbackSpy);
 
     expect(XMLHttpRequest.prototype.open).toHaveBeenCalled()
     expect(XMLHttpRequest.prototype.open.calls.length).toBe(1)	  
@@ -66,12 +68,13 @@ describe("Common GET", function() {
     
     SERVER_PATH = '//serveur'
     
-    getResponse = getResource('/teacher_current_slide')
+    resource = new Resource();
+    getResponse = resource.get('/teacher_current_slide');    
     expect(XMLHttpRequest.prototype.open).toHaveBeenCalledWith('GET', SERVER_PATH + '/teacher_current_slide', SYNCHRONOUS)    
     
     SERVER_PATH = ''    
     
-  });  
+  });   
 
 });
 
@@ -82,7 +85,8 @@ describe("Common POST", function() {
     spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
     spyOn(XMLHttpRequest.prototype, 'send')
 	  
-    postResponse = postResource('/teacher_current_slide', "1", SYNCHRONOUS)
+    resource = new Resource();
+    postResponse = resource.post('/teacher_current_slide', "1", SYNCHRONOUS);    
 
     expect(XMLHttpRequest.prototype.open).toHaveBeenCalled()
     expect(XMLHttpRequest.prototype.open.calls.length).toBe(1)
@@ -92,14 +96,15 @@ describe("Common POST", function() {
     expect(XMLHttpRequest.prototype.send.calls.length).toBe(1)	  
     expect(postResponse).not.toBeUndefined()	  
 	  
-  });   
+  });  
   
   it("should POST ASynchronous", function() {
 
     spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
     spyOn(XMLHttpRequest.prototype, 'send')
 
-    postResponse = postResource('/teacher_current_slide', "1", ASYNCHRONOUS)
+    resource = new Resource();
+    postResponse = resource.post('/teacher_current_slide', "1", ASYNCHRONOUS);    
 
     expect(XMLHttpRequest.prototype.open).toHaveBeenCalled()
     expect(XMLHttpRequest.prototype.open.calls.length).toBe(1)
@@ -117,8 +122,9 @@ describe("Common POST", function() {
     spyOn(XMLHttpRequest.prototype, 'send')	     
     
     SERVER_PATH = '//serveur'
-    
-    postResponse = postResource('/teacher_current_slide', "", SYNCHRONOUS)
+
+    resource = new Resource();
+    postResponse = resource.post('/teacher_current_slide', "", SYNCHRONOUS);    
     expect(XMLHttpRequest.prototype.open).toHaveBeenCalledWith('POST', SERVER_PATH + '/teacher_current_slide', SYNCHRONOUS)      
     
     SERVER_PATH = ''    

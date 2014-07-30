@@ -9,7 +9,7 @@ code_ouput +
 FOOTER +
 "/div"
 
-describe("AttendeeSlideShow IDE", function() {  
+describe("AttendeeSlideShow IDE", function() {
   
   beforeEach(function() {
     setFixtures(ATTENDEE_SLIDESHOW_WITH_1_IDE_SLIDE_ONLY)	  
@@ -23,17 +23,18 @@ describe("AttendeeSlideShow IDE", function() {
    });  
 
   it("should be updated when refreshed and position changed", function() {
+    spyOn(Resource.prototype, "get").andReturn('0;false');
     var slideShow = new AttendeeSlideShow(queryAll(document, '.slide'))
 
     expect(slideShow._currentIndex).toBe(0);     
-    getResource = jasmine.createSpy('getResource').andReturn('11');
+    spyOn(Position.prototype, "_getPosition").andReturn('11;false');
     slideShow._refresh();
    
     expect(AttendeeCodeSlide.prototype._update.calls.length).toBe(2); // init + _refresh
    });
    
   it("should show IDE Slide (index 0) even if teacher slide is on another slide (index > 0)", function() {
-    getResource = jasmine.createSpy('getResource').andReturn('11;false');    
+    spyOn(Position.prototype, "_getPosition").andReturn('11;false');   
     var slideShow = new AttendeeSlideShow(queryAll(document, '.slide'))
 
     expect(slideShow._currentIndex).toBe(11);
@@ -41,7 +42,7 @@ describe("AttendeeSlideShow IDE", function() {
   });   
 
   it("should NOT be updated when refreshed but position did not change", function() {
-    getResource = jasmine.createSpy('getResource').andReturn('0;false');
+    spyOn(Position.prototype, "_getPosition").andReturn('0;false');
     var slideShow = new AttendeeSlideShow(queryAll(document, '.slide'))     
 
     expect(AttendeeCodeSlide.prototype._update.calls.length).toBe(1);

@@ -10,15 +10,17 @@ var Position = function(slideshow) {
 Position.prototype = {
   
   _getPosition: function(synchronous_asynchronous, callback) {
+    resource = new Resource();
     if (synchronous_asynchronous == ASYNCHRONOUS) {
-      getResource('/teacher_current_slide', ASYNCHRONOUS, callback);
+      resource.get('/teacher_current_slide', ASYNCHRONOUS, callback);
     } else {
-      return getResource('/teacher_current_slide');
+      return resource.get('/teacher_current_slide');
     }
   },
   
   _postPosition: function(index, IDEDisplayed) {
-    postResource('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
+    resource = new Resource();
+    resource.post('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
     this._currentIndex = index; this._IDEDisplayed = IDEDisplayed;
   },  
   

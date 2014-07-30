@@ -55,12 +55,12 @@ describe("IDE UPDATE", function() {
     
     slide._editor.updateWithText("print 'code remaining from previous slide'");
     
-    postResource = jasmine.createSpy('postResource');
+    spyOn(Resource.prototype, 'post');    
     
     slide._update(0);
     
-    expect(postResource.calls.length).toBe(0); 
-
+    expect(Resource.prototype.post.calls.length).toBe(0); 
+    
   });  
 
 }); 
@@ -143,12 +143,14 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
     
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});
 
-    postResource = jasmine.createSpy('postResource').andReturn("CODE TO ADD");
+    //~ postResource = jasmine.createSpy('postResource').andReturn("CODE TO ADD");
+    spyOn(Resource.prototype, 'post').andReturn("CODE TO ADD");
 
     slide._update(0);
 	  
     expect(slideNode.querySelector('#code_input').value).toBe("");	  
-    expect(postResource).toHaveBeenCalledWith('/code_run_result/0', SEPARATOR + "puts 'CODE TO ADD'", SYNCHRONOUS);
+    //~ expect(postResource).toHaveBeenCalledWith('/code_run_result/0', SEPARATOR + "puts 'CODE TO ADD'", SYNCHRONOUS);
+    expect(Resource.prototype.post).toHaveBeenCalledWith('/code_run_result/0', SEPARATOR + "puts 'CODE TO ADD'", SYNCHRONOUS);
     expect(slideNode.querySelector('#code_output').value).toBe("CODE TO ADD");  
 
   });	  
@@ -209,7 +211,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should get last teacher run without code to add", function() {
 
-    getResource = jasmine.createSpy('getResource').andReturn('0' + SEPARATOR + 'teacher run' + SEPARATOR + "puts 'CODE TO ADD'");
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'teacher run', "code_to_add": "puts 'CODE TO ADD'" });    
 	  
     expect(slideNode.querySelector('#code_input').value).toBe("");	  
     

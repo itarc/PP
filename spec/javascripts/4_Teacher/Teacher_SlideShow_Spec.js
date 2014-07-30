@@ -200,8 +200,7 @@ describe("TeacherSlideShow Position (includes IDE)", function() {
   
   beforeEach(function() {
     setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES_INCLUDING_IDE);
-    getResource = jasmine.createSpy('getResource').andReturn('0;false'); 
-    //~ spyOn(Position.prototype, "_getPosition").andReturn('0;false');     ///// raises 'getResource not defined' when "teacherSlideShow.down();" ???
+    spyOn(Position.prototype, "_getPosition").andReturn('0;false');
     spyOn(Position.prototype, "_postPosition");
     teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'))
   }); 

@@ -37,40 +37,43 @@ var queryAll = function(node, query) {
   return Array.prototype.slice.call(nodeList, 0);
 };
 
-var postResource = function(path, params, synchronous_asynchronous) {
-  var xmlhttp = new XMLHttpRequest();	
-  xmlhttp.open("POST", SERVER_PATH + path, synchronous_asynchronous);
-  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-  xmlhttp.send(params);	
-  return xmlhttp.responseText;
+var Resource = function() {
 };
 
-var asynchronousRequestDone = function(xmlhttp) {
-  return xmlhttp.readyState==4 && xmlhttp.status==200
-}
-
-var getResourceWithCallBack = function(xmlhttp, path, callback) {
-    xmlhttp.onreadystatechange=function()
-    {
-      if (asynchronousRequestDone(xmlhttp))
+Resource.prototype = {
+  
+  _getResourceWithCallBack: function(xmlhttp, path, callback) {
+      xmlhttp.onreadystatechange=function()
       {
-        callback.call(this, xmlhttp.responseText);
+        if (asynchronousRequestDone(xmlhttp))
+        {
+          callback.call(this, xmlhttp.responseText);
+        }
       }
+      xmlhttp.open("GET", SERVER_PATH + path, true, callback);
+      xmlhttp.send();
+  },
+  
+  get: function(path, synchronous_asynchronous, callback) {
+    var xmlhttp = new XMLHttpRequest();
+
+    if (synchronous_asynchronous == ASYNCHRONOUS) {  
+      this._getResourceWithCallBack(xmlhttp, path, callback);
+    } else {
+      xmlhttp.open("GET", SERVER_PATH + path, false);
+      xmlhttp.send();    
+      return xmlhttp.responseText;
     }
-    xmlhttp.open("GET", SERVER_PATH + path, true, callback);
-    xmlhttp.send();
-};
-
-var getResource = function(path, synchronous_asynchronous, callback) {
-  var xmlhttp = new XMLHttpRequest();
-
-  if (synchronous_asynchronous == ASYNCHRONOUS) {  
-    getResourceWithCallBack(xmlhttp, path, callback);
-  } else {
-    xmlhttp.open("GET", SERVER_PATH + path, false);
-    xmlhttp.send();    
+  },
+  
+  post: function(path, params, synchronous_asynchronous) {
+    var xmlhttp = new XMLHttpRequest();	
+    xmlhttp.open("POST", SERVER_PATH + path, synchronous_asynchronous);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send(params);	
     return xmlhttp.responseText;
-  }
+  },
+
 };
 
 var preventDefaultKeys = function(e) {};
