@@ -134,6 +134,8 @@ describe 'Blackboard Update', :type => :feature, :js => true do
   
   it 'should display teacher last run' do
     
+    visit teacher_presentation; go_down    
+    
     visit blackboard_presentation
 
     expect_IDE_to_be_empty
@@ -186,6 +188,8 @@ describe 'Blackboard Update', :type => :feature, :js => true do
   end
     
   it 'should NOT display attendee send when teacher does not allow it' do    
+    
+    visit teacher_presentation; go_down        
 
     visit attendee_IDE
     

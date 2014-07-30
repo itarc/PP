@@ -50,7 +50,7 @@ def expect_AuthorBar_to_have(author, last_send_attendee_name)
   within "#author_name" do
     expect(page.text).to eq author
   end
-  within "#last_send_attendee_name" do
+  within "#last_send_attendee_name", :visible => false do
     expect(page.text).to eq last_send_attendee_name
   end  
 end
