@@ -62,21 +62,17 @@ describe("SlideShow Position Update with Teacher Position", function() {
     expect(p).toBe('1;false');  
   }); 
   
-  it("should get slideshow position on server ASYNCHRONOUS", function() {    
+  it("should get slideshow position on server ASYNCHRONOUS", function() {
+    spyOn(Resource.prototype, "_xmlhttpResponseText").andReturn('9121;true')   
+    spyOn(Resource.prototype, "_asynchronousRequestDone").andReturn(true)
     
-    //~ expect(slideShow.position._currentIndex).toBe(0);
-    //~ expect(slideShow.position._IDEDisplayed).toBe(false); 
-    
-    //~ spyOn(Resource.prototype, "_xmlhttpResponseText").andReturn('9121;false')   
-    //~ spyOn(Resource.prototype, "_asynchronousRequestDone").andReturn(true)
-    
-    //~ spyOn(Position.prototype, "treatResponse").andCallThrough;    
+    spyOn(Position.prototype, "treatResponse").andCallThrough();
 
-    //~ slideshow.position._getPosition(ASYNCHRONOUS, Position.prototype.treatResponse);
+    slideshow.position._getPosition(ASYNCHRONOUS, Position.prototype.treatResponse);
 	  
-    //~ expect(Position.prototype.treatResponse).toHaveBeenCalledWith('9121;false');
-    //~ expect(slideShow.position._currentIndex).toBe(9121);
-    //~ expect(slideShow.position._IDEDisplayed).toBe(false); 
+    expect(Position.prototype.treatResponse).toHaveBeenCalledWith('9121;true');
+    expect(slideshow.position._currentIndex).toBe(9121);
+    expect(slideshow.position._IDEDisplayed).toBe(true); 
   });   
 
 });
