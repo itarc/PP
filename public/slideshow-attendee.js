@@ -70,5 +70,5 @@ for(key in SlideShow.prototype) {
 // INITIALIZE SLIDESHOW
 // ----------------------------------  
 var attendeeSlideshow = new AttendeeSlideShow(queryAll(document, '.slide'));
-var slideshowTimer = setInterval( function(){ attendeeSlideshow._refresh(); },2000);
+var slideshowTimer = setInterval( function(){ attendeeSlideshow._refresh(); },FLIP_ATTENDEE_GET_POSITION_FREQUENCY);
 

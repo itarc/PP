@@ -47,8 +47,8 @@ Position.prototype = {
     this._updateSlideShow();
   },
   
-  updateWithTeacherPosition: function(synchronous_asynchronous) {
-    if (synchronous_asynchronous == ASYNCHRONOUS) {
+  updateWithTeacherPosition: function() {
+    if (FLIP_GET_POSITION_SYNC_ASYNC == ASYNCHRONOUS) {
       this._getPosition(ASYNCHRONOUS);      
     } else {
       teacherPosition = this._getPosition(SYNCHRONOUS);

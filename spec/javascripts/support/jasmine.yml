@@ -1,5 +1,6 @@
 src_files:
   - public/common.js
+  - public/featureflip.js
   - public/slides.js
   - public/slideshow*.js
 
