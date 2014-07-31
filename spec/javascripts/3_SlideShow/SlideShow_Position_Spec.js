@@ -66,11 +66,11 @@ describe("SlideShow Position Update with Teacher Position", function() {
     spyOn(Resource.prototype, "_xmlhttpResponseText").andReturn('9121;true')   
     spyOn(Resource.prototype, "_asynchronousRequestDone").andReturn(true)
     
-    spyOn(Position.prototype, "treatResponse").andCallThrough();
+    spyOn(Position.prototype, "_updateSlideShowWith").andCallThrough();
 
-    slideshow.position._getPosition(ASYNCHRONOUS, Position.prototype.treatResponse);
+    slideshow.position._getPosition(ASYNCHRONOUS);
 	  
-    expect(Position.prototype.treatResponse).toHaveBeenCalledWith('9121;true');
+    expect(Position.prototype._updateSlideShowWith).toHaveBeenCalledWith('9121;true');
     expect(slideshow.position._currentIndex).toBe(9121);
     expect(slideshow.position._IDEDisplayed).toBe(true); 
   });   
