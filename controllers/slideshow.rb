@@ -1,6 +1,7 @@
 require 'sinatra'
 
 set :public_folder, 'public'
+set :views, 'views'
 set :logging, false
 
 set :bind, '0.0.0.0'
@@ -9,26 +10,29 @@ enable :sessions; set :session_secret, 'secret'
 
 require_relative 'slideshow_helper'
 
+require_relative '../views/presentation/content'
+
 # ---------
 # GETs
 # ---------
 
 get '/' do
   session[:user_id] ||= next_user_id
-  send_file "views/slideshow-attendee.html"
+  erb :slideshow_attendee  
 end
 
 get '/blackboard' do
-  send_file "views/blackboard.html"
+  erb :slideshow_blackboard
 end
 
 get '/blackboard_hangout.xml' do
-  send_file "views/blackboard_hangout.xml"
+  content_type 'text/xml'
+  erb :slideshow_blackboard_hangout
 end
 
 get '/teacher-x1973' do
   session[:user_id] = '0'
-  send_file "views/slideshow-teacher.1973x.html"
+  erb :slideshow_teacher
 end
 
 get '/teacher_current_slide' do
