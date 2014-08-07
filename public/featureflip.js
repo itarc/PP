@@ -5,6 +5,12 @@ var getFlipValue = function(symbol) {
   return  flipValue;
 }
 
+var postFlipValue = function(symbol, value) {
+  var flipResource = new Resource();
+
+  flipResource.post('/admin/flip/' + symbol, 'value=' + value, SYNCHRONOUS);
+}
+
 var getBooleanFlipValue = function(symbol, defaultValue) { 
   booleanFlipValue = getFlipValue(symbol)
   if (booleanFlipValue == 'true') { return  true }
@@ -20,6 +26,3 @@ var getNumberFlipValue = function(symbol, defaultValue) {
 
 FLIP_GET_POSITION_SYNC_ASYNC = getBooleanFlipValue('get_position_sync_async', SYNCHRONOUS)
 FLIP_ATTENDEE_GET_POSITION_FREQUENCY = getNumberFlipValue('attendee_get_position_frequency', 2000)
-
-//~ FLIP_GET_POSITION_SYNC_ASYNC = SYNCHRONOUS
-//~ FLIP_ATTENDEE_GET_POSITION_FREQUENCY = 2000

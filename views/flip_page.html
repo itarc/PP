@@ -1,0 +1,82 @@
+<html>
+  
+  <h1>FEATURE FLIPPING</h1>
+  </br>
+  
+  <div class="feature" id="get_position_sync_async">
+    <span>||</span>
+    <span>
+      <b>actual :</b>
+      <span id='actual'>true</span>
+    </span>, 
+    <span>
+      <b>new :</b>
+      <input id='new'>
+    </span>
+    <span>   
+      (possible: true / false)
+    </span>    
+  </div>
+  
+  </br>
+  
+  <div class="feature" id="attendee_get_position_frequency">
+    <span>||</span>
+    <span>
+      <b>actual :</b>
+      <span id='actual'>true</span>
+    </span>, 
+    <span>
+      <b>new :</b>
+      <input id='new'>
+    </span>
+    <span>   
+      (possible: 50 to 2000)
+    </span>       
+  </div>  
+  
+  <script src="../common.js"></script>
+  <script src="../featureflip.js"></script>
+  
+<script>
+    var displayFeatureName = function(feature) {
+      feature.innerHTML = "<span>" + feature.id + "</span>" + feature.innerHTML
+    }
+    var displayFeatureActualValue = function(feature) {
+      flipValue = getFlipValue(feature.id)
+      if (flipValue == '') flipValue = 'none'
+      feature.querySelector('#actual').innerHTML = flipValue
+    }
+    
+    var replaceFeatureActualValue = function(feature) {
+      newValue=feature.querySelector('#new').value
+      postFlipValue(feature.id, newValue)
+      feature.querySelector('#actual').innerHTML = getFlipValue(feature.id);
+    }
+
+    features = document.querySelectorAll('.feature')
+
+    var feature_1 = features[0]
+    displayFeatureName(feature_1);
+    displayFeatureActualValue(feature_1);
+    feature_1.querySelector('#new').addEventListener('keydown',
+      function(e) {
+        if (e.keyCode == RETURN) {
+          replaceFeatureActualValue(feature_1);
+        } 
+      }, false
+    );
+
+    var feature_2 = features[1]
+    displayFeatureName(feature_2);
+    displayFeatureActualValue(feature_2);
+    feature_2.querySelector('#new').addEventListener('keydown',
+      function(e) {
+        if (e.keyCode == RETURN) {
+          replaceFeatureActualValue(feature_2);
+        } }, false
+    )      
+      
+  </script>
+  
+</html>

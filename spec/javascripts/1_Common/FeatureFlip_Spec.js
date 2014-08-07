@@ -8,6 +8,14 @@ describe("Feature Flip (Any)", function() {
     
     expect(Resource.prototype.get).toHaveBeenCalledWith('/admin/flip/' + 'resource')
   }); 
+  
+  it("should post resource value", function() {
+    spyOn(Resource.prototype, "post");
+
+    postFlipValue('resource', 'resource_value')
+    
+    expect(Resource.prototype.post).toHaveBeenCalledWith('/admin/flip/' + 'resource', 'value=resource_value', SYNCHRONOUS)
+  });   
 
 });
 

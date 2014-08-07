@@ -86,3 +86,17 @@ db.execute_sql("drop table if exists #{nom_de_table}")
 
 puts "Creation de la table <#{nom_de_table}>"
 db.execute_sql("create table #{nom_de_table} (#{colonnes})")
+
+# ############
+nom_de_table = 'flip_values'; 
+colonnes = '
+symbol TEXT,
+value TEXT
+'
+# ############
+
+puts "'Drop' de la table <#{nom_de_table}> si elle existe"
+db.execute_sql("drop table if exists #{nom_de_table}")
+
+puts "Creation de la table <#{nom_de_table}>"
+db.execute_sql("create table #{nom_de_table} (#{colonnes})")

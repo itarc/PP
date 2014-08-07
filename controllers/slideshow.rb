@@ -5,6 +5,7 @@ set :views, 'views'
 set :logging, false
 
 set :bind, '0.0.0.0'
+set :show_exceptions, false
 
 enable :sessions; set :session_secret, 'secret'
 
@@ -33,6 +34,10 @@ end
 get '/teacher-x1973' do
   session[:user_id] = '0'
   erb :slideshow_teacher
+end
+
+get '/admin/flip' do
+  send_file "views/flip_page.html"
 end
 
 get '/teacher_current_slide' do
@@ -67,6 +72,10 @@ end
 get '/session_id' do
   response.headers['Access-Control-Allow-Origin'] = '*'  
   session[:user_id]
+end
+
+get '/admin/flip/*' do
+  Flip.find(params[:splat][0]).value
 end
 
 # ---------
@@ -107,4 +116,8 @@ end
 
 post '/session_id/attendee_name' do
   session[:user_id] = session[:user_id].split('_')[0] + '_' + params[:attendee_name]
+end
+
+post '/admin/flip/*' do
+  Flip.new(params[:splat][0], params[:value]).save
 end

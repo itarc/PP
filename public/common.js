@@ -29,7 +29,7 @@ var SEPARATOR = '\n#{SEP}#\n'
 var SERVER_PATH = ''
 
 var is_a_number = function(variable) {
-    return  !( isNaN(variable) );
+    return  variable != '' && !( isNaN(variable) ) ;
 };
 
 var queryAll = function(node, query) {

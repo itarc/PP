@@ -2,6 +2,7 @@
 
 require_relative '../models/Poll'
 require_relative '../models/RunTime'
+require_relative '../models/Flip'
 
 $SEPARATOR = "\n\#{SEP}#\n"
 
