@@ -21,9 +21,9 @@ describe("SlideShow Position", function() {
   
   it("should be position on server when refreshed", function() { 
     var slideShow = new SlideShow(queryAll(document, '.slide'));
-
+    
     expect(slideShow.position._currentIndex).toBe(0);
-    expect(slideShow.position._IDEDisplayed).toBe(false);
+    expect(slideShow.position._IDEDisplayed).toBe(false);    
     
     spyOn(Resource.prototype, "get").andReturn('212;true');
     
@@ -67,6 +67,7 @@ describe("SlideShow Current Slide", function() {
   });
 
   it("should be visible when slideshow initialized", function() {
+    spyOn(Position.prototype, "_getPosition").andReturn('0;false');  
     var slideShow = new SlideShow(queryAll(document, '.slide'))
 
     expect(slideShow._slides[slideShow._currentIndex]._node.className).toBe('slide current');

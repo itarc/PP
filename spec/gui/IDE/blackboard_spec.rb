@@ -149,7 +149,7 @@ describe 'Blackboard Update', :type => :feature, :js => true do
     visit blackboard_presentation
 
     expect_IDE_to_have(code_input = "print 'teacher run'", code_output = "teacher run")
-    
+
     expect_AuthorBar_to_have(author = '#', last_send_attendee_name = '')      
     
     visit teacher_presentation; go_down

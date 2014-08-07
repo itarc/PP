@@ -89,8 +89,6 @@ describe("TEACHER IDE Author Bar", function() {
     expect(slideNode.querySelector('#last_send_attendee_name').innerHTML.replace(/&gt;/g, '>')).toBe("a name >> "); 
   }); 
 
-
-  
   it("should display the author name of the last send in editor even if the code on server is the same in editor", function() {   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee name', code: 'code sent'});       
     slide._editor.updateWithText("code sent");

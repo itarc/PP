@@ -62,7 +62,8 @@ Position.prototype = {
 // SLIDESHOW CLASS
 // ----------------------------------  
 var SlideShow = function(slides) {
-  this._numberOfSlides = slides.length;  
+
+  this._numberOfSlides = slides.length; 
   this.initEvents();
   this.initSlides(slides);
   this.initPosition();
@@ -91,7 +92,7 @@ SlideShow.prototype = {
 
   initPosition: function() {
     this.position = new Position(this);
-    this.position.updateWithTeacherPosition();    
+    this.position.updateWithTeacherPosition(); 
   },  
   
   _refresh: function() {

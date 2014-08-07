@@ -1,6 +1,7 @@
 describe("TeacherSlideShow KeyHandling", function() {
 
   it("should detect key pressed", function() {
+    
     spyOn(TeacherSlideShow.prototype, 'handleKeys');
 	  
     expect(TeacherSlideShow.prototype.handleKeys.calls.length).toBe(0);
@@ -106,6 +107,6 @@ describe("TeacherSlideShow KeyHandling", function() {
     
     expect(slideshowTimer).toBeDefined(); // Test if timer is javascript
 
-  });  
+  }); 
   
 });

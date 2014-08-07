@@ -1,10 +1,11 @@
 describe("SlideShow Position Update with Teacher Position", function() {
   
   beforeEach(function () {
-    slideshow = new SlideShow([]);    
+    getResource = jasmine.createSpy('getResource').andReturn('0;false');
+    slideshow = new SlideShow([]);
   });
   
-  it("should be first slide when initialized", function() {
+  it("should be teacher position when initialized", function() {
     expect(slideshow.position._currentIndex).toBe(0);
     expect(slideshow.position._IDEDisplayed).toBe(false);
   });

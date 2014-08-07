@@ -9,7 +9,7 @@ describe("TeacherSlideShow Current Slide Index", function() {
   
   beforeEach(function () {
     setFixtures(TEACHER_SLIDESHOW_WITH_3_SLIDES);
-    spyOn(Position.prototype, "_getPosition").andReturn("0;false");      
+    spyOn(Position.prototype, "_getPosition").andReturn("0;false");    
     slideShow = new TeacherSlideShow(queryAll(document, '.slide'));
   });
 	

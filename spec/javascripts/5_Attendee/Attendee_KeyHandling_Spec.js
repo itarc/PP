@@ -49,6 +49,6 @@ describe("AttendeeSlideShow KeyHandling", function() {
     
     expect(slideshowTimer).toBeDefined(); // Test if timer is javascript
 
-  });  
+  });    
 
 });
