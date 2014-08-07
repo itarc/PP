@@ -52,3 +52,11 @@ p read.fields
 read.values.each do |row|
   p row
 end
+
+puts '----- FEATURE FLIP'
+read = db.execute_sql('select * from flip_values')
+p read.fields
+
+read.values.each do |row|
+  p row
+end
