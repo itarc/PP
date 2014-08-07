@@ -304,11 +304,12 @@ CodeSlide.prototype = {
     return this._codeHelpers[this._codeHelper_current_index]
   },   
   
-  showCodeHelper: function(slide_index) {
+  showCodeHelper: function() {
     if (this._codeHelpers.length == 0) return;
     this._clearCodeHelpers();
-    this._codeHelpers[slide_index].setState('current');
-    this._codeHelper_current_index = slide_index;    	  
+    code_helper_index = this._slideshow._currentIndex
+    this._codeHelpers[code_helper_index].setState('current');
+    this._codeHelper_current_index = code_helper_index;    	  
   }, 
   
   codeToExecute: function() {
@@ -352,8 +353,8 @@ CodeSlide.prototype = {
     this.getExecutionContextAtAndExecuteCodeAt(this._getAndRunResource, this._runResource);
   },
   
-  _update: function(slide_index) {
-    this.showCodeHelper(slide_index);
+  _update: function() {
+    this.showCodeHelper();
     this.getExecutionContextAtAndExecuteCodeAt(this._updateResource, this._runResource);
   },
   

@@ -11,17 +11,18 @@ describe("IDE UPDATE", function() {
 	
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_html); 
-    slide = new CodeSlide(slideNode);
+    slideshow = new SlideShow([])
+    slide = new CodeSlide(slideNode, slideshow);
   });
   
   it("should show current code helper", function() {
 	  
     spyOn(CodeSlide.prototype, 'showCodeHelper');	  
-	  
-    slide._update(0);
+
+    slideshow._currentIndex = 1;		  
+    slide._update();
 	  
     expect(CodeSlide.prototype.showCodeHelper.calls.length).toBe(1);
-    expect(CodeSlide.prototype.showCodeHelper).toHaveBeenCalledWith(0);
 	  
   });  
   
@@ -80,7 +81,8 @@ describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_code_to_display_html);
-    slide = new CodeSlide(slideNode);  
+    slideshow = new SlideShow([])
+    slide = new CodeSlide(slideNode, slideshow);  
     spyOn(CodeSlide.prototype, 'executeCodeAt');    
   });  
 	
@@ -136,7 +138,8 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_code_to_add_html);
-    slide = new CodeSlide(slideNode);   
+    slideshow = new SlideShow([])
+    slide = new CodeSlide(slideNode, slideshow);
    });	  
   
   it("should run code to add", function() {
@@ -185,7 +188,8 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": "puts 'CODE TO ADD'" });
     
-    var slide = new CodeSlide(slideNode);
+    var slideshow = new SlideShow([])
+    var slide = new CodeSlide(slideNode, slideshow);
 	  
     expect(slideNode.querySelector('#code_input').value).toBe("");	  
 	  

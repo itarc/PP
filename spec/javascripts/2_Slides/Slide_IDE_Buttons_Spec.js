@@ -44,12 +44,12 @@ describe("IDE EXECUTE AT", function() {
   
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
-    IDESlide = new CodeSlide(slideNode);
+    slideshow = new SlideShow([])   
+    IDESlide = new CodeSlide(slideNode, slideshow);
     spyOn(Resource.prototype, 'post').andReturn('EXECUTION RESULT');
   });
 
-  it("should NOT be called when IDE is initialized", function() {
-    //~ expect(postResource.calls.length).toBe(0);   
+  it("should NOT be called when IDE is initialized", function() {  
     expect(Resource.prototype.post.calls.length).toBe(0);   
   });  
   
@@ -75,12 +75,14 @@ describe("IDE EXECUTE AT", function() {
   it("should execute code for current slide only", function() {
     IDESlide._editor.updateWithText("CODE");
     
-    IDESlide.showCodeHelper(0);
+    slideshow._currentIndex = 0;
+    IDESlide.showCodeHelper();
     IDESlide.executeCodeAt('/url');
 
     expect(Resource.prototype.post).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
 
-    IDESlide.showCodeHelper(1);
+    slideshow._currentIndex = 1;    
+    IDESlide.showCodeHelper();
     IDESlide.executeCodeAt('/url');
 
     expect(Resource.prototype.post).toHaveBeenCalledWith('/url/1', 'CODE', SYNCHRONOUS);    

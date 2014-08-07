@@ -122,7 +122,7 @@ SlideShow.prototype = {
     if (this._slides.length == 0) return;  
     this._clear();	    
     this.currentSlide().setState('current'); 
-    this.currentSlide()._update(this._currentIndex);    
+    this.currentSlide()._update();    
   },  
   
 };

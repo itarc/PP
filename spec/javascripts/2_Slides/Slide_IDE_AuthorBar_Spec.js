@@ -62,7 +62,8 @@ describe("TEACHER IDE Author Bar", function() {
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_last_send_attendee_name_html);
     spyOn(Resource.prototype, "get").andReturn('a name');
-    slide = new TeacherCodeSlide(slideNode);    
+    slideshow = new SlideShow([]) 
+    slide = new TeacherCodeSlide(slideNode, slideshow);    
    });	
 
   it("should display the author name of the last send in editor", function() {
