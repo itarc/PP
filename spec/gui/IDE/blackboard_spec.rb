@@ -8,7 +8,7 @@ require 'capybara/rspec'
 ## -------------------------------------------------------
 
 require_relative '../../../controllers/slideshow.rb'
-require_relative 'IDE_spec_helper.rb'
+require_relative 'helper.rb'
 
 Capybara.app = Sinatra::Application.new
 
