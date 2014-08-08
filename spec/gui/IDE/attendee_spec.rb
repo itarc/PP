@@ -44,6 +44,24 @@ end
 ## SINATRA CONTROLLER (END)
 ## -------------------------------------------------------
 
+
+def expect_sessionID_to_be_empty
+  expect_sessionID_to_be('?')
+end
+
+def expect_login_page_to_be_empty
+  expect_login_page_to_be('')
+end
+
+def expect_login_page_to_be(value)
+  expect(page).to have_content 'AUTHOR NAME?'  
+  expect(page).to have_field 'attendee_name', :with => value
+end
+
+def expect_sessionID_to_be(value)
+  expect(page).to have_content 'AUTHOR: ' + value
+end
+
 describe 'Attendee IDE', :type => :feature, :js => true do
 	
   before(:each) do
@@ -102,36 +120,75 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     expect(page).to have_content 'HELPER 1'
     
   end
+  
+  after(:each) do
+    $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
+  end   
+  
+end
+  
+describe 'Attendee Login', :type => :feature, :js => true do  
+  
+  before(:each) do
+    $db.execute_sql("delete from run_events") 
+    $db.execute_sql("delete from teacher_current_slide")    
+  end	  
 
-  it 'should ask an author name' do
+  it 'should create session ID with login page' do
     
     visit attendee_IDE
     
-    expect(page).to have_content 'AUTHOR: ?'
-
-    expect(page).to have_field 'attendee_name', :with => ''
-
-    expect(page).to have_content 'AUTHOR NAME?'
+    expect_sessionID_to_be('?')
+    
+    expect_login_page_to_be_empty
+    
+    fill_in 'attendee_name', :with => "a name"
+    expect(page).to have_field 'attendee_name', :with => 'a name'    
     
     find('#attendee_name').native.send_key(:return)
 
-    expect(page).to have_content 'AUTHOR: ?'
+    expect(page).to have_field 'attendee_name', :with => ''
+    
+    expect_sessionID_to_be('a name')
+    
+    visit attendee_IDE_no_session
+
+    expect_sessionID_to_be('a name')
+    
+  end
+  
+  it 'should clean login page after return pressed' do
+    
+    visit attendee_IDE
+    
+    expect_sessionID_to_be('?')
+    
+    expect_login_page_to_be_empty
     
     fill_in 'attendee_name', :with => "a name"
     
-    expect(page).to have_field 'attendee_name', :with => 'a name'
+    expect_login_page_to_be("a name")
     
     find('#attendee_name').native.send_key(:return)
 
-    expect(page).to have_field 'attendee_name', :with => ''
-    
-    expect(page).to have_content 'AUTHOR: a name'
-    
-    visit attendee_IDE_no_session    
-    
-    expect(page).to have_content 'AUTHOR: a name'
+    expect_login_page_to_be_empty   
     
   end
+  
+  it 'should NOT create an empty session ID' do
+    
+    visit attendee_IDE
+    
+    expect_sessionID_to_be('?')
+    
+    expect_login_page_to_be_empty
+    
+    find('#attendee_name').native.send_key(:return)
+    
+    expect_sessionID_to_be('?')
+    
+  end  
   
   it 'should keep author name after a run' do
     
@@ -140,16 +197,24 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     expect(page).to have_content 'HELPER 1'    
     
     fill_in 'attendee_name', :with => "a name"
-    
     find('#attendee_name').native.send_key(:return)
     
-    expect(page).to have_content 'AUTHOR: a name'
+    expect_sessionID_to_be('a name')        
     
     fill_IDE_with('print "something"')
     
     execute
 
-    expect(page).to have_content 'AUTHOR: a name'
+    expect_sessionID_to_be('a name')  
+
+  end
+    
+  it 'should keep author name after a slide change' do
+    
+    visit attendee_IDE
+    
+    fill_in 'attendee_name', :with => "a name"
+    find('#attendee_name').native.send_key(:return)    
     
     $db.execute_sql("update teacher_current_slide set current_slide_id = '1'")    
     
@@ -157,9 +222,30 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     
     expect(page).to have_content 'HELPER 2'    
     
-    expect(page).to have_content 'AUTHOR: a name'
+    expect_sessionID_to_be('a name')
 
-  end  
+  end 
+
+  it 'should display login if session ID is lost' do
+    
+    #~ visit attendee_IDE
+    
+    #~ fill_in 'attendee_name', :with => "a name"
+    #~ find('#attendee_name').native.send_key(:return)    
+    
+    #~ $db.execute_sql("update teacher_current_slide set current_slide_id = '1'")    
+    
+    #~ press_space
+    
+    #~ expect(page).to have_content 'HELPER 2'    
+    #~ expect_sessionID_to_be('a name')
+    
+    #~ visit attendee_IDE
+
+    #~ expect(page).to have_content 'HELPER 1'    
+    #~ expect_sessionID_to_be('?')
+
+  end
   
   after(:each) do
     $db.execute_sql("delete from run_events") 
