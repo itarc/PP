@@ -8,7 +8,7 @@ disable :sessions # Mandatory to test sessions, otherwise we cannot access sessi
 class TestSlideShowHelper_next_user_id < Test::Unit::TestCase
 
   def test01 
-    $db.execute_sql("update compteur set identifiant = 0")
+    $db.execute_sql("update sessions set last_session_id = 0")
     assert_equal '1', next_user_id
   end
 
@@ -23,7 +23,7 @@ class TestSession < Test::Unit::TestCase
   end
   
   def setup
-    $db.execute_sql("update compteur set identifiant = 0")
+    $db.execute_sql("update sessions set last_session_id = 0")
   end  
   
   def test01_should_create_one_user_id
@@ -71,7 +71,7 @@ class TestSession < Test::Unit::TestCase
   end
   
   def teardown
-    $db.execute_sql("update compteur set identifiant = 0")	  
+    $db.execute_sql("update sessions set last_session_id = 0") 
   end  
   
 end
@@ -86,7 +86,7 @@ class TestAttendee_name < Test::Unit::TestCase
   end
   
   def setup
-    $db.execute_sql("update compteur set identifiant = 0")
+    $db.execute_sql("update sessions set last_session_id = 0")
   end  
   
   def test01_should_create_an_attendee_name_session_id
@@ -110,7 +110,7 @@ class TestAttendee_name < Test::Unit::TestCase
   end
   
   def teardown
-    $db.execute_sql("update compteur set identifiant = 0")	  
+    $db.execute_sql("update sessions set last_session_id = 0") 
   end  
   
 end
