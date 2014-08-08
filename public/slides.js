@@ -127,40 +127,42 @@ var AuthorBar = function(node) {
   if (this._node) this.authorNode = this._node.querySelector('#author_name')
   if (this._node) this.lastsendNode = this._node.querySelector('#last_send_attendee_name')
   this._sessionIDResource = new Resource();
-  this._sessionID = this.getSessionID();
+  this.getSessionID();
   this.refreshWithSessionID();
 }
 
 AuthorBar.prototype = {
   
   getSessionID: function() {
-    return this._sessionIDResource.get('/session_id');
+    this._sessionID = this._sessionIDResource.get('/session_id');
   },
   
   createSessionID: function(newAuthor) {
     if (newAuthor == '') return;
     this._sessionIDResource.post('session_id/attendee_name', 'attendee_name=' + newAuthor, SYNCHRONOUS);
-    this._sessionID = newAuthor;
+    this.getSessionID();
     this.updateAuthorNameWith(this._sessionID);
   },
   
-  updateAuthorNameWith: function(author) {
-    if (this.authorNode) {
-      if (! author) author = this._sessionID;
-      if (author.split('_')[1]) { this._author = author.split('_')[1]; } else { this._author = author; }
-      if (is_a_number(author)) {
-        if (author == '0') { this._author = '#'; } else { this._author = '?'; }
-      }      
-      this.authorNode.innerHTML = this._author;
-    };
+  updateAuthorNameWith: function(sessionID) {
+    if (! this.authorNode) return;
+    if (! sessionID) sessionID = this._sessionID;
+    
+    //~ if (is_a_number(sessionID) && sessionID == '0')  { this._author = '#'; }  
+    //~ if (is_a_number(sessionID) && sessionID != '0')  { this._author = '?'; }  
+    
+    if (sessionID.split('_')[1]) { this._author = sessionID.split('_')[1]; } else { this._author = sessionID; }
+    if (is_a_number(this._author)) {
+      if (this._author == '0') { this._author = '#'; } else { this._author = '?'; }
+    }      
+    this.authorNode.innerHTML = this._author;
   },
   
-  updateLastSendAttendeeNameWith: function(attendee_name) {
-    if (this.lastsendNode) {    
-      if (attendee_name.split('_')[1]) attendee_name = attendee_name.split('_')[1];
-      if (attendee_name != '' ) attendee_name += (' >>' + ' ');
-      this.lastsendNode.innerHTML = attendee_name; 
-    }
+  updateLastSendAttendeeNameWith: function(sessionID) {
+    if (! this.lastsendNode) return;
+    if (sessionID.split('_')[1]) sessionID = sessionID.split('_')[1];
+    if (sessionID != '' ) sessionID += (' >>' + ' ');
+    this.lastsendNode.innerHTML = sessionID; 
   },
   
   refreshWithSessionID: function() {

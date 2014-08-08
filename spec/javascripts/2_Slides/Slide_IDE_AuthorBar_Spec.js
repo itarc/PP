@@ -18,9 +18,19 @@ describe("ATTENDEE IDE Author Bar", function() {
   it("should display login when initialized", function() {	  
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");  
   });
+
+}); 
   
+describe("ATTENDEE IDE Author Bar / Login", function() {  
+  
+  beforeEach(function () {
+    slideNode = sandbox(IDE_slide_with_attendee_name_field_html);   
+    slide = new CodeSlide(slideNode);    
+   });
+   
   it("should display new login and save it", function() {
-    spyOn(Resource.prototype, "post");    
+    spyOn(Resource.prototype, "post");  
+    spyOn(Resource.prototype, "get").andReturn('a new name');     
     
     slideNode.querySelector('#attendee_name').value = 'a new name';
     __triggerKeyboardEvent(slideNode.querySelector('#attendee_name'), RETURN);
@@ -30,6 +40,8 @@ describe("ATTENDEE IDE Author Bar", function() {
   });
   
   it("should keep displaying login when attendee executes code", function() {
+    spyOn(Resource.prototype, "get").andReturn('a new name'); 
+    
     slideNode.querySelector('#attendee_name').value = 'a new name';
     __triggerKeyboardEvent(slideNode.querySelector('#attendee_name'), RETURN);
     
