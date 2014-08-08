@@ -14,7 +14,7 @@ read.values.each do |row|
 end
 
 puts '----- COMPTEUR'
-read = db.execute_sql('select * from compteur')
+read = db.execute_sql('select * from sessions')
 p read.fields
 
 read.values.each do |row|
