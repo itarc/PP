@@ -127,34 +127,33 @@ var AuthorBar = function(node) {
   if (this._node) this.authorNode = this._node.querySelector('#author_name')
   if (this._node) this.lastsendNode = this._node.querySelector('#last_send_attendee_name')
   this._sessionIDResource = new Resource();
-  this.getSessionID();
+  this._getSessionUserName();
   this.refreshWithSessionID();
 }
 
 AuthorBar.prototype = {
   
-  getSessionID: function() {
+  _getSessionUserName: function() {
     this._sessionID = this._sessionIDResource.get('/session_id');
   },
   
-  createSessionID: function(newAuthor) {
+  _setSessionUserName: function(newAuthor) {
     if (newAuthor == '') return;
     this._sessionIDResource.post('session_id/attendee_name', 'attendee_name=' + newAuthor, SYNCHRONOUS);
-    this.getSessionID();
+    this._getSessionUserName();
     this.updateAuthorNameWith(this._sessionID);
   },
   
-  updateAuthorNameWith: function(sessionID) {
+  updateAuthorNameWith: function(userName) {
     if (! this.authorNode) return;
-    if (! sessionID) sessionID = this._sessionID;
+    if (! userName) userName = this._sessionID;
     
-    //~ if (is_a_number(sessionID) && sessionID == '0')  { this._author = '#'; }  
-    //~ if (is_a_number(sessionID) && sessionID != '0')  { this._author = '?'; }  
+    if (userName.split('_')[1]) { userName = userName.split('_')[1]; } else { userName = userName; }
     
-    if (sessionID.split('_')[1]) { this._author = sessionID.split('_')[1]; } else { this._author = sessionID; }
-    if (is_a_number(this._author)) {
-      if (this._author == '0') { this._author = '#'; } else { this._author = '?'; }
-    }      
+    if (is_a_number(userName) && userName == '0')  { userName = '#'; }  
+    if (is_a_number(userName) && userName != '0')  { userName = '?'; }
+    
+    this._author = userName;
     this.authorNode.innerHTML = this._author;
   },
   
@@ -278,7 +277,7 @@ CodeSlide.prototype = {
     this._node.querySelector('#attendee_name').addEventListener('keydown',
       function(e) { 
         if (e.keyCode == RETURN) { 
-          _t._authorBar.createSessionID(this.value); this.value = '';
+          _t._authorBar._setSessionUserName(this.value); this.value = '';
         } }, false
     );
     }
