@@ -1,3 +1,17 @@
+describe("ATTENDEE IDE Author Bar / Login", function() {  
+  
+  beforeEach(function () {
+    authorBarNode = sandbox(author_bar);   
+   });
+   
+  it("should display '?' if author is empty", function() {
+    spyOn(Resource.prototype, "get").andReturn('');
+    authorBar = new AuthorBar(authorBarNode);
+    expect(authorBar.authorNode.innerHTML).toBe("?");
+  });
+  
+});
+
 IDE_slide_with_attendee_name_field_html =  
 HEADER + 
 code_input + 
@@ -35,7 +49,7 @@ describe("ATTENDEE IDE Author Bar / Login", function() {
     slideNode.querySelector('#attendee_name').value = 'a new name';
     __triggerKeyboardEvent(slideNode.querySelector('#attendee_name'), RETURN);
      
-    expect(Resource.prototype.post).toHaveBeenCalledWith("session_id/attendee_name", "attendee_name=a new name", SYNCHRONOUS);     
+    expect(Resource.prototype.post).toHaveBeenCalledWith("session_id/user_name", "user_name=a new name", SYNCHRONOUS);     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a new name");    
   });
   
@@ -51,7 +65,7 @@ describe("ATTENDEE IDE Author Bar / Login", function() {
     slideNode.querySelector('#execute').click();
     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a new name");    
-  }); 
+  });
 
 }); 
 

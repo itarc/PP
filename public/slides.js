@@ -126,35 +126,28 @@ var AuthorBar = function(node) {
   this._node = node;
   if (this._node) this.authorNode = this._node.querySelector('#author_name')
   if (this._node) this.lastsendNode = this._node.querySelector('#last_send_attendee_name')
+  
   this._sessionIDResource = new Resource();
-  this._getSessionUserName();
-  this.refreshWithSessionID();
+  this.refreshSessionUserName();
 }
 
 AuthorBar.prototype = {
   
-  _getSessionUserName: function() {
-    this._sessionID = this._sessionIDResource.get('/session_id');
+  refreshSessionUserName: function() {
+    sessionUserName = this._sessionIDResource.get('/session_id/user_name');
+    this.updateAuthorNameWith(sessionUserName);
   },
   
   _setSessionUserName: function(newAuthor) {
     if (newAuthor == '') return;
-    this._sessionIDResource.post('session_id/attendee_name', 'attendee_name=' + newAuthor, SYNCHRONOUS);
-    this._getSessionUserName();
-    this.updateAuthorNameWith(this._sessionID);
+    this._sessionIDResource.post('session_id/user_name', 'user_name=' + newAuthor, SYNCHRONOUS);
+    this.refreshSessionUserName();
   },
   
   updateAuthorNameWith: function(userName) {
     if (! this.authorNode) return;
-    if (! userName) userName = this._sessionID;
-    
-    if (userName.split('_')[1]) { userName = userName.split('_')[1]; } else { userName = userName; }
-    
-    if (is_a_number(userName) && userName == '0')  { userName = '#'; }  
-    if (is_a_number(userName) && userName != '0')  { userName = '?'; }
-    
-    this._author = userName;
-    this.authorNode.innerHTML = this._author;
+    if (userName == '')  { userName = '?'; }
+    this.authorNode.innerHTML = userName
   },
   
   updateLastSendAttendeeNameWith: function(sessionID) {
@@ -162,10 +155,6 @@ AuthorBar.prototype = {
     if (sessionID.split('_')[1]) sessionID = sessionID.split('_')[1];
     if (sessionID != '' ) sessionID += (' >>' + ' ');
     this.lastsendNode.innerHTML = sessionID; 
-  },
-  
-  refreshWithSessionID: function() {
-    if (this._sessionID) this.updateAuthorNameWith(this._sessionID);
   },
   
 }

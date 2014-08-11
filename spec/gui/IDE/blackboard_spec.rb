@@ -22,12 +22,12 @@ blackboard_presentation = '/blackboard/presentation'
 blackboard_with_code_to_display = '/blackboard_with_code_to_display'
 
 get teacher_presentation do
-  session[:user_id] = '0'	
+  session[:user_session_id] = $teacher_session_id
   redirect "teacher_presentation.html"
 end
 
 get attendee_IDE do
-  session[:user_id] = '1'
+  session[:user_session_id] = '1'
   redirect "attendee_IDE.html"
 end
 
@@ -209,7 +209,7 @@ describe 'Blackboard Update', :type => :feature, :js => true do
     
     visit teacher_presentation; go_down    
 
-    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     click_on "get_last_send"
     

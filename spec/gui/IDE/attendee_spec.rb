@@ -22,17 +22,17 @@ attendee_IDE_with_code_to_display = '/attendee/IDE_with_code_to_display'
 attendee_IDE_no_session = '/attendee/IDE_no_session'
 
 get teacher_presentation do
-  session[:user_id] = '0'
+  session[:user_session_id] = $teacher_session_id
   redirect "teacher_presentation.html"
 end
 
 get attendee_IDE do
-  session[:user_id] = '1'
+  session[:user_session_id] = '1'
   redirect "attendee_IDE.html"
 end
 
 get attendee_IDE_with_code_to_display do
-  session[:user_id] = '1'
+  session[:user_session_id] = '1'
   redirect "attendee_IDE_with_code_to_display.html"
 end
 

@@ -18,7 +18,7 @@ require_relative '../views/presentation/content'
 # ---------
 
 get '/' do
-  session[:user_id] ||= next_user_id
+  session[:user_session_id] ||= next_session_id
   erb :slideshow_attendee  
 end
 
@@ -32,7 +32,7 @@ get '/blackboard_hangout.xml' do
 end
 
 get '/teacher-x1973' do
-  session[:user_id] = '0'
+  session[:user_session_id] = $teacher_session_id
   erb :slideshow_teacher
 end
 
@@ -50,28 +50,33 @@ get '/poll_response_*_rate_to_*' do
 end
 
 get '/code_last_execution/*' do
-  last_execution = RunTimeEvent.find_last_user_execution_on_slide(session[:user_id], slide_index)
+  last_execution = RunTimeEvent.find_last_user_execution_on_slide(session[:user_session_id], slide_index)
   return "" if last_execution == nil
-  last_execution.user + $SEPARATOR + last_execution.code_input
+  user_name_of(last_execution.user) + $SEPARATOR + last_execution.code_input
 end
 
 get '/code_attendees_last_send/*' do
   response.headers['Access-Control-Allow-Origin'] = '*' 
-  last_send = RunTimeEvent.find_attendees_last_send_on_slide(session[:user_id], slide_index)
+  last_send = RunTimeEvent.find_attendees_last_send_on_slide(session[:user_session_id], slide_index)
   return "" if last_send == nil
-  last_send.user + $SEPARATOR + last_send.code_input
+  user_name_of(last_send.user) + $SEPARATOR + last_send.code_input
 end
 
 get '/code_get_last_send_to_blackboard/*' do
   response.headers['Access-Control-Allow-Origin'] = '*'    
   last_teacher_run = RunTimeEvent.find_last_send_to_blackboard(slide_index)
   return "" if last_teacher_run == nil
-  last_teacher_run.user + $SEPARATOR + last_teacher_run.code_input  
+  user_name_of(last_teacher_run.user) + $SEPARATOR + last_teacher_run.code_input  
 end
 
 get '/session_id' do
   response.headers['Access-Control-Allow-Origin'] = '*'  
-  session[:user_id]
+  session[:user_session_id]
+end
+
+get '/session_id/user_name' do
+  response.headers['Access-Control-Allow-Origin'] = '*'
+  user_name_of(session[:user_session_id])
 end
 
 get '/admin/flip/*' do
@@ -87,20 +92,20 @@ post '/teacher_current_slide' do
 end
 
 post '/poll_response_*_to_*' do
-  PollQuestion.new(question_id).add_a_choice(user_id, answer)
+  PollQuestion.new(question_id).add_a_choice(user_session_id, answer)
 end
 
 post '/rating_input_*_to_*' do
-  PollQuestion.new(question_id).add_a_choice(user_id, answer)
+  PollQuestion.new(question_id).add_a_choice(user_session_id, answer)
 end
 
 post '/select_input_*_to_*' do
-  PollQuestion.new(question_id).add_a_choice(user_id, answer)
+  PollQuestion.new(question_id).add_a_choice(user_session_id, answer)
 end
 
 post '/code_run_result/*' do
   code = request.env["rack.input"].read
-  run_ruby("run", code.force_encoding("UTF-8"), user_id, slide_index)
+  run_ruby("run", code.force_encoding("UTF-8"), user_session_id, slide_index)
 end
 
 post '/code_run_result_blackboard/*' do
@@ -111,11 +116,11 @@ end
 
 post '/code_send_result/*' do
   code = request.env["rack.input"].read
-  run_ruby("send", code.force_encoding("UTF-8"), user_id, slide_index)
+  run_ruby("send", code.force_encoding("UTF-8"), user_session_id, slide_index)
 end
 
-post '/session_id/attendee_name' do
-  session[:user_id] = session[:user_id].split('_')[0] + '_' + params[:attendee_name]
+post '/session_id/user_name' do
+  session[:user_session_id] = session[:user_session_id].split('_')[0] + '_' + params[:user_name]
 end
 
 post '/admin/flip/*' do

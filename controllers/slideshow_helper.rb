@@ -14,15 +14,19 @@ def answer
   params[:splat][0]
 end
 
-def user_id
-  session[:user_id]  
+def user_session_id
+  session[:user_session_id]  
 end
 
 def slide_index
   params[:splat][0]
 end
 
-def next_user_id
+def user_name_of(user_session_id)
+  (user_session_id.split('_')[1..-1]).join('_')
+end
+
+def next_session_id
   $db.execute_sql("update sessions set last_session_id = last_session_id + 1")
   $db.execute_sql("select last_session_id from sessions").to_a[0]['last_session_id']
 end

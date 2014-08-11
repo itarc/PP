@@ -22,17 +22,17 @@ attendee_IDE_with_code_to_display = '/attendee/IDE_with_code_to_display'
 attendee_IDE_no_session = '/attendee/IDE_no_session'
 
 get teacher_presentation do
-  session[:user_id] = '0'
+  session[:user_session_id] = $teacher_session_id
   redirect "teacher_presentation.html"
 end
 
 get attendee_IDE do
-  session[:user_id] = '1'
+  session[:user_session_id] = '1'
   redirect "attendee_IDE.html"
 end
 
 get attendee_IDE_with_code_to_display do
-  session[:user_id] = '1'
+  session[:user_session_id] = '1'
   redirect "attendee_IDE_with_code_to_display.html"
 end
 
@@ -146,7 +146,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     
     expect_AuthorBar_to_have(author = '#', last_send_attendee_name = '')
     
-    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     click_on "get_last_send"
     
@@ -180,7 +180,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     
     expect_IDE_to_be_empty
     
-    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     click_on 'get_last_send'
     
@@ -204,7 +204,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     
     expect_IDE_to_be_empty
     
-    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     click_on 'get_last_send'
     
@@ -239,7 +239,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     expect_IDE_to_be_empty
     
-    run_ruby "run", 'print "attendee run"', "attendee 1", "0"
+    run_ruby "run", 'print "attendee run"', "1_attendee 1", "0"
     
     press_space
     
@@ -254,7 +254,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     expect_IDE_to_be_empty
     
-    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     press_space
     
@@ -271,7 +271,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     expect_IDE_to_be_empty
     
-    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     press_space
     
@@ -283,8 +283,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
 
     press_space
     
-    expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = '')    
-    
+    expect_AuthorBar_to_have(author = 'attendee 1', last_send_attendee_name = '')
     
   end  
   
@@ -295,7 +294,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     expect_IDE_to_be_empty
     
-    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     go_right
     press_space
@@ -333,7 +332,7 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
     
     expect_IDE_to_be_empty
     
-    run_ruby "send", 'print "attendee send"', "attendee 1", "0"
+    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     click_on 'get_last_send'
     
