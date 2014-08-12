@@ -76,13 +76,13 @@ describe("IDE EXECUTE AT", function() {
     IDESlide._editor.updateWithText("CODE");
     
     slideshow._currentIndex = 0;
-    IDESlide.showCodeHelper();
+    IDESlide._codeHelpers.update();
     IDESlide.executeCodeAt('/url');
 
     expect(Resource.prototype.post).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
 
     slideshow._currentIndex = 1;    
-    IDESlide.showCodeHelper();
+    IDESlide._codeHelpers.update();   
     IDESlide.executeCodeAt('/url');
 
     expect(Resource.prototype.post).toHaveBeenCalledWith('/url/1', 'CODE', SYNCHRONOUS);    

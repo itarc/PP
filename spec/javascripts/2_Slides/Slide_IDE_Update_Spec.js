@@ -16,13 +16,12 @@ describe("IDE UPDATE", function() {
   });
   
   it("should show current code helper", function() {
-	  
-    spyOn(CodeSlide.prototype, 'showCodeHelper');	  
+    spyOn(CodeHelpers.prototype, 'update');	  
 
     slideshow._currentIndex = 1;		  
     slide._update();
 	  
-    expect(CodeSlide.prototype.showCodeHelper.calls.length).toBe(1);
+    expect(CodeHelpers.prototype.update.calls.length).toBe(1);
 	  
   });  
   

@@ -87,7 +87,7 @@ ServerExecutionContext.prototype = {
   },
   
   updateWithResource: function(resourceURL) {
-    newServerExecutionContext = this.getContextOnServer(resourceURL + '/' + this._slide._codeHelper_current_index);
+    newServerExecutionContext = this.getContextOnServer(resourceURL + '/' + this._slide._codeHelpers._codeHelper_current_index);
     this.author = newServerExecutionContext.author;
     this.code = newServerExecutionContext.code;
     this.code_to_add = newServerExecutionContext.code_to_add;
@@ -179,7 +179,6 @@ CodeHelper.prototype = {
   },
 }
 
-
 // ----------------------------------
 // STANDARD OUTPUT
 // ----------------------------------
@@ -204,23 +203,52 @@ StandardOutput.prototype = {
 }
 
 // ----------------------------------
+// CODE HELPERS
+// ----------------------------------
+
+var CodeHelpers = function(codeHelpers, slide) {
+  this._codeHelper_current_index = 0;  
+  this._codeHelpers = (codeHelpers).map(function(element) {
+    return new CodeHelper(element, slide); 
+  });  
+  this._slide = slide;
+}
+
+CodeHelpers.prototype = {
+  _clearCodeHelpers: function() {
+    for (var i=0; i<this._codeHelpers.length; i++) {
+      this._codeHelpers[i].setState('');
+    }
+  },  
+  update: function() {
+    this._clearCodeHelpers();    
+    if (this._slide._authorBar.authorNode.innerHTML != '?') {
+      code_helper_index = this._slide._slideshow._currentIndex;
+    } else {
+      code_helper_index = 0;
+    }
+    this._codeHelpers[code_helper_index].setState('current');    
+    this._codeHelper_current_index = code_helper_index;      
+  },
+  current: function() {
+    return this._codeHelpers[this._codeHelper_current_index]    
+  },  
+}
+
+// ----------------------------------
 // CODE SLIDE EXTENDS SLIDE CLASS
 // ----------------------------------
 var CodeSlide = function(node, slideshow) {
   Slide.call(this, node, slideshow);
   
-  var _s = this;
+  //~ var _s = this;
   
-  this._codeHelpers = (queryAll(node, '.code_helper')).map(function(element) {
-    return new CodeHelper(element, _s); 
-  });
-  
-  this._codeHelper_current_index = 0;
   this._declareEvents();
   this._serverExecutionContext = new ServerExecutionContext(this);
   this._editor = new Editor(this._node.querySelector('#code_input'));
   this._authorBar = new AuthorBar(this._node.querySelector('.code_author'));
   this._standardOutput = new StandardOutput(this._node.querySelector('#code_output'));
+  this._codeHelpers = new CodeHelpers(queryAll(node, '.code_helper'), this);   
   
   this._runResource = '/code_run_result';
   this._sendResource = '/code_send_result';
@@ -262,7 +290,7 @@ CodeSlide.prototype = {
       function(e) { 
         if (e.keyCode == RETURN) { 
           _t._authorBar._setSessionUserName(this.value); this.value = '';
-          _t.showCodeHelper();
+          _t._codeHelpers.update();          
         } }, false
     );
     }
@@ -279,28 +307,10 @@ CodeSlide.prototype = {
       function(e) { _t.getAndExecuteCode(); }, false
     );
   },
-  
-  _clearCodeHelpers: function() {
-    for (var i=0; i<this._codeHelpers.length; i++) {
-      this._codeHelpers[i].setState('');
-    }
-  }, 
 
   _currentCodeHelper: function() {
-    return this._codeHelpers[this._codeHelper_current_index]
+    return this._codeHelpers.current();
   },   
-  
-  showCodeHelper: function() {
-    if (this._codeHelpers.length == 0) return;
-    this._clearCodeHelpers();
-    if (this._authorBar.authorNode.innerHTML != '?') {
-      code_helper_index = this._slideshow._currentIndex;
-    } else {
-      code_helper_index = 0;
-    }
-    this._codeHelpers[code_helper_index].setState('current');
-    this._codeHelper_current_index = code_helper_index;    	  
-  }, 
   
   codeToExecute: function() {
     return this._editor.content() + this.codeToAdd();
@@ -316,8 +326,8 @@ CodeSlide.prototype = {
   
   executeCodeAt: function(url) {
     if (this.codeToExecute() == '' ) return;
-    this._standardOutput.clear();    
-    url += ("/" + this._codeHelper_current_index);
+    this._standardOutput.clear();
+    url += ("/" + this._codeHelpers._codeHelper_current_index);
     executionResult = this._executionResource.post(url, this.codeToExecute(), SYNCHRONOUS);
     this._standardOutput.updateWith(executionResult);    
   },
@@ -358,7 +368,7 @@ CodeSlide.prototype = {
   },
   
   _update: function() {
-    this.showCodeHelper();
+    this._codeHelpers.update();
     this.getExecutionContextAtAndExecuteCodeAt(this._updateResource, this._runResource);
   },
   

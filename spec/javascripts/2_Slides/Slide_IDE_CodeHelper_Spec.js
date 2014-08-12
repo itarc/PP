@@ -63,14 +63,14 @@ describe("IDE CODE HELPERS", function() {
     expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper');
     expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper');   
 
-    slideshow._currentIndex = 0;    
-    IDESlide.showCodeHelper(0);
+    slideshow._currentIndex = 0;
+    IDESlide._codeHelpers.update();
 
     expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper current');
     expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper');
 
-    slideshow._currentIndex = 1;	  
-    IDESlide.showCodeHelper(1);	
+    slideshow._currentIndex = 1;
+    IDESlide._codeHelpers.update();    
 
     expect(slideNode.querySelector('#code_helper_1').className).toBe('code_helper');
     expect(slideNode.querySelector('#code_helper_2').className).toBe('code_helper current');  
