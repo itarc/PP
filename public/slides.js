@@ -301,10 +301,10 @@ CodeSlide.prototype = {
       function(e) { _t.executeCode(); }, false
     );     
     this._node.querySelector('#send_code').addEventListener('click',
-      function(e) { _t.executeAndSendCode(); }, false
+      function(e) { _t.executeCodeAt(_t._sendResource); }, false
     );     
     this._node.querySelector('#get_code').addEventListener('click',
-      function(e) { _t.getAndExecuteCode(); }, false
+      function(e) { _t.getExecutionContextAtAndExecuteCodeAt(_t._getAndRunResource, _t._runResource); }, false
     );
   },  
   
@@ -324,7 +324,7 @@ CodeSlide.prototype = {
     if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();
     url += ("/" + this._codeHelpers._currentIndex);
-    executionResult = this._executionResource.post(url, this.codeToExecute(), SYNCHRONOUS);
+    executionResult = this._executionResource.post(url, this.codeToExecute(), SYNCHRONOUS);  
     this._standardOutput.updateWith(executionResult);    
   },
   
@@ -351,18 +351,10 @@ CodeSlide.prototype = {
     }      
   },  
   
-  executeCode: function() {
+  executeCode: function() { // Overloader in teacher slideshow (to remove)
     this.executeCodeAt(this._runResource);
   },
-  
-  executeAndSendCode: function() {
-    this.executeCodeAt(this._sendResource);
-  },
 
-  getAndExecuteCode: function() {
-    this.getExecutionContextAtAndExecuteCodeAt(this._getAndRunResource, this._runResource);
-  },
-  
   _update: function() {
     this._codeHelpers.update();
     this.getExecutionContextAtAndExecuteCodeAt(this._updateResource, this._runResource);

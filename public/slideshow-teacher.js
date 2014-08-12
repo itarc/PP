@@ -48,7 +48,7 @@ TeacherCodeSlide.prototype = {
   executeCode: function() {
     CodeSlide.prototype.executeCode.call(this);
     this._authorBar.refreshSessionUserName();
-  },  
+  }, 
   
   _updateEditorWithLastSendAndExecute: function() {
     this.getExecutionContextAtAndExecuteCodeAt(this._attendeesLastSendResource, this._sendResource);
