@@ -87,7 +87,7 @@ ServerExecutionContext.prototype = {
   },
   
   updateWithResource: function(resourceURL) {
-    newServerExecutionContext = this.getContextOnServer(resourceURL + '/' + this._slide._codeHelpers._codeHelper_current_index);
+    newServerExecutionContext = this.getContextOnServer(resourceURL + '/' + this._slide._codeHelpers._currentIndex);
     this.author = newServerExecutionContext.author;
     this.code = newServerExecutionContext.code;
     this.code_to_add = newServerExecutionContext.code_to_add;
@@ -207,7 +207,7 @@ StandardOutput.prototype = {
 // ----------------------------------
 
 var CodeHelpers = function(codeHelpers, slide) {
-  this._codeHelper_current_index = 0;  
+  this._currentIndex = 0;  
   this._codeHelpers = (codeHelpers).map(function(element) {
     return new CodeHelper(element, slide); 
   });  
@@ -228,10 +228,10 @@ CodeHelpers.prototype = {
       code_helper_index = 0;
     }
     this._codeHelpers[code_helper_index].setState('current');    
-    this._codeHelper_current_index = code_helper_index;      
+    this._currentIndex = code_helper_index;      
   },
   current: function() {
-    return this._codeHelpers[this._codeHelper_current_index]    
+    return this._codeHelpers[this._currentIndex]    
   },  
 }
 
@@ -306,28 +306,24 @@ CodeSlide.prototype = {
     this._node.querySelector('#get_code').addEventListener('click',
       function(e) { _t.getAndExecuteCode(); }, false
     );
-  },
-
-  _currentCodeHelper: function() {
-    return this._codeHelpers.current();
-  },   
+  },  
   
   codeToExecute: function() {
     return this._editor.content() + this.codeToAdd();
   },	 
 
   codeToDisplay: function() {
-    return this._currentCodeHelper().codeToDisplay();
+    return this._codeHelpers.current().codeToDisplay();
   },	 
   
   codeToAdd: function() {
-    return this._currentCodeHelper().codeToAdd();
+    return this._codeHelpers.current().codeToAdd();
   },
   
   executeCodeAt: function(url) {
     if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();
-    url += ("/" + this._codeHelpers._codeHelper_current_index);
+    url += ("/" + this._codeHelpers._currentIndex);
     executionResult = this._executionResource.post(url, this.codeToExecute(), SYNCHRONOUS);
     this._standardOutput.updateWith(executionResult);    
   },
