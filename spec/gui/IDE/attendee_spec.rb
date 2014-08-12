@@ -20,6 +20,7 @@ attendee_IDE = '/attendee/IDE'
 attendee_IDE_with_code_to_display = '/attendee/IDE_with_code_to_display'
 
 attendee_IDE_no_session = '/attendee/IDE_no_session'
+attendee_IDE_no_session_with_code_to_display = '/attendee/IDE_no_session_with_code_to_display'
 
 get teacher_presentation do
   session[:user_session_id] = $teacher_session_id
@@ -37,8 +38,13 @@ get attendee_IDE_with_code_to_display do
 end
 
 get attendee_IDE_no_session do
+  redirect "attendee_IDE.html"
+end
+
+get attendee_IDE_no_session_with_code_to_display do
   redirect "attendee_IDE_with_code_to_display.html"
 end
+
 
 ## -------------------------------------------------------
 ## SINATRA CONTROLLER (END)
@@ -225,6 +231,29 @@ describe 'Attendee Login', :type => :feature, :js => true do
     expect_sessionID_to_be('a name')
 
   end 
+  
+  it 'should keep author name when new slide is code to display' do
+    
+    visit attendee_IDE
+    
+    expect_sessionID_to_be('?')
+    
+    expect_login_page_to_be_empty
+    
+    fill_in 'attendee_name', :with => "a name"
+    expect(page).to have_field 'attendee_name', :with => 'a name'    
+    
+    find('#attendee_name').native.send_key(:return)
+
+    expect(page).to have_field 'attendee_name', :with => ''
+    
+    expect_sessionID_to_be('a name')
+    
+    visit attendee_IDE_no_session_with_code_to_display
+
+    expect_sessionID_to_be('a name')
+    
+  end  
 
   it 'should display login if session ID is lost' do
     

@@ -30,7 +30,7 @@ describe("IDE UPDATE", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
     spyOn(CodeSlide.prototype, 'executeCodeAt');
 
-    slide._update(0);
+    slide._update();
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_last_execution/0');
     expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');      
@@ -44,7 +44,7 @@ describe("IDE UPDATE", function() {
 	  
     spyOn(CodeSlide.prototype, 'executeCode');
 	  
-    slide._update(0);
+    slide._update();
 	  
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
 	  
@@ -58,7 +58,7 @@ describe("IDE UPDATE", function() {
     
     spyOn(Resource.prototype, 'post');    
     
-    slide._update(0);
+    slide._update();
     
     expect(Resource.prototype.post.calls.length).toBe(0); 
     
@@ -90,7 +90,7 @@ describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});    
     expect(slide._editor.content()).toBe("");
     
-    slide._update(0);
+    slide._update();
 
     expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");
     expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');
@@ -100,7 +100,7 @@ describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'LAST EXECUTION', "code_to_add": ''});    
     expect(slide._editor.content()).toBe("");
     
-    slide._update(0);
+    slide._update();
 
     expect(slide._editor.content()).toBe("LAST EXECUTION");
     expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');  
@@ -110,12 +110,12 @@ describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});
     expect(slide._editor.content()).toBe("");
     
-    slide._update(0);
+    slide._update();
 
     expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");
     expect(CodeSlide.prototype.executeCodeAt.calls.length).toBe(1);	
 
-    slide._update(0);
+    slide._update();
 
     expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");    
     expect(CodeSlide.prototype.executeCodeAt.calls.length).toBe(1);	
@@ -145,14 +145,11 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   it("should run code to add", function() {
     
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": ''});
-
-    //~ postResource = jasmine.createSpy('postResource').andReturn("CODE TO ADD");
     spyOn(Resource.prototype, 'post').andReturn("CODE TO ADD");
 
-    slide._update(0);
+    slide._update();
 	  
     expect(slideNode.querySelector('#code_input').value).toBe("");	  
-    //~ expect(postResource).toHaveBeenCalledWith('/code_run_result/0', SEPARATOR + "puts 'CODE TO ADD'", SYNCHRONOUS);
     expect(Resource.prototype.post).toHaveBeenCalledWith('/code_run_result/0', SEPARATOR + "puts 'CODE TO ADD'", SYNCHRONOUS);
     expect(slideNode.querySelector('#code_output').value).toBe("CODE TO ADD");  
 
@@ -164,7 +161,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
     spyOn(CodeSlide.prototype, 'executeCode');
 
     slide._editor.updateWithText('code to execute');	  
-    slide._update(0);
+    slide._update();
 
     expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);
 
@@ -178,7 +175,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
     //~ spyOn(CodeSlide.prototype, 'executeCode');    
     
     //~ slide._editor.updateWithText('');
-    //~ slide._update(0);
+    //~ slide._update();
 	  
     //~ expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);    
 
@@ -193,7 +190,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 	  
     expect(slideNode.querySelector('#code_input').value).toBe("");	  
 	  
-    slide._update(0);	  
+    slide._update();	  
 
     expect(slideNode.querySelector('#code_input').value).toBe("");
 
@@ -207,7 +204,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 	  
     //~ expect(slideNode.querySelector('#code_input').value).toBe("");
 	  
-    //~ slide._update(0, 'teacher');	  
+    //~ slide._update();	  
 
     //~ expect(slideNode.querySelector('#code_input').value).toBe("attendee code");
 

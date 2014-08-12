@@ -93,8 +93,8 @@ ServerExecutionContext.prototype = {
   updateWithResource: function(resourceURL) {
     newServerExecutionContext = this.getContextOnServer(resourceURL + '/' + this._slide._codeHelper_current_index);
     this.author = newServerExecutionContext.author;
-    this.code = (newServerExecutionContext.code == '') ? this._slide.codeToDisplay() : newServerExecutionContext.code;
-    this.code_to_add = (newServerExecutionContext.code_to_add == '') ? this._slide.codeToAdd() : newServerExecutionContext.code_to_add;
+    this.code = newServerExecutionContext.code;
+    this.code_to_add = newServerExecutionContext.code_to_add;
   },
 
 }
@@ -324,11 +324,24 @@ CodeSlide.prototype = {
   
   getExecutionContextAtAndExecuteCodeAt: function(excutionContextResource, executionResource) {
     this._serverExecutionContext.updateWithResource(excutionContextResource);
-    if (this._serverExecutionContext.canReplaceCurrentExecutionContext()) {
-      this._editor.updateWithText(this._serverExecutionContext.code);
-      this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
-      this.executeCodeAt(executionResource);
-    }
+    if ( this._serverExecutionContext.isEmpty() ) {
+      if ( this.codeToDisplay() != '' && this.codeToDisplay() != this._editor.content()) {
+        this._editor.updateWithText(this.codeToDisplay());
+        this.executeCodeAt(executionResource); 
+        return;
+      }
+      if ( this.codeToAdd() != '') {
+        this.executeCodeAt(executionResource);  
+        return;
+      }
+    } else {
+      if (this._serverExecutionContext.codeToExecute() != this.codeToExecute()) {
+        this._editor.updateWithText(this._serverExecutionContext.code);
+        this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
+        this.executeCodeAt(executionResource);
+        return;
+      }
+    }      
   },  
   
   executeCode: function() {
