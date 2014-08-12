@@ -78,9 +78,9 @@ ServerExecutionContext.prototype = {
     return codeToExecute;
   },   
 
-  canReplaceCurrentExecutionContext: function() {
-    return ( ! this.isEmpty() ) && (this.codeToExecute() != this._slide.codeToExecute());
-  },
+  //~ canReplaceCurrentExecutionContext: function() {
+    //~ return ( ! this.isEmpty() ) && (this.codeToExecute() != this._slide.codeToExecute());
+  //~ },
   
   getContextOnServer: function(url) {
     last_execution = (this._executionContextResource.get(url)).split(SEPARATOR);
@@ -322,25 +322,31 @@ CodeSlide.prototype = {
     this._standardOutput.updateWith(executionResult);    
   },
   
+  _executeCurrentExecutionContextAt: function(executionResource) {  
+    if ( this.codeToAdd() != '' ) {
+      this._editor.updateWithText(this.codeToDisplay());      
+      this.executeCodeAt(executionResource);
+      return;
+    }
+    if (this.codeToDisplay() != '' && this.codeToDisplay() != this._editor.content()) {
+      this._editor.updateWithText(this.codeToDisplay());      
+      this.executeCodeAt(executionResource); 
+    }
+  },  
+  
+  _executeSeverExecutionContextAt: function(executionResource) {
+    if (this._serverExecutionContext.codeToExecute() == this.codeToExecute()) return;
+    this._editor.updateWithText(this._serverExecutionContext.code);
+    this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
+    this.executeCodeAt(executionResource);
+  },    
+  
   getExecutionContextAtAndExecuteCodeAt: function(excutionContextResource, executionResource) {
     this._serverExecutionContext.updateWithResource(excutionContextResource);
     if ( this._serverExecutionContext.isEmpty() ) {
-      if ( this.codeToDisplay() != '' && this.codeToDisplay() != this._editor.content()) {
-        this._editor.updateWithText(this.codeToDisplay());
-        this.executeCodeAt(executionResource); 
-        return;
-      }
-      if ( this.codeToAdd() != '') {
-        this.executeCodeAt(executionResource);  
-        return;
-      }
+      this._executeCurrentExecutionContextAt(executionResource);
     } else {
-      if (this._serverExecutionContext.codeToExecute() != this.codeToExecute()) {
-        this._editor.updateWithText(this._serverExecutionContext.code);
-        this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
-        this.executeCodeAt(executionResource);
-        return;
-      }
+      this._executeSeverExecutionContextAt(executionResource);
     }      
   },  
   

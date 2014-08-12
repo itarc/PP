@@ -223,7 +223,3 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   });  
 
 });
- 
- 
-
-     
