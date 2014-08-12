@@ -76,11 +76,7 @@ ServerExecutionContext.prototype = {
     codeToExecute = this.code;
     if (this.code_to_add != '') codeToExecute += ( SEPARATOR + this.code_to_add)
     return codeToExecute;
-  },   
-
-  //~ canReplaceCurrentExecutionContext: function() {
-    //~ return ( ! this.isEmpty() ) && (this.codeToExecute() != this._slide.codeToExecute());
-  //~ },
+  },
   
   getContextOnServer: function(url) {
     last_execution = (this._executionContextResource.get(url)).split(SEPARATOR);
@@ -124,8 +120,8 @@ Editor.prototype = {
 // ----------------------------------
 var AuthorBar = function(node) {
   this._node = node;
-  if (this._node) this.authorNode = this._node.querySelector('#author_name')
-  if (this._node) this.lastsendNode = this._node.querySelector('#last_send_attendee_name')
+  if (this._node) this.authorNode = this._node.querySelector('#author_name');
+  if (this._node) this.lastsendNode = this._node.querySelector('#last_send_attendee_name');
   
   this._sessionIDResource = new Resource();
   this.refreshSessionUserName();
@@ -150,11 +146,10 @@ AuthorBar.prototype = {
     this.authorNode.innerHTML = userName
   },
   
-  updateLastSendAttendeeNameWith: function(sessionID) {
+  updateLastSendAttendeeNameWith: function(userName) {
     if (! this.lastsendNode) return;
-    if (sessionID.split('_')[1]) sessionID = sessionID.split('_')[1];
-    if (sessionID != '' ) sessionID += (' >>' + ' ');
-    this.lastsendNode.innerHTML = sessionID; 
+    if (userName != '' ) { userName += (' >>' + ' '); }
+    this.lastsendNode.innerHTML = userName;
   },
   
 }
