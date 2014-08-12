@@ -267,6 +267,7 @@ CodeSlide.prototype = {
       function(e) { 
         if (e.keyCode == RETURN) { 
           _t._authorBar._setSessionUserName(this.value); this.value = '';
+          _t.showCodeHelper();
         } }, false
     );
     }
@@ -297,13 +298,17 @@ CodeSlide.prototype = {
   showCodeHelper: function() {
     if (this._codeHelpers.length == 0) return;
     this._clearCodeHelpers();
-    code_helper_index = this._slideshow._currentIndex
+    if (this._authorBar.authorNode.innerHTML != '?') {
+      code_helper_index = this._slideshow._currentIndex;
+    } else {
+      code_helper_index = 0;
+    }
     this._codeHelpers[code_helper_index].setState('current');
     this._codeHelper_current_index = code_helper_index;    	  
   }, 
   
   codeToExecute: function() {
-    return this._editor.content() + this._currentCodeHelper().codeToAdd();
+    return this._editor.content() + this.codeToAdd();
   },	 
 
   codeToDisplay: function() {
@@ -323,14 +328,9 @@ CodeSlide.prototype = {
   },
   
   _executeCurrentExecutionContextAt: function(executionResource) {  
-    if ( this.codeToAdd() != '' ) {
+    if ( this.codeToAdd() != ''  || ( this.codeToDisplay() != '' && this.codeToDisplay() != this._editor.content())) {
       this._editor.updateWithText(this.codeToDisplay());      
       this.executeCodeAt(executionResource);
-      return;
-    }
-    if (this.codeToDisplay() != '' && this.codeToDisplay() != this._editor.content()) {
-      this._editor.updateWithText(this.codeToDisplay());      
-      this.executeCodeAt(executionResource); 
     }
   },  
   

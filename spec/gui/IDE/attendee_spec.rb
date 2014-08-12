@@ -20,7 +20,7 @@ attendee_IDE = '/attendee/IDE'
 attendee_IDE_with_code_to_display = '/attendee/IDE_with_code_to_display'
 
 attendee_IDE_no_session = '/attendee/IDE_no_session'
-attendee_IDE_no_session_with_code_to_display = '/attendee/IDE_no_session_with_code_to_display'
+attendee_IDE_with_code_to_display_no_session = '/attendee/IDE_no_session_with_code_to_display'
 
 get teacher_presentation do
   session[:user_session_id] = $teacher_session_id
@@ -41,7 +41,7 @@ get attendee_IDE_no_session do
   redirect "attendee_IDE.html"
 end
 
-get attendee_IDE_no_session_with_code_to_display do
+get attendee_IDE_with_code_to_display_no_session do
   redirect "attendee_IDE_with_code_to_display.html"
 end
 
@@ -66,6 +66,15 @@ end
 
 def expect_sessionID_to_be(value)
   expect(page).to have_content 'AUTHOR: ' + value
+end
+
+def log_attendee_in
+  fill_in 'attendee_name', :with => "a name"  
+  find('#attendee_name').native.send_key(:return)
+end
+
+def teacher_go_to_slide(slide_index)
+  $db.execute_sql("update teacher_current_slide set current_slide_id = '#{ slide_index }'") 
 end
 
 describe 'Attendee IDE', :type => :feature, :js => true do
@@ -101,7 +110,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
 
     expect(page).to have_content 'EXERCISE - 1'
     
-    visit attendee_IDE
+    visit attendee_IDE; log_attendee_in
 
     expect(page).to have_content 'HELPER 1'
 
@@ -109,7 +118,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
     
     go_right
     
-    visit attendee_IDE
+    visit attendee_IDE_no_session
 
     press_space
 
@@ -119,7 +128,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
 
     go_left
     
-    visit attendee_IDE
+    visit attendee_IDE_no_session
 
     press_space
 
@@ -249,7 +258,7 @@ describe 'Attendee Login', :type => :feature, :js => true do
     
     expect_sessionID_to_be('a name')
     
-    visit attendee_IDE_no_session_with_code_to_display
+    visit attendee_IDE_with_code_to_display_no_session
 
     expect_sessionID_to_be('a name')
     
@@ -257,24 +266,43 @@ describe 'Attendee Login', :type => :feature, :js => true do
 
   it 'should display login if session ID is lost' do
     
-    #~ visit attendee_IDE
+    visit attendee_IDE
     
-    #~ fill_in 'attendee_name', :with => "a name"
-    #~ find('#attendee_name').native.send_key(:return)    
+    fill_in 'attendee_name', :with => "a name"
+    find('#attendee_name').native.send_key(:return)    
     
-    #~ $db.execute_sql("update teacher_current_slide set current_slide_id = '1'")    
+    teacher_go_to_slide(1) # right
     
-    #~ press_space
+    press_space
     
-    #~ expect(page).to have_content 'HELPER 2'    
-    #~ expect_sessionID_to_be('a name')
+    expect(page).to have_content 'HELPER 2'    
+    expect_sessionID_to_be('a name')
     
-    #~ visit attendee_IDE
+    visit attendee_IDE # session reinitialized
 
-    #~ expect(page).to have_content 'HELPER 1'    
-    #~ expect_sessionID_to_be('?')
+    expect(page).to have_content 'HELPER 1'    
+    expect_sessionID_to_be('?')
 
   end
+  
+  it 'should display right slide if session ID is given' do
+    
+    visit attendee_IDE
+    
+    teacher_go_to_slide(1) # right
+    
+    press_space
+    
+    expect(page).to have_content 'HELPER 1'    
+    expect_sessionID_to_be('?')
+    
+    fill_in 'attendee_name', :with => "a name"
+    find('#attendee_name').native.send_key(:return)
+
+    expect(page).to have_content 'HELPER 2'    
+    expect_sessionID_to_be('a name')
+
+  end  
   
   after(:each) do
     $db.execute_sql("delete from run_events") 
@@ -355,9 +383,11 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
     
   end   
   
-  it 'should show attendee last execution when slide moves' do   
+  it 'should show attendee last execution when slide moves' do 
 
-    visit attendee_IDE
+    teacher_go_to_slide(0)  
+
+    visit attendee_IDE; log_attendee_in
     
     expect_IDE_to_be_empty    
     
@@ -367,13 +397,9 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
     
     expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
     
-  
-    visit teacher_presentation
-    
-    go_right
-    
+    teacher_go_to_slide(1) # right
 
-    visit attendee_IDE
+    visit attendee_IDE_no_session
     
     expect_IDE_to_be_empty    
     
@@ -383,22 +409,15 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
 
     expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
     
-
-    visit teacher_presentation
+    teacher_go_to_slide(0) # left
     
-    go_left
-    
-    visit attendee_IDE
+    visit attendee_IDE_no_session
     
     expect_IDE_to_have(code_input = "print 'code to run'", code_output = 'code to run')
     
+    teacher_go_to_slide(1) # right
     
-    visit teacher_presentation
-    
-    go_right
-    
-    
-    visit attendee_IDE    
+    visit attendee_IDE_no_session    
     
     expect_IDE_to_have(code_input = "print 'code to send'", code_output = 'code to send')
     
@@ -430,12 +449,14 @@ describe 'Attendee IDE with code to display', :type => :feature, :js => true do
   end  
   
   it 'should run code to add without displaying it' do
+    
+    visit attendee_IDE_with_code_to_display; log_attendee_in   
 	  
     visit teacher_presentation
 
     go_right
-       
-    visit attendee_IDE_with_code_to_display
+
+    visit attendee_IDE_with_code_to_display_no_session
     
     press_space
     
