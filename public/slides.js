@@ -119,6 +119,8 @@ Editor.prototype = {
 // AUTHOR BAR
 // ----------------------------------
 var AuthorBar = function(node) {
+  this.UNKNOWN = '?';
+  
   this._node = node;
   if (this._node) this.authorNode = this._node.querySelector('#author_name');
   if (this._node) this.lastsendNode = this._node.querySelector('#last_send_attendee_name');
@@ -142,8 +144,9 @@ AuthorBar.prototype = {
   
   updateAuthorNameWith: function(userName) {
     if (! this.authorNode) return;
-    if (userName == '')  { userName = '?'; }
-    this.authorNode.innerHTML = userName
+    if (userName == '')  { userName = this.UNKNOWN; }
+    this.userName = userName;
+    this.authorNode.innerHTML = this.userName
   },
   
   updateLastSendAttendeeNameWith: function(userName) {
@@ -215,20 +218,15 @@ var CodeHelpers = function(codeHelpers, slide) {
 }
 
 CodeHelpers.prototype = {
-  _clearCodeHelpers: function() {
+  _clear: function() {
     for (var i=0; i<this._codeHelpers.length; i++) {
       this._codeHelpers[i].setState('');
     }
   },  
   update: function() {
-    this._clearCodeHelpers();    
-    if (this._slide._authorBar.authorNode.innerHTML != '?') {
-      code_helper_index = this._slide._slideshow._currentIndex;
-    } else {
-      code_helper_index = 0;
-    }
-    this._codeHelpers[code_helper_index].setState('current');    
-    this._currentIndex = code_helper_index;      
+    this._clear();    
+    this._currentIndex = (this._slide._authorBar.userName == this._slide._authorBar.UNKNOWN) ? 0 : this._slide._slideshow._currentIndex;
+    this._codeHelpers[this._currentIndex].setState('current');     
   },
   current: function() {
     return this._codeHelpers[this._currentIndex]    
@@ -240,8 +238,6 @@ CodeHelpers.prototype = {
 // ----------------------------------
 var CodeSlide = function(node, slideshow) {
   Slide.call(this, node, slideshow);
-  
-  //~ var _s = this;
   
   this._declareEvents();
   this._serverExecutionContext = new ServerExecutionContext(this);
