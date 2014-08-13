@@ -1,23 +1,31 @@
-def insert_method_undef(original_code)
-  undef_string = "undef :exec\nundef :system\nundef :`\n"
-  code_first_line = original_code.split("\n")[0]
-  if code_first_line && code_first_line.strip.start_with?("#encoding") then
-    code_after_encoding = original_code.sub(/^#{code_first_line}\n/, '')
-    code_first_line + "\n" + undef_string + code_after_encoding
-  else
-     undef_string + original_code
-  end
-end
-  
+
 def run_ruby(type, ruby_code, user, slide_index)
-  file_name = "ruby_file_to_run.#{Time.now.to_f}.rb"
-  file = File.new(file_name, 'w')
-  ruby_code_with_method_undef = insert_method_undef(ruby_code)
-  file << ruby_code_with_method_undef
-  file.close
-  result = `ruby #{file_name} 2>&1`
-  File.delete(file)
+
+  # To Keep if want to avoid users to execute system commands
+  undef_file_name = "undef_file.#{Time.now.to_f}.rb"
+  undef_file = File.new(undef_file_name, 'w')  
+  undef_file << "undef :exec\nundef :system\nundef :`\n"
+  undef_file.close
+  
+  editor_file_name = "editor_file_#{Time.now.to_f }.rb" 
+  editor_file = File.new(editor_file_name, 'w')  
+  editor_file << ruby_code  
+  editor_file.close
+  
+  run_file_name = "ruby_file_to_run_#{Time.now.to_f}.rb"
+  run_file = File.new(run_file_name, 'w')
+  run_file << "require_relative '#{ undef_file_name }'\n"
+  run_file << "require_relative '#{ editor_file_name }'\n"
+  run_file.close
+  
+  result = `ruby #{editor_file_name} 2>&1`     # undef_file unsed at the moment
+  
+  File.delete(undef_file)
+  File.delete(editor_file)
+  File.delete(run_file)
+  
   RunTimeEvent.new(user, type, slide_index, ruby_code, result).save
+
   result
 end
 
