@@ -113,10 +113,9 @@ Editor.prototype = {
   },
   
   updateWithLocalExecutionContext: function() {
-    if ( this._slide.codeToAdd() != ''  || ( this._slide.codeToDisplay() != '' && this._slide.codeToDisplay() != this.content())) {
-        this.updateWithText(this._slide.codeToDisplay());     
-        return true;
-    }    
+    if (this._slide.codeToAdd() == '' && this._slide.codeToDisplay() == '') return false;
+    if (this._slide.codeToAdd() != '') { this.updateWithText(this._slide.codeToDisplay()); return true}
+    if (this._slide.codeToDisplay() != this.content()) { this.updateWithText(this._slide.codeToDisplay()); return true}
   },
   
   updateWithServerExecutionContext: function() {
