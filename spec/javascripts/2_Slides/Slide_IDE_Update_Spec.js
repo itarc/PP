@@ -38,8 +38,9 @@ describe("IDE UPDATE", function() {
   it("should NOT run the user last run when code has not changed", function() {
 
     slide._editor.updateWithText('last execution');
+    slide._editor._authorBar.updateAuthorNameWith('#');
     
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'last execution', "code_to_add": ''});
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '#', "code": 'last execution', "code_to_add": ''});
 	  
     spyOn(CodeSlide.prototype, 'executeCodeAt');
 	  
@@ -156,10 +157,11 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should NOT run code that is already in editor", function() {
     
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'code to execute', "code_to_add": "puts 'CODE TO ADD'" });
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '#', "code": 'code to execute', "code_to_add": "puts 'CODE TO ADD'" });
     spyOn(CodeSlide.prototype, 'executeCodeAt');
 
-    slide._editor.updateWithText('code to execute');	  
+    slide._editor.updateWithText('code to execute');	 
+    slide._editor._authorBar.updateAuthorNameWith('#');	 
     slide._update();
 
     expect(CodeSlide.prototype.executeCodeAt.calls.length).toBe(0);

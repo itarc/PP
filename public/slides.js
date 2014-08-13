@@ -96,38 +96,6 @@ ServerExecutionContext.prototype = {
 }
 
 // ----------------------------------
-// EDITOR
-// ----------------------------------
-var Editor = function(node, slide) {
-  this._node = node;
-  this._slide = slide;
-}
-
-Editor.prototype = {
-  content: function() {
-    return this._node.value;
-  },
-  
-  updateWithText: function(code) {
-    this._node.value = code;  
-  },
-  
-  updateWithLocalExecutionContext: function() {
-    if (this._slide.codeToAdd() == '' && this._slide.codeToDisplay() == '') return false;
-    if (this._slide.codeToAdd() != '') { this.updateWithText(this._slide.codeToDisplay()); return true}
-    if (this._slide.codeToDisplay() != this.content()) { this.updateWithText(this._slide.codeToDisplay()); return true}
-  },
-  
-  updateWithServerExecutionContext: function() {
-    if (this._slide._serverExecutionContext.codeToExecute() == this._slide.codeToExecute()) return false;
-    this.updateWithText(this._slide._serverExecutionContext.code);
-    this._slide._authorBar.updateAuthorNameWith(this._slide._serverExecutionContext.author);      
-    return true
-  },
-  
-}
-
-// ----------------------------------
 // AUTHOR BAR
 // ----------------------------------
 var AuthorBar = function(node) {
@@ -165,6 +133,40 @@ AuthorBar.prototype = {
     if (! this.lastsendNode) return;
     if (userName != '' ) { userName += (' >>' + ' '); }
     this.lastsendNode.innerHTML = userName;
+  },
+  
+}
+
+// ----------------------------------
+// EDITOR
+// ----------------------------------
+var Editor = function(node, slide) {
+  this._node = node;
+  this._slide = slide;
+  this._authorBar = new AuthorBar(slide._node.querySelector('.code_author'));  
+}
+
+Editor.prototype = {
+  content: function() {
+    return this._node.value;
+  },
+  
+  updateWithText: function(code) {
+    this._node.value = code;  
+  },
+  
+  updateWithLocalExecutionContext: function() {
+    if (this._slide.codeToAdd() == '' && this._slide.codeToDisplay() == '') return false;
+    if (this._slide.codeToAdd() != '') { this.updateWithText(this._slide.codeToDisplay()); return true}
+    if (this._slide.codeToDisplay() != this.content()) { this.updateWithText(this._slide.codeToDisplay()); return true}
+  },
+  
+  updateWithServerExecutionContext: function() {
+    if (  this._slide._serverExecutionContext.codeToExecute() == this._slide.codeToExecute() 
+          && this._authorBar.userName == this._slide._serverExecutionContext.author) return false;
+    this.updateWithText(this._slide._serverExecutionContext.code);
+    this._authorBar.updateAuthorNameWith(this._slide._serverExecutionContext.author);      
+    return true
   },
   
 }
@@ -237,7 +239,7 @@ CodeHelpers.prototype = {
   },  
   update: function() {
     this._clear();    
-    this._currentIndex = (this._slide._authorBar.userName == this._slide._authorBar.UNKNOWN) ? 0 : this._slide._slideshow._currentIndex;
+    this._currentIndex = (this._slide._editor._authorBar.userName == this._slide._editor._authorBar.UNKNOWN) ? 0 : this._slide._slideshow._currentIndex;
     this._codeHelpers[this._currentIndex].setState('current');     
   },
   current: function() {
@@ -254,7 +256,6 @@ var CodeSlide = function(node, slideshow) {
   this._declareEvents();
   this._serverExecutionContext = new ServerExecutionContext(this);
   this._editor = new Editor(this._node.querySelector('#code_input'), this);
-  this._authorBar = new AuthorBar(this._node.querySelector('.code_author'));
   this._standardOutput = new StandardOutput(this._node.querySelector('#code_output'));
   this._codeHelpers = new CodeHelpers(queryAll(node, '.code_helper'), this);   
   
@@ -297,7 +298,7 @@ CodeSlide.prototype = {
     this._node.querySelector('#attendee_name').addEventListener('keydown',
       function(e) { 
         if (e.keyCode == RETURN) { 
-          _t._authorBar._setSessionUserName(this.value); this.value = '';
+          _t._editor._authorBar._setSessionUserName(this.value); this.value = '';
           _t._codeHelpers.update();          
         } }, false
     );

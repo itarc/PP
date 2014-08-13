@@ -47,7 +47,7 @@ TeacherCodeSlide.prototype = {
   
   executeCode: function() {
     CodeSlide.prototype.executeCode.call(this);
-    this._authorBar.refreshSessionUserName();
+    this._editor._authorBar.refreshSessionUserName();
   }, 
   
   _updateEditorWithLastSendAndExecute: function() {
@@ -58,7 +58,7 @@ TeacherCodeSlide.prototype = {
   
  _updateLastSendAttendeeName: function(slide_index) {
     this._serverExecutionContext.updateWithResource(this._attendeesLastSendResource);
-    this._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
+    this._editor._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
   },  
   
   _update: function(slide_index) {
