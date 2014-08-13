@@ -208,7 +208,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     
     click_on 'get_last_send'
     
-    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')
+    expect_IDE_to_have(code_input = 'print "attendee send"', code_output = 'attendee send')    
     
     click_on 'get_last_send'
     

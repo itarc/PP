@@ -98,11 +98,9 @@ ServerExecutionContext.prototype = {
 // ----------------------------------
 // EDITOR
 // ----------------------------------
-var Editor = function(node) {
+var Editor = function(node, slide) {
   this._node = node;
-  this._contentHasChanged;
-  this.updated = true;
-  this.notUpdated = false;
+  this._slide = slide;
 }
 
 Editor.prototype = {
@@ -112,7 +110,22 @@ Editor.prototype = {
   
   updateWithText: function(code) {
     this._node.value = code;  
-  }
+  },
+  
+  updateWithLocalExecutionContext: function() {
+    if ( this._slide.codeToAdd() != ''  || ( this._slide.codeToDisplay() != '' && this._slide.codeToDisplay() != this.content())) {
+        this.updateWithText(this._slide.codeToDisplay());     
+        return true;
+    }    
+  },
+  
+  updateWithServerExecutionContext: function() {
+    if (this._slide._serverExecutionContext.codeToExecute() == this._slide.codeToExecute()) return false;
+    this.updateWithText(this._slide._serverExecutionContext.code);
+    this._slide._authorBar.updateAuthorNameWith(this._slide._serverExecutionContext.author);      
+    return true
+  },
+  
 }
 
 // ----------------------------------
@@ -241,7 +254,7 @@ var CodeSlide = function(node, slideshow) {
   
   this._declareEvents();
   this._serverExecutionContext = new ServerExecutionContext(this);
-  this._editor = new Editor(this._node.querySelector('#code_input'));
+  this._editor = new Editor(this._node.querySelector('#code_input'), this);
   this._authorBar = new AuthorBar(this._node.querySelector('.code_author'));
   this._standardOutput = new StandardOutput(this._node.querySelector('#code_output'));
   this._codeHelpers = new CodeHelpers(queryAll(node, '.code_helper'), this);   
@@ -300,7 +313,10 @@ CodeSlide.prototype = {
       function(e) { _t.executeCodeAt(_t._sendResource); }, false
     );     
     this._node.querySelector('#get_code').addEventListener('click',
-      function(e) { _t.getExecutionContextAtAndExecuteCodeAt(_t._getAndRunResource, _t._runResource); }, false
+      function(e) { 
+        _t._serverExecutionContext.updateWithResource(_t._getAndRunResource); 
+        if (_t._editor.updateWithServerExecutionContext()) { _t.executeCodeAt(_t._runResource); }
+      }, false
     );
   },  
   
@@ -324,36 +340,18 @@ CodeSlide.prototype = {
     this._standardOutput.updateWith(executionResult);    
   },
   
-  _executeCurrentExecutionContextAt: function(executionResource) {  
-    if ( this.codeToAdd() != ''  || ( this.codeToDisplay() != '' && this.codeToDisplay() != this._editor.content())) {
-      this._editor.updateWithText(this.codeToDisplay());      
-      this.executeCodeAt(executionResource);
-    }
-  },  
-  
-  _executeSeverExecutionContextAt: function(executionResource) {
-    if (this._serverExecutionContext.codeToExecute() == this.codeToExecute()) return;
-    this._editor.updateWithText(this._serverExecutionContext.code);
-    this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);      
-    this.executeCodeAt(executionResource);
-  },    
-  
-  getExecutionContextAtAndExecuteCodeAt: function(excutionContextResource, executionResource) {
-    this._serverExecutionContext.updateWithResource(excutionContextResource);
-    if ( this._serverExecutionContext.isEmpty() ) {
-      this._executeCurrentExecutionContextAt(executionResource);
-    } else {
-      this._executeSeverExecutionContextAt(executionResource);
-    }      
-  },  
-  
   executeCode: function() { // Overloader in teacher slideshow (to remove)
     this.executeCodeAt(this._runResource);
   },
 
   _update: function() {
     this._codeHelpers.update();
-    this.getExecutionContextAtAndExecuteCodeAt(this._updateResource, this._runResource);
+    this._serverExecutionContext.updateWithResource(this._updateResource);    
+    if (this._serverExecutionContext.isEmpty()) {
+      if (this._editor.updateWithLocalExecutionContext()) { this.executeCodeAt(this._runResource); }
+    } else {
+      if (this._editor.updateWithServerExecutionContext()) { this.executeCodeAt(this._runResource); }
+    }
   },
   
 };
