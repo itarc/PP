@@ -8,7 +8,7 @@ SLIDESHOW_WITH_3_SLIDES =
 describe("SlideShow Position", function() {
   
   beforeEach(function () {
-    setFixtures(SLIDESHOW_WITH_3_SLIDES)	 
+    setFixtures(SLIDESHOW_WITH_3_SLIDES)
   });
   
   it("should be position on server when slideshow is initialized", function() {

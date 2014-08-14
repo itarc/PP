@@ -112,7 +112,8 @@ describe("ATTENDEE IDE RUN", function() {
   
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
-    IDESlide = new AttendeeCodeSlide(slideNode);  
+    slideShow = new SlideShow([]);    
+    IDESlide = new AttendeeCodeSlide(slideNode, slideShow);  
     spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");
   });  
 
@@ -134,7 +135,8 @@ describe("ATTENDEE IDE RUN & SEND BUTTON", function() {
   
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
-    IDESlide = new AttendeeCodeSlide(slideNode);  
+    slideShow = new SlideShow([]);    
+    IDESlide = new AttendeeCodeSlide(slideNode, slideShow);  
     spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");
   });
 
@@ -156,7 +158,8 @@ describe("ATTENDEE IDE GET & RUN BUTTON", function() {
   
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
-    IDESlide = new AttendeeCodeSlide(slideNode);
+    slideShow = new SlideShow([]);    
+    IDESlide = new AttendeeCodeSlide(slideNode, slideShow);  
     spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'CODE ON BLACKBOARD', "code_to_add": ''});     
   });  
@@ -201,7 +204,8 @@ describe("TEACHER IDE RUN", function() {
   
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
-    IDESlide = new TeacherCodeSlide(slideNode);  
+    slideShow = new SlideShow([]);        
+    IDESlide = new TeacherCodeSlide(slideNode, slideShow);  
     spyOn(TeacherCodeSlide.prototype ,"executeCodeAt");
   });  
 
@@ -260,7 +264,8 @@ describe("TEACHER IDE GET LAST SEND", function() {
   
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);    
-    slide = new TeacherCodeSlide(slideNode);
+    slideShow = new SlideShow([]);        
+    slide = new TeacherCodeSlide(slideNode, slideShow);
     spyOn(TeacherCodeSlide.prototype ,"executeCodeAt");   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
   });   

@@ -24,18 +24,6 @@ describe("AttendeeSlideShow KeyHandling", function() {
  
   });
   
-  it("should prevent default when key pressed on document", function() {
-
-    preventDefaultKeys = jasmine.createSpy('preventDefaultKeys');
-
-    expect(preventDefaultKeys.calls.length).toBe(0);
-
-    __triggerKeyboardEvent(document, F5);
-
-    expect(preventDefaultKeys.calls.length).toBe(63); // SHOULD BE 1 => TO REVIEW
-
-  });  
-  
   it("should refresh position every second", function() {
 	  
     spyOn(AttendeeSlideShow.prototype, '_refresh');
@@ -51,4 +39,54 @@ describe("AttendeeSlideShow KeyHandling", function() {
 
   });    
 
+});
+
+ATTENDEE_SLIDESHOW_WITH_ATTENDEE_FIELD =  
+"<div class='slides'>"+
+HEADER + 
+code_input + 
+"<div class='code_helper'>AUTHOR NAME?<input id='attendee_name' type='text'></div>"+
+author_bar +
+buttons + 
+code_ouput + 
+FOOTER+
+"</div>"
+
+describe("AttendeeSlideShow KeyHandling", function() {
+  
+  beforeEach(function () {   
+    setFixtures(ATTENDEE_SLIDESHOW_WITH_ATTENDEE_FIELD)    
+    slideShow = new AttendeeSlideShow(queryAll(document, '.slide'));    
+  });  
+  
+  it("should prevent default when key pressed on document", function() {
+    spyOn(AttendeeSlideShow.prototype, '_preventDefaultKeys');
+
+    expect(AttendeeSlideShow.prototype._preventDefaultKeys.calls.length).toBe(0);
+
+    __triggerKeyboardEvent(document, F5);
+
+    expect(AttendeeSlideShow.prototype._preventDefaultKeys.calls.length).toBe(2); // SHOULD BE 1 => TO REVIEW
+  });
+  
+  it("should Not prevent default when key pressed in Attendee Login", function() {
+    spyOn(AttendeeSlideShow.prototype, '_preventDefaultKeys');
+
+    expect(AttendeeSlideShow.prototype._preventDefaultKeys.calls.length).toBe(0);
+
+    __triggerKeyboardEvent(document.querySelector('#attendee_name'), F5);
+
+    expect(AttendeeSlideShow.prototype._preventDefaultKeys.calls.length).toBe(0); 
+  });  
+  
+  it("should prevent default when key pressed in editor", function() {
+    spyOn(AttendeeSlideShow.prototype, '_preventDefaultKeys');
+
+    expect(AttendeeSlideShow.prototype._preventDefaultKeys.calls.length).toBe(0);
+
+    __triggerKeyboardEvent(slideShow._slides[0]._node.querySelector('#code_input'), F5);
+
+    expect(AttendeeSlideShow.prototype._preventDefaultKeys.calls.length).toBe(1);
+  });  
+  
 });

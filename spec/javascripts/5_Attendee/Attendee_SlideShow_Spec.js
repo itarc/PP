@@ -53,16 +53,5 @@ describe("AttendeeSlideShow IDE", function() {
 
     expect(AttendeeCodeSlide.prototype._update.calls.length).toBe(1);
   });
-  
-  it("should prevent default when key pressed on editor", function() {
-    var slideShow = new AttendeeSlideShow(queryAll(document, '.slide'));
-    preventDefaultKeys = jasmine.createSpy('preventDefaultKeys');
-
-    expect(preventDefaultKeys.calls.length).toBe(0);
-
-    __triggerKeyboardEvent(slideShow._slides[0]._node.querySelector('#code_input'), F5);
-
-    expect(preventDefaultKeys.calls.length).toBe(1);
-  });  
 
 });

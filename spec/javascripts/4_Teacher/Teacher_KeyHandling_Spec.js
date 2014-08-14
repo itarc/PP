@@ -82,18 +82,6 @@ describe("TeacherSlideShow KeyHandling", function() {
     expect(TeacherSlideShow.prototype.home.calls.length).toBe(1);    
   });
   
-  it("should prevent default when key pressed on document", function() {
-
-    preventDefaultKeys = jasmine.createSpy('preventDefaultKeys');
-
-    expect(preventDefaultKeys.calls.length).toBe(0);
-
-    __triggerKeyboardEvent(document, F5);
-
-    expect(preventDefaultKeys.calls.length).toBe(43); // SHOULD BE 1 => TO REVIEW
-
-  });
-  
   it("should refresh last send attendee name every second", function() {
 	  
     spyOn(TeacherSlideShow.prototype, '_refresh');
@@ -108,5 +96,46 @@ describe("TeacherSlideShow KeyHandling", function() {
     expect(slideshowTimer).toBeDefined(); // Test if timer is javascript
 
   }); 
+  
+});
+
+TEACHER_SLIDESHOW_FOR_KEY_HANDLING =  
+"<div class='slides'>"+
+HEADER + 
+code_input + 
+"<div class='code_helper'>AUTHOR NAME?<input id='attendee_name' type='text'></div>"+
+author_bar +
+buttons + 
+"<input type='button' id='get_last_send'/>"+
+code_ouput + 
+FOOTER+
+"</div>"
+
+describe("AttendeeSlideShow KeyHandling", function() {
+  
+  beforeEach(function () {   
+    setFixtures(TEACHER_SLIDESHOW_FOR_KEY_HANDLING)    
+    teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));    
+  });  
+  
+  it("should prevent default when key pressed on document", function() {
+    spyOn(TeacherSlideShow.prototype, '_preventDefaultKeys');
+
+    expect(TeacherSlideShow.prototype._preventDefaultKeys.calls.length).toBe(0);
+
+    __triggerKeyboardEvent(document, F5);
+
+    expect(TeacherSlideShow.prototype._preventDefaultKeys.calls.length).toBe(2); // SHOULD BE 1 => TO REVIEW
+  });
+  
+  it("should prevent default when key pressed in editor", function() {
+    spyOn(TeacherSlideShow.prototype, '_preventDefaultKeys');
+
+    expect(TeacherSlideShow.prototype._preventDefaultKeys.calls.length).toBe(0);
+
+    __triggerKeyboardEvent(teacherSlideShow._slides[0]._node.querySelector('#code_input'), F5);
+
+    expect(TeacherSlideShow.prototype._preventDefaultKeys.calls.length).toBe(1);
+  });  
   
 });

@@ -29,6 +29,9 @@ var TeacherCodeSlide = function(node, slideshow) {
 TeacherCodeSlide.prototype = {
 
   _keyHandling: function(e) {
+    
+    this._slideshow._preventDefaultKeys(e);    
+    
     if ( e.altKey ) {
       CodeSlide.prototype._bindKeys.call(this, e);
       if (e.which == N) { this._node.querySelector('#get_last_send').click();}
