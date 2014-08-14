@@ -41,7 +41,7 @@ describe("AttendeeSlideShow KeyHandling", function() {
 
 });
 
-ATTENDEE_SLIDESHOW_WITH_ATTENDEE_FIELD =  
+ATTENDEE_SLIDESHOW_FOR_KEY_HANDLING =  
 "<div class='slides'>"+
 HEADER + 
 code_input + 
@@ -55,7 +55,7 @@ FOOTER+
 describe("AttendeeSlideShow KeyHandling", function() {
   
   beforeEach(function () {   
-    setFixtures(ATTENDEE_SLIDESHOW_WITH_ATTENDEE_FIELD)    
+    setFixtures(ATTENDEE_SLIDESHOW_FOR_KEY_HANDLING)    
     slideShow = new AttendeeSlideShow(queryAll(document, '.slide'));    
   });  
   

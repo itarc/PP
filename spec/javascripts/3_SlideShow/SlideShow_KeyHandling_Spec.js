@@ -1,4 +1,4 @@
-SLIDESHOW_WITH_ATTENDEE_FIELD =  
+SLIDESHOW_FOR_KEY_HANDLING =  
 "<div class='slides'>"+
 HEADER + 
 code_input + 
@@ -12,7 +12,7 @@ FOOTER+
 describe("SlideShow KeyHandling", function() {
   
   beforeEach(function () {   
-    setFixtures(SLIDESHOW_WITH_ATTENDEE_FIELD)    
+    setFixtures(SLIDESHOW_FOR_KEY_HANDLING)    
     slideShow = new SlideShow(queryAll(document, '.slide'));    
   });  
   
