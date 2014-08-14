@@ -85,6 +85,4 @@ Resource.prototype = {
 
 };
 
-var preventDefaultKeys = function(e) {};
-
 

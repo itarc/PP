@@ -24,18 +24,6 @@ describe("AttendeeSlideShow KeyHandling", function() {
  
   });
   
-  it("should prevent default when key pressed on document", function() {
-
-    preventDefaultKeys = jasmine.createSpy('preventDefaultKeys');
-
-    expect(preventDefaultKeys.calls.length).toBe(0);
-
-    __triggerKeyboardEvent(document, F5);
-
-    expect(preventDefaultKeys.calls.length).toBe(63); // SHOULD BE 1 => TO REVIEW
-
-  });  
-  
   it("should refresh position every second", function() {
 	  
     spyOn(AttendeeSlideShow.prototype, '_refresh');

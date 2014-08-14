@@ -82,18 +82,6 @@ describe("TeacherSlideShow KeyHandling", function() {
     expect(TeacherSlideShow.prototype.home.calls.length).toBe(1);    
   });
   
-  it("should prevent default when key pressed on document", function() {
-
-    preventDefaultKeys = jasmine.createSpy('preventDefaultKeys');
-
-    expect(preventDefaultKeys.calls.length).toBe(0);
-
-    __triggerKeyboardEvent(document, F5);
-
-    expect(preventDefaultKeys.calls.length).toBe(43); // SHOULD BE 1 => TO REVIEW
-
-  });
-  
   it("should refresh last send attendee name every second", function() {
 	  
     spyOn(TeacherSlideShow.prototype, '_refresh');

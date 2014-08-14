@@ -276,7 +276,7 @@ CodeSlide.prototype = {
   
   _keyHandling: function(e) {
     
-    preventDefaultKeys(e);
+    slideshow._preventDefaultKeys(e);
     
     if ( e.altKey ) { 
       this._bindKeys(e);
@@ -300,6 +300,8 @@ CodeSlide.prototype = {
         if (e.keyCode == RETURN) { 
           _t._editor._authorBar._setSessionUserName(this.value); this.value = '';
           _t._codeHelpers.update();          
+        } else {
+          e.stopPropagation();
         } }, false
     );
     }

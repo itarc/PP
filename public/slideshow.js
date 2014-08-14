@@ -99,8 +99,11 @@ SlideShow.prototype = {
     this.position.updateWithTeacherPosition();     
   },
   
+  _preventDefaultKeys: function(e) {
+  },  
+  
   handleKeys: function(e) {
-    preventDefaultKeys(e);
+    this._preventDefaultKeys(e);
   },
   
   _clear: function() {
