@@ -76,7 +76,7 @@ describe("Common GET", function() {
 	  
   });   
   
-  it("should concatenate url with global variable SERVER_PATH", function() {
+  it("should add to url SERVER_PATH (for Hangout)", function() {
 
     spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
     spyOn(XMLHttpRequest.prototype, 'send')	     
@@ -131,7 +131,7 @@ describe("Common POST", function() {
 
   });
   
-  it("should concatenate url with global variable SERVER_PATH", function() {
+  it("should add to url SERVER_PATH (for Hangout)", function() {
 
     spyOn(XMLHttpRequest.prototype, 'open').andCallThrough()
     spyOn(XMLHttpRequest.prototype, 'send')	     
