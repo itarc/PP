@@ -59,7 +59,7 @@ BlackboardSlideShow.prototype = {
   
   _refresh: function() {
     SlideShow.prototype._refresh.call(this);
-    this.currentSlide()._update(this._currentIndex); 
+    this.currentSlide()._update(); 
     this._last_slide()._updateLastSendAttendeeName();      
   },  
   
