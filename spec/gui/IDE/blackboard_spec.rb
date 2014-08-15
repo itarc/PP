@@ -186,6 +186,25 @@ describe 'Blackboard Update', :type => :feature, :js => true do
     expect_IDE_to_be_empty   
   
   end
+
+  it 'should show attendee name of last send' do
+    
+    visit teacher_presentation
+    go_down    
+
+    visit blackboard_presentation
+    
+    expect_IDE_to_be_empty
+    
+    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
+    
+    press_space
+    
+    expect_IDE_to_be_empty
+    
+    expect_AuthorBar_to_have(author = '#', last_send_attendee_name = 'attendee 1 >>')
+    
+  end
     
   it 'should NOT display attendee send when teacher does not allow it' do    
     

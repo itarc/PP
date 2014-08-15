@@ -22,9 +22,17 @@ var BlackboardCodeSlide = function(node, slideshow) {
   this._sendResource = ''
   this._getAndRunResource = ''  
   this._updateResource = '/code_get_last_send_to_blackboard'
+  
+  this._attendeesLastSendResource = '/code_attendees_last_send';    
 };
 
 BlackboardCodeSlide.prototype = {
+  
+  _updateLastSendAttendeeName: function(slide_index) {
+    this._serverExecutionContext.updateWithResource(this._attendeesLastSendResource);
+    this._editor._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
+  },
+  
 };
 
 for(key in CodeSlide.prototype) {
@@ -52,6 +60,7 @@ BlackboardSlideShow.prototype = {
   _refresh: function() {
     SlideShow.prototype._refresh.call(this);
     this.currentSlide()._update(this._currentIndex); 
+    this._last_slide()._updateLastSendAttendeeName();      
   },  
   
   handleKeys: function(e) {
