@@ -102,6 +102,54 @@ class TestLastExecution_in_attendee_slide < Test::Unit::TestCase
   
 end
 
+require 'json'
+class TestSaveAndGetExecutionContext < Test::Unit::TestCase
+  
+  include Rack::Test::Methods
+
+  def app
+    Sinatra::Application
+  end
+  
+  def setup
+    $db.execute_sql("delete from run_events")	  
+  end
+  
+  def test01_should_be_empty_when_empty_database
+    get '/code_last_execution_context/0'
+    assert_equal JSON.parse('{}'), JSON.parse(last_response.body)
+  end
+
+  def test03_should_return_last_execution_context_send
+    post '/code_save_execution_context/0', '{ "type": "send", "code" : "code sent", "code_output": "code result"}', 'rack.session' => {:user_session_id => '1_user_name'}
+    get '/code_last_execution_context/0', {}, 'rack.session' => {:user_session_id => '1_user_name'} 
+    assert_equal JSON.parse('{ "type": "send", "author": "user_name", "code": "code sent", "code_output": "code result" }'), JSON.parse(last_response.body) 
+  end
+  
+  def test04_should_return_last_execution_context_send_run
+    post '/code_save_execution_context/0', '{ "type": "send", "code" : "code run", "code_output": "code result"}', 'rack.session' => {:user_session_id => '1_user_name'}
+    get '/code_last_execution_context/0', {}, 'rack.session' => {:user_session_id => '1_user_name'}   
+    assert_equal JSON.parse('{ "type": "send", "author": "user_name", "code": "code run", "code_output": "code result"}'), JSON.parse(last_response.body)     
+  end
+  
+  def test05_should_save_and_return_code_with_double_quote
+    post '/code_save_execution_context/0', '{ "type": "run", "code" : "puts \"1\"" }', 'rack.session' => {:user_session_id => '1_user_name'}
+    get '/code_last_execution_context/0', {}, 'rack.session' => {:user_session_id => '1_user_name'}     
+    assert_equal JSON.parse(last_response.body)["code"], 'puts "1"'        
+  end  
+  
+  def test06_should_return_empty_if_not_the_right_slide
+    post '/code_save_execution_context/0', '{ "code": "code run" }', 'rack.session' => {:user_session_id => '1_user_name'}
+    get '/code_last_execution_context/1', {}, 'rack.session' => {:user_session_id => '1_user_name'}
+    assert_equal JSON.parse('{}'), JSON.parse(last_response.body)
+  end
+  
+  def teardown
+    $db.execute_sql("delete from run_events")	  
+  end
+  
+end
+
 class TestLastExecution_in_teacher_slide < Test::Unit::TestCase
   
   include Rack::Test::Methods

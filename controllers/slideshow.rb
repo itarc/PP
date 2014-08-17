@@ -55,6 +55,26 @@ get '/code_last_execution/*' do
   user_name_of(last_execution.user) + $SEPARATOR + last_execution.code_input
 end
 
+### POST and SAVE execution context
+require 'json'
+
+post '/code_save_execution_context/*' do
+  json_string = request.env["rack.input"].read
+  execution_context = JSON.parse(json_string)
+  type = execution_context["type"]
+  code = execution_context["code"]
+  result = execution_context["code_output"]
+  RunTimeEvent.new(user_session_id, type, slide_index, code, result).save
+end
+
+get '/code_last_execution_context/*' do
+  last_execution = RunTimeEvent.find_last_user_execution_on_slide(session[:user_session_id], slide_index)
+  return JSON.generate({}) if last_execution == nil
+  JSON.generate({ :type => last_execution.type, :author => user_name_of(last_execution.user), :code => last_execution.code_input, :code_output => last_execution.code_output})   
+end
+
+###
+
 get '/code_attendees_last_send/*' do
   response.headers['Access-Control-Allow-Origin'] = '*' 
   last_send = RunTimeEvent.find_attendees_last_send_on_slide(session[:user_session_id], slide_index)
