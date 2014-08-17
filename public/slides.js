@@ -169,6 +169,14 @@ Editor.prototype = {
     return true
   },
   
+  update: function() {
+    if (this._slide._serverExecutionContext.isEmpty()) {
+      return this.updateWithLocalExecutionContext();
+    } else {
+      return this.updateWithServerExecutionContext();
+    }    
+  }
+  
 }
 
 // ----------------------------------
@@ -348,12 +356,8 @@ CodeSlide.prototype = {
 
   _update: function() {
     this._codeHelpers.update();
-    this._serverExecutionContext.updateWithResource(this._updateResource);    
-    if (this._serverExecutionContext.isEmpty()) {
-      if (this._editor.updateWithLocalExecutionContext()) { this.executeCodeAt(this._runResource); }
-    } else {
-      if (this._editor.updateWithServerExecutionContext()) { this.executeCodeAt(this._runResource); }
-    }
+    this._serverExecutionContext.updateWithResource(this._updateResource); 
+    if (this._editor.update()) { this.executeCodeAt(this._runResource) }
   },
   
 };
