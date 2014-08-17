@@ -111,6 +111,10 @@ var AuthorBar = function(node) {
 
 AuthorBar.prototype = {
   
+  userNameIsUnknown: function() {
+    return this.userName == this.UNKNOWN;
+  },  
+  
   refreshSessionUserName: function() {
     sessionUserName = this._sessionIDResource.get('/session_id/user_name');
     this.updateAuthorNameWith(sessionUserName);
@@ -244,12 +248,14 @@ CodeHelpers.prototype = {
     for (var i=0; i<this._codeHelpers.length; i++) {
       this._codeHelpers[i].setState('');
     }
-  },  
+  }, 
+  
   update: function() {
     this._clear();    
-    this._currentIndex = (this._slide._editor._authorBar.userName == this._slide._editor._authorBar.UNKNOWN) ? 0 : this._slide._slideshow._currentIndex;
+    this._currentIndex = (this._slide._editor._authorBar.userNameIsUnknown()) ? 0 : this._slide._slideshow._currentIndex;
     this._codeHelpers[this._currentIndex].setState('current');     
   },
+  
   current: function() {
     return this._codeHelpers[this._currentIndex]    
   },  
