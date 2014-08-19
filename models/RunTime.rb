@@ -23,8 +23,6 @@ def run_ruby(type, ruby_code, user, slide_index)
   File.delete(undef_file)
   File.delete(editor_file)
   File.delete(run_file)
-  
-  #~ RunTimeEvent.new(user, type, slide_index, ruby_code, result).save
 
   result
 end
