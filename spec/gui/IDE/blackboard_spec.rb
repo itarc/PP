@@ -189,14 +189,17 @@ describe 'Blackboard Update', :type => :feature, :js => true do
 
   it 'should show attendee name of last send' do
     
+    visit attendee_IDE
+    log_attendee_in("attendee 1")  
+    fill_IDE_with('print "attendee send"')
+    send_code     
+    
     visit teacher_presentation
     go_down    
 
     visit blackboard_presentation
     
     expect_IDE_to_be_empty
-    
-    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     press_space
     
@@ -225,10 +228,13 @@ describe 'Blackboard Update', :type => :feature, :js => true do
   end
 
   it 'should display attendee send when teacher allows it with its name' do
+
+    visit attendee_IDE
+    log_attendee_in("attendee 1")  
+    fill_IDE_with('print "attendee send"')
+    send_code 
     
     visit teacher_presentation; go_down    
-
-    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     click_on "get_last_send"
     

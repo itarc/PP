@@ -16,10 +16,11 @@ FOOTER +
 describe("Blackboard SlideShow IDE", function() {
   
   beforeEach(function () {
-    setFixtures(BLAKBOARD_SLIDESHOW_WITH_1_IDE_SLIDE_ONLY)	      
+    setFixtures(BLAKBOARD_SLIDESHOW_WITH_1_IDE_SLIDE_ONLY)	
+    spyOn(Resource.prototype, "get").andReturn('{}');
     blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide')); 
-    spyOn(BlackboardCodeSlide.prototype, 'executeCodeAt');   
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });      
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });    
+    spyOn(BlackboardCodeSlide.prototype, 'executeCodeAt');  
   });
   
   it("should get last Teacher run when refreshed", function() {
@@ -27,7 +28,7 @@ describe("Blackboard SlideShow IDE", function() {
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');    
     expect(blackboardSlideShow._slides[0]._editor.content()).toBe('last send to blackboard');
-    expect(BlackboardCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result_blackboard');
+    expect(BlackboardCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result_blackboard', 'run');
   });  
   
   it("should NOT change if execution context has not changed", function() {

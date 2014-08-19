@@ -13,6 +13,7 @@ describe("SlideShow KeyHandling", function() {
   
   beforeEach(function () {   
     setFixtures(SLIDESHOW_FOR_KEY_HANDLING)    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({})     
     slideShow = new SlideShow(queryAll(document, '.slide'));    
   });  
   

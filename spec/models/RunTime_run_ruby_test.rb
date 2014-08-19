@@ -36,20 +36,6 @@ class TestRunTime_run_ruby < Test::Unit::TestCase
     assert run_ruby(nil, tests, nil, nil).include?("1 tests, 1 assertions, 0 failures, 0 errors, 0 skips")
   end
   
-  def test08_should_save_run_event
-    $db.execute_sql("delete from run_events")
-    run_ruby("run", "print 7", "user", "slide_index")
-    assert_equal (['user', 'run', 'slide_index', 'print 7', '7']).inspect, RunTimeEvent.find_all[0].inspect
-    $db.execute_sql("delete from run_events")
-  end
-
-  def test09_should_save_send_event
-    $db.execute_sql("delete from run_events")
-    run_ruby("send", "print 8", "user", "slide_index")
-    assert_equal (['user', 'send', 'slide_index', 'print 8', '8']).inspect, RunTimeEvent.find_all[0].inspect
-    $db.execute_sql("delete from run_events")
-  end
-  
   def test10_should_raise_an_exception_when_encoding_is_needed
     assert run_ruby(nil, "puts 'éèêàâùï'", nil, nil).include?("invalid multibyte char (US-ASCII)"), run_ruby(nil, "puts 'éèêàâùï'", nil, nil)
   end   

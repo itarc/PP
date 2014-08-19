@@ -93,7 +93,7 @@ describe("TEACHER IDE Author Bar", function() {
    });	
 
   it("should display the author name of the last send in editor", function() {
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({author: 'attendee name', code: 'code sent'});     
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "attendee name", "code": "code sent"});     
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");
     
     slideNode.querySelector('#get_last_send').click();
@@ -102,16 +102,18 @@ describe("TEACHER IDE Author Bar", function() {
   });   
    
   it("should show last send attendee name when upated", function() {
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({})    
     spyOn(TeacherCodeSlide.prototype, '_updateLastSendAttendeeName');	  
 	  
-    slide._update(0);
+    slide._update();
 	  
     expect(TeacherCodeSlide.prototype._updateLastSendAttendeeName.calls.length).toBe(1);
   });     
    
    
   it("should display the author name of the last send on server", function() {   
-    slide._update(0);
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "a name", "code": "code sent"})     
+    slide._update();
     
     expect(slideNode.querySelector('#last_send_attendee_name').innerHTML.replace(/&gt;/g, '>')).toBe("a name >> "); 
   }); 

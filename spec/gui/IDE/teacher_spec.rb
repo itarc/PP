@@ -139,14 +139,17 @@ describe 'Teacher IDE', :type => :feature, :js => true do
   
   it 'should show attendee last send with attendee name' do
 
+    visit attendee_IDE
+    log_attendee_in("attendee 1")  
+    fill_IDE_with('print "attendee send"')
+    send_code
+    
     visit teacher_presentation
     go_down 
     
     expect_IDE_to_be_empty
     
-    expect_AuthorBar_to_have(author = '#', last_send_attendee_name = '')
-    
-    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
+    expect_AuthorBar_to_have(author = '#', last_send_attendee_name = 'attendee 1 >>')    
     
     click_on "get_last_send"
     
@@ -175,12 +178,15 @@ describe 'Teacher IDE', :type => :feature, :js => true do
   end
   
   it 'should show attendee last send with attendee name' do   
+    
+    visit attendee_IDE
+    log_attendee_in("attendee 1")  
+    fill_IDE_with('print "attendee send"')
+    send_code    
 
     visit teacher_presentation; go_down 
     
     expect_IDE_to_be_empty
-    
-    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     click_on 'get_last_send'
     
@@ -198,13 +204,16 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     
   end
   
-  it 'should show attendee last send with attendee name when last send has already been shown' do   
+  it 'should show attendee last send with attendee name when last send has already been shown' do 
+
+    visit attendee_IDE
+    log_attendee_in("attendee 1")  
+    fill_IDE_with('print "attendee send"')
+    send_code 
 
     visit teacher_presentation; go_down 
     
     expect_IDE_to_be_empty
-    
-    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     click_on 'get_last_send'
     
@@ -248,13 +257,16 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
   end 
   
   it 'should show attendee name of last send' do
+    
+    visit attendee_IDE
+    log_attendee_in("attendee 1")  
+    fill_IDE_with('print "attendee send"')
+    send_code     
 
     visit teacher_presentation
     go_down 
     
     expect_IDE_to_be_empty
-    
-    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     press_space
     
@@ -265,13 +277,16 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
   end
   
   it 'should NOT show attendee name of last send when teacher as already allowed it' do
+    
+    visit attendee_IDE
+    log_attendee_in("attendee 1")  
+    fill_IDE_with('print "attendee send"')
+    send_code     
 
     visit teacher_presentation
     go_down 
     
     expect_IDE_to_be_empty
-    
-    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     press_space
     
@@ -289,12 +304,15 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
   
   it 'should NOT show attendee last send when attendee last send is on another slide' do   
 
+    visit attendee_IDE
+    log_attendee_in("attendee 1")  
+    fill_IDE_with('print "attendee send"')
+    send_code 
+
     visit teacher_presentation
     go_down   
     
     expect_IDE_to_be_empty
-    
-    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     go_right
     press_space
@@ -325,14 +343,17 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
 
   end  
   
-  it 'should keep showing last attendee send when navigating right' do   
+  it 'should keep showing last attendee send when navigating right' do  
+
+    visit attendee_IDE
+    log_attendee_in("attendee 1")  
+    fill_IDE_with('print "attendee send"')
+    send_code 
 
     visit teacher_presentation
     go_down
     
     expect_IDE_to_be_empty
-    
-    run_ruby "send", 'print "attendee send"', "1_attendee 1", "0"
     
     click_on 'get_last_send'
     

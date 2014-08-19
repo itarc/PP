@@ -50,33 +50,6 @@ end
 ## SINATRA CONTROLLER (END)
 ## -------------------------------------------------------
 
-
-def expect_sessionID_to_be_empty
-  expect_sessionID_to_be('?')
-end
-
-def expect_login_page_to_be_empty
-  expect_login_page_to_be('')
-end
-
-def expect_login_page_to_be(value)
-  expect(page).to have_content 'AUTHOR NAME?'  
-  expect(page).to have_field 'attendee_name', :with => value
-end
-
-def expect_sessionID_to_be(value)
-  expect(page).to have_content 'AUTHOR: ' + value
-end
-
-def log_attendee_in
-  fill_in 'attendee_name', :with => "a name"  
-  find('#attendee_name').native.send_key(:return)
-end
-
-def teacher_go_to_slide(slide_index)
-  $db.execute_sql("update teacher_current_slide set current_slide_id = '#{ slide_index }'") 
-end
-
 describe 'Attendee IDE', :type => :feature, :js => true do
 	
   before(:each) do
@@ -110,7 +83,7 @@ describe 'Attendee IDE', :type => :feature, :js => true do
 
     expect(page).to have_content 'EXERCISE - 1'
     
-    visit attendee_IDE; log_attendee_in
+    visit attendee_IDE; log_attendee_in("a name")
 
     expect(page).to have_content 'HELPER 1'
 
@@ -387,7 +360,7 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
 
     teacher_go_to_slide(0)  
 
-    visit attendee_IDE; log_attendee_in
+    visit attendee_IDE; log_attendee_in("a name")
     
     expect_IDE_to_be_empty    
     
@@ -450,7 +423,7 @@ describe 'Attendee IDE with code to display', :type => :feature, :js => true do
   
   it 'should run code to add without displaying it' do
     
-    visit attendee_IDE_with_code_to_display; log_attendee_in   
+    visit attendee_IDE_with_code_to_display; log_attendee_in("a name")   
 	  
     visit teacher_presentation
 

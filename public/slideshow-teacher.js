@@ -56,7 +56,7 @@ TeacherCodeSlide.prototype = {
   _updateEditorWithLastSendAndExecute: function() {
     this._serverExecutionContext.updateWithResource(this._attendeesLastSendResource); 
     if (this._serverExecutionContext.isEmpty()) return;
-    if (this._editor.updateWithServerExecutionContext()) { this.executeCodeAt(this._sendResource); }
+    if (this._editor.updateWithServerExecutionContext()) { this.executeCodeAt(this._sendResource, 'send'); this._editor._authorBar.updateLastSendAttendeeNameWith('');}
   },  
   
  _updateLastSendAttendeeName: function(slide_index) {

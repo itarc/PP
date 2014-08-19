@@ -56,6 +56,7 @@ describe("AttendeeSlideShow KeyHandling", function() {
   
   beforeEach(function () {   
     setFixtures(ATTENDEE_SLIDESHOW_FOR_KEY_HANDLING)    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({})     
     slideShow = new AttendeeSlideShow(queryAll(document, '.slide'));    
   });  
   

@@ -49,11 +49,11 @@ get '/poll_response_*_rate_to_*' do
   PollQuestion.new(question_id).rate_for(answer).to_s
 end
 
-get '/code_last_execution/*' do
-  last_execution = RunTimeEvent.find_last_user_execution_on_slide(session[:user_session_id], slide_index)
-  return "" if last_execution == nil
-  user_name_of(last_execution.user) + $SEPARATOR + last_execution.code_input
-end
+#~ get '/code_last_execution/*' do
+  #~ last_execution = RunTimeEvent.find_last_user_execution_on_slide(session[:user_session_id], slide_index)
+  #~ return "" if last_execution == nil
+  #~ user_name_of(last_execution.user) + $SEPARATOR + last_execution.code_input
+#~ end
 
 ### POST and SAVE execution context
 require 'json'
@@ -67,7 +67,7 @@ post '/code_save_execution_context/*' do
   RunTimeEvent.new(user_session_id, type, slide_index, code, result).save
 end
 
-get '/code_last_execution_context/*' do
+get '/code_last_execution/*' do
   last_execution = RunTimeEvent.find_last_user_execution_on_slide(session[:user_session_id], slide_index)
   return JSON.generate({}) if last_execution == nil
   JSON.generate({ :type => last_execution.type, :author => user_name_of(last_execution.user), :code => last_execution.code_input, :code_output => last_execution.code_output})   
@@ -78,15 +78,17 @@ end
 get '/code_attendees_last_send/*' do
   response.headers['Access-Control-Allow-Origin'] = '*' 
   last_send = RunTimeEvent.find_attendees_last_send_on_slide(session[:user_session_id], slide_index)
-  return "" if last_send == nil
-  user_name_of(last_send.user) + $SEPARATOR + last_send.code_input
+  return  JSON.generate({}) if last_send == nil
+  #~ user_name_of(last_send.user) + $SEPARATOR + last_send.code_input
+  JSON.generate({ :type => last_send.type, :author => user_name_of(last_send.user), :code => last_send.code_input, :code_output => last_send.code_output})     
 end
 
 get '/code_get_last_send_to_blackboard/*' do
   response.headers['Access-Control-Allow-Origin'] = '*'    
   last_teacher_run = RunTimeEvent.find_last_send_to_blackboard(slide_index)
-  return "" if last_teacher_run == nil
-  user_name_of(last_teacher_run.user) + $SEPARATOR + last_teacher_run.code_input  
+  return  JSON.generate({}) if last_teacher_run == nil
+  #~ user_name_of(last_teacher_run.user) + $SEPARATOR + last_teacher_run.code_input 
+  JSON.generate({ :type => last_teacher_run.type, :author => user_name_of(last_teacher_run.user), :code => last_teacher_run.code_input, :code_output => last_teacher_run.code_output})       
 end
 
 get '/session_id' do

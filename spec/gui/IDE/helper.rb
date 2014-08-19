@@ -54,3 +54,29 @@ def expect_AuthorBar_to_have(author, last_send_attendee_name)
     expect(page.text).to eq last_send_attendee_name
   end  
 end
+
+def expect_sessionID_to_be_empty
+  expect_sessionID_to_be('?')
+end
+
+def expect_login_page_to_be_empty
+  expect_login_page_to_be('')
+end
+
+def expect_login_page_to_be(value)
+  expect(page).to have_content 'AUTHOR NAME?'  
+  expect(page).to have_field 'attendee_name', :with => value
+end
+
+def expect_sessionID_to_be(value)
+  expect(page).to have_content 'AUTHOR: ' + value
+end
+
+def log_attendee_in(name)
+  fill_in 'attendee_name', :with => name  
+  find('#attendee_name').native.send_key(:return)
+end
+
+def teacher_go_to_slide(slide_index)
+  $db.execute_sql("update teacher_current_slide set current_slide_id = '#{ slide_index }'") 
+end

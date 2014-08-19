@@ -114,7 +114,8 @@ FOOTER+
 describe("AttendeeSlideShow KeyHandling", function() {
   
   beforeEach(function () {   
-    setFixtures(TEACHER_SLIDESHOW_FOR_KEY_HANDLING)    
+    setFixtures(TEACHER_SLIDESHOW_FOR_KEY_HANDLING)  
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({})     
     teacherSlideShow = new TeacherSlideShow(queryAll(document, '.slide'));    
   });  
   
