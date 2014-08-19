@@ -166,7 +166,7 @@ Editor.prototype = {
     if (  this._slide._serverExecutionContext.codeToExecute() == this._slide.codeToExecute() 
           && this._authorBar.userName == this._slide._serverExecutionContext.author) return false;
     this.updateWithText(this._slide._serverExecutionContext.code);
-    this._authorBar.updateAuthorNameWith(this._slide._serverExecutionContext.author);      
+    //~ this._authorBar.updateAuthorNameWith(this._slide._serverExecutionContext.author);      
     return true
   },
   

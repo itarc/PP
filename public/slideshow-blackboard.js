@@ -32,6 +32,16 @@ BlackboardCodeSlide.prototype = {
     this._serverExecutionContext.updateWithResource(this._attendeesLastSendResource);
     this._editor._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
   },
+
+  _update: function() {
+    this._codeHelpers.update();
+    this._serverExecutionContext.updateWithResource(this._updateResource); 
+    if (this._editor.update()) { 
+      this.executeCodeAt(this._runResource, "run");  
+      this._editor._authorBar.updateAuthorNameWith(this._serverExecutionContext.author); 
+    }
+    this._updateLastSendAttendeeName();    
+  },  
   
 };
 
@@ -58,9 +68,8 @@ BlackboardSlideShow.prototype = {
   },
   
   _refresh: function() {
-    SlideShow.prototype._refresh.call(this);
-    this.currentSlide()._update(); 
-    this._last_slide()._updateLastSendAttendeeName();      
+    this.position.updateWithTeacherPosition();   
+    this.currentSlide()._update();     
   },  
   
   handleKeys: function(e) {

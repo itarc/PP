@@ -354,6 +354,8 @@ describe 'Attendee IDE update', :type => :feature, :js => true do
     
     expect_IDE_to_have(code_input = "print 'teacher run'", code_output = 'teacher run')
     
+    expect_sessionID_to_be('?')
+    
   end   
   
   it 'should show attendee last execution when slide moves' do 
