@@ -67,7 +67,7 @@ describe("IDE EXECUTE AT", function() {
 
     IDESlide.executeCodeAt();
 	  
-    expect(Resource.prototype.post.calls.length).toBe(2); // Execute + Save
+    expect(Resource.prototype.post.calls.length).toBe(1);
     expect(Resource.prototype.post).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
     expect(slideNode.querySelector('#code_input').value).toBe('CODE');
     expect(slideNode.querySelector('#code_output').value).toBe('EXECUTION RESULT');
@@ -278,14 +278,14 @@ describe("TEACHER IDE GET LAST SEND", function() {
     slideNode.querySelector('#get_last_send').click();
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_attendees_last_send/0');   
-    expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_send_result', 'send');   
+    expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
   });   
   
   it("should be triggered when ALT-N pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_attendees_last_send/0');   
-    expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_send_result', 'send');       
+    expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');       
   });
 
 });

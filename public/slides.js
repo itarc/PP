@@ -352,7 +352,6 @@ CodeSlide.prototype = {
     if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();
     this._standardOutput.updateWith(this.runResult());
-    this._saveA(type); 
   },
   
   executeCode: function() { // Overloader in teacher slideshow (to remove)

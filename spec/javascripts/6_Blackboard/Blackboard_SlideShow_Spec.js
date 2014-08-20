@@ -28,7 +28,7 @@ describe("Blackboard SlideShow IDE", function() {
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');    
     expect(blackboardSlideShow._slides[0]._editor.content()).toBe('last send to blackboard');
-    expect(BlackboardCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result_blackboard', 'run');
+    expect(BlackboardCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result_blackboard');
   });  
   
   it("should NOT change if execution context has not changed", function() {
