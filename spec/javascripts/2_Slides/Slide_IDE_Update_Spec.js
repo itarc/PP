@@ -33,7 +33,7 @@ describe("IDE UPDATE", function() {
     slide._update();
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_last_execution/0');
-    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result', 'run');      
+    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');      
   });
   
   it("should NOT run the user last run when code has not changed", function() {
@@ -94,7 +94,7 @@ describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
     slide._update();
 
     expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");
-    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result', 'run');
+    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');
   });
   
   it("should run last execution when exists", function() {     
@@ -104,7 +104,7 @@ describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
     slide._update();
 
     expect(slide._editor.content()).toBe("LAST EXECUTION");
-    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result', 'run');  
+    expect(CodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');  
   });  
 
   it("should NOT run code that is already in editor", function() {

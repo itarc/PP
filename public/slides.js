@@ -387,7 +387,7 @@ CodeSlide.prototype = {
   _update: function() {
     this._codeHelpers.update();
     this._serverExecutionContext.updateWithResource(this._updateResource); 
-    if (this._editor.update()) { this.executeCodeAt(this._runResource, "run") }
+    if (this._editor.update()) { this.run(); }
   },
   
 };
