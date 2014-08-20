@@ -46,6 +46,7 @@ describe("IDE EXECUTE AT", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);
     slideshow = new SlideShow([])   
     IDESlide = new CodeSlide(slideNode, slideshow);
+    IDESlide._runResource = '/url'
     spyOn(Resource.prototype, 'post').andReturn('EXECUTION RESULT');
   });
 
@@ -56,7 +57,7 @@ describe("IDE EXECUTE AT", function() {
   it("should NOT execute code when editor is empty", function() {
     IDESlide._editor.updateWithText("");
     
-    IDESlide.executeCodeAt('/url');
+    IDESlide.executeCodeAt();
 
     expect(Resource.prototype.post).not.toHaveBeenCalled();    
   });
@@ -64,7 +65,7 @@ describe("IDE EXECUTE AT", function() {
   it("should execute code on server and show result on standard output", function() {
     IDESlide._editor.updateWithText("CODE");    
 
-    IDESlide.executeCodeAt('/url');
+    IDESlide.executeCodeAt();
 	  
     expect(Resource.prototype.post.calls.length).toBe(2); // Execute + Save
     expect(Resource.prototype.post).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
@@ -77,13 +78,13 @@ describe("IDE EXECUTE AT", function() {
     
     slideshow._currentIndex = 0;
     IDESlide._codeHelpers.update();
-    IDESlide.executeCodeAt('/url');
+    IDESlide.executeCodeAt();
 
     expect(Resource.prototype.post).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
 
     slideshow._currentIndex = 1;    
     IDESlide._codeHelpers.update();   
-    IDESlide.executeCodeAt('/url');
+    IDESlide.executeCodeAt();
 
     expect(Resource.prototype.post).toHaveBeenCalledWith('/url/1', 'CODE', SYNCHRONOUS);    
   });  

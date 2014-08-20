@@ -342,14 +342,17 @@ CodeSlide.prototype = {
   codeToAdd: function() {
     return this._codeHelpers.current().codeToAdd();
   },
+
+  runResult: function() { 
+    runURL = this._runResource + "/" + this._codeHelpers._currentIndex;
+    return this._executionResource.post(runURL, this.codeToExecute(), SYNCHRONOUS);
+  },
   
   executeCodeAt: function(url, type) {
     if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();
-    url += ("/" + this._codeHelpers._currentIndex);
-    executionResult = this._executionResource.post(url, this.codeToExecute(), SYNCHRONOUS);
-    this._standardOutput.updateWith(executionResult);
-    this._saveA(type);    
+    this._standardOutput.updateWith(this.runResult());
+    this._saveA(type); 
   },
   
   executeCode: function() { // Overloader in teacher slideshow (to remove)
