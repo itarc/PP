@@ -30,10 +30,12 @@ describe("IDE UPDATE", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "", "code": "last execution", "code_to_add": ""});
     spyOn(CodeSlide.prototype, '_displayRunResult');
 
+    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(0);
+
     slide._update();
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_last_execution/0');
-    expect(CodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');      
+    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(1);       
   });
   
   it("should NOT run the user last run when code has not changed", function() {
@@ -90,21 +92,25 @@ describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
   it("should display CODE TO DISPLAY when no execution context on server", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "", "code": "", "code_to_add": ""});    
     expect(slide._editor.content()).toBe("");
+
+    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(0);    
     
     slide._update();
 
     expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");
-    expect(CodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');
+    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(1);
   });
   
   it("should run last execution when exists", function() {     
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "", "code": "LAST EXECUTION", "code_to_add": ""});    
     expect(slide._editor.content()).toBe("");
     
+    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(0);
+
     slide._update();
 
     expect(slide._editor.content()).toBe("LAST EXECUTION");
-    expect(CodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');  
+    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(1);  
   });  
 
   it("should NOT run code that is already in editor", function() {

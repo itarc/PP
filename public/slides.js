@@ -165,8 +165,7 @@ Editor.prototype = {
   updateWithServerExecutionContext: function() {
     if (  this._slide._serverExecutionContext.codeToExecute() == this._slide.codeToExecute() 
           && this._authorBar.userName == this._slide._serverExecutionContext.author) return false;
-    this.updateWithText(this._slide._serverExecutionContext.code);
-    //~ this._authorBar.updateAuthorNameWith(this._slide._serverExecutionContext.author);      
+    this.updateWithText(this._slide._serverExecutionContext.code);     
     return true
   },
   
@@ -300,8 +299,7 @@ CodeSlide.prototype = {
   _bindKeys: function(e) {  
       if (e.which == R) { this._node.querySelector('#execute').click(); }
       if (e.which == S) { this._node.querySelector('#send_code').click(); }
-      if (e.which == G) { this._node.querySelector('#get_code').click(); }
-      if (e.which == N) { this._node.querySelector('#get_last_send').click();}    
+      if (e.which == G) { this._node.querySelector('#get_code').click(); }    
   },
   
   _declareEvents: function() {  
@@ -371,12 +369,12 @@ CodeSlide.prototype = {
   },  
 
   runAndSend: function() {
-    this._displayRunResult(this._runResource);
+    this._displayRunResult();
     this._saveRunResult("send");
   },  
 
   run: function() { // Overloader in teacher slideshow (try to remove from it)
-    this._displayRunResult(this._runResource);
+    this._displayRunResult();
     this._saveRunResult("run");
   },
 
