@@ -350,17 +350,39 @@ CodeSlide.prototype = {
     if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();
     url += ("/" + this._codeHelpers._currentIndex);
-    executionResult = this._executionResource.post(url, this.codeToExecute(), SYNCHRONOUS);  
-    this._saveResource.post("/code_save_execution_context/" + this._codeHelpers._currentIndex, JSON.stringify({ 
-      "type": type,
-      "code": this.codeToExecute(), 
-      "code_output": executionResult
-    }), SYNCHRONOUS);  
-    this._standardOutput.updateWith(executionResult);    
+    executionResult = this._executionResource.post(url, this.codeToExecute(), SYNCHRONOUS);
+    this._standardOutput.updateWith(executionResult);
+    this._saveA(type);    
   },
   
   executeCode: function() { // Overloader in teacher slideshow (to remove)
     this.executeCodeAt(this._runResource, "run");
+  },
+
+  _saveA: function(type) { 
+    this._saveResource.post("/code_save_execution_context/" + this._codeHelpers._currentIndex, 
+    JSON.stringify({
+      "type": type,
+      "code": this.codeToExecute(),
+      "code_output": this._standardOutput.content()
+    }), SYNCHRONOUS);
+  },
+
+  getAndRun: function() {
+    this._serverExecutionContext.updateWithResource(this._getAndRunResource); 
+    if (this._editor.updateWithServerExecutionContext()) { 
+      this.run();
+    }
+  },  
+
+  runAndSend: function() {
+    this._executeCodeAt(this._runResource);
+    this._saveA("send");
+  },  
+
+  run: function() {
+    this._executeCodeAt(this._runResource);
+    this._saveA("run");
   },
 
   _update: function() {
