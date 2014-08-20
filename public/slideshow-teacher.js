@@ -48,8 +48,8 @@ TeacherCodeSlide.prototype = {
     );
   },
   
-  executeCode: function() {
-    CodeSlide.prototype.executeCode.call(this);
+  run: function() {
+    CodeSlide.prototype.run.call(this);
     this._editor._authorBar.refreshSessionUserName();
   }, 
   

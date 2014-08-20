@@ -57,7 +57,7 @@ describe("IDE EXECUTE AT", function() {
   it("should NOT execute code when editor is empty", function() {
     IDESlide._editor.updateWithText("");
     
-    IDESlide.displayRunResult();
+    IDESlide._displayRunResult();
 
     expect(Resource.prototype.post).not.toHaveBeenCalled();    
   });
@@ -65,7 +65,7 @@ describe("IDE EXECUTE AT", function() {
   it("should execute code on server and show result on standard output", function() {
     IDESlide._editor.updateWithText("CODE");    
 
-    IDESlide.displayRunResult();
+    IDESlide._displayRunResult();
 	  
     expect(Resource.prototype.post.calls.length).toBe(1);
     expect(Resource.prototype.post).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
@@ -78,13 +78,13 @@ describe("IDE EXECUTE AT", function() {
     
     slideshow._currentIndex = 0;
     IDESlide._codeHelpers.update();
-    IDESlide.displayRunResult();
+    IDESlide._displayRunResult();
 
     expect(Resource.prototype.post).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
 
     slideshow._currentIndex = 1;    
     IDESlide._codeHelpers.update();   
-    IDESlide.displayRunResult();
+    IDESlide._displayRunResult();
 
     expect(Resource.prototype.post).toHaveBeenCalledWith('/url/1', 'CODE', SYNCHRONOUS);    
   });  
@@ -96,7 +96,7 @@ describe("BLACKBOARD IDE RUN", function() {
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new BlackboardCodeSlide(slideNode);  
-    spyOn(BlackboardCodeSlide.prototype ,"displayRunResult");
+    spyOn(BlackboardCodeSlide.prototype ,"_displayRunResult");
   });
 
   it("should NOT be triggered when ALT-R disabled", function() {
@@ -104,7 +104,7 @@ describe("BLACKBOARD IDE RUN", function() {
 	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 
-    expect(BlackboardCodeSlide.prototype.displayRunResult).not.toHaveBeenCalled();
+    expect(BlackboardCodeSlide.prototype._displayRunResult).not.toHaveBeenCalled();
   });
   
 });
@@ -115,19 +115,19 @@ describe("ATTENDEE IDE RUN", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);
     slideShow = new SlideShow([]);    
     IDESlide = new AttendeeCodeSlide(slideNode, slideShow);  
-    spyOn(AttendeeCodeSlide.prototype ,"displayRunResult");
+    spyOn(AttendeeCodeSlide.prototype ,"_displayRunResult");
   });  
 
   it("should be triggered when RUN BUTTON clicked", function() {
     slideNode.querySelector('#execute').click();
 
-    expect(AttendeeCodeSlide.prototype.displayRunResult).toHaveBeenCalledWith('/code_run_result');   
+    expect(AttendeeCodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');   
   });
   
   it("should be triggered when ALT-R pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 	  
-    expect(AttendeeCodeSlide.prototype.displayRunResult).toHaveBeenCalledWith('/code_run_result');
+    expect(AttendeeCodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');
   });
   
 });
@@ -138,22 +138,22 @@ describe("ATTENDEE IDE RUN & SEND BUTTON", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);
     slideShow = new SlideShow([]);    
     IDESlide = new AttendeeCodeSlide(slideNode, slideShow);  
-    spyOn(AttendeeCodeSlide.prototype ,"displayRunResult");
-    spyOn(AttendeeCodeSlide.prototype ,"_saveA");
+    spyOn(AttendeeCodeSlide.prototype ,"_displayRunResult");
+    spyOn(AttendeeCodeSlide.prototype ,"_saveRunResult");
   });
 
   it("should be triggered when SEND BUTTON clicked", function() {  
     slideNode.querySelector('#send_code').click();
 
-    expect(AttendeeCodeSlide.prototype.displayRunResult).toHaveBeenCalledWith('/code_run_result');
-    expect(AttendeeCodeSlide.prototype._saveA).toHaveBeenCalledWith('send');          
+    expect(AttendeeCodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');
+    expect(AttendeeCodeSlide.prototype._saveRunResult).toHaveBeenCalledWith('send');          
   });  
   
   it("should rbe triggered when ALT-S pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
 	  
-    expect(AttendeeCodeSlide.prototype.displayRunResult).toHaveBeenCalledWith('/code_run_result');
-    expect(AttendeeCodeSlide.prototype._saveA).toHaveBeenCalledWith('send');
+    expect(AttendeeCodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');
+    expect(AttendeeCodeSlide.prototype._saveRunResult).toHaveBeenCalledWith('send');
   });
   
 });
@@ -164,7 +164,7 @@ describe("ATTENDEE IDE GET & RUN BUTTON", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);
     slideShow = new SlideShow([]);    
     IDESlide = new AttendeeCodeSlide(slideNode, slideShow);  
-    spyOn(AttendeeCodeSlide.prototype ,"displayRunResult");   
+    spyOn(AttendeeCodeSlide.prototype ,"_displayRunResult");   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'CODE ON BLACKBOARD', "code_to_add": ''});     
   });  
   
@@ -172,14 +172,14 @@ describe("ATTENDEE IDE GET & RUN BUTTON", function() {
     slideNode.querySelector('#get_code').click();
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
-    expect(AttendeeCodeSlide.prototype.displayRunResult).toHaveBeenCalledWith('/code_run_result');   
+    expect(AttendeeCodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');   
   });  
   
   it("should be triggered when ALT-G pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
-    expect(AttendeeCodeSlide.prototype.displayRunResult).toHaveBeenCalledWith('/code_run_result');   
+    expect(AttendeeCodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');   
   });
 
 });
@@ -189,7 +189,7 @@ describe("ATTENDEE IDE GET LAST SEND", function() {
     beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);    
     slide = new AttendeeCodeSlide(slideNode);
-    spyOn(AttendeeCodeSlide.prototype ,"displayRunResult");   
+    spyOn(AttendeeCodeSlide.prototype ,"_displayRunResult");   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
   });
   
@@ -199,7 +199,7 @@ describe("ATTENDEE IDE GET LAST SEND", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
 
     expect(ServerExecutionContext.prototype.getContextOnServer).not.toHaveBeenCalled();   
-    expect(AttendeeCodeSlide.prototype.displayRunResult).not.toHaveBeenCalled();
+    expect(AttendeeCodeSlide.prototype._displayRunResult).not.toHaveBeenCalled();
   });  
   
 });
@@ -210,19 +210,19 @@ describe("TEACHER IDE RUN", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);
     slideShow = new SlideShow([]);        
     IDESlide = new TeacherCodeSlide(slideNode, slideShow);  
-    spyOn(TeacherCodeSlide.prototype ,"displayRunResult");
+    spyOn(TeacherCodeSlide.prototype ,"_displayRunResult");
   });  
 
   it("should be triggered when RUN BUTTON clicked", function() {
     slideNode.querySelector('#execute').click();
 
-    expect(TeacherCodeSlide.prototype.displayRunResult).toHaveBeenCalledWith('/code_run_result');   
+    expect(TeacherCodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');   
   });
   
   it("should be triggered when ALT-R pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 	  
-    expect(TeacherCodeSlide.prototype.displayRunResult).toHaveBeenCalledWith('/code_run_result');
+    expect(TeacherCodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');
   });
   
 });
@@ -232,7 +232,7 @@ describe("TEACHER IDE RUN & SEND BUTTON", function() {
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new TeacherCodeSlide(slideNode);  
-    spyOn(TeacherCodeSlide.prototype ,"displayRunResult");
+    spyOn(TeacherCodeSlide.prototype ,"_displayRunResult");
   }); 
 
   it("should NOT be triggered when ALT-S button disabled", function() {
@@ -240,7 +240,7 @@ describe("TEACHER IDE RUN & SEND BUTTON", function() {
 	  
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
 
-    expect(TeacherCodeSlide.prototype.displayRunResult).not.toHaveBeenCalled();
+    expect(TeacherCodeSlide.prototype._displayRunResult).not.toHaveBeenCalled();
   });
   
 });
@@ -250,7 +250,7 @@ describe("TEACHER IDE GET & RUN BUTTON", function() {
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode);
-    spyOn(CodeSlide.prototype ,"displayRunResult");   
+    spyOn(CodeSlide.prototype ,"_displayRunResult");   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'CODE ON BLACKBOARD', "code_to_add": ''});     
   });
   
@@ -259,7 +259,7 @@ describe("TEACHER IDE GET & RUN BUTTON", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
     expect(ServerExecutionContext.prototype.getContextOnServer).not.toHaveBeenCalledWith();   
-    expect(CodeSlide.prototype.displayRunResult).not.toHaveBeenCalledWith();  
+    expect(CodeSlide.prototype._displayRunResult).not.toHaveBeenCalledWith();  
   });
 
 });
@@ -270,7 +270,7 @@ describe("TEACHER IDE GET LAST SEND", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);    
     slideShow = new SlideShow([]);        
     slide = new TeacherCodeSlide(slideNode, slideShow);
-    spyOn(TeacherCodeSlide.prototype ,"displayRunResult");   
+    spyOn(TeacherCodeSlide.prototype ,"_displayRunResult");   
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});     
   });   
   
@@ -278,14 +278,14 @@ describe("TEACHER IDE GET LAST SEND", function() {
     slideNode.querySelector('#get_last_send').click();
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_attendees_last_send/0');   
-    expect(TeacherCodeSlide.prototype.displayRunResult).toHaveBeenCalledWith('/code_run_result');   
+    expect(TeacherCodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');   
   });   
   
   it("should be triggered when ALT-N pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_attendees_last_send/0');   
-    expect(TeacherCodeSlide.prototype.displayRunResult).toHaveBeenCalledWith('/code_run_result');       
+    expect(TeacherCodeSlide.prototype._displayRunResult).toHaveBeenCalledWith('/code_run_result');       
   });
 
 });

@@ -321,7 +321,7 @@ CodeSlide.prototype = {
       function(e) { _t._keyHandling(e); }, false
     );
     this._node.querySelector('#execute').addEventListener('click',
-      function(e) { _t.executeCode(); }, false
+      function(e) { _t.run(); }, false
     );     
     this._node.querySelector('#send_code').addEventListener('click',
       function(e) { _t.runAndSend(); }, false
@@ -343,22 +343,18 @@ CodeSlide.prototype = {
     return this._codeHelpers.current().codeToAdd();
   },
 
-  runResult: function() { 
+  _runResult: function() { 
     runURL = this._runResource + "/" + this._codeHelpers._currentIndex;
     return this._executionResource.post(runURL, this.codeToExecute(), SYNCHRONOUS);
   },
   
-  displayRunResult: function(url, type) {
+  _displayRunResult: function() {
     if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();
-    this._standardOutput.updateWith(this.runResult());
-  },
-  
-  executeCode: function() { // Overloader in teacher slideshow (to remove)
-    this.run();
+    this._standardOutput.updateWith(this._runResult());
   },
 
-  _saveA: function(type) { 
+  _saveRunResult: function(type) { 
     this._saveResource.post("/code_save_execution_context/" + this._codeHelpers._currentIndex, 
     JSON.stringify({
       "type": type,
@@ -375,13 +371,13 @@ CodeSlide.prototype = {
   },  
 
   runAndSend: function() {
-    this.displayRunResult(this._runResource);
-    this._saveA("send");
+    this._displayRunResult(this._runResource);
+    this._saveRunResult("send");
   },  
 
-  run: function() {
-    this.displayRunResult(this._runResource);
-    this._saveA("run");
+  run: function() { // Overloader in teacher slideshow (try to remove from it)
+    this._displayRunResult(this._runResource);
+    this._saveRunResult("run");
   },
 
   _update: function() {
