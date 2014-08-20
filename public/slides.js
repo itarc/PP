@@ -348,7 +348,7 @@ CodeSlide.prototype = {
     return this._executionResource.post(runURL, this.codeToExecute(), SYNCHRONOUS);
   },
   
-  executeCodeAt: function(url, type) {
+  displayRunResult: function(url, type) {
     if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();
     this._standardOutput.updateWith(this.runResult());
@@ -375,12 +375,12 @@ CodeSlide.prototype = {
   },  
 
   runAndSend: function() {
-    this.executeCodeAt(this._runResource);
+    this.displayRunResult(this._runResource);
     this._saveA("send");
   },  
 
   run: function() {
-    this.executeCodeAt(this._runResource);
+    this.displayRunResult(this._runResource);
     this._saveA("run");
   },
 
