@@ -324,7 +324,7 @@ CodeSlide.prototype = {
       function(e) { _t.executeCode(); }, false
     );     
     this._node.querySelector('#send_code').addEventListener('click',
-      function(e) { _t.executeCodeAt(_t._sendResource, "send"); }, false
+      function(e) { _t.runAndSend(); }, false
     );     
     this._node.querySelector('#get_code').addEventListener('click',
       function(e) { _t.getAndRun(); }, false
@@ -353,7 +353,6 @@ CodeSlide.prototype = {
   },
   
   executeCode: function() { // Overloader in teacher slideshow (to remove)
-    // this.executeCodeAt(this._runResource, "run");
     this.run();
   },
 

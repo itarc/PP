@@ -138,18 +138,21 @@ describe("ATTENDEE IDE RUN & SEND BUTTON", function() {
     slideShow = new SlideShow([]);    
     IDESlide = new AttendeeCodeSlide(slideNode, slideShow);  
     spyOn(AttendeeCodeSlide.prototype ,"executeCodeAt");
+    spyOn(AttendeeCodeSlide.prototype ,"_saveA");
   });
 
   it("should be triggered when SEND BUTTON clicked", function() {  
     slideNode.querySelector('#send_code').click();
 
-    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_send_result', 'send');      
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');
+    expect(AttendeeCodeSlide.prototype._saveA).toHaveBeenCalledWith('send');          
   });  
   
   it("should rbe triggered when ALT-S pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
 	  
-    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_send_result', 'send');
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');
+    expect(AttendeeCodeSlide.prototype._saveA).toHaveBeenCalledWith('send');
   });
   
 });
