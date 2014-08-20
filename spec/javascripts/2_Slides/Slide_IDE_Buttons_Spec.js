@@ -120,13 +120,13 @@ describe("ATTENDEE IDE RUN", function() {
   it("should be triggered when RUN BUTTON clicked", function() {
     slideNode.querySelector('#execute').click();
 
-    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result', 'run');   
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
   });
   
   it("should be triggered when ALT-R pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 	  
-    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result', 'run');
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');
   });
   
 });
@@ -168,14 +168,14 @@ describe("ATTENDEE IDE GET & RUN BUTTON", function() {
     slideNode.querySelector('#get_code').click();
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
-    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result', 'run');   
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
   });  
   
   it("should be triggered when ALT-G pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');   
-    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result', 'run');   
+    expect(AttendeeCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
   });
 
 });
@@ -212,13 +212,13 @@ describe("TEACHER IDE RUN", function() {
   it("should be triggered when RUN BUTTON clicked", function() {
     slideNode.querySelector('#execute').click();
 
-    expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result', 'run');   
+    expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');   
   });
   
   it("should be triggered when ALT-R pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 	  
-    expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result', 'run');
+    expect(TeacherCodeSlide.prototype.executeCodeAt).toHaveBeenCalledWith('/code_run_result');
   });
   
 });
