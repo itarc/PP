@@ -1,4 +1,3 @@
-
 def run_ruby(type, ruby_code, user, slide_index)
 
   # To Keep if want to avoid users to execute system commands
