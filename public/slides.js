@@ -61,6 +61,7 @@ for(key in Slide.prototype) {
 var ServerExecutionContext = function(slide) {
   this._slide = slide;
   this.author = '';
+  this.type = '';
   this.code = '';
   this.code_to_add = '';
   this._executionContextResource = new Resource();  
@@ -86,6 +87,7 @@ ServerExecutionContext.prototype = {
   updateWithResource: function(resourceURL) {
     newServerExecutionContext = this.getContextOnServer(resourceURL + '/' + this._slide._codeHelpers._currentIndex);   
     this.author = (newServerExecutionContext.author) ? newServerExecutionContext.author : '';
+    this.type = (newServerExecutionContext.type) ? newServerExecutionContext.type : '';
     this.code = (newServerExecutionContext.code) ? newServerExecutionContext.code : '';
     this.code_to_add = (newServerExecutionContext.code_to_add) ? newServerExecutionContext.code_to_add : '';
   },
