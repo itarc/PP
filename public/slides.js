@@ -270,7 +270,6 @@ var CodeSlide = function(node, slideshow) {
   this._codeHelpers = new CodeHelpers(queryAll(node, '.code_helper'), this);   
   
   this._runResource = '/code_run_result';
-  this._sendResource = '/code_send_result';
   this._getAndRunResource = '/code_get_last_send_to_blackboard'    
   this._updateResource = '/code_last_execution'
   

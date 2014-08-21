@@ -19,7 +19,6 @@ var BlackboardCodeSlide = function(node, slideshow) {
   CodeSlide.call(this, node, slideshow);
   
   this._runResource = '/code_run_result_blackboard';
-  this._sendResource = ''
   this._getAndRunResource = ''  
   this._updateResource = '/code_get_last_send_to_blackboard'
   

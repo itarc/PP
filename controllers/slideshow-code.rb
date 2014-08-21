@@ -39,8 +39,3 @@ post '/code_run_result_blackboard/*' do
   code = request.env["rack.input"].read
   run_ruby("run", code.force_encoding("UTF-8"), 'blackboard', slide_index)
 end
-
-post '/code_send_result/*' do
-  code = request.env["rack.input"].read
-  run_ruby("send", code.force_encoding("UTF-8"), user_session_id, slide_index)
-end

@@ -19,7 +19,6 @@ var AttendeeCodeSlide = function(node, slideshow) {
   CodeSlide.call(this, node, slideshow);
   
   this._runResource = '/code_run_result';
-  this._sendResource = '/code_send_result';
   this._getAndRunResource = '/code_get_last_send_to_blackboard'    
   this._updateResource = '/code_last_execution' 
 };
