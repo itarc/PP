@@ -2,6 +2,7 @@ require_relative '../../models/RunTime'
 require 'test/unit'
 
 require 'time'
+require 'json'
 
 class TestRunTimeEvent < Test::Unit::TestCase
   
@@ -25,6 +26,11 @@ class TestRunTimeEvent < Test::Unit::TestCase
     assert_nothing_raised { Time.at(runtime_event.timestamp) }
     runtime_event = RunTimeEvent.new("user", type="run", slide_index = "slide_0", code_input = "print 1", code_output = "1", timestamp = "x")    
     assert_equal "x", runtime_event.timestamp
+  end
+
+  def test03_to_json_string
+    runtime_event = RunTimeEvent.new("1_user", type="run", slide_index = "slide_0" ,code_input = "print 1", code_output = "1")
+    assert_equal '{"type":"run","author":"user","code":"print 1","code_output":"1"}', runtime_event.to_json_string    
   end
 
 end
