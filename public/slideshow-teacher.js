@@ -17,11 +17,8 @@ for(key in PollSlide.prototype) {
 // ----------------------------------
 var TeacherCodeSlide = function(node, slideshow) {
   CodeSlide.call(this, node, slideshow);
-
-  this._runResource = '/code_run_result';
-  this._getAndRunResource = '';
-  this._updateResource = '/code_last_execution';
   
+  this._getAndRunResource = '';
   this._attendeesLastSendResource = '/code_attendees_last_send';
 };
 
