@@ -18,39 +18,39 @@ class TestCodeRun < Test::Unit::TestCase
   end
   
   def test01_should_not_run_anything_when_no_code
-    post '/code_run_result/0', ""
+    post '/code_run_result', ""
     assert_equal "", last_response.body
   end
   
   def test02_should_run_code
-    post '/code_run_result/0', "print 2"
+    post '/code_run_result', "print 2"
     assert_equal "2", last_response.body
   end
 
   def test03_should_catch_exception
-    post '/code_run_result/0', "print A"
+    post '/code_run_result', "print A"
     assert last_response.body.include?("uninitialized constant A")
   end
 
   def test03_should_give_right_error_line_number
-    post '/code_run_result/0', "print A"
+    post '/code_run_result', "print A"
     assert last_response.body.include?(":1:"), last_response.body
   end
   
   def test05_should_run_unit_tests
-    post '/code_run_result/0', "require 'test/unit'"
+    post '/code_run_result', "require 'test/unit'"
     assert last_response.body.include?("0 tests, 0 assertions, 0 failures, 0 errors, 0 skips")  
   end
   
   def test06_should_run_utf8_code
-    post '/code_run_result/0', "puts 'éèêàâùï'"
+    post '/code_run_result', "puts 'éèêàâùï'"
     assert last_response.body.include?('invalid multibyte char (US-ASCII)') 	  
-    post '/code_run_result/0', "#encoding: utf-8\nputs 'éèêàâùï'"
+    post '/code_run_result', "#encoding: utf-8\nputs 'éèêàâùï'"
     assert_equal "éèêàâùï\n", last_response.body
   end
   
   def test07_should_run_code_for_blackboard
-    post '/code_run_result_blackboard/0', "print 'b'"
+    post '/code_run_result_blackboard', "print 'b'"
     assert_equal "b", last_response.body    
   end    
   

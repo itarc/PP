@@ -41,7 +41,7 @@ describe("Server Execution Context", function() {
   
 }); 
 
-describe("IDE EXECUTE AT", function() {
+describe("IDE RUN CODE", function() {
   
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
@@ -69,27 +69,37 @@ describe("IDE EXECUTE AT", function() {
     IDESlide._displayRunResult();
 	  
     expect(Resource.prototype.post.calls.length).toBe(1);
-    expect(Resource.prototype.post).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
+    expect(Resource.prototype.post).toHaveBeenCalledWith('/url', 'CODE', SYNCHRONOUS);
     expect(slideNode.querySelector('#code_input').value).toBe('CODE');
     expect(slideNode.querySelector('#code_output').value).toBe('EXECUTION RESULT');
   });  
   
-  it("should execute code for current slide only", function() {
+});
+
+describe("IDE SAVE EXECUTION CONTEXT", function() {
+  
+  beforeEach(function () {
+    slideNode = sandbox(FULL_IDE_SLIDE);
+    slideshow = new SlideShow([])   
+    IDESlide = new CodeSlide(slideNode, slideshow);
+    IDESlide._saveURL = '/save_url'
+    spyOn(Resource.prototype, 'post');
+  });
+
+  it("should save code for current slide", function() {
     IDESlide._editor.updateWithText("CODE");
     
-    slideshow._currentIndex = 0;
-    IDESlide._codeHelpers.update();
-    IDESlide._displayRunResult();
+    IDESlide._codeHelpers._currentIndex = 0;
+    IDESlide._saveRunResult('run');
 
-    expect(Resource.prototype.post).toHaveBeenCalledWith('/url/0', 'CODE', SYNCHRONOUS);
+    expect(Resource.prototype.post).toHaveBeenCalledWith('/save_url/0', '{"type":"run","code":"CODE","code_output":""}', SYNCHRONOUS);
 
-    slideshow._currentIndex = 1;    
-    IDESlide._codeHelpers.update();   
-    IDESlide._displayRunResult();
+    IDESlide._codeHelpers._currentIndex = 1;      
+    IDESlide._saveRunResult('run');
 
-    expect(Resource.prototype.post).toHaveBeenCalledWith('/url/1', 'CODE', SYNCHRONOUS);    
-  });  
-  
+    expect(Resource.prototype.post).toHaveBeenCalledWith('/save_url/1', '{"type":"run","code":"CODE","code_output":""}', SYNCHRONOUS);  
+  });
+
 });
 
 describe("BLACKBOARD IDE RUN", function() {

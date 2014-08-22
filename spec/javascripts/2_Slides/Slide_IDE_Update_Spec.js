@@ -156,7 +156,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
     slide._update();
 	  
     expect(slideNode.querySelector('#code_input').value).toBe("");	  
-    expect(Resource.prototype.post).toHaveBeenCalledWith('/code_run_result/0', SEPARATOR + "puts 'CODE TO ADD'", SYNCHRONOUS);
+    expect(Resource.prototype.post).toHaveBeenCalledWith('/code_run_result', SEPARATOR + "puts 'CODE TO ADD'", SYNCHRONOUS);
     expect(slideNode.querySelector('#code_output').value).toBe("CODE TO ADD");  
 
   });	  

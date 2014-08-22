@@ -243,14 +243,15 @@ describe 'Teacher IDE update', :type => :feature, :js => true do
   
   it 'should NOT show attendee last run' do   
 
+    visit attendee_IDE
+    log_attendee_in("attendee 1")  
+    fill_IDE_with('print "attendee run"')
+    execute
+
     visit teacher_presentation
     go_down
-    
-    expect_IDE_to_be_empty
-    
-    run_ruby "run", 'print "attendee run"', "1_attendee 1", "0"
-    
-    press_space
+
+    press_space    
     
     expect_IDE_to_be_empty
     

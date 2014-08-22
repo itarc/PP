@@ -274,6 +274,7 @@ var CodeSlide = function(node, slideshow) {
   this._runResource = '/code_run_result';
   this._getAndRunResource = '/code_get_last_send_to_blackboard'    
   this._updateResource = '/code_last_execution'
+  this._saveURL = "/code_save_execution_context";
   
   this._executionResource = new Resource();
   this._saveResource = new Resource(); 
@@ -343,7 +344,7 @@ CodeSlide.prototype = {
   },
 
   _runResult: function() { 
-    runURL = this._runResource + "/" + this._codeHelpers._currentIndex;
+    runURL = this._runResource;
     return this._executionResource.post(runURL, this.codeToExecute(), SYNCHRONOUS);
   },
   
@@ -354,7 +355,7 @@ CodeSlide.prototype = {
   },
 
   _saveRunResult: function(type) { 
-    this._saveResource.post("/code_save_execution_context/" + this._codeHelpers._currentIndex, 
+    this._saveResource.post(this._saveURL + "/" + this._codeHelpers._currentIndex, 
     JSON.stringify({
       "type": type,
       "code": this.codeToExecute(),

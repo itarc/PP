@@ -1,4 +1,4 @@
-def run_ruby(type, ruby_code, user, slide_index)
+def run_ruby(ruby_code)
 
   # To Keep if want to avoid users to execute system commands
   undef_file_name = "undef_file.#{Time.now.to_f}.rb"

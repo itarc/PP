@@ -1,15 +1,15 @@
 require 'json'
 
-post '/code_run_result/*' do
+post '/code_run_result' do
   response.headers['Access-Control-Allow-Origin'] = '*'  
   code = request.env["rack.input"].read
-  run_ruby("run", code.force_encoding("UTF-8"), user_session_id, slide_index)
+  run_ruby(code.force_encoding("UTF-8"))
 end
 
-post '/code_run_result_blackboard/*' do
+post '/code_run_result_blackboard' do
   response.headers['Access-Control-Allow-Origin'] = '*'    
   code = request.env["rack.input"].read
-  run_ruby("run", code.force_encoding("UTF-8"), 'blackboard', slide_index)
+  run_ruby(code.force_encoding("UTF-8"))
 end
 
 post '/code_save_execution_context/*' do
