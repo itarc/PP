@@ -1,6 +1,7 @@
 require 'json'
 
 post '/code_run_result/*' do
+  response.headers['Access-Control-Allow-Origin'] = '*'  
   code = request.env["rack.input"].read
   run_ruby("run", code.force_encoding("UTF-8"), user_session_id, slide_index)
 end
