@@ -179,6 +179,12 @@ class TestLastSendToBlackBoard < Test::Unit::TestCase
     get '/code_get_last_send_to_blackboard/0', {}, 'rack.session' => {:user_session_id => '1_attendee_name' }
     assert_equal JSON.parse('{ "type": "run", "author": "'+ $teacher_session_id.split('_')[1] +'", "code": "teacher run", "code_output": "code result"}'), JSON.parse(last_response.body)                     
   end
+
+  def test02_should_get_last_teacher_typing
+    post '/code_save_execution_context/0', '{ "type": "refresh", "code" : "teacher typing", "code_output": ""}', 'rack.session' => {:user_session_id => $teacher_session_id }        
+    get '/code_get_last_send_to_blackboard/0', {}, 'rack.session' => {:user_session_id => '1_attendee_name' }
+    assert_equal JSON.parse('{ "type": "refresh", "author": "'+ $teacher_session_id.split('_')[1] +'", "code": "teacher typing", "code_output": ""}'), JSON.parse(last_response.body)                     
+  end  
   
   def teardown
     $db.execute_sql("delete from run_events")	  

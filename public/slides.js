@@ -349,12 +349,11 @@ CodeSlide.prototype = {
   },
   
   _displayRunResult: function() {
-    if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();
     this._standardOutput.updateWith(this._runResult());
   },
 
-  _saveRunResult: function(type) { 
+  _save: function(type) { 
     this._saveResource.post(this._saveURL + "/" + this._codeHelpers._currentIndex, 
     JSON.stringify({
       "type": type,
@@ -371,13 +370,15 @@ CodeSlide.prototype = {
   },  
 
   runAndSend: function() {
+    if (this.codeToExecute() == '' ) return;    
     this._displayRunResult();
-    this._saveRunResult("send");
+    this._save("send");
   },  
 
   run: function() { // Overloader in teacher slideshow (try to remove from it)
+    if (this.codeToExecute() == '' ) return;
     this._displayRunResult();
-    this._saveRunResult("run");
+    this._save("run");
   },
 
   _update: function() {

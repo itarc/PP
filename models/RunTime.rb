@@ -111,13 +111,18 @@ class RunTimeEvent
     last_teacher_run_or_send_on_blackboard = (RunTimeEvent.find_all.select { |event|  
       event.slide_index == slide_index && 
       event.user == $teacher_session_id && 
-      (event.type == 'run' || event.type == 'send')
+      (event.type == 'run' || event.type == 'refresh' || event.type == 'send')
     }).last
 
     if last_teacher_run_or_send_on_blackboard == nil then return nil end
+
     if last_teacher_run_or_send_on_blackboard.type == 'run' then 
       return last_teacher_run_or_send_on_blackboard 
     end
+
+    if last_teacher_run_or_send_on_blackboard.type == 'refresh' then 
+      return last_teacher_run_or_send_on_blackboard 
+    end    
 
     if last_teacher_run_or_send_on_blackboard.type == 'send' then 
       return (RunTimeEvent.find_all.select { |event| 

@@ -19,7 +19,7 @@ describe("Blackboard SlideShow IDE", function() {
     setFixtures(BLAKBOARD_SLIDESHOW_WITH_1_IDE_SLIDE_ONLY)	
     spyOn(Resource.prototype, "get").andReturn('{}');
     blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide')); 
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({ "author": '0', "code": 'last send to blackboard',"code_to_add": '' });    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({ "author": '0', "type": 'run', "code": 'last send to blackboard',"code_to_add": '' });    
     spyOn(BlackboardCodeSlide.prototype, '_displayRunResult');  
     expect(BlackboardCodeSlide.prototype._displayRunResult.calls.length).toBe(0);    
   });
