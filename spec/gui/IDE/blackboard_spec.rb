@@ -250,6 +250,40 @@ describe 'Blackboard Update', :type => :feature, :js => true do
     
   end
 
+  it 'should live refresh IDE with teacher typing' do
+    
+    visit teacher_presentation; go_down    
+    
+    expect_IDE_to_be_empty
+
+    fill_IDE_with("typing")
+
+    visit blackboard_presentation
+
+    expect_IDE_to_have(code_input = 'typing', code_output = "")
+    
+  end
+
+  it 'should keep on executing teacher run after a live refresh' do
+    
+    visit teacher_presentation; go_down    
+    
+    expect_IDE_to_be_empty
+
+    fill_IDE_with("print 1")
+
+    visit blackboard_presentation
+
+    expect_IDE_to_have(code_input = 'print 1', code_output = "")
+
+    RunTimeEvent.new('0_#','run', '0', 'print 1', '1').save
+
+    press_space
+
+    expect_IDE_to_have(code_input = 'print 1', code_output = "1")    
+    
+  end  
+
   after(:each) do
     $db.execute_sql("delete from run_events") 
     $db.execute_sql("delete from teacher_current_slide")    
