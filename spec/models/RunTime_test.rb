@@ -131,11 +131,6 @@ class TestRunTimeEvent_find_last_execution < Test::Unit::TestCase
     RunTimeEvent.new("user_x", type="send", slide_index = "slide_0" ,code_input = "print 4", code_output = "4", timestamp = '4').save
     runtime_events = RunTimeEvent.find_last_user_execution_on_slide("user", "slide_0")
     assert_equal (["user", "send", "slide_0", "print 3", "3"]).inspect, runtime_events.inspect
-  end 
-
-  def test07_should_NOT_find_blackboard_run
-    RunTimeEvent.new($blackboard_session_id, type="send", slide_index = "slide_0" ,code_input = "print 4", code_output = "4", timestamp = '4').save
-    assert_equal nil, RunTimeEvent.find_last_user_execution_on_slide($blackboard_session_id, "slide_0")
   end  
   
   def teardown
