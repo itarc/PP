@@ -8,7 +8,7 @@ get '/' do
 end
 
 get '/blackboard' do
-  session[:user_session_id] = "0_blackboard"
+  session[:user_session_id] = $blackboard_session_id
   erb :slideshow_blackboard
 end
 

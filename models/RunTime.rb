@@ -30,6 +30,7 @@ require_relative '../db/Accesseur'
 $db = Accesseur.new
 
 $teacher_session_id = '0_#'
+$blackboard_session_id = '0_blackboard'
 
 class RunTimeEvent
   attr_accessor :timestamp, :user, :type, :slide_index, :code_input, :code_output, :user_name
@@ -84,7 +85,7 @@ class RunTimeEvent
   def RunTimeEvent.find_last_user_execution_on_slide(user_id, slide_index)
     (RunTimeEvent.find_all.select { |event|  
       event.slide_index == slide_index && 
-      event.user == user_id && 
+      event.user == user_id && event.user != $blackboard_session_id &&
       (event.type == 'run' ||  event.type == 'send') 
     }).last
   end 
