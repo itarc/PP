@@ -5,6 +5,7 @@ get '/admin/flip' do
 end
 
 get '/admin/flip/*' do
+  response.headers['Access-Control-Allow-Origin'] = '*'	
   Flip.find(params[:splat][0]).value
 end
 
