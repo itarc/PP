@@ -36,7 +36,7 @@ class TestRunTimeEvent < Test::Unit::TestCase
 
 end
   
-class TestRunTimeEvent_find < Test::Unit::TestCase 
+class TestRunTimeEvent_find_all < Test::Unit::TestCase 
   
   def setup
     $db.execute_sql("delete from run_events")
@@ -77,7 +77,7 @@ class TestRunTimeEvent_find < Test::Unit::TestCase
 
 end
 
-class TestRunTimeEvent_find_last_execution_in_attendee_slide < Test::Unit::TestCase 
+class TestRunTimeEvent_find_last_execution < Test::Unit::TestCase 
 
   def setup
     $db.execute_sql("delete from run_events")
@@ -139,7 +139,7 @@ class TestRunTimeEvent_find_last_execution_in_attendee_slide < Test::Unit::TestC
   
 end
 
-class TestRunTimeEvent_find_last_execution_in_teacher_slide < Test::Unit::TestCase 
+class TestRunTimeEvent_find_attendees_last_send < Test::Unit::TestCase 
 
   def setup
     $db.execute_sql("delete from run_events")
