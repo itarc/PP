@@ -23,7 +23,7 @@ def slide_index
 end
 
 def user_name_of(user_session_id)
-  (user_session_id.split('_')[1..-1]).join('_')
+  return (user_session_id.split('_')[1..-1]).join('_') if user_session_id
 end
 
 def next_session_id

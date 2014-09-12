@@ -111,6 +111,15 @@ class TestAttendee_name < Test::Unit::TestCase
     assert_equal 'a name', last_response.body    
     
   end
+
+  def test02_should_not_raise_error_when_session_name_is_empty
+
+    session = {}
+
+    get '/session_id/user_name', {}, 'rack.session' => session
+    assert_equal '', last_response.body
+
+  end
   
   def teardown
     $db.execute_sql("update sessions set last_session_id = 0") 
