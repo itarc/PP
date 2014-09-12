@@ -14,7 +14,6 @@ end
 
 get '/blackboard_hangout.xml' do
   content_type 'text/xml'
-  session[:user_session_id] = "0_blackboard"  
   erb :slideshow_blackboard_hangout
 end
 
