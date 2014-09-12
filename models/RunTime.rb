@@ -32,12 +32,12 @@ $db = Accesseur.new
 $teacher_session_id = '0_#'
 
 class RunTimeEvent
-  attr_accessor :timestamp, :user, :type, :slide_index, :code_input, :code_output
+  attr_accessor :timestamp, :user, :type, :slide_index, :code_input, :code_output, :user_name
   
   def initialize(user, type, slide_index, code_input, code_output, timestamp = nil)
     @timestamp = timestamp || Time.now.to_f
     @user = user
-    @user_name = (user.split('_')[1..-1]).join('_') if @user
+    @user_name = (user.split('_')[1..-1]).join('_') if (@user and user.split('_')[1..-1])
     @type = type
     @code_input = code_input
     @code_output = code_output

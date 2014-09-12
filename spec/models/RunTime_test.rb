@@ -11,24 +11,25 @@ class TestRunTimeEvent < Test::Unit::TestCase
   end
   
   def test01_initialization
-    runtime_event = RunTimeEvent.new("user", type="run", slide_index = "slide_0", code_input = "print 1", code_output = "1")
+    runtime_event = RunTimeEvent.new("id_user_name", type="run", slide_index = "slide_0", code_input = "print 1", code_output = "1")
     assert_nothing_raised { Time.at(runtime_event.timestamp) }
-    assert_equal  "user", runtime_event.user
+    assert_equal  "id_user_name", runtime_event.user
+    assert_equal  "user_name", runtime_event.user_name    
     assert_equal  "run", runtime_event.type
     assert_equal  "slide_0", runtime_event.slide_index    
     assert_equal  "print 1", runtime_event.code_input
     assert_equal  "1", runtime_event.code_output
-    assert_equal (["user", "run", "slide_0", "print 1", "1"]).inspect, runtime_event.to_s
+    assert_equal (["id_user_name", "run", "slide_0", "print 1", "1"]).inspect, runtime_event.to_s
   end
   
-  def test02_time_stamp_initialization
+  def test03_time_stamp_initialization
     runtime_event = RunTimeEvent.new("user", type="run", slide_index = "slide_0" ,code_input = "print 1", code_output = "1")
     assert_nothing_raised { Time.at(runtime_event.timestamp) }
     runtime_event = RunTimeEvent.new("user", type="run", slide_index = "slide_0", code_input = "print 1", code_output = "1", timestamp = "x")    
     assert_equal "x", runtime_event.timestamp
   end
 
-  def test03_to_json_string
+  def test04_to_json_string
     runtime_event = RunTimeEvent.new("1_user", type="run", slide_index = "slide_0" ,code_input = "print 1", code_output = "1")
     assert_equal '{"type":"run","author":"user","code":"print 1","code_output":"1"}', runtime_event.to_json_string    
   end
@@ -45,6 +46,10 @@ class TestRunTimeEvent_find < Test::Unit::TestCase
     assert_nothing_raised { RunTimeEvent.new("user_1", type="run", slide_index = "slide_0" ,code_input = "'string in simple quotes 1'", code_output = "").save }
   end
   
+  def test00_should_not_raise_an_error_when_user_session_id_is_empty
+    assert_nothing_raised { RunTimeEvent.new("", type="run", slide_index = "slide_0" ,code_input = "'string in simple quotes 1'", code_output = "").save }
+  end
+
   def test01_should_find_an_empty_list_when_no_runtime_events
     assert_equal [], RunTimeEvent.find_all
   end  
