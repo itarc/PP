@@ -42,13 +42,6 @@ TeacherCodeSlide.prototype = {
     this._node.querySelector('#get_last_send').addEventListener('click',
       function(e) { _t._updateEditorWithLastSendAndExecute() }, false
     );
-    this._node.querySelector('#code_input').addEventListener('keyup',
-      function(e) { 
-        if(e.keyCode == ALT){ return; } 
-        if(e.which == R) { if(e.altKey) return; } 
-        _t._save("refresh"); 
-      }, false      
-    );
   },
   
   run: function() {
