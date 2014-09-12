@@ -6,12 +6,6 @@ post '/code_run_result' do
   run_ruby(code.force_encoding("UTF-8"))
 end
 
-post '/code_run_result_blackboard' do
-  response.headers['Access-Control-Allow-Origin'] = '*'    
-  code = request.env["rack.input"].read
-  run_ruby(code.force_encoding("UTF-8"))
-end
-
 post '/code_save_execution_context/*' do
   json_string = request.env["rack.input"].read
   execution_context = JSON.parse(json_string)

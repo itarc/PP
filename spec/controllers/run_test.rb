@@ -47,12 +47,7 @@ class TestCodeRun < Test::Unit::TestCase
     assert last_response.body.include?('invalid multibyte char (US-ASCII)') 	  
     post '/code_run_result', "#encoding: utf-8\nputs 'éèêàâùï'"
     assert_equal "éèêàâùï\n", last_response.body
-  end
-  
-  def test07_should_run_code_for_blackboard
-    post '/code_run_result_blackboard', "print 'b'"
-    assert_equal "b", last_response.body    
-  end    
+  end 
   
   def teardown
     $db.execute_sql("delete from run_events")	  
