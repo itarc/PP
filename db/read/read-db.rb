@@ -29,24 +29,24 @@ read.values.each do |row|
   p row
 end
 
-puts '----- POLLS'
-read = db.execute_sql('select * from polls order by timestamp desc')
+puts '----- POLLS (timestamp asc)'
+read = db.execute_sql('select * from polls order by timestamp asc')
 p read.fields
 
 read.values.each do |row|
   p row
 end
 
-puts '----- RUN EVENTS SAVE'
-read = db.execute_sql('select * from run_events_save order by timestamp desc')
+puts '----- RUN EVENTS SAVE (timestamp asc)'
+read = db.execute_sql('select * from run_events_save order by timestamp asc')
 p read.fields
 
 read.values.each do |row|
   p row
 end
 
-puts '----- RUN EVENTS'
-read = db.execute_sql('select * from run_events order by timestamp desc')
+puts '----- RUN EVENTS (timestamp asc)'
+read = db.execute_sql('select * from run_events order by timestamp asc')
 p read.fields
 
 read.values.each do |row|
