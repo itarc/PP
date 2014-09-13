@@ -45,7 +45,7 @@ class TestExecutionContext < Test::Unit::TestCase
     post '/code_save_execution_text/0', '{ "code": "code run" }', 'rack.session' => {:user_session_id => '1_user_name'}
     get '/code_last_execution/1', {}, 'rack.session' => {:user_session_id => '1_user_name'}
     assert_equal JSON.parse('{}'), JSON.parse(last_response.body)
-  end
+  end  
   
   def teardown
     $db.execute_sql("delete from run_events")	  

@@ -15,6 +15,15 @@ post '/code_save_execution_context/*' do
   RunTimeEvent.new(user_session_id, type, slide_index, code, result).save
 end
 
+post '/code_save_blackboard_execution_context/*' do
+  json_string = request.env["rack.input"].read
+  execution_context = JSON.parse(json_string)
+  type = execution_context["type"]
+  code = execution_context["code"]
+  result = execution_context["code_output"]
+  RunTimeEvent.new($blackboard_session_id, type, slide_index, code, result).save
+end
+
 get '/code_last_execution/*' do
   last_execution = RunTimeEvent.find_last_user_execution_on_slide(user_session_id, slide_index)
   return JSON.generate({}) if last_execution == nil
