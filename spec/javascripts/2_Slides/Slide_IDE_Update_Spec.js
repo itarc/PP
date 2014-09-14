@@ -150,7 +150,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
    });	  
   
   it("should run code to add", function() {
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "", "code": "", "code_to_add": ""});        
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "", "code": ""});        
     spyOn(Resource.prototype, 'post').andReturn("CODE TO ADD");
 
     slide._update();
@@ -162,7 +162,7 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   });	  
   
   it("should NOT run code that is already in editor", function() {
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "#", "code": "code to execute", "code_to_add": "puts 'CODE TO ADD'"});        
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "#", "code": "code to execute" + SEPARATOR + "puts 'CODE TO ADD'"});        
     spyOn(CodeSlide.prototype, '_displayRunResult');
 
     slide._editor.updateWithText('code to execute');	 
@@ -173,23 +173,20 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
 
   });  
   
-  //~ it("should NOT run code if last execution exists and code to execute is empty", function() {
+  // it("should run code if last execution exists and code to execute is empty", function() {
+  //   spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "#", "code": "" + SEPARATOR + "puts 'CODE TO ADD'"});        
+  //   spyOn(CodeSlide.prototype, '_displayRunResult');
 
-    //~ var slide = new CodeSlide(slideNode);    
-    
-    //~ spyOn(CodeSlide.prototype, 'lastExecution').andReturn({"author": '', "code": '', "code_to_add": 'ADDED CODE'});
-    //~ spyOn(CodeSlide.prototype, 'executeCode');    
-    
-    //~ slide._editor.updateWithText('');
-    //~ slide._update();
-	  
-    //~ expect(CodeSlide.prototype.executeCode.calls.length).toBe(0);    
+  //   slide._editor.updateWithText('');   
+  //   slide._editor._authorBar.updateAuthorNameWith('#');  
+  //   slide._update();
 
-  //~ });   
+  //   expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(1);    
+  // });
   
   it("should NOT display code to add in code editor", function() {
 
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": '', "code_to_add": "puts 'CODE TO ADD'" });
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "", "code": "" + SEPARATOR + "puts 'CODE TO ADD'" });
     
     var slideshow = new SlideShow([])
     var slide = new CodeSlide(slideNode, slideshow);

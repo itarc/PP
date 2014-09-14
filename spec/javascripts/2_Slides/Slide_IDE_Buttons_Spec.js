@@ -19,15 +19,14 @@ describe("Server Execution Context", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode);  
     executionContext = new ServerExecutionContext(IDESlide);  
-    spyOn(Resource.prototype, "get").andReturn("{\"author\": \"server_author\", \"type\": \"run_type\", \"code\": \"server_code\", \"code_to_add\": \"server_code to add\"}");
+    spyOn(Resource.prototype, "get").andReturn(JSON.stringify({"author": "server_author", "type": "run_type", "code": "server_code" + SEPARATOR + "server_code to add"}));
   });
   
   it("should format server response to JSON", function() {	 
     jsonContext = executionContext.getContextOnServer('/url')  
     
     expect(jsonContext.author).toBe('server_author');
-    expect(jsonContext.code).toBe('server_code');
-    expect(jsonContext.code_to_add).toBe('server_code to add');
+    expect(jsonContext.code).toBe('server_code'+ SEPARATOR + 'server_code to add');
   });    
   
   it("should be updated with a resource", function() {

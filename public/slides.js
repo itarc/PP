@@ -89,7 +89,13 @@ ServerExecutionContext.prototype = {
     this.author = (newServerExecutionContext.author) ? newServerExecutionContext.author : '';
     this.type = (newServerExecutionContext.type) ? newServerExecutionContext.type : '';
     this.code = (newServerExecutionContext.code) ? newServerExecutionContext.code : '';
-    this.code_to_add = (newServerExecutionContext.code_to_add) ? newServerExecutionContext.code_to_add : '';
+    if (this.code != '') {
+      code_split = this.code.split(SEPARATOR);
+      this.code = code_split[0]
+      this.code_to_add = (code_split[1]) ? code_split[1] : '';
+    } else {
+      this.code_to_add = '';
+    }
   },
 
 }
