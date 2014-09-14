@@ -6,7 +6,7 @@ post '/code_run_result' do
   run_ruby(code.force_encoding("UTF-8"))
 end
 
-post '/code_save_execution_context/*' do
+post '/code_save_execution_context/*' do 
   json_string = request.env["rack.input"].read
   execution_context = JSON.parse(json_string)
   type = execution_context["type"]
@@ -16,6 +16,7 @@ post '/code_save_execution_context/*' do
 end
 
 post '/code_save_blackboard_execution_context/*' do
+  response.headers['Access-Control-Allow-Origin'] = '*'   
   json_string = request.env["rack.input"].read
   execution_context = JSON.parse(json_string)
   type = execution_context["type"]
