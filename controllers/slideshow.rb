@@ -8,6 +8,11 @@ set :bind, '0.0.0.0'
 set :show_exceptions, false
 
 enable :sessions; set :session_secret, 'secret'
+# The code above does not seem to work with chrome (session disappears)
+# We can replace it with this one :
+# use Rack::Session::Cookie, :key => 'rack.session',
+#                            :path => '/',
+#                            :secret => 'secret'
 
 require_relative 'slideshow_helper'
 
