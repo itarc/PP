@@ -99,43 +99,50 @@ ServerExecutionContext.prototype = {
   },
 
 }
+// ----------------------------------
+// SESSION
+// ----------------------------------
+var Session = function() {
+  this.UNKNOWN_USER_NAME = '?';
+  this.userName = this.UNKNOWN_USER_NAME;
+
+  this._sessionResource = new Resource();  
+}
+
+Session.prototype = {
+  setUserName: function(userName) {
+    this._sessionResource.post('session_id/user_name', 'user_name=' + userName, SYNCHRONOUS);
+    this.userName = userName;
+  },
+  getUserName: function() {
+    this.userName = this._sessionResource.get('/session_id/user_name');
+    if (this.userName == '') this.userName = this.UNKNOWN_USER_NAME;
+    return this.userName;
+  },
+  userNameIsUnknown: function() {
+    return this.userName == this.UNKNOWN_USER_NAME;
+  },  
+}
 
 // ----------------------------------
 // AUTHOR BAR
 // ----------------------------------
-var AuthorBar = function(node) {
-  this.UNKNOWN = '?';
-  
+var AuthorBar = function(node, slide) {
+  this._slide = slide;
   this._node = node;
+
   if (this._node) this.authorNode = this._node.querySelector('#author_name');
   if (this._node) this.lastsendNode = this._node.querySelector('#last_send_attendee_name');
   
-  this._sessionIDResource = new Resource();
-  this.refreshSessionUserName();
+  this.updateAuthorNameWith(this._slide._session.getUserName());
 }
 
 AuthorBar.prototype = {
   
-  userNameIsUnknown: function() {
-    return this.userName == this.UNKNOWN;
-  },  
-  
-  refreshSessionUserName: function() {
-    sessionUserName = this._sessionIDResource.get('/session_id/user_name');
-    this.updateAuthorNameWith(sessionUserName);
-  },
-  
-  _setSessionUserName: function(newAuthor) {
-    if (newAuthor == '') return;
-    this._sessionIDResource.post('session_id/user_name', 'user_name=' + newAuthor, SYNCHRONOUS);
-    this.refreshSessionUserName();
-  },
-  
   updateAuthorNameWith: function(userName) {
     if (! this.authorNode) return;
-    if (userName == '')  { userName = this.UNKNOWN; }
     this.userName = userName;
-    this.authorNode.innerHTML = this.userName
+    this.authorNode.innerHTML = this.userName;
   },
   
   updateLastSendAttendeeNameWith: function(userName) {
@@ -152,7 +159,7 @@ AuthorBar.prototype = {
 var Editor = function(node, slide) {
   this._node = node;
   this._slide = slide;
-  this._authorBar = new AuthorBar(slide._node.querySelector('.code_author'));  
+  this._authorBar = new AuthorBar(slide._node.querySelector('.code_author'), this._slide);  
 }
 
 Editor.prototype = {
@@ -256,7 +263,7 @@ CodeHelpers.prototype = {
   
   update: function() {
     this._clear();    
-    this._currentIndex = (this._slide._editor._authorBar.userNameIsUnknown()) ? 0 : this._slide._slideshow._currentIndex;
+    this._currentIndex = (this._slide._session.userNameIsUnknown()) ? 0 : this._slide._slideshow._currentIndex;
     this._codeHelpers[this._currentIndex].setState('current');     
   },
   
@@ -271,7 +278,9 @@ CodeHelpers.prototype = {
 var CodeSlide = function(node, slideshow) {
   Slide.call(this, node, slideshow);
   
+
   this._declareEvents();
+  this._session = new Session();
   this._serverExecutionContext = new ServerExecutionContext(this);
   this._editor = new Editor(this._node.querySelector('#code_input'), this);
   this._standardOutput = new StandardOutput(this._node.querySelector('#code_output'));
@@ -315,8 +324,11 @@ CodeSlide.prototype = {
     if (_t._node.querySelector('#attendee_name')) {
     this._node.querySelector('#attendee_name').addEventListener('keydown',
       function(e) { 
-        if (e.keyCode == RETURN) { 
-          _t._editor._authorBar._setSessionUserName(this.value); this.value = '';
+        if (e.keyCode == RETURN) {
+          if (this.value == '') return;
+          _t._session.setUserName(this.value);
+          _t._editor._authorBar.updateAuthorNameWith(_t._session.userName); 
+          this.value = '';
           _t._codeHelpers.update();          
         } else {
           e.stopPropagation();

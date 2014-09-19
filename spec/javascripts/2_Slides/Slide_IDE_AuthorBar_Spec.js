@@ -1,17 +1,3 @@
-describe("ATTENDEE IDE Author Bar / Login", function() {  
-  
-  beforeEach(function () {
-    authorBarNode = sandbox(author_bar);   
-   });
-   
-  it("should display '?' if author is empty", function() {
-    spyOn(Resource.prototype, "get").andReturn('');
-    authorBar = new AuthorBar(authorBarNode);
-    expect(authorBar.authorNode.innerHTML).toBe("?");
-  });
-  
-});
-
 IDE_slide_with_attendee_name_field_html =  
 HEADER + 
 code_input + 
@@ -25,11 +11,17 @@ describe("ATTENDEE IDE Author Bar", function() {
   
   beforeEach(function () {
     slideNode = sandbox(IDE_slide_with_attendee_name_field_html);
-    spyOn(Resource.prototype, "get").andReturn('a name');    
+   });	
+
+  it("should display '?' if no login yet", function() {
+    spyOn(Resource.prototype, "get").andReturn('');  
     slide = new CodeSlide(slideNode);    
-   });	  
+    expect(slideNode.querySelector('#author_name').innerHTML).toBe("?");
+  });
    
-  it("should display login when initialized", function() {	  
+  it("should display login when initialized", function() {	
+    spyOn(Resource.prototype, "get").andReturn('a name');    
+    slide = new CodeSlide(slideNode);
     expect(slideNode.querySelector('#author_name').innerHTML).toBe("a name");  
   });
 

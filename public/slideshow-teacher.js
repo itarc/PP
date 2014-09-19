@@ -46,7 +46,7 @@ TeacherCodeSlide.prototype = {
   
   run: function() {
     CodeSlide.prototype.run.call(this);
-    this._editor._authorBar.refreshSessionUserName();
+    this._editor._authorBar.updateAuthorNameWith(this._session.userName);
   }, 
   
   _updateEditorWithLastSendAndExecute: function() {
