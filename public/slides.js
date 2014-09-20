@@ -191,7 +191,7 @@ AuthorBar.prototype = {
 var Editor = function(node, slide) {
   this._node = node;
   this._slide = slide;
-  this._authorBar = new AuthorBar(slide._node.querySelector('.code_author'), this._slide);  
+  // this._authorBar = new AuthorBar(slide._node.querySelector('.code_author'), this._slide);  
 }
 
 Editor.prototype = {
@@ -211,7 +211,7 @@ Editor.prototype = {
   
   updateWithServerExecutionContext: function() {
     if (  this._slide._serverExecutionContext.codeToExecute() == this._slide.codeToExecute() 
-          && this._authorBar.userName == this._slide._serverExecutionContext.author) return false;
+          && this._slide._authorBar.userName == this._slide._serverExecutionContext.author) return false;
     this.updateWithText(this._slide._serverExecutionContext.code);     
     return true
   },
@@ -316,6 +316,7 @@ var CodeSlide = function(node, slideshow) {
   this._serverExecutionContext = new ServerExecutionContext(this);
   this._localContext = new LocalExecutionContext(this);
   this._editor = new Editor(this._node.querySelector('#code_input'), this);
+  this._authorBar = new AuthorBar(this._node.querySelector('.code_author'), this);
   this._standardOutput = new StandardOutput(this._node.querySelector('#code_output'));
   this._codeHelpers = new CodeHelpers(queryAll(node, '.code_helper'), this);   
   
@@ -358,7 +359,8 @@ CodeSlide.prototype = {
         if (e.keyCode == RETURN) {
           if (this.value == '') return;
           _t._session.setUserName(this.value);
-          _t._editor._authorBar.updateAuthorNameWith(_t._session.userName); 
+          // _t._editor._authorBar.updateAuthorNameWith(_t._session.userName); 
+          _t._authorBar.updateAuthorNameWith(_t._session.userName); 
           this.value = '';
           _t._codeHelpers.update();          
         } else {
@@ -414,7 +416,8 @@ CodeSlide.prototype = {
     if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();
     this._standardOutput.updateWith(this._runResult());
-    this._editor._authorBar.updateAuthorNameWith(this._session.userName);
+    // this._editor._authorBar.updateAuthorNameWith(this._session.userName);
+    this._authorBar.updateAuthorNameWith(this._session.userName);
     this._localContext.save();
   },
 

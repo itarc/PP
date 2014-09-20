@@ -29,15 +29,15 @@ BlackboardCodeSlide.prototype = {
   
   _updateLastSendAttendeeName: function(slide_index) {
     this._serverExecutionContext.updateWithResource(this._attendeesLastSendResource);
-    this._editor._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
+    this._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
   },
 
   _update: function() {
     this._codeHelpers.update();
     this._serverExecutionContext.updateWithResource(this._updateResource);  
     if (this._editor.update()) {
-      this.run();  
-      this._editor._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);
+      this.run();
+      this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);
     }
     this._updateLastSendAttendeeName();    
   },  

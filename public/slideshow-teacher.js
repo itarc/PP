@@ -48,15 +48,15 @@ TeacherCodeSlide.prototype = {
     this._serverExecutionContext.updateWithResource(this._attendeesLastSendResource); 
     if (this._serverExecutionContext.isEmpty()) return;
     if (this._editor.updateWithServerExecutionContext()) { 
-      this.runAndSend(); 
-      this._editor._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);   
-      this._editor._authorBar.updateLastSendAttendeeNameWith('');
+      this.runAndSend();    
+      this._authorBar.updateAuthorNameWith(this._serverExecutionContext.author);   
+      this._authorBar.updateLastSendAttendeeNameWith('');
     }
   },  
   
  _updateLastSendAttendeeName: function(slide_index) {
     this._serverExecutionContext.updateWithResource(this._attendeesLastSendResource);
-    this._editor._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
+    this._authorBar.updateLastSendAttendeeNameWith(this._serverExecutionContext.author);
   },  
   
   _update: function(slide_index) {

@@ -34,7 +34,7 @@ describe("Blackboard SlideShow IDE", function() {
   
   it("should NOT change if execution context has not changed", function() {
     blackboardSlideShow._slides[0]._editor.updateWithText("last send to blackboard");
-    blackboardSlideShow._slides[0]._editor._authorBar.updateAuthorNameWith('0');
+    blackboardSlideShow._slides[0]._authorBar.updateAuthorNameWith('0');
     
     blackboardSlideShow._refresh();
     
