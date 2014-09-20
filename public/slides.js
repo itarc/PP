@@ -410,10 +410,11 @@ CodeSlide.prototype = {
     this._localContext.sendToBlackboard();
   },  
 
-  run: function() { // Overloader in teacher slideshow (try to remove from it)
+  run: function() {
     if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();
     this._standardOutput.updateWith(this._runResult());
+    this._editor._authorBar.updateAuthorNameWith(this._session.userName);
     this._localContext.save();
   },
 
