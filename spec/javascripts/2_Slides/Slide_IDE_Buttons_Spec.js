@@ -45,7 +45,7 @@ describe("IDE SAVE CURRENT EXECUTION CONTEXT", function() {
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE); 
     IDESlide = new CodeSlide(slideNode, new SlideShow([]));
-    IDESlide._saveURL = '/save_url'
+    IDESlide._localContext._saveURL = '/save_url'
     spyOn(Resource.prototype, 'post');
   });
 
@@ -53,14 +53,14 @@ describe("IDE SAVE CURRENT EXECUTION CONTEXT", function() {
     IDESlide._editor.updateWithText("CODE");
     
     IDESlide._codeHelpers._currentIndex = 0;
-    IDESlide._save('run');
+    IDESlide._localContext._save('run');
 
-    expect(Resource.prototype.post).toHaveBeenCalledWith(IDESlide._saveURL + "/0", '{"type":"run","code":"CODE","code_output":""}', SYNCHRONOUS);
+    expect(Resource.prototype.post).toHaveBeenCalledWith(IDESlide._localContext._saveURL + "/0", '{"type":"run","code":"CODE","code_output":""}', SYNCHRONOUS);
 
     IDESlide._codeHelpers._currentIndex = 1;      
-    IDESlide._save('run');
+    IDESlide._localContext._save('run');
 
-    expect(Resource.prototype.post).toHaveBeenCalledWith(IDESlide._saveURL + "/0", '{"type":"run","code":"CODE","code_output":""}', SYNCHRONOUS);  
+    expect(Resource.prototype.post).toHaveBeenCalledWith(IDESlide._localContext._saveURL + "/0", '{"type":"run","code":"CODE","code_output":""}', SYNCHRONOUS);  
   });
 
 });
@@ -88,7 +88,7 @@ describe("IDE RUN CODE", function() {
     IDESlide.run();
 
     expect(Resource.prototype.post).toHaveBeenCalledWith(IDESlide._runResource, "CODE", SYNCHRONOUS);    
-    expect(Resource.prototype.post).toHaveBeenCalledWith(IDESlide._saveURL + '/0', '{"type":"run","code":"CODE","code_output":"EXECUTION RESULT"}', false);    
+    expect(Resource.prototype.post).toHaveBeenCalledWith(IDESlide._localContext._saveURL + '/0', '{"type":"run","code":"CODE","code_output":"EXECUTION RESULT"}', false);    
 
     expect(slideNode.querySelector('#code_input').value).toBe('CODE');
     expect(slideNode.querySelector('#code_output').value).toBe('EXECUTION RESULT');
@@ -119,7 +119,7 @@ describe("IDE SEND CODE", function() {
     IDESlide.runAndSend();
 
     expect(Resource.prototype.post).toHaveBeenCalledWith(IDESlide._runResource, "CODE", SYNCHRONOUS);    
-    expect(Resource.prototype.post).toHaveBeenCalledWith(IDESlide._saveURL + '/0', '{"type":"send","code":"CODE","code_output":"EXECUTION RESULT"}', false);    
+    expect(Resource.prototype.post).toHaveBeenCalledWith(IDESlide._localContext._saveURL + '/0', '{"type":"send","code":"CODE","code_output":"EXECUTION RESULT"}', false);    
 
     expect(slideNode.querySelector('#code_input').value).toBe('CODE');
     expect(slideNode.querySelector('#code_output').value).toBe('EXECUTION RESULT');

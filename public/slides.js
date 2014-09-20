@@ -99,6 +99,38 @@ ServerExecutionContext.prototype = {
   },
 
 }
+
+
+// ----------------------------------
+// SERVER EXECUTION CONTEXT
+// ----------------------------------
+var LocalExecutionContext = function(slide) {
+  this._slide = slide;
+  this._saveURL = "/code_save_execution_context";
+  this._saveResource = new Resource(); 
+}
+
+LocalExecutionContext.prototype = {
+
+  _save: function(type) { 
+    this._saveResource.post(this._saveURL + "/" + this._slide._codeHelpers._currentIndex, 
+    JSON.stringify({
+      "type": type,
+      "code": this._slide.codeToExecute(),
+      "code_output": this._slide._standardOutput.content()
+    }), SYNCHRONOUS);
+  }, 
+
+  save: function() { 
+    this._save("run");
+  },  
+
+  sendToBlackboard: function() { 
+    this._save("send");
+  },
+
+}
+
 // ----------------------------------
 // SESSION
 // ----------------------------------
@@ -277,22 +309,20 @@ CodeHelpers.prototype = {
 // ----------------------------------
 var CodeSlide = function(node, slideshow) {
   Slide.call(this, node, slideshow);
-  
 
   this._declareEvents();
   this._session = new Session();
   this._serverExecutionContext = new ServerExecutionContext(this);
+  this._localContext = new LocalExecutionContext(this);
   this._editor = new Editor(this._node.querySelector('#code_input'), this);
   this._standardOutput = new StandardOutput(this._node.querySelector('#code_output'));
   this._codeHelpers = new CodeHelpers(queryAll(node, '.code_helper'), this);   
   
   this._runResource = '/code_run_result';
-  this._getAndRunResource = '/code_get_last_send_to_blackboard'    
-  this._updateResource = '/code_last_execution'
-  this._saveURL = "/code_save_execution_context";
+  this._getAndRunResource = '/code_get_last_send_to_blackboard';
+  this._updateResource = '/code_last_execution';
   
-  this._executionResource = new Resource();
-  this._saveResource = new Resource(); 
+  this._executionResource = new Resource(); 
 };
 
 CodeSlide.prototype = {
@@ -371,15 +401,6 @@ CodeSlide.prototype = {
     this._standardOutput.updateWith(this._runResult());
   },
 
-  _save: function(type) { 
-    this._saveResource.post(this._saveURL + "/" + this._codeHelpers._currentIndex, 
-    JSON.stringify({
-      "type": type,
-      "code": this.codeToExecute(),
-      "code_output": this._standardOutput.content()
-    }), SYNCHRONOUS);
-  },
-
   getAndRun: function() {
     this._serverExecutionContext.updateWithResource(this._getAndRunResource); 
     if (this._editor.updateWithServerExecutionContext()) { 
@@ -390,13 +411,13 @@ CodeSlide.prototype = {
   runAndSend: function() {
     if (this.codeToExecute() == '' ) return;    
     this._displayRunResult();
-    this._save("send");
+    this._localContext.sendToBlackboard();
   },  
 
   run: function() { // Overloader in teacher slideshow (try to remove from it)
     if (this.codeToExecute() == '' ) return;
     this._displayRunResult();
-    this._save("run");
+    this._localContext.save();
   },
 
   _update: function() {
