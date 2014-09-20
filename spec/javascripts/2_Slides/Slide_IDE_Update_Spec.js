@@ -28,14 +28,14 @@ describe("IDE UPDATE", function() {
   
   it("should run the user last run", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "", "code": "last execution", "code_to_add": ""});
-    spyOn(CodeSlide.prototype, '_displayRunResult');
+    spyOn(StandardOutput.prototype, 'updateWith');
 
-    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(0);
+    expect(StandardOutput.prototype.updateWith.calls.length).toBe(0);
 
     slide._update();
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_last_execution/0');
-    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(1);       
+    expect(StandardOutput.prototype.updateWith.calls.length).toBe(1);       
   });
   
   it("should NOT run the user last run when code has not changed", function() {
@@ -45,11 +45,11 @@ describe("IDE UPDATE", function() {
     
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "#", "code": "last execution", "code_to_add": ""});
 	  
-    spyOn(CodeSlide.prototype, '_displayRunResult');
+    spyOn(StandardOutput.prototype, 'updateWith');
 	  
     slide._update();
 	  
-    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(0);
+    expect(StandardOutput.prototype.updateWith.calls.length).toBe(0);
 	  
   });  
   
@@ -86,31 +86,31 @@ describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
     slideNode = sandbox(IDE_slide_with_code_to_display_html);
     slideshow = new SlideShow([])
     slide = new CodeSlide(slideNode, slideshow);  
-    spyOn(CodeSlide.prototype, '_displayRunResult');    
+    spyOn(StandardOutput.prototype, 'updateWith');    
   });  
 	
   it("should display CODE TO DISPLAY when no execution context on server", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "", "code": "", "code_to_add": ""});    
     expect(slide._editor.content()).toBe("");
 
-    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(0);    
+    expect(StandardOutput.prototype.updateWith.calls.length).toBe(0);    
     
     slide._update();
 
     expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");
-    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(1);
+    expect(StandardOutput.prototype.updateWith.calls.length).toBe(1);
   });
   
   it("should run last execution when exists", function() {     
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "", "code": "LAST EXECUTION", "code_to_add": ""});    
     expect(slide._editor.content()).toBe("");
     
-    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(0);
+    expect(StandardOutput.prototype.updateWith.calls.length).toBe(0); 
 
     slide._update();
 
     expect(slide._editor.content()).toBe("LAST EXECUTION");
-    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(1);  
+    expect(StandardOutput.prototype.updateWith.calls.length).toBe(1);   
   });  
 
   it("should NOT run code that is already in editor", function() {
@@ -120,12 +120,12 @@ describe("IDE UPDATE with CODE TO DISPLAY in Code Helper", function() {
     slide._update();
 
     expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");
-    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(1);	
+    expect(StandardOutput.prototype.updateWith.calls.length).toBe(1); 	
 
     slide._update();
 
     expect(slide._editor.content()).toBe("puts 'CODE TO DISPLAY'");    
-    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(1);	
+    expect(StandardOutput.prototype.updateWith.calls.length).toBe(1); 	
   }); 
 
 });
@@ -163,13 +163,13 @@ describe("IDE UPDATE with code to ADD in Code Helper", function() {
   
   it("should NOT run code that is already in editor", function() {
     spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": "#", "code": "code to execute" + SEPARATOR + "puts 'CODE TO ADD'"});        
-    spyOn(CodeSlide.prototype, '_displayRunResult');
+    spyOn(StandardOutput.prototype, 'updateWith'); 
 
     slide._editor.updateWithText('code to execute');	 
     slide._editor._authorBar.updateAuthorNameWith('#');	 
     slide._update();
 
-    expect(CodeSlide.prototype._displayRunResult.calls.length).toBe(0);
+    expect(StandardOutput.prototype.updateWith.calls.length).toBe(0);  
 
   });  
   

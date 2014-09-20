@@ -270,6 +270,7 @@ StandardOutput.prototype = {
   },  
   
   updateWith: function(text) {
+
     this._node.value = text;
   },
 }
@@ -391,14 +392,8 @@ CodeSlide.prototype = {
     return this._codeHelpers.current().codeToAdd();
   },
 
-  _runResult: function() { 
-    runURL = this._runResource;
-    return this._executionResource.post(runURL, this.codeToExecute(), SYNCHRONOUS);
-  },
-  
-  _displayRunResult: function() {
-    this._standardOutput.clear();
-    this._standardOutput.updateWith(this._runResult());
+  _runResult: function() {
+    return this._executionResource.post(this._runResource, this.codeToExecute(), SYNCHRONOUS);
   },
 
   getAndRun: function() {
@@ -409,14 +404,16 @@ CodeSlide.prototype = {
   },  
 
   runAndSend: function() {
-    if (this.codeToExecute() == '' ) return;    
-    this._displayRunResult();
+    if (this.codeToExecute() == '' ) return; 
+    this._standardOutput.clear();
+    this._standardOutput.updateWith(this._runResult());     
     this._localContext.sendToBlackboard();
   },  
 
   run: function() { // Overloader in teacher slideshow (try to remove from it)
     if (this.codeToExecute() == '' ) return;
-    this._displayRunResult();
+    this._standardOutput.clear();
+    this._standardOutput.updateWith(this._runResult());
     this._localContext.save();
   },
 
