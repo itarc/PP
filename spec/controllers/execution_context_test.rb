@@ -46,6 +46,12 @@ class TestExecutionContext < Test::Unit::TestCase
     get '/code_last_execution/1', {}, 'rack.session' => {:user_session_id => '1_user_name'}
     assert_equal JSON.parse('{}'), JSON.parse(last_response.body)
   end  
+
+  def test07_should_save_context_with_percent_symbol # workaround for sinatra problem
+    post '/code_save_execution_context/0', '{ "type": "send", "code" : "print 12 {{PERCENT}} 6", "code_output": "code result"}', 'rack.session' => {:user_session_id => '1_user_name'}
+    get '/code_last_execution/0', {}, 'rack.session' => {:user_session_id => '1_user_name'} 
+    assert_equal JSON.parse('{ "type": "send", "author": "user_name", "code": "print 12 % 6", "code_output": "code result" }'), JSON.parse(last_response.body)     
+  end
   
   def teardown
     $db.execute_sql("delete from run_events")	  
@@ -123,6 +129,12 @@ class TestLastSendToBlackBoard < Test::Unit::TestCase
     get '/code_get_last_send_to_blackboard/0', {}, 'rack.session' => {:user_session_id => '1_attendee_name' }
     assert_equal JSON.parse('{ "type": "run", "author": "'+ $teacher_session_id.split('_')[1] +'", "code": "teacher run", "code_output": "code result"}'), JSON.parse(last_response.body)                     
   end
+
+  def test02_should_save_context_with_percent_symbol # workaround for sinatra problem
+    post '/code_save_execution_context/0', '{ "type": "run", "code" : "print 12 {{PERCENT}} 3", "code_output": "code result"}', 'rack.session' => {:user_session_id => $teacher_session_id }        
+    get '/code_get_last_send_to_blackboard/0', {}, 'rack.session' => {:user_session_id => '1_attendee_name' }
+    assert_equal JSON.parse('{ "type": "run", "author": "'+ $teacher_session_id.split('_')[1] +'", "code": "print 12 % 3", "code_output": "code result"}'), JSON.parse(last_response.body)                     
+  end  
   
   def teardown
     $db.execute_sql("delete from run_events")	  

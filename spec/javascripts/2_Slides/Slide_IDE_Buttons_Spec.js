@@ -70,10 +70,10 @@ describe("IDE RUN CODE", function() {
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode, new SlideShow([]));
-    spyOn(Resource.prototype, 'post').andReturn('EXECUTION RESULT');
   });  
   
   it("should NOT run code when editor is empty", function() {
+    spyOn(Resource.prototype, 'post').andReturn('EXECUTION RESULT');    
     IDESlide._editor.updateWithText("");
     
     IDESlide.run();
@@ -83,6 +83,7 @@ describe("IDE RUN CODE", function() {
   });
   
   it("should run code and display result on standard output", function() {
+    spyOn(Resource.prototype, 'post').andReturn('EXECUTION RESULT');    
     IDESlide._editor.updateWithText("CODE");    
 
     IDESlide.run();
@@ -93,6 +94,16 @@ describe("IDE RUN CODE", function() {
     expect(slideNode.querySelector('#code_input').value).toBe('CODE');
     expect(slideNode.querySelector('#code_output').value).toBe('EXECUTION RESULT');
   });  
+
+  it("should replace % symbol before running code (Problem with Sinatra)", function() {
+    spyOn(Resource.prototype, 'post').andReturn('%%');    
+    IDESlide._editor.updateWithText("print '%%'");    
+
+    IDESlide.run();
+
+    expect(Resource.prototype.post).toHaveBeenCalledWith(IDESlide._runResource, "print \'{{PERCENT}}{{PERCENT}}\'", SYNCHRONOUS);  
+    expect(Resource.prototype.post).toHaveBeenCalledWith(IDESlide._localContext._saveURL + '/0', '{"type":"run","code":"print \'{{PERCENT}}{{PERCENT}}\'","code_output":"{{PERCENT}}{{PERCENT}}"}', false);    
+  });    
   
 });
 

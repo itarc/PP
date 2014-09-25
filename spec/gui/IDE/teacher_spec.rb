@@ -101,7 +101,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     
   end
   
-  it 'should show result when teacher run code' do
+  it 'should show result when teacher runs code' do
 
     visit teacher_presentation
     
@@ -136,6 +136,20 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     expect_IDE_to_have(code_input = "#encoding: utf-8" + "\n" + 'print "éèêàâùï"', code_output = 'éèêàâùï')    
     
   end
+
+  it 'should show result when teacher run code with percent symbol (%)' do # work around for sinatra
+
+    visit teacher_presentation
+    
+    go_down    
+    
+    fill_IDE_with("print '%'")   
+    
+    execute
+    
+    expect_IDE_to_have(code_input = "print '%'", code_output = "%")    
+    
+  end  
   
   it 'should show attendee last send with attendee name' do
 

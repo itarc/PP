@@ -1,8 +1,13 @@
 require 'json'
 
+def percent_tag_replaced_with_percent_symbol(code)
+  return code.gsub('{{PERCENT}}', '%')
+end
+
 post '/code_run_result' do
   response.headers['Access-Control-Allow-Origin'] = '*'  
   code = request.env["rack.input"].read
+  code = percent_tag_replaced_with_percent_symbol(code)
   run_ruby(code.force_encoding("UTF-8"))
 end
 
@@ -10,7 +15,7 @@ post '/code_save_execution_context/*' do
   json_string = request.env["rack.input"].read
   execution_context = JSON.parse(json_string)
   type = execution_context["type"]
-  code = execution_context["code"]
+  code = percent_tag_replaced_with_percent_symbol(execution_context["code"])
   result = execution_context["code_output"]
   RunTimeEvent.new(user_session_id, type, slide_index, code, result).save
 end

@@ -24,7 +24,7 @@ describe("SlideShow KeyHandling", function() {
 
     __triggerKeyboardEvent(document, F5);
 
-    expect(SlideShow.prototype._preventDefaultKeys.calls.length).toBe(54); // SHOULD BE 1 => TO REVIEW
+    expect(SlideShow.prototype._preventDefaultKeys.calls.length).toBe(55); // SHOULD BE 1 => TO REVIEW
   });
   
   it("should prevent default when key pressed in editor", function() {

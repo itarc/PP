@@ -31,7 +31,7 @@ get attendee_IDE do
   redirect "attendee_IDE.html"
 end
 
-get blackboard_presentation do  
+get blackboard_presentation do
   redirect "blackboard_presentation.html"
 end
 

@@ -116,8 +116,8 @@ LocalExecutionContext.prototype = {
     this._saveResource.post(this._saveURL + "/" + this._slide._codeHelpers._currentIndex, 
     JSON.stringify({
       "type": type,
-      "code": this._slide.codeToExecute(),
-      "code_output": this._slide._standardOutput.content()
+      "code": this._slide._replacePercent(this._slide.codeToExecute()),
+      "code_output": this._slide._replacePercent(this._slide._standardOutput.content())
     }), SYNCHRONOUS);
   }, 
 
@@ -162,6 +162,7 @@ Session.prototype = {
 var AuthorBar = function(node, slide) {
   this._slide = slide;
   this._node = node;
+  this.userName = '';  
 
   if (this._node) this.authorNode = this._node.querySelector('#author_name');
   if (this._node) this.lastsendNode = this._node.querySelector('#last_send_attendee_name');
@@ -190,8 +191,7 @@ AuthorBar.prototype = {
 // ----------------------------------
 var Editor = function(node, slide) {
   this._node = node;
-  this._slide = slide;
-  // this._authorBar = new AuthorBar(slide._node.querySelector('.code_author'), this._slide);  
+  this._slide = slide;  
 }
 
 Editor.prototype = {
@@ -296,7 +296,7 @@ CodeHelpers.prototype = {
   
   update: function() {
     this._clear();    
-    this._currentIndex = (this._slide._session.userNameIsUnknown()) ? 0 : this._slide._slideshow._currentIndex;
+    this._currentIndex = (this._slide._authorBar.userName == this._slide._session.UNKNOWN_USER_NAME ) ? 0 : this._slide._slideshow._currentIndex;
     this._codeHelpers[this._currentIndex].setState('current');     
   },
   
@@ -359,7 +359,6 @@ CodeSlide.prototype = {
         if (e.keyCode == RETURN) {
           if (this.value == '') return;
           _t._session.setUserName(this.value);
-          // _t._editor._authorBar.updateAuthorNameWith(_t._session.userName); 
           _t._authorBar.updateAuthorNameWith(_t._session.userName); 
           this.value = '';
           _t._codeHelpers.update();          
@@ -380,10 +379,15 @@ CodeSlide.prototype = {
     this._node.querySelector('#get_code').addEventListener('click',
       function(e) { _t.getAndRun(); }, false
     );
-  },  
+  }, 
+
+  _replacePercent: function(code) { 
+     return code.replace(/%/g, '{{PERCENT}}')
+   },
+      
   
   codeToExecute: function() {
-    return this._editor.content() + this.codeToAdd();
+    return (this._editor.content() + this.codeToAdd());
   },	 
 
   codeToDisplay: function() {
@@ -395,7 +399,7 @@ CodeSlide.prototype = {
   },
 
   _runResult: function() {
-    return this._executionResource.post(this._runResource, this.codeToExecute(), SYNCHRONOUS);
+    return this._executionResource.post(this._runResource, this._replacePercent(this.codeToExecute()), SYNCHRONOUS);
   },
 
   getAndRun: function() {
@@ -416,7 +420,6 @@ CodeSlide.prototype = {
     if (this.codeToExecute() == '' ) return;
     this._standardOutput.clear();
     this._standardOutput.updateWith(this._runResult());
-    // this._editor._authorBar.updateAuthorNameWith(this._session.userName);
     this._authorBar.updateAuthorNameWith(this._session.userName);
     this._localContext.save();
   },

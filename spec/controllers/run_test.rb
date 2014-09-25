@@ -47,7 +47,12 @@ class TestCodeRun < Test::Unit::TestCase
     assert last_response.body.include?('invalid multibyte char (US-ASCII)') 	  
     post '/code_run_result', "#encoding: utf-8\nputs 'éèêàâùï'"
     assert_equal "éèêàâùï\n", last_response.body
-  end 
+  end
+
+  def test06_should_run_code_with_percent_symbol_replace # workaround for sinatra
+    post '/code_run_result', "print '{{PERCENT}}{{PERCENT}}'"
+    assert_equal "%%", last_response.body
+  end  
   
   def teardown
     $db.execute_sql("delete from run_events")	  
