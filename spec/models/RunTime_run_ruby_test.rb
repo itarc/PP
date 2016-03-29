@@ -33,11 +33,12 @@ class TestRunTime_run_ruby < Test::Unit::TestCase
             end
           end
   }
-    assert run_ruby(tests).include?("1 tests, 1 assertions, 0 failures, 0 errors, 0 skips")
+    assert run_ruby(tests).include?("1 tests, 1 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications")
   end
   
   def test10_should_raise_an_exception_when_encoding_is_needed
-    assert run_ruby("puts 'éèêàâùï'").include?("invalid multibyte char (US-ASCII)"), run_ruby("puts 'éèêàâùï'")
+    # assert run_ruby("puts 'éèêàâùï'").include?("invalid multibyte char (US-ASCII)"), run_ruby("puts 'éèêàâùï'")
+    assert_equal "éèêàâùï\n", run_ruby("puts 'éèêàâùï'")
   end   
   
   def test11_should_accept_encoding
