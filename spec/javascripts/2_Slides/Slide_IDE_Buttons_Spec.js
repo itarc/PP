@@ -19,7 +19,7 @@ describe("Server Execution Context", function() {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode);  
     executionContext = new ServerExecutionContext(IDESlide);  
-    spyOn(Resource.prototype, "get").andReturn(JSON.stringify({"author": "server_author", "type": "run_type", "code": "server_code" + SEPARATOR + "server_code to add"}));
+    spyOn(Resource.prototype, "get").and.returnValue(JSON.stringify({"author": "server_author", "type": "run_type", "code": "server_code" + SEPARATOR + "server_code to add"}));
   });
   
   it("should format server response to JSON", function() {	 
@@ -73,7 +73,7 @@ describe("IDE RUN CODE", function() {
   });  
   
   it("should NOT run code when editor is empty", function() {
-    spyOn(Resource.prototype, 'post').andReturn('EXECUTION RESULT');    
+    spyOn(Resource.prototype, 'post').and.returnValue('EXECUTION RESULT');    
     IDESlide._editor.updateWithText("");
     
     IDESlide.run();
@@ -83,7 +83,7 @@ describe("IDE RUN CODE", function() {
   });
   
   it("should run code and display result on standard output", function() {
-    spyOn(Resource.prototype, 'post').andReturn('EXECUTION RESULT');    
+    spyOn(Resource.prototype, 'post').and.returnValue('EXECUTION RESULT');    
     IDESlide._editor.updateWithText("CODE");    
 
     IDESlide.run();
@@ -96,7 +96,7 @@ describe("IDE RUN CODE", function() {
   });  
 
   it("should replace % symbol before running code (Problem with Sinatra)", function() {
-    spyOn(Resource.prototype, 'post').andReturn('%%');    
+    spyOn(Resource.prototype, 'post').and.returnValue('%%');    
     IDESlide._editor.updateWithText("print '%%'");    
 
     IDESlide.run();
@@ -112,7 +112,7 @@ describe("IDE SEND CODE", function() {
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode, new SlideShow([]));
-    spyOn(Resource.prototype, 'post').andReturn('EXECUTION RESULT');
+    spyOn(Resource.prototype, 'post').and.returnValue('EXECUTION RESULT');
   });  
   
   it("should NOT run code when editor is empty", function() {
@@ -143,9 +143,9 @@ describe("IDE GET AND RUN CODE", function() {
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new CodeSlide(slideNode, new SlideShow([]));
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"code": "CODE ON SERVER"});
-    spyOn(CodeSlide.prototype, 'run').andCallThrough();
-    spyOn(Resource.prototype, 'post').andReturn('EXECUTION RESULT');    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"code": "CODE ON SERVER"});
+    spyOn(CodeSlide.prototype, 'run').and.callThrough();
+    spyOn(Resource.prototype, 'post').and.returnValue('EXECUTION RESULT');    
   });
   
   it("should get code, run it and display result on standard output", function() {    
@@ -190,13 +190,13 @@ describe("ATTENDEE IDE RUN", function() {
   it("should be triggered when RUN BUTTON clicked", function() {
     slideNode.querySelector('#execute').click();
 
-    expect(AttendeeCodeSlide.prototype.run.calls.length).toBe(1);    
+    expect(AttendeeCodeSlide.prototype.run.calls.count()).toBe(1);    
   });
   
   it("should be triggered when ALT-R pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 	  
-    expect(AttendeeCodeSlide.prototype.run.calls.length).toBe(1);
+    expect(AttendeeCodeSlide.prototype.run.calls.count()).toBe(1);
   });
 });
   
@@ -211,13 +211,13 @@ describe("ATTENDEE IDE RUN & SEND BUTTON", function() {
   it("should be triggered when SEND BUTTON clicked", function() {  
     slideNode.querySelector('#send_code').click();
 
-    expect(AttendeeCodeSlide.prototype.runAndSend.calls.length).toBe(1);        
+    expect(AttendeeCodeSlide.prototype.runAndSend.calls.count()).toBe(1);        
   });  
   
   it("should be triggered when ALT-S pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), S, ALT);
 	  
-    expect(AttendeeCodeSlide.prototype.runAndSend.calls.length).toBe(1);
+    expect(AttendeeCodeSlide.prototype.runAndSend.calls.count()).toBe(1);
   });
   
 });
@@ -233,13 +233,13 @@ describe("ATTENDEE IDE GET & RUN BUTTON", function() {
   it("should be triggered when GET & RUN BUTTON clicked", function() {  
     slideNode.querySelector('#get_code').click();
 
-    expect(AttendeeCodeSlide.prototype.getAndRun.calls.length).toBe(1);
+    expect(AttendeeCodeSlide.prototype.getAndRun.calls.count()).toBe(1);
   });  
   
   it("should be triggered when ALT-G pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), G, ALT);
 
-    expect(AttendeeCodeSlide.prototype.getAndRun.calls.length).toBe(1);   
+    expect(AttendeeCodeSlide.prototype.getAndRun.calls.count()).toBe(1);   
   });
 
 });
@@ -256,13 +256,13 @@ describe("TEACHER IDE RUN", function() {
   it("should be triggered when RUN BUTTON clicked", function() {
     slideNode.querySelector('#execute').click();
    
-    expect(TeacherCodeSlide.prototype.run.calls.length).toBe(1);     
+    expect(TeacherCodeSlide.prototype.run.calls.count()).toBe(1);     
   });
   
   it("should be triggered when ALT-R pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), R, ALT);
 	  
-    expect(TeacherCodeSlide.prototype.run.calls.length).toBe(1); 
+    expect(TeacherCodeSlide.prototype.run.calls.count()).toBe(1); 
   });
   
 });
@@ -307,9 +307,9 @@ describe("TEACHER IDE GET LAST SEND", function() {
   beforeEach(function () {
     slideNode = sandbox(FULL_IDE_SLIDE);
     IDESlide = new TeacherCodeSlide(slideNode, new SlideShow([]));
-    spyOn(TeacherCodeSlide.prototype ,"runAndSend").andCallThrough(); 
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});      
-    spyOn(Resource.prototype, 'post').andReturn('ATTENDEE SEND RESULT');  
+    spyOn(TeacherCodeSlide.prototype ,"runAndSend").and.callThrough(); 
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({"author": '', "code": 'ATTENDEE SEND', "code_to_add": ''});      
+    spyOn(Resource.prototype, 'post').and.returnValue('ATTENDEE SEND RESULT');  
   });
   
   it("should get last send, run it and display it to standard output", function() {  
@@ -334,13 +334,13 @@ describe("TEACHER IDE GET LAST SEND", function() {
   it("should be triggered when GET LAST SEND BUTTON clicked", function() {  
     slideNode.querySelector('#get_last_send').click();
 
-    expect(TeacherCodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(1);
+    expect(TeacherCodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.count()).toBe(1);
   });   
   
   it("should be triggered when ALT-N pressed", function() {
     __triggerKeyboardEvent(slideNode.querySelector('#code_input'), N, ALT);
 
-    expect(TeacherCodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.length).toBe(1);       
+    expect(TeacherCodeSlide.prototype._updateEditorWithLastSendAndExecute.calls.count()).toBe(1);       
   });
 
 });

@@ -1,7 +1,7 @@
 describe("Feature Flip (Any)", function() {
 	
   it("should get resource value", function() {
-    spyOn(Resource.prototype, "get").andReturn('resource_value');
+    spyOn(Resource.prototype, "get").and.returnValue('resource_value');
 
     value = getFlipValue('resource')
     expect(value).toBe('resource_value');
@@ -30,14 +30,14 @@ describe("Feature Flip (Boolean)", function() {
   }); 
 
   it("should return true when resource is true", function() {
-    getFlipValue = jasmine.createSpy('getFlipValue').andReturn('true');
+    getFlipValue = jasmine.createSpy('getFlipValue').and.returnValue('true');
     
     value = getBooleanFlipValue('/true_resource', false)
     expect(value).toBe(true);
   });  
 
   it("should return false when resource is false", function() {
-    getFlipValue = jasmine.createSpy('getFlipValue').andReturn('false');
+    getFlipValue = jasmine.createSpy('getFlipValue').and.returnValue('false');
     
     value = getBooleanFlipValue('/true_resource', true)
     expect(value).toBe(false);
@@ -54,14 +54,14 @@ describe("Feature Flip (Number)", function() {
   }); 
 
   it("should return a number when resource is a number", function() {
-    getFlipValue = jasmine.createSpy('getFlipValue').andReturn('2000');
+    getFlipValue = jasmine.createSpy('getFlipValue').and.returnValue('2000');
     
     value = getNumberFlipValue('/a_number', false)
     expect(value).toBe(2000);
   });
 
   it("should not return a number when resource is not a number", function() {
-    getFlipValue = jasmine.createSpy('getFlipValue').andReturn('2xx');
+    getFlipValue = jasmine.createSpy('getFlipValue').and.returnValue('2xx');
     
     value = getNumberFlipValue('/not_a_number', 1000)
     expect(value).toBe(1000);

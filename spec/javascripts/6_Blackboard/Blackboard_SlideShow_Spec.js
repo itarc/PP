@@ -17,11 +17,11 @@ describe("Blackboard SlideShow IDE", function() {
   
   beforeEach(function () {
     setFixtures(BLAKBOARD_SLIDESHOW_WITH_1_IDE_SLIDE_ONLY)	
-    spyOn(Resource.prototype, "get").andReturn('{}');
+    spyOn(Resource.prototype, "get").and.returnValue('{}');
     blackboardSlideShow = new BlackboardSlideShow(queryAll(document, '.slide')); 
-    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').andReturn({ "author": '0', "type": 'run', "code": 'last send to blackboard',"code_to_add": '' });    
+    spyOn(ServerExecutionContext.prototype, 'getContextOnServer').and.returnValue({ "author": '0', "type": 'run', "code": 'last send to blackboard',"code_to_add": '' });    
     spyOn(StandardOutput.prototype, 'updateWith');  
-    expect(StandardOutput.prototype.updateWith.calls.length).toBe(0);    
+    expect(StandardOutput.prototype.updateWith.calls.count()).toBe(0);    
   });
   
   it("should get last Teacher run when refreshed", function() {
@@ -29,7 +29,7 @@ describe("Blackboard SlideShow IDE", function() {
 
     expect(ServerExecutionContext.prototype.getContextOnServer).toHaveBeenCalledWith('/code_get_last_send_to_blackboard/0');    
     expect(blackboardSlideShow._slides[0]._editor.content()).toBe('last send to blackboard');
-    expect(StandardOutput.prototype.updateWith.calls.length).toBe(1);    
+    expect(StandardOutput.prototype.updateWith.calls.count()).toBe(1);    
   });  
   
   it("should NOT change if execution context has not changed", function() {
@@ -38,35 +38,40 @@ describe("Blackboard SlideShow IDE", function() {
     
     blackboardSlideShow._refresh();
     
-    expect(StandardOutput.prototype.updateWith.calls.length).toBe(0);
+    expect(StandardOutput.prototype.updateWith.calls.count()).toBe(0);
   });
   
   it("should be updated every refresh", function() {
     spyOn(BlackboardCodeSlide.prototype, '_update');
-    spyOn(Position.prototype, '_getPosition').andReturn('3;true');
+    spyOn(Position.prototype, '_getPosition').and.returnValue('3;true');
     
     blackboardSlideShow._refresh();
     
-    expect(BlackboardCodeSlide.prototype._update.calls.length).toBe(2); // init + update in blackboard
+    expect(BlackboardCodeSlide.prototype._update.calls.count()).toBe(2); // init + update in blackboard
     
     blackboardSlideShow._refresh();
     
-    expect(BlackboardCodeSlide.prototype._update.calls.length).toBe(3);
+    expect(BlackboardCodeSlide.prototype._update.calls.count()).toBe(3);
   });    
   
   it("should refresh position every second", function() {
     
     
     spyOn(BlackboardSlideShow.prototype, '_refresh');
-    jasmine.Clock.useMock();
+    /*jasmine.Clock.useMock();*/
+    jasmine.clock().install(); 
 
     setInterval( function(){ blackboardSlideShow._refresh(); },1000); // Mandatory even if it is already done in the javascript
 
-    expect(BlackboardSlideShow.prototype._refresh.callCount).toEqual(0);
-    jasmine.Clock.tick(1001);
-    expect(BlackboardSlideShow.prototype._refresh.callCount).toEqual(1);
+    expect(BlackboardSlideShow.prototype._refresh.calls.count()).toEqual(0);
+    /*jasmine.Clock.tick(1001);*/
+    jasmine.clock().tick(1001);
+    expect(BlackboardSlideShow.prototype._refresh.calls.count()).toEqual(1);
     
     expect(slideshowTimer).toBeDefined(); // Test if timer in javascript
+    
+    jasmine.clock().uninstall();
+    
   });  
 
 });

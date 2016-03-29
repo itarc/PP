@@ -7,13 +7,13 @@ describe("Poll Slide", function() {
     expect(pollSlideNode.querySelector('#poll_rate_1').innerHTML).toBe('');
     expect(pollSlideNode.querySelector('#poll_rate_2').innerHTML).toBe('');
 	  
-    spyOn(Resource.prototype, "get").andReturn('50');    
+    spyOn(Resource.prototype, "get").and.returnValue('50');    
 	  
     var pollSlide = new PollSlide(pollSlideNode);
     pollSlide._update();
     
     expect(Resource.prototype.get).toHaveBeenCalled();
-    expect(Resource.prototype.get.calls.length).toBe(2);
+    expect(Resource.prototype.get.calls.count()).toBe(2);
     expect(Resource.prototype.get).toHaveBeenCalledWith('/poll_rate_1');
     expect(Resource.prototype.get).toHaveBeenCalledWith('/poll_rate_2');     
 	  
@@ -32,13 +32,13 @@ describe("Poll Slide", function() {
     pollSlideNode.querySelector('#poll_radio_1').click();	  
 	  
     expect(Resource.prototype.post).toHaveBeenCalled();
-    expect(Resource.prototype.post.calls.length).toBe(1);
+    expect(Resource.prototype.post.calls.count()).toBe(1);
     expect(Resource.prototype.post).toHaveBeenCalledWith('/poll_radio_1', '', ASYNCHRONOUS);
 	  
     pollSlideNode.querySelector('#poll_radio_2').click();
 	  
     expect(Resource.prototype.post).toHaveBeenCalled();
-    expect(Resource.prototype.post.calls.length).toBe(2);
+    expect(Resource.prototype.post.calls.count()).toBe(2);
     expect(Resource.prototype.post).toHaveBeenCalledWith('/poll_radio_2','', ASYNCHRONOUS);
     
   });

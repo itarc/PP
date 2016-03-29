@@ -19,22 +19,22 @@ describe("AttendeeSlideShow IDE", function() {
   it("should be updated when initialized", function() {
     var slideShow = new AttendeeSlideShow(queryAll(document, '.slide'));
     
-    expect(AttendeeCodeSlide.prototype._update.calls.length).toBe(1);    
+    expect(AttendeeCodeSlide.prototype._update.calls.count()).toBe(1);    
    });  
 
   it("should be updated when refreshed and position changed", function() {
-    spyOn(Resource.prototype, "get").andReturn('0;false');
+    spyOn(Resource.prototype, "get").and.returnValue('0;false');
     var slideShow = new AttendeeSlideShow(queryAll(document, '.slide'))
 
     expect(slideShow._currentIndex).toBe(0);     
-    spyOn(Position.prototype, "_getPosition").andReturn('11;false');
+    spyOn(Position.prototype, "_getPosition").and.returnValue('11;false');
     slideShow._refresh();
    
-    expect(AttendeeCodeSlide.prototype._update.calls.length).toBe(2); // init + _refresh
+    expect(AttendeeCodeSlide.prototype._update.calls.count()).toBe(2); // init + _refresh
    });
    
   it("should show IDE Slide (index 0) even if teacher slide is on another slide (index > 0)", function() {
-    spyOn(Position.prototype, "_getPosition").andReturn('11;false');   
+    spyOn(Position.prototype, "_getPosition").and.returnValue('11;false');   
     var slideShow = new AttendeeSlideShow(queryAll(document, '.slide'))
 
     expect(slideShow._currentIndex).toBe(11);
@@ -42,16 +42,16 @@ describe("AttendeeSlideShow IDE", function() {
   });   
 
   it("should NOT be updated when refreshed but position did not change", function() {
-    spyOn(Position.prototype, "_getPosition").andReturn('0;false');
+    spyOn(Position.prototype, "_getPosition").and.returnValue('0;false');
     var slideShow = new AttendeeSlideShow(queryAll(document, '.slide'))     
 
-    expect(AttendeeCodeSlide.prototype._update.calls.length).toBe(1);
+    expect(AttendeeCodeSlide.prototype._update.calls.count()).toBe(1);
     
     expect(slideShow.position._currentIndex).toBe(0);
     
     slideShow._refresh();
 
-    expect(AttendeeCodeSlide.prototype._update.calls.length).toBe(1);
+    expect(AttendeeCodeSlide.prototype._update.calls.count()).toBe(1);
   });
 
 });

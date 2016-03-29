@@ -1,4 +1,4 @@
-function __triggerKeyboardEvent(element, keyCode, controlKey = false)
+function __triggerKeyboardEvent(element, keyCode, controlKey) /* controlKey : should be false by default */
 {
 
   var eventObj = document.createEvent("Events");

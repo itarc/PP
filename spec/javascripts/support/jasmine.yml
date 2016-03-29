@@ -6,7 +6,10 @@ src_files:
   - public/slideshow*.js
 
 helpers:
-  - 'helpers/**/*.js'
+  - 'helpers/**/h*.js'
+  - 'helpers/**/j*.js'
+  - 'helpers/**/t*.js'  
+    
 
 spec_files:
   - '1_Common/*[sS]pec.js'
