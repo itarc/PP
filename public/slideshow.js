@@ -19,7 +19,7 @@ Position.prototype = {
   },
   
   _postPosition: function(index, IDEDisplayed) {
-    this._positionResource.post('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, ASYNCHRONOUS);
+    this._positionResource.post('/teacher_current_slide', 'index=' +   index + '&' + 'ide_displayed=' + IDEDisplayed, SYNCHRONOUS);
     this._currentIndex = index; this._IDEDisplayed = IDEDisplayed;
   },  
   

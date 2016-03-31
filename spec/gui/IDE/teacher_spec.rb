@@ -127,7 +127,7 @@ describe 'Teacher IDE', :type => :feature, :js => true do
     
     execute
     
-    expect(find_field('code_output').value).to have_content 'invalid multibyte char (US-ASCII)'
+    expect(find_field('code_output').value).to have_content 'éèêàâùï'
     
     fill_IDE_with("#encoding: utf-8" + "\n" + 'print "éèêàâùï"')    
     
